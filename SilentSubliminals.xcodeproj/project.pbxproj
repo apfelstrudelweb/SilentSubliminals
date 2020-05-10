@@ -13,9 +13,13 @@
 		6558D31024684934004E8660 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6558D30E24684934004E8660 /* Main.storyboard */; };
 		6558D31224684935004E8660 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6558D31124684935004E8660 /* Assets.xcassets */; };
 		6558D31524684935004E8660 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6558D31324684935004E8660 /* LaunchScreen.storyboard */; };
+		6558D31D24684C01004E8660 /* affirmation_01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6558D31C24684C01004E8660 /* affirmation_01.mp3 */; };
+		FBF96E7B2554436AB795D972 /* Pods_SilentSubliminals.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2692244DA1A09F5117B4C66 /* Pods_SilentSubliminals.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		05483F9741432CA234D14692 /* Pods-SilentSubliminals.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SilentSubliminals.release.xcconfig"; path = "Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals.release.xcconfig"; sourceTree = "<group>"; };
+		41E21C7A15C380A98AF70B0F /* Pods-SilentSubliminals.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SilentSubliminals.debug.xcconfig"; path = "Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals.debug.xcconfig"; sourceTree = "<group>"; };
 		6558D30524684934004E8660 /* SilentSubliminals.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SilentSubliminals.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6558D30824684934004E8660 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6558D30A24684934004E8660 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -24,6 +28,8 @@
 		6558D31124684935004E8660 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6558D31424684935004E8660 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6558D31624684935004E8660 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6558D31C24684C01004E8660 /* affirmation_01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = affirmation_01.mp3; sourceTree = "<group>"; };
+		E2692244DA1A09F5117B4C66 /* Pods_SilentSubliminals.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SilentSubliminals.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +37,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBF96E7B2554436AB795D972 /* Pods_SilentSubliminals.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2AA53B5A417622581E635D17 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				41E21C7A15C380A98AF70B0F /* Pods-SilentSubliminals.debug.xcconfig */,
+				05483F9741432CA234D14692 /* Pods-SilentSubliminals.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		6558D2FC24684934004E8660 = {
 			isa = PBXGroup;
 			children = (
 				6558D30724684934004E8660 /* SilentSubliminals */,
 				6558D30624684934004E8660 /* Products */,
+				2AA53B5A417622581E635D17 /* Pods */,
+				68159B7293CCF658B3D9AD72 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -63,8 +81,17 @@
 				6558D31124684935004E8660 /* Assets.xcassets */,
 				6558D31324684935004E8660 /* LaunchScreen.storyboard */,
 				6558D31624684935004E8660 /* Info.plist */,
+				6558D31C24684C01004E8660 /* affirmation_01.mp3 */,
 			);
 			path = SilentSubliminals;
+			sourceTree = "<group>";
+		};
+		68159B7293CCF658B3D9AD72 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E2692244DA1A09F5117B4C66 /* Pods_SilentSubliminals.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,6 +101,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6558D31924684935004E8660 /* Build configuration list for PBXNativeTarget "SilentSubliminals" */;
 			buildPhases = (
+				26C25B65DFBDFE0197C0F7A1 /* [CP] Check Pods Manifest.lock */,
 				6558D30124684934004E8660 /* Sources */,
 				6558D30224684934004E8660 /* Frameworks */,
 				6558D30324684934004E8660 /* Resources */,
@@ -125,6 +153,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6558D31D24684C01004E8660 /* affirmation_01.mp3 in Resources */,
 				6558D31524684935004E8660 /* LaunchScreen.storyboard in Resources */,
 				6558D31224684935004E8660 /* Assets.xcassets in Resources */,
 				6558D31024684934004E8660 /* Main.storyboard in Resources */,
@@ -132,6 +161,31 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		26C25B65DFBDFE0197C0F7A1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SilentSubliminals-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		6558D30124684934004E8660 /* Sources */ = {
@@ -282,6 +336,7 @@
 		};
 		6558D31A24684935004E8660 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 41E21C7A15C380A98AF70B0F /* Pods-SilentSubliminals.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -299,6 +354,7 @@
 		};
 		6558D31B24684935004E8660 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 05483F9741432CA234D14692 /* Pods-SilentSubliminals.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
