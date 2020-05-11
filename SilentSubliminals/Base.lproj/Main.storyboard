@@ -16,24 +16,89 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Silent Subliminals Prototype" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0TB-HV-Ut4">
-                                <rect key="frame" x="8" y="244" width="398" height="27.5"/>
+                                <rect key="frame" x="8" y="144" width="398" height="27.5"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="23"/>
                                 <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VZy-HC-2Na">
+                                <rect key="frame" x="131" y="251.5" width="152" height="30"/>
+                                <color key="backgroundColor" red="0.73042827070000005" green="0.29231952750000001" blue="0.059315979269999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="152" id="4bI-6t-kDR"/>
+                                </constraints>
+                                <state key="normal" title="Record">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="recordButtonTouched:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aUi-pr-1VQ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eiw-az-Bcc">
+                                <rect key="frame" x="131" y="321.5" width="152" height="30"/>
+                                <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Play">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="playButtonTouched:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Aho-Fh-BLj"/>
+                                </connections>
+                            </button>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="jZQ-e5-lRX">
+                                <rect key="frame" x="182.5" y="392" width="51" height="31"/>
+                                <connections>
+                                    <action selector="switchTapped:" destination="BYZ-38-t0r" eventType="valueChanged" id="slQ-ve-XKv"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="normal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="08V-dv-CdW">
+                                <rect key="frame" x="114" y="397" width="53" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="silent" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y0v-cX-plm">
+                                <rect key="frame" x="250" y="397" width="41" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="goF-Vs-i1z">
+                                <rect key="frame" x="36.5" y="474" width="341" height="184"/>
+                                <color key="backgroundColor" systemColor="systemGray5Color" red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="0TB-HV-Ut4" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="200" id="2fB-Ul-eep"/>
+                            <constraint firstItem="jZQ-e5-lRX" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="1PH-RR-Fdr"/>
+                            <constraint firstItem="0TB-HV-Ut4" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="100" id="2fB-Ul-eep"/>
+                            <constraint firstItem="eiw-az-Bcc" firstAttribute="trailing" secondItem="VZy-HC-2Na" secondAttribute="trailing" id="4fZ-bZ-Jd7"/>
+                            <constraint firstItem="eiw-az-Bcc" firstAttribute="top" secondItem="VZy-HC-2Na" secondAttribute="bottom" constant="40" id="79z-BS-PxQ"/>
+                            <constraint firstItem="08V-dv-CdW" firstAttribute="centerY" secondItem="jZQ-e5-lRX" secondAttribute="centerY" id="Am0-Ly-TtM"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="0TB-HV-Ut4" secondAttribute="trailing" constant="8" id="FTB-Ra-Akc"/>
+                            <constraint firstItem="VZy-HC-2Na" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="GDC-gz-k3W"/>
+                            <constraint firstItem="goF-Vs-i1z" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.205357" id="IC2-ae-vR2"/>
+                            <constraint firstItem="jZQ-e5-lRX" firstAttribute="firstBaseline" secondItem="eiw-az-Bcc" secondAttribute="baseline" constant="50" id="IK5-lV-s4G"/>
+                            <constraint firstItem="jZQ-e5-lRX" firstAttribute="leading" secondItem="08V-dv-CdW" secondAttribute="trailing" constant="15.5" id="Id4-xb-aTH"/>
+                            <constraint firstItem="goF-Vs-i1z" firstAttribute="top" secondItem="jZQ-e5-lRX" secondAttribute="bottom" constant="51" id="Lh5-vP-tGr"/>
+                            <constraint firstItem="eiw-az-Bcc" firstAttribute="leading" secondItem="VZy-HC-2Na" secondAttribute="leading" id="Pys-yD-QFs"/>
+                            <constraint firstItem="Y0v-cX-plm" firstAttribute="leading" secondItem="jZQ-e5-lRX" secondAttribute="trailing" constant="18.5" id="Rn3-B3-amT"/>
+                            <constraint firstItem="goF-Vs-i1z" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="VFU-LP-ERQ"/>
                             <constraint firstItem="0TB-HV-Ut4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="ZtR-xr-ecI"/>
+                            <constraint firstItem="VZy-HC-2Na" firstAttribute="top" secondItem="0TB-HV-Ut4" secondAttribute="bottom" constant="80" id="fEY-74-KHa"/>
+                            <constraint firstItem="Y0v-cX-plm" firstAttribute="centerY" secondItem="jZQ-e5-lRX" secondAttribute="centerY" id="iF5-vT-GrG"/>
+                            <constraint firstItem="goF-Vs-i1z" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.823671" id="nQu-Zz-m1c"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="playButton" destination="eiw-az-Bcc" id="ySh-hM-6lS"/>
+                        <outlet property="recordButton" destination="VZy-HC-2Na" id="cWO-Pu-UEJ"/>
+                        <outlet property="spectrumView" destination="goF-Vs-i1z" id="aEo-pj-lOU"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="139" y="86"/>
+            <point key="canvasLocation" x="137.68115942028987" y="85.714285714285708"/>
         </scene>
     </scenes>
 </document>
