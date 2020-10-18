@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2347C6AB02B32564CE289E80 /* Pods_SilentSubliminals.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 392B0860B0B6E3B98F1E03B6 /* Pods_SilentSubliminals.framework */; };
 		6558D30924684934004E8660 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558D30824684934004E8660 /* AppDelegate.swift */; };
 		6558D30B24684934004E8660 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558D30A24684934004E8660 /* SceneDelegate.swift */; };
 		6558D30D24684934004E8660 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558D30C24684934004E8660 /* ViewController.swift */; };
@@ -14,12 +15,18 @@
 		6558D31224684935004E8660 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6558D31124684935004E8660 /* Assets.xcassets */; };
 		6558D31524684935004E8660 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6558D31324684935004E8660 /* LaunchScreen.storyboard */; };
 		6558D31D24684C01004E8660 /* affirmation_01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6558D31C24684C01004E8660 /* affirmation_01.mp3 */; };
-		FBF96E7B2554436AB795D972 /* Pods_SilentSubliminals.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2692244DA1A09F5117B4C66 /* Pods_SilentSubliminals.framework */; };
+		65699FFC253C3706000E7F95 /* subliminalMakerBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 65699FFB253C3706000E7F95 /* subliminalMakerBackground.png */; };
+		65699FFE253C392B000E7F95 /* help-circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 65699FFD253C392B000E7F95 /* help-circle.png */; };
+		6569A000253C3A15000E7F95 /* arrow-left.png in Resources */ = {isa = PBXBuildFile; fileRef = 65699FFF253C3A15000E7F95 /* arrow-left.png */; };
+		6569A003253C3EFD000E7F95 /* recordButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 6569A001253C3EFD000E7F95 /* recordButton.png */; };
+		6569A004253C3EFD000E7F95 /* playButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 6569A002253C3EFD000E7F95 /* playButton.png */; };
+		6569A006253C413B000E7F95 /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6569A005253C413B000E7F95 /* ShadowView.swift */; };
+		6569A008253C43A7000E7F95 /* plusButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 6569A007253C43A7000E7F95 /* plusButton.png */; };
+		6569A00A253C4834000E7F95 /* ScriptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6569A009253C4834000E7F95 /* ScriptViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		05483F9741432CA234D14692 /* Pods-SilentSubliminals.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SilentSubliminals.release.xcconfig"; path = "Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals.release.xcconfig"; sourceTree = "<group>"; };
-		41E21C7A15C380A98AF70B0F /* Pods-SilentSubliminals.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SilentSubliminals.debug.xcconfig"; path = "Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals.debug.xcconfig"; sourceTree = "<group>"; };
+		392B0860B0B6E3B98F1E03B6 /* Pods_SilentSubliminals.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SilentSubliminals.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6558D30524684934004E8660 /* SilentSubliminals.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SilentSubliminals.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6558D30824684934004E8660 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6558D30A24684934004E8660 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -29,7 +36,16 @@
 		6558D31424684935004E8660 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6558D31624684935004E8660 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6558D31C24684C01004E8660 /* affirmation_01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = affirmation_01.mp3; sourceTree = "<group>"; };
-		E2692244DA1A09F5117B4C66 /* Pods_SilentSubliminals.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SilentSubliminals.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		65699FFB253C3706000E7F95 /* subliminalMakerBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = subliminalMakerBackground.png; sourceTree = "<group>"; };
+		65699FFD253C392B000E7F95 /* help-circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "help-circle.png"; sourceTree = "<group>"; };
+		65699FFF253C3A15000E7F95 /* arrow-left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-left.png"; sourceTree = "<group>"; };
+		6569A001253C3EFD000E7F95 /* recordButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = recordButton.png; sourceTree = "<group>"; };
+		6569A002253C3EFD000E7F95 /* playButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = playButton.png; sourceTree = "<group>"; };
+		6569A005253C413B000E7F95 /* ShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowView.swift; sourceTree = "<group>"; };
+		6569A007253C43A7000E7F95 /* plusButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plusButton.png; sourceTree = "<group>"; };
+		6569A009253C4834000E7F95 /* ScriptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptViewController.swift; sourceTree = "<group>"; };
+		9DBEA6C4D6AE89B9E5E0C56C /* Pods-SilentSubliminals.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SilentSubliminals.release.xcconfig"; path = "Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals.release.xcconfig"; sourceTree = "<group>"; };
+		CDD220AEE88C393901895354 /* Pods-SilentSubliminals.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SilentSubliminals.debug.xcconfig"; path = "Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,7 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FBF96E7B2554436AB795D972 /* Pods_SilentSubliminals.framework in Frameworks */,
+				2347C6AB02B32564CE289E80 /* Pods_SilentSubliminals.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,8 +63,8 @@
 		2AA53B5A417622581E635D17 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				41E21C7A15C380A98AF70B0F /* Pods-SilentSubliminals.debug.xcconfig */,
-				05483F9741432CA234D14692 /* Pods-SilentSubliminals.release.xcconfig */,
+				CDD220AEE88C393901895354 /* Pods-SilentSubliminals.debug.xcconfig */,
+				9DBEA6C4D6AE89B9E5E0C56C /* Pods-SilentSubliminals.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -59,7 +75,7 @@
 				6558D30724684934004E8660 /* SilentSubliminals */,
 				6558D30624684934004E8660 /* Products */,
 				2AA53B5A417622581E635D17 /* Pods */,
-				68159B7293CCF658B3D9AD72 /* Frameworks */,
+				7F8B67B41A1F55522546368C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -74,9 +90,12 @@
 		6558D30724684934004E8660 /* SilentSubliminals */ = {
 			isa = PBXGroup;
 			children = (
+				65699FF9253C36C5000E7F95 /* images */,
 				6558D30824684934004E8660 /* AppDelegate.swift */,
 				6558D30A24684934004E8660 /* SceneDelegate.swift */,
 				6558D30C24684934004E8660 /* ViewController.swift */,
+				6569A005253C413B000E7F95 /* ShadowView.swift */,
+				6569A009253C4834000E7F95 /* ScriptViewController.swift */,
 				6558D30E24684934004E8660 /* Main.storyboard */,
 				6558D31124684935004E8660 /* Assets.xcassets */,
 				6558D31324684935004E8660 /* LaunchScreen.storyboard */,
@@ -86,10 +105,31 @@
 			path = SilentSubliminals;
 			sourceTree = "<group>";
 		};
-		68159B7293CCF658B3D9AD72 /* Frameworks */ = {
+		65699FF9253C36C5000E7F95 /* images */ = {
 			isa = PBXGroup;
 			children = (
-				E2692244DA1A09F5117B4C66 /* Pods_SilentSubliminals.framework */,
+				6569A002253C3EFD000E7F95 /* playButton.png */,
+				6569A007253C43A7000E7F95 /* plusButton.png */,
+				6569A001253C3EFD000E7F95 /* recordButton.png */,
+				65699FFF253C3A15000E7F95 /* arrow-left.png */,
+				65699FFD253C392B000E7F95 /* help-circle.png */,
+				65699FFA253C36CF000E7F95 /* background */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
+		65699FFA253C36CF000E7F95 /* background */ = {
+			isa = PBXGroup;
+			children = (
+				65699FFB253C3706000E7F95 /* subliminalMakerBackground.png */,
+			);
+			path = background;
+			sourceTree = "<group>";
+		};
+		7F8B67B41A1F55522546368C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				392B0860B0B6E3B98F1E03B6 /* Pods_SilentSubliminals.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -101,11 +141,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6558D31924684935004E8660 /* Build configuration list for PBXNativeTarget "SilentSubliminals" */;
 			buildPhases = (
-				26C25B65DFBDFE0197C0F7A1 /* [CP] Check Pods Manifest.lock */,
+				B5BE1D22BF9DDCC2D028DCAC /* [CP] Check Pods Manifest.lock */,
 				6558D30124684934004E8660 /* Sources */,
 				6558D30224684934004E8660 /* Frameworks */,
 				6558D30324684934004E8660 /* Resources */,
-				29EC4A7F8D3D53CFD7ED14EB /* [CP] Embed Pods Frameworks */,
+				95A85C60BCC61FDD33236389 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -154,9 +194,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65699FFE253C392B000E7F95 /* help-circle.png in Resources */,
+				6569A000253C3A15000E7F95 /* arrow-left.png in Resources */,
+				65699FFC253C3706000E7F95 /* subliminalMakerBackground.png in Resources */,
+				6569A008253C43A7000E7F95 /* plusButton.png in Resources */,
 				6558D31D24684C01004E8660 /* affirmation_01.mp3 in Resources */,
 				6558D31524684935004E8660 /* LaunchScreen.storyboard in Resources */,
 				6558D31224684935004E8660 /* Assets.xcassets in Resources */,
+				6569A003253C3EFD000E7F95 /* recordButton.png in Resources */,
+				6569A004253C3EFD000E7F95 /* playButton.png in Resources */,
 				6558D31024684934004E8660 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -164,7 +210,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		26C25B65DFBDFE0197C0F7A1 /* [CP] Check Pods Manifest.lock */ = {
+		95A85C60BCC61FDD33236389 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B5BE1D22BF9DDCC2D028DCAC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -186,23 +249,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		29EC4A7F8D3D53CFD7ED14EB /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -210,9 +256,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6569A006253C413B000E7F95 /* ShadowView.swift in Sources */,
 				6558D30D24684934004E8660 /* ViewController.swift in Sources */,
 				6558D30924684934004E8660 /* AppDelegate.swift in Sources */,
 				6558D30B24684934004E8660 /* SceneDelegate.swift in Sources */,
+				6569A00A253C4834000E7F95 /* ScriptViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -354,10 +402,11 @@
 		};
 		6558D31A24684935004E8660 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 41E21C7A15C380A98AF70B0F /* Pods-SilentSubliminals.debug.xcconfig */;
+			baseConfigurationReference = CDD220AEE88C393901895354 /* Pods-SilentSubliminals.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = P2EQM7YAFH;
 				INFOPLIST_FILE = SilentSubliminals/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -372,10 +421,11 @@
 		};
 		6558D31B24684935004E8660 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 05483F9741432CA234D14692 /* Pods-SilentSubliminals.release.xcconfig */;
+			baseConfigurationReference = 9DBEA6C4D6AE89B9E5E0C56C /* Pods-SilentSubliminals.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = P2EQM7YAFH;
 				INFOPLIST_FILE = SilentSubliminals/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
