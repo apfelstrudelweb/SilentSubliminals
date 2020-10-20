@@ -35,7 +35,7 @@ class ViewController: UIViewController {
     
     var recorder: AKNodeRecorder!
     var player: AKPlayer!
-    var tape: AKAudioFile!
+    //var tape: AKAudioFile!
     var filter: AKBandPassButterworthFilter!
     var mixer: AKMixer!
     
@@ -64,7 +64,7 @@ class ViewController: UIViewController {
         print(getDocumentsDirectory())
         
         // Clean tempFiles !
-        AKAudioFile.cleanTempDirectory()
+        //AKAudioFile.cleanTempDirectory()
         
         // Session settings
         AKSettings.bufferLength = .medium

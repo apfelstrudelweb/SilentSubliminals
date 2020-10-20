@@ -1,4 +1,6 @@
-Podfile
+#Podfile
 Podfile.lock
 Pods/
 SilentSubliminals.xcworkspace/
+.DS_Store
+SilentSubliminals.xcodeproj/xcshareddata/
