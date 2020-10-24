@@ -58,5 +58,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>${PRODUCT_NAME} always needs your microphone</string>
 </dict>
 </plist>

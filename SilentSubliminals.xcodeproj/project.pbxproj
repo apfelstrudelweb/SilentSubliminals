@@ -18,11 +18,14 @@
 		65699FFC253C3706000E7F95 /* subliminalMakerBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 65699FFB253C3706000E7F95 /* subliminalMakerBackground.png */; };
 		65699FFE253C392B000E7F95 /* help-circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 65699FFD253C392B000E7F95 /* help-circle.png */; };
 		6569A000253C3A15000E7F95 /* arrow-left.png in Resources */ = {isa = PBXBuildFile; fileRef = 65699FFF253C3A15000E7F95 /* arrow-left.png */; };
-		6569A003253C3EFD000E7F95 /* recordButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 6569A001253C3EFD000E7F95 /* recordButton.png */; };
 		6569A004253C3EFD000E7F95 /* playButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 6569A002253C3EFD000E7F95 /* playButton.png */; };
 		6569A006253C413B000E7F95 /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6569A005253C413B000E7F95 /* ShadowView.swift */; };
 		6569A008253C43A7000E7F95 /* plusButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 6569A007253C43A7000E7F95 /* plusButton.png */; };
 		6569A00A253C4834000E7F95 /* ScriptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6569A009253C4834000E7F95 /* ScriptViewController.swift */; };
+		65F0727C25445673004C8BA3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F0727B25445673004C8BA3 /* AVFoundation.framework */; };
+		65F072812544615D004C8BA3 /* startRecordingButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 65F0727E2544615D004C8BA3 /* startRecordingButton.png */; };
+		65F072822544615D004C8BA3 /* stopButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 65F0727F2544615D004C8BA3 /* stopButton.png */; };
+		65F072832544615D004C8BA3 /* stopRecordingButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 65F072802544615D004C8BA3 /* stopRecordingButton.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,11 +41,14 @@
 		65699FFB253C3706000E7F95 /* subliminalMakerBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = subliminalMakerBackground.png; sourceTree = "<group>"; };
 		65699FFD253C392B000E7F95 /* help-circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "help-circle.png"; sourceTree = "<group>"; };
 		65699FFF253C3A15000E7F95 /* arrow-left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-left.png"; sourceTree = "<group>"; };
-		6569A001253C3EFD000E7F95 /* recordButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = recordButton.png; sourceTree = "<group>"; };
 		6569A002253C3EFD000E7F95 /* playButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = playButton.png; sourceTree = "<group>"; };
 		6569A005253C413B000E7F95 /* ShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowView.swift; sourceTree = "<group>"; };
 		6569A007253C43A7000E7F95 /* plusButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plusButton.png; sourceTree = "<group>"; };
 		6569A009253C4834000E7F95 /* ScriptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptViewController.swift; sourceTree = "<group>"; };
+		65F0727B25445673004C8BA3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		65F0727E2544615D004C8BA3 /* startRecordingButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = startRecordingButton.png; sourceTree = "<group>"; };
+		65F0727F2544615D004C8BA3 /* stopButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stopButton.png; sourceTree = "<group>"; };
+		65F072802544615D004C8BA3 /* stopRecordingButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stopRecordingButton.png; sourceTree = "<group>"; };
 		B425F63078CA7B3A786D3EFA /* Pods_SilentSubliminals.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SilentSubliminals.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E84571D72DDDFDBB2E0F8F21 /* Pods-SilentSubliminals.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SilentSubliminals.debug.xcconfig"; path = "Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals.debug.xcconfig"; sourceTree = "<group>"; };
 		EA3B64C1AC9ABBE26B83002B /* Pods-SilentSubliminals.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SilentSubliminals.release.xcconfig"; path = "Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals.release.xcconfig"; sourceTree = "<group>"; };
@@ -53,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65F0727C25445673004C8BA3 /* AVFoundation.framework in Frameworks */,
 				0677F5D691AF869288987745 /* Pods_SilentSubliminals.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -72,6 +79,7 @@
 		4D7162C5A14251C1FA9FD75E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				65F0727B25445673004C8BA3 /* AVFoundation.framework */,
 				B425F63078CA7B3A786D3EFA /* Pods_SilentSubliminals.framework */,
 			);
 			name = Frameworks;
@@ -118,7 +126,9 @@
 			children = (
 				6569A002253C3EFD000E7F95 /* playButton.png */,
 				6569A007253C43A7000E7F95 /* plusButton.png */,
-				6569A001253C3EFD000E7F95 /* recordButton.png */,
+				65F0727E2544615D004C8BA3 /* startRecordingButton.png */,
+				65F0727F2544615D004C8BA3 /* stopButton.png */,
+				65F072802544615D004C8BA3 /* stopRecordingButton.png */,
 				65699FFF253C3A15000E7F95 /* arrow-left.png */,
 				65699FFD253C392B000E7F95 /* help-circle.png */,
 				65699FFA253C36CF000E7F95 /* background */,
@@ -194,14 +204,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65F072822544615D004C8BA3 /* stopButton.png in Resources */,
+				65F072832544615D004C8BA3 /* stopRecordingButton.png in Resources */,
 				65699FFE253C392B000E7F95 /* help-circle.png in Resources */,
 				6569A000253C3A15000E7F95 /* arrow-left.png in Resources */,
+				65F072812544615D004C8BA3 /* startRecordingButton.png in Resources */,
 				65699FFC253C3706000E7F95 /* subliminalMakerBackground.png in Resources */,
 				6569A008253C43A7000E7F95 /* plusButton.png in Resources */,
 				6558D31D24684C01004E8660 /* affirmation_01.mp3 in Resources */,
 				6558D31524684935004E8660 /* LaunchScreen.storyboard in Resources */,
 				6558D31224684935004E8660 /* Assets.xcassets in Resources */,
-				6569A003253C3EFD000E7F95 /* recordButton.png in Resources */,
 				6569A004253C3EFD000E7F95 /* playButton.png in Resources */,
 				6558D31024684934004E8660 /* Main.storyboard in Resources */,
 			);

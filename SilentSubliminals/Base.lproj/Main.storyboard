@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -44,10 +46,13 @@
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="2kD-4u-X7j" secondAttribute="height" multiplier="1:1" id="h0W-f1-WMi"/>
                                                 </constraints>
-                                                <state key="normal" backgroundImage="playButton.png"/>
+                                                <state key="normal" image="playButton.png"/>
+                                                <connections>
+                                                    <action selector="playButtonTouched:" destination="BYZ-38-t0r" eventType="touchUpInside" id="g5C-MF-wHg"/>
+                                                </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Record your Subliminal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="CeU-Ma-P7c">
-                                                <rect key="frame" x="8" y="21.666666666666657" width="210.33333333333334" height="24"/>
+                                                <rect key="frame" x="8" y="21.666666666666657" width="211" height="24"/>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -56,7 +61,7 @@
                                                 </variation>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add to Library with &quot;Save&quot;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="G2E-L2-5c1">
-                                                <rect key="frame" x="8" y="46" width="210.33333333333334" height="20.333333333333329"/>
+                                                <rect key="frame" x="8" y="46" width="211" height="20.333333333333329"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -65,11 +70,14 @@
                                                 </variation>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a0U-wz-QjM">
-                                                <rect key="frame" x="238.33333333333331" y="21.333333333333343" width="47" height="47"/>
+                                                <rect key="frame" x="239" y="21.333333333333343" width="47" height="47"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="a0U-wz-QjM" secondAttribute="height" multiplier="1:1" id="VBR-Qw-ZPS"/>
                                                 </constraints>
-                                                <state key="normal" backgroundImage="recordButton.png"/>
+                                                <state key="normal" image="startRecordingButton.png"/>
+                                                <connections>
+                                                    <action selector="recordButtonTouched:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qaE-dV-Zy6"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" red="0.61338037249999999" green="0.64416187999999996" blue="0.68199056390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -93,9 +101,6 @@
                                             </constraint>
                                             <constraint firstItem="2kD-4u-X7j" firstAttribute="height" secondItem="a0U-wz-QjM" secondAttribute="height" multiplier="0.851064" id="vS3-vX-2Rx"/>
                                         </constraints>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
-                                        </userDefinedRuntimeAttributes>
                                         <variation key="default">
                                             <mask key="constraints">
                                                 <exclude reference="Bjt-L8-QaA"/>
@@ -167,6 +172,7 @@
                                 </connections>
                             </containerView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="0.59784709166754313" green="0.19557927529698466" blue="0.15634311989031985" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="Yvy-h8-CaA" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="2xc-o2-S1k">
@@ -195,7 +201,6 @@
                             <constraint firstItem="Yvy-h8-CaA" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.2" id="xrS-lj-QSd"/>
                             <constraint firstItem="Wc8-w8-Okm" firstAttribute="centerY" secondItem="PGf-8U-sZW" secondAttribute="centerY" id="zkJ-ZK-Qi7"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="UIy-om-Eve"/>
@@ -205,7 +210,9 @@
                     <connections>
                         <outlet property="containerView" destination="KHd-hc-lYm" id="9Ib-2F-cxU"/>
                         <outlet property="controlView" destination="mdr-3Q-yuN" id="jl5-Ku-Q80"/>
+                        <outlet property="playButton" destination="2kD-4u-X7j" id="0hF-8L-9q0"/>
                         <outlet property="playerView" destination="Yvy-h8-CaA" id="CE7-7Q-MOb"/>
+                        <outlet property="recordButton" destination="a0U-wz-QjM" id="9xc-mp-dki"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -217,7 +224,7 @@
             <objects>
                 <viewController id="HOc-7b-b6k" customClass="ScriptViewController" customModule="SilentSubliminals" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="avG-j5-3Gc">
-                        <rect key="frame" x="0.0" y="0.0" width="374" height="314"/>
+                        <rect key="frame" x="0.0" y="0.0" width="374" height="313.66666666666669"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GEd-oc-aDl" customClass="ShadowView" customModule="SilentSubliminals" customModuleProvider="target">
@@ -229,7 +236,7 @@
                                         <string key="text">I’m releasing all my fears and worries. I’m living my full potential.
 
 I attract the perfect partner. I welcome a bright future full of love.</string>
-                                        <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" systemColor="labelColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         <variation key="heightClass=regular-widthClass=regular">
@@ -256,7 +263,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JOn-ae-Wv5">
                                 <rect key="frame" x="0.0" y="257.33333333333331" width="374" height="56.333333333333314"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="50C-8g-wow">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="50C-8g-wow">
                                         <rect key="frame" x="0.0" y="-3.9999999999999716" width="179.66666666666666" height="45.333333333333336"/>
                                         <color key="backgroundColor" red="0.28600493069999999" green="0.26861456039999998" blue="0.26840257639999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="21"/>
@@ -267,7 +274,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                             <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                         </variation>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J1l-Ma-ooR">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J1l-Ma-ooR">
                                         <rect key="frame" x="194.33333333333337" y="-3.9999999999999716" width="179.66666666666663" height="45.333333333333336"/>
                                         <color key="backgroundColor" red="0.28600493069999999" green="0.26861456039999998" blue="0.26840257639999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="21"/>
@@ -294,6 +301,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                 </constraints>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="T7Q-4p-MWN"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="GEd-oc-aDl" secondAttribute="trailing" id="1c0-nV-XJM"/>
@@ -310,7 +318,6 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                             <constraint firstItem="L9L-jU-5pK" firstAttribute="top" secondItem="avG-j5-3Gc" secondAttribute="top" id="t3I-CS-r7K"/>
                             <constraint firstItem="JOn-ae-Wv5" firstAttribute="leading" secondItem="T7Q-4p-MWN" secondAttribute="leading" id="v6Y-lC-jEo"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="T7Q-4p-MWN"/>
                     </view>
                     <connections>
                         <outlet property="buttonView" destination="JOn-ae-Wv5" id="eSp-55-edi"/>
@@ -327,6 +334,9 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
         <image name="help-circle.png" width="30" height="30"/>
         <image name="playButton.png" width="40" height="40"/>
         <image name="plusButton.png" width="35" height="33"/>
-        <image name="recordButton.png" width="47" height="47"/>
+        <image name="startRecordingButton.png" width="47" height="47"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

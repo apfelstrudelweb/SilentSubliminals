@@ -9,6 +9,7 @@
 import UIKit
 import AudioKit
 import AudioKitUI
+import CoreAudio
 import PureLayout
 
 let modulationFrequency: Double = 15592
@@ -17,33 +18,26 @@ let bandwidth: Double = 2000
 let cornerRadius: CGFloat = 15
 let alpha: CGFloat = 0.85
 
-class ViewController: UIViewController {
-    
+class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDelegate {
+
     @IBOutlet weak var controlView: UIView!
     @IBOutlet weak var playerView: UIView!
     @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var containerViewCenterY: NSLayoutConstraint!
     
-//    @IBOutlet weak var recordButton: UIButton!
-//    @IBOutlet weak var playButton: UIButton!
-//    @IBOutlet weak var spectrumView: UIView!
-  
+    @IBOutlet weak var recordButton: UIButton!
+    @IBOutlet weak var playButton: UIButton!
+    
+    struct Manager {
+        static var recordingSession: AVAudioSession!
+        static var micAuthorised = Bool()
+    }
     
     var recording: Bool = false
     var playing: Bool = false
     
-    
-    var recorder: AKNodeRecorder!
-    var player: AKPlayer!
-    //var tape: AKAudioFile!
-    var filter: AKBandPassButterworthFilter!
-    var mixer: AKMixer!
-    
-    var filterBooster: AKBooster!
-    var signalBooster: AKBooster!
-    
-    var frequencyTracker: AKFrequencyTracker!
-    var fftPlot: AKNodeFFTPlot!
+    var audioRecorder: AVAudioRecorder?
+    var audioPlayer: AVAudioPlayer?
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,57 +54,22 @@ class ViewController: UIViewController {
         containerView.translatesAutoresizingMaskIntoConstraints = false
         containerView.autoPinEdge(.top, to: .bottom, of: self.view)
         
+        recordButton.alpha = 0.1
+        recordButton.isEnabled = false
         
         print(getDocumentsDirectory())
         
         // Clean tempFiles !
         //AKAudioFile.cleanTempDirectory()
-        
-        // Session settings
-        AKSettings.bufferLength = .medium
-        
-        do {
-            try AKSettings.setSession(category: .playAndRecord, with: .allowBluetoothA2DP)
-        } catch {
-            AKLog("Could not set session category.")
-        }
-        
-        AKSettings.defaultToSpeaker = true
-        
-        
-        let mic = AKMicrophone()
-        let booster = AKBooster(mic)
-        booster.gain = 1.0
-        
-        
-        
-        recorder = try? AKNodeRecorder(node: booster)
-        if let file = recorder.audioFile {
-            player = AKPlayer(audioFile: file)
-        }
-        player.isLooping = true
-        //AudioKit.output = booster
-        
-//        fftPlot = AKNodeFFTPlot(mic, frame: .zero)
-//        fftPlot.shouldFill = true
-//        fftPlot.shouldMirror = false
-//        fftPlot.shouldCenterYAxis = false
-//        fftPlot.color = AKColor.red
-//        fftPlot.backgroundColor = .clear
-//        fftPlot.clipsToBounds = true
-//        fftPlot.gain = 200
-//        spectrumView.addSubview(fftPlot)
-//        fftPlot.autoPinEdge(.top, to: .top, of: spectrumView)
-//        fftPlot.autoPinEdge(.left, to: .left, of: spectrumView, withOffset: 10.0)
-//        fftPlot.autoPinEdge(.bottom, to: .bottom, of: spectrumView, withOffset: -10.0)
-//        fftPlot.autoMatch(.width, to: .width, of: spectrumView, withMultiplier: 2.2)
 
+        checkForPermission()
+        
     }
     
     
     @IBAction func scriptCreationButtonTouched(_ sender: Any) {
         
-
+        
         let offset = 0.1 * view.frame.size.height
         containerView.autoPinEdge(.bottom, to: .bottom, of: view, withOffset: -offset)
         
@@ -119,139 +78,117 @@ class ViewController: UIViewController {
         }
     }
     
-//    @IBAction func recordButtonTouched(_ sender: Any) {
-//        
-//        do {
-//            try AudioKit.start()
-//        } catch {
-//            AKLog("AudioKit did not start!")
-//        }
-//        
-//        recording = !recording
-//        
-//        playButton.isEnabled = recording == false
-//        playButton.alpha = playButton.isEnabled ? 1.0 : 0.5
-//        let title = recording == true ? "Stop" : "Record"
-//        recordButton.setTitle(title, for: UIControl.State.normal)
-//        
-//        if recording == true {
-//            do {
-//                try recorder.record()
-//            } catch {
-//                AKLog("Errored recording.")
-//                
-//            }
+    @IBAction func recordButtonTouched(_ sender: Any) {
+        
+        if audioRecorder == nil {
+            startRecording()
+        } else {
+            stopRecording(success: true)
+        }
+    }
+    
+    @IBAction func playButtonTouched(_ sender: Any) {
+        
+        if audioPlayer == nil {
+            startPlaying()
+        } else {
+            stopPlaying()
+        }
+    }
+    
+    func startPlaying() {
+        
+        playButton.setImage(UIImage(named: "stopButton.png"), for: .normal)
+        
+        let audioFilename = getDocumentsDirectory().appendingPathComponent("rookieSwim.m4a")
+
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOf: audioFilename)
+            audioPlayer?.delegate = self
+            audioPlayer?.play()
+        } catch {
+            print("could not load file")
+        }
+    }
+    
+    func stopPlaying() {
+        
+        playButton.setImage(UIImage(named: "playButton.png"), for: .normal)
+        
+        audioPlayer?.stop()
+        audioPlayer = nil
+    }
+    
+    func startRecording() {
+        
+        let audioFilename = getDocumentsDirectory().appendingPathComponent("rookieSwim.m4a")
+        
+        let settings = [
+            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+            AVSampleRateKey: 48000,
+            AVNumberOfChannelsKey: 1,
+            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+        ]
+        
+        do {
+            audioRecorder = try AVAudioRecorder(url: audioFilename, settings: settings)
+            audioRecorder?.delegate = self
+            audioRecorder?.record()
+            
+            recordButton.setImage(UIImage(named: "stopRecordingButton.png"), for: .normal)
+        } catch {
+            stopRecording(success: false)
+        }
+    }
+    
+    func stopRecording(success: Bool) {
+        
+        audioRecorder?.stop()
+        audioRecorder = nil
+        
+        recordButton.setImage(UIImage(named: "startRecordingButton.png"), for: .normal)
+        
+//        if success {
+//            recordButton.setTitle("Tap to Re-record", for: .normal)
 //        } else {
-//            
-//            tape = recorder.audioFile!
-//            player.load(audioFile: tape)
-//            
-//            if let _ = player.audioFile?.duration {
-//                recorder.stop()
-//                tape.exportAsynchronously(name: "SilentSubliminal.wav",
-//                                          baseDir: .documents,
-//                                          exportFormat: .wav) {_, exportError in
-//                                            if let error = exportError {
-//                                                AKLog("Export Failed \(error)")
-//                                            } else {
-//                                                AKLog("Export succeeded")
-//                                            }
-//                }
-//            }
-//            
-//            do {
-//                try AudioKit.stop()
-//            } catch {
-//                AKLog("AudioKit did not start!")
-//            }
+//            recordButton.setTitle("Tap to Record", for: .normal)
+//            // recording failed :(
 //        }
-//        
-//    }
-//    
-//    @IBAction func playButtonTouched(_ sender: Any) {
-//        
-//        playing = !playing
-//        
-//        recordButton.isEnabled = playing == false
-//        recordButton.alpha = recordButton.isEnabled ? 1.0 : 0.5
-//        let title = playing == true ? "Stop" : "Play"
-//        playButton.setTitle(title, for: UIControl.State.normal)
-//        
-//        if playing == true {
-//            
-//            if let silentSubliminal = try? AKAudioFile(readFileName: "SilentSubliminal.wav", baseDir: .documents) {
-//                player = AKPlayer(audioFile: silentSubliminal)
-//                player.completionHandler = { Swift.print("completion callback has been triggered!") }
-//                player.isLooping = true
-//                player.buffering = .always
-//                
-//                let modulatedPlayer = AKOperationEffect(player) { player, _ in
-//                    let sine = AKOperation.sineWave(frequency: modulationFrequency)
-//                    let modulation = player * sine
-//                    
-//                    return modulation
-//                }
-//                
-//                filter = AKBandPassButterworthFilter(modulatedPlayer, centerFrequency: modulationFrequency + 0.5 * bandwidth, bandwidth: bandwidth)
-//                
-//                
-//                filterBooster = AKBooster(filter, gain: 0)
-//                signalBooster = AKBooster(player, gain: 1)
-//                
-//                mixer = AKMixer(filterBooster, signalBooster)
-//                AudioKit.output = mixer
-//                fftPlot.node = mixer
-//            }
-//            
-//            do {
-//                try AudioKit.start()
-//                player.play()
-//            } catch {
-//                AKLog("AudioKit did not start!")
-//            }
-//            
-//        } else {
-//            player.stop()
-//            
-//            do {
-//                try AudioKit.stop()
-//            } catch {
-//                AKLog("AudioKit did not start!")
-//            }
-//        }
-//    }
-//    
-//    
-//    @IBAction func switchTapped(_ sender: UISwitch) {
-//        
-//        if signalBooster == nil || filterBooster == nil { return }
-//        
-//        
-//        if sender.isOn {
-//            
-//            self.signalBooster.gain = 0
-//            self.filterBooster.gain = 1
-//            
-//            self.signalBooster.gain = 1
-//            self.filterBooster.gain = 0
-//            
-//            self.signalBooster.gain = 0
-//            self.filterBooster.gain = 1
-//            
-//            self.fftPlot.gain = 1000
-//        } else {
-//            self.signalBooster.gain = 1
-//            self.filterBooster.gain = 0
-//            self.fftPlot.gain = 500
-//        }
-//    }
+    }
+    
+    
+    func checkForPermission() {
+        Manager.recordingSession = AVAudioSession.sharedInstance()
+        do {
+            try Manager.recordingSession.setCategory(AVAudioSession.Category.playAndRecord, options: .defaultToSpeaker)
+
+            Manager.recordingSession.requestRecordPermission({ (allowed) in
+                if allowed {
+                    Manager.micAuthorised = true
+                    self.recordButton.alpha = 1
+                    self.recordButton.isEnabled = true
+                    print("Mic Authorised")
+                } else {
+                    Manager.micAuthorised = false
+                    print("Mic not Authorised")
+                }
+            })
+        } catch {
+            print("Failed to set Category", error.localizedDescription)
+        }
+    }
+    
+    // MARK: AVAudioPlayerDelegate
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        stopPlaying()
+    }
+
     
     func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentsDirectory = paths[0]
         return documentsDirectory
     }
-    
     
 }
 
