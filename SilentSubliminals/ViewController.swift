@@ -10,6 +10,7 @@ import UIKit
 import AudioKit
 import AudioKitUI
 import CoreAudio
+import AVFoundation
 import PureLayout
 
 let modulationFrequency: Double = 15592
@@ -19,7 +20,7 @@ let cornerRadius: CGFloat = 15
 let alpha: CGFloat = 0.85
 
 class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDelegate {
-
+    
     @IBOutlet weak var controlView: UIView!
     @IBOutlet weak var playerView: UIView!
     @IBOutlet weak var containerView: UIView!
@@ -37,10 +38,19 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
     
     var audioRecorder: AVAudioRecorder?
     var audioPlayer: AVAudioPlayer?
-
+    
+    var engine = AVAudioEngine()
+    var distortion = AVAudioUnitDistortion()
+    var reverb = AVAudioUnitReverb()
+    var audioBuffer = AVAudioPCMBuffer()
+    var outputFile = AVAudioFile()
+    var delay = AVAudioUnitDelay()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         
         view.layer.contents = #imageLiteral(resourceName: "subliminalMakerBackground.png").cgImage
         
@@ -61,9 +71,40 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
         
         // Clean tempFiles !
         //AKAudioFile.cleanTempDirectory()
-
+        
         checkForPermission()
         
+        initializeAudioEngine()
+        
+    }
+    
+    func initializeAudioEngine() {
+        
+        engine.stop()
+        engine.reset()
+        engine = AVAudioEngine()
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord)
+            
+            let ioBufferDuration = 128.0 / 44100.0
+            
+            try AVAudioSession.sharedInstance().setPreferredIOBufferDuration(ioBufferDuration)
+            
+        } catch {
+            
+            assertionFailure("AVAudioSession setup error: \(error)")
+        }
+        
+        //        let fileUrl = URLFor("/NewRecording.caf")
+        //        outputFile = AVAudioFile(forWriting:  fileUrl!, settings: engine.mainMixerNode.outputFormatForBus(0).settings)
+        
+        let input = engine.inputNode
+        let format = input.inputFormat(forBus: 0)
+        
+        //engine.connect(input, to: reverb, format: format)
+        //
+        //        try! engine.start()
     }
     
     
@@ -101,7 +142,7 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
         playButton.setImage(UIImage(named: "stopButton.png"), for: .normal)
         
         let audioFilename = getDocumentsDirectory().appendingPathComponent("rookieSwim.m4a")
-
+        
         do {
             audioPlayer = try AVAudioPlayer(contentsOf: audioFilename)
             audioPlayer?.delegate = self
@@ -121,6 +162,20 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
     
     func startRecording() {
         
+        let inputNode = engine.inputNode
+        let bus = 0
+        inputNode.installTap(onBus: bus, bufferSize: 2048, format: inputNode.inputFormat(forBus: bus)) {
+            (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
+
+            self.processAudioData(buffer: buffer)
+        }
+        
+//        engine.mainMixerNode.installTap(onBus: 0, bufferSize: 1024, format: nil) { (buffer, time) in
+//            self.processAudioData(buffer: buffer)
+//        }
+        
+        engine.prepare()
+        try! engine.start()
         let audioFilename = getDocumentsDirectory().appendingPathComponent("rookieSwim.m4a")
         
         let settings = [
@@ -146,14 +201,44 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
         audioRecorder?.stop()
         audioRecorder = nil
         
+        let inputNode = engine.inputNode
+        let bus = 0
+        inputNode.removeTap(onBus: bus)
+        self.engine.stop()
+        
         recordButton.setImage(UIImage(named: "startRecordingButton.png"), for: .normal)
         
-//        if success {
-//            recordButton.setTitle("Tap to Re-record", for: .normal)
-//        } else {
-//            recordButton.setTitle("Tap to Record", for: .normal)
-//            // recording failed :(
+        //        if success {
+        //            recordButton.setTitle("Tap to Re-record", for: .normal)
+        //        } else {
+        //            recordButton.setTitle("Tap to Record", for: .normal)
+        //            // recording failed :(
+        //        }
+    }
+    
+    var prevRMSValue : Float = 0.3
+    
+    //fft setup object for 1024 values going forward (time domain -> frequency domain)
+    let fftSetup = vDSP_DFT_zop_CreateSetup(nil, 1024, vDSP_DFT_Direction.FORWARD)
+
+    func processAudioData(buffer: AVAudioPCMBuffer){
+        guard let channelData = buffer.floatChannelData?[0] else {return}
+        let frames = buffer.frameLength
+        
+        //rms
+        let rmsValue = SignalProcessing.rms(data: channelData, frameLength: UInt(frames))
+        let interpolatedResults = SignalProcessing.interpolate(current: rmsValue, previous: prevRMSValue)
+        prevRMSValue = rmsValue
+        
+        //print(rmsValue)
+        
+        //fft
+        let fftMagnitudes =  SignalProcessing.fft(data: channelData, setup: fftSetup!)
+        
+//        for var m in fftMagnitudes {
+//            print(m)
 //        }
+        
     }
     
     
@@ -161,12 +246,14 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
         Manager.recordingSession = AVAudioSession.sharedInstance()
         do {
             try Manager.recordingSession.setCategory(AVAudioSession.Category.playAndRecord, options: .defaultToSpeaker)
-
+            
             Manager.recordingSession.requestRecordPermission({ (allowed) in
                 if allowed {
                     Manager.micAuthorised = true
-                    self.recordButton.alpha = 1
-                    self.recordButton.isEnabled = true
+                    DispatchQueue.main.async {
+                        self.recordButton.alpha = 1
+                        self.recordButton.isEnabled = true
+                    }
                     print("Mic Authorised")
                 } else {
                     Manager.micAuthorised = false
@@ -182,7 +269,7 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         stopPlaying()
     }
-
+    
     
     func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
