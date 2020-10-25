@@ -19,21 +19,21 @@ class SignalProcessing {
         //inverse dB to +ve range where 0(silent) -> 160(loudest)
         db = 160 + db;
         //Only take into account range from 120->160, so FSR = 40
-        db = db - 120
+        db = db - 60
 
         let dividor = Float(40/0.3)
         var adjustedVal = 0.3 + db/dividor
         
-        print(adjustedVal)
+        //print(adjustedVal)
 
-        //cutoff
-        if (adjustedVal < 0.3) {
-            adjustedVal = 0.3
-        } else if (adjustedVal > 0.6) {
-            adjustedVal = 0.6
-        }
+//        //cutoff
+//        if (adjustedVal < 0.3) {
+//            adjustedVal = 0.3
+//        } else if (adjustedVal > 0.6) {
+//            adjustedVal = 0.6
+//        }
         
-        return adjustedVal
+        return db
     }
     
     static func fft(data: UnsafeMutablePointer<Float>, setup: OpaquePointer) -> [Float] {

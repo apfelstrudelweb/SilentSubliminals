@@ -3,7 +3,7 @@
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -118,11 +118,19 @@
                                             </mask>
                                         </variation>
                                     </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X4C-zh-GbL">
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="89.666666666666671"/>
+                                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="X4C-zh-GbL" firstAttribute="top" secondItem="Yvy-h8-CaA" secondAttribute="top" id="4RV-3R-Z5R"/>
+                                    <constraint firstItem="mdr-3Q-yuN" firstAttribute="top" secondItem="X4C-zh-GbL" secondAttribute="bottom" id="7Jr-70-6mL"/>
                                     <constraint firstAttribute="bottom" secondItem="mdr-3Q-yuN" secondAttribute="bottom" id="Kwe-vb-SoR"/>
                                     <constraint firstItem="mdr-3Q-yuN" firstAttribute="leading" secondItem="Yvy-h8-CaA" secondAttribute="leading" id="T30-02-ebx"/>
+                                    <constraint firstItem="X4C-zh-GbL" firstAttribute="leading" secondItem="Yvy-h8-CaA" secondAttribute="leading" id="Wcw-a3-rpa"/>
+                                    <constraint firstAttribute="trailing" secondItem="X4C-zh-GbL" secondAttribute="trailing" id="bSS-4u-4ZS"/>
                                     <constraint firstAttribute="trailing" secondItem="mdr-3Q-yuN" secondAttribute="trailing" id="fHI-yx-Vjh"/>
                                     <constraint firstItem="mdr-3Q-yuN" firstAttribute="height" secondItem="Yvy-h8-CaA" secondAttribute="height" multiplier="0.5" id="ozU-1z-hMh"/>
                                 </constraints>
@@ -210,6 +218,7 @@
                     <connections>
                         <outlet property="containerView" destination="KHd-hc-lYm" id="9Ib-2F-cxU"/>
                         <outlet property="controlView" destination="mdr-3Q-yuN" id="jl5-Ku-Q80"/>
+                        <outlet property="graphView" destination="X4C-zh-GbL" id="ReL-ZX-cDw"/>
                         <outlet property="playButton" destination="2kD-4u-X7j" id="0hF-8L-9q0"/>
                         <outlet property="playerView" destination="Yvy-h8-CaA" id="CE7-7Q-MOb"/>
                         <outlet property="recordButton" destination="a0U-wz-QjM" id="9xc-mp-dki"/>
