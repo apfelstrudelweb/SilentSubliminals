@@ -10,6 +10,6 @@ target 'SilentSubliminals' do
 
   # Pods for SilentSubliminals
   #pod 'AudioKit/UI', :git => 'https://github.com/AudioKit/AudioKit.git', :branch => 'v5-develop'
-  pod 'AudioKit/UI', '5.0.b1'
+  #pod 'AudioKit/UI', '5.0.b1'
   pod 'PureLayout'
 end
