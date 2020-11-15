@@ -488,6 +488,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                     <constraint firstItem="I2n-2P-ia1" firstAttribute="centerX" secondItem="q6l-Tj-038" secondAttribute="centerX" id="rcm-kq-UWQ"/>
                                                     <constraint firstItem="1lW-ea-hYl" firstAttribute="centerY" secondItem="2Vo-TK-6Ii" secondAttribute="centerY" id="sxn-ZZ-NhQ"/>
                                                     <constraint firstItem="Nss-hv-Sk9" firstAttribute="centerY" secondItem="1lW-ea-hYl" secondAttribute="centerY" id="uxy-0F-z0M"/>
+                                                    <constraint firstItem="WTQ-46-HQ2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="CsQ-FE-C27" secondAttribute="trailing" constant="8" symbolic="YES" id="wp5-FL-crb"/>
                                                     <constraint firstItem="Nss-hv-Sk9" firstAttribute="leading" secondItem="1lW-ea-hYl" secondAttribute="trailing" constant="30" id="wyj-Nd-WPp"/>
                                                     <constraint firstItem="q6l-Tj-038" firstAttribute="leading" secondItem="Nss-hv-Sk9" secondAttribute="trailing" constant="30" id="xlK-ca-ZgO"/>
                                                     <constraint firstItem="6XP-Xy-aRO" firstAttribute="centerY" secondItem="d8R-wR-p82" secondAttribute="centerY" id="ynP-BB-pZY"/>
@@ -508,7 +509,89 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wux-KS-pjg" customClass="RoundedView" customModule="SilentSubliminals" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="374" height="194.66666666666666"/>
+                                                <subviews>
+                                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="MCu-q1-tlA">
+                                                        <rect key="frame" x="34" y="144.99999999999994" width="290" height="31"/>
+                                                        <color key="tintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </slider>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jaw Relaxation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eI0-MH-Rsd">
+                                                        <rect key="frame" x="118.33333333333333" y="112" width="137.33333333333337" height="24"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                                        <color key="textColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loudspeakerLowSymbol" translatesAutoresizingMaskIntoConstraints="NO" id="nxf-ce-GFG">
+                                                        <rect key="frame" x="12" y="152.99999999999994" width="10" height="14"/>
+                                                        <color key="tintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="10" id="Rjc-Xs-I5t"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loudspeakerHighSymbol" translatesAutoresizingMaskIntoConstraints="NO" id="nSG-D6-S8T">
+                                                        <rect key="frame" x="335" y="143.99999999999994" width="27" height="32"/>
+                                                        <color key="tintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="32" id="D4u-ai-2Tj"/>
+                                                            <constraint firstAttribute="width" constant="27" id="tlU-Lb-YXm"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SKF-7G-fNA">
+                                                        <rect key="frame" x="167" y="70" width="40" height="40"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="40" id="tox-yo-yKS"/>
+                                                            <constraint firstAttribute="width" constant="40" id="vpS-wC-7lm"/>
+                                                        </constraints>
+                                                        <state key="normal" image="playButton.png"/>
+                                                        <connections>
+                                                            <action selector="playButtonTouchUpInside:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="7q2-T2-saB"/>
+                                                            <action selector="playButtonTouched:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ryv-d7-eca"/>
+                                                        </connections>
+                                                    </button>
+                                                    <view clipsSubviews="YES" alpha="0.45000000000000001" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o5j-AJ-IcV">
+                                                        <rect key="frame" x="0.0" y="0.0" width="374" height="62"/>
+                                                        <color key="backgroundColor" red="0.38731712100000004" green="0.33104551811765975" blue="0.31271345388540739" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                    </view>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rc5-V6-YXt">
+                                                        <rect key="frame" x="12" y="104" width="27" height="40"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="27" id="lT3-BC-GSG"/>
+                                                            <constraint firstAttribute="height" constant="40" id="xVI-wj-mYZ"/>
+                                                        </constraints>
+                                                        <color key="tintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <state key="normal" image="earSilentIcon"/>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DEe-tW-fzs">
+                                                        <rect key="frame" x="322" y="104" width="40" height="40"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="40" id="aMm-OK-g6N"/>
+                                                            <constraint firstAttribute="width" constant="40" id="cKm-KH-z0e"/>
+                                                        </constraints>
+                                                        <color key="tintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <state key="normal" image="timerIcon"/>
+                                                    </button>
+                                                </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstItem="o5j-AJ-IcV" firstAttribute="leading" secondItem="wux-KS-pjg" secondAttribute="leading" id="1RZ-Ki-Yzt"/>
+                                                    <constraint firstItem="DEe-tW-fzs" firstAttribute="centerY" secondItem="rc5-V6-YXt" secondAttribute="centerY" id="1nG-Pa-gPR"/>
+                                                    <constraint firstItem="rc5-V6-YXt" firstAttribute="top" secondItem="SKF-7G-fNA" secondAttribute="bottom" constant="-6" id="3oX-4Q-4rt"/>
+                                                    <constraint firstItem="nSG-D6-S8T" firstAttribute="top" secondItem="DEe-tW-fzs" secondAttribute="bottom" constant="-5.6843418860808015e-14" id="C57-QS-pZQ"/>
+                                                    <constraint firstItem="rc5-V6-YXt" firstAttribute="leading" secondItem="wux-KS-pjg" secondAttribute="leading" constant="12" id="GFi-bo-pmo"/>
+                                                    <constraint firstItem="MCu-q1-tlA" firstAttribute="centerY" secondItem="nxf-ce-GFG" secondAttribute="centerY" id="LoW-Mi-Cbb"/>
+                                                    <constraint firstItem="o5j-AJ-IcV" firstAttribute="top" secondItem="wux-KS-pjg" secondAttribute="top" id="UTT-ZR-gf6"/>
+                                                    <constraint firstItem="SKF-7G-fNA" firstAttribute="centerX" secondItem="wux-KS-pjg" secondAttribute="centerX" id="Ych-P6-NWv"/>
+                                                    <constraint firstItem="nSG-D6-S8T" firstAttribute="centerY" secondItem="MCu-q1-tlA" secondAttribute="centerY" id="Zts-J2-iaF"/>
+                                                    <constraint firstItem="nSG-D6-S8T" firstAttribute="leading" secondItem="MCu-q1-tlA" secondAttribute="trailing" constant="13" id="a7t-up-gfT"/>
+                                                    <constraint firstItem="nxf-ce-GFG" firstAttribute="top" secondItem="eI0-MH-Rsd" secondAttribute="bottom" constant="17" id="g4f-xF-Qvu"/>
+                                                    <constraint firstItem="MCu-q1-tlA" firstAttribute="leading" secondItem="nxf-ce-GFG" secondAttribute="trailing" constant="14" id="hTq-ZP-OAw"/>
+                                                    <constraint firstItem="nSG-D6-S8T" firstAttribute="trailing" secondItem="DEe-tW-fzs" secondAttribute="trailing" id="md1-qg-xRE"/>
+                                                    <constraint firstItem="SKF-7G-fNA" firstAttribute="top" secondItem="o5j-AJ-IcV" secondAttribute="bottom" constant="8" symbolic="YES" id="oYj-X1-RiE"/>
+                                                    <constraint firstItem="eI0-MH-Rsd" firstAttribute="centerX" secondItem="wux-KS-pjg" secondAttribute="centerX" id="q2Z-eF-aCp"/>
+                                                    <constraint firstAttribute="trailing" secondItem="o5j-AJ-IcV" secondAttribute="trailing" id="vOy-wo-aQz"/>
+                                                    <constraint firstAttribute="trailing" secondItem="DEe-tW-fzs" secondAttribute="trailing" constant="12" id="xLL-ci-sPz"/>
+                                                    <constraint firstItem="nxf-ce-GFG" firstAttribute="leading" secondItem="rc5-V6-YXt" secondAttribute="leading" id="xy5-2A-9h7"/>
+                                                    <constraint firstItem="o5j-AJ-IcV" firstAttribute="height" secondItem="wux-KS-pjg" secondAttribute="height" multiplier="0.318493" id="yia-PG-hpN"/>
+                                                </constraints>
                                             </view>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -524,7 +607,19 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tg5-ND-tqn" customClass="RoundedView" customModule="SilentSubliminals" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="374" height="194.66666666666666"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Background Sound" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qwq-UC-mWg">
+                                                        <rect key="frame" x="99.666666666666671" y="12" width="174.66666666666663" height="24"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                                        <color key="textColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstItem="Qwq-UC-mWg" firstAttribute="top" secondItem="tg5-ND-tqn" secondAttribute="top" constant="12" id="Lh8-UP-7XT"/>
+                                                    <constraint firstItem="Qwq-UC-mWg" firstAttribute="centerX" secondItem="tg5-ND-tqn" secondAttribute="centerX" id="vHo-h4-udU"/>
+                                                </constraints>
                                             </view>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -554,7 +649,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                     </view>
                     <toolbarItems>
                         <barButtonItem style="plain" id="j0f-lL-edU">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Mxx-ye-eoa">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Mxx-ye-eoa">
                                 <rect key="frame" x="20" y="12" width="374" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" backgroundImage="help-circle.png"/>
@@ -572,6 +667,10 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                         </barButtonItem>
                     </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="graphView" destination="o5j-AJ-IcV" id="td8-3C-e4d"/>
+                        <outlet property="playButton" destination="SKF-7G-fNA" id="NYA-ku-FJY"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XWw-Sa-g8I" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -598,10 +697,13 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
         </scene>
     </scenes>
     <resources>
-        <image name="arrow-left.png" width="14" height="20"/>
+        <image name="arrow-left.png" width="20" height="29"/>
         <image name="bedIcon.png" width="49" height="48"/>
         <image name="chairIcon.png" width="42" height="40"/>
+        <image name="earSilentIcon" width="27" height="40"/>
         <image name="help-circle.png" width="30" height="30"/>
+        <image name="loudspeakerHighSymbol" width="20" height="17"/>
+        <image name="loudspeakerLowSymbol" width="10" height="14"/>
         <image name="moonIcon.png" width="42" height="40"/>
         <image name="noneIcon.png" width="41" height="40"/>
         <image name="playButton.png" width="50" height="50"/>
@@ -611,6 +713,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
         <image name="subliminalPlayerBackground.png" width="414" height="896"/>
         <image name="subliminalPlayerTeaser.png" width="364" height="285"/>
         <image name="sunIcon.png" width="42" height="40"/>
+        <image name="timerIcon" width="30" height="30"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

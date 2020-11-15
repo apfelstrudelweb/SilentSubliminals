@@ -10,6 +10,16 @@ import UIKit
 
 class SubliminalPlayerViewController: UIViewController {
 
+    @IBOutlet weak var graphView: UIView!
+    @IBOutlet weak var playButton: UIButton!
+    
+    var isPlaying: Bool = false
+    
+    struct Button {
+        static var playOnImg = UIImage(named: "playButton.png")
+        static var playOffImg = UIImage(named: "stopButton.png")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -18,7 +28,32 @@ class SubliminalPlayerViewController: UIViewController {
         backbutton.addTarget(self, action: #selector(self.close(_:)), for: .touchUpInside)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backbutton)
         
-        //view.layer.contents = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.8470588235).cgImage
+        graphView.layer.cornerRadius = cornerRadius
+        graphView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    }
+    
+    
+    @IBAction func playButtonTouchUpInside(_ sender: Any) {
+        
+        if isPlaying == false {
+            startPlaying()
+            isPlaying = true
+        } else {
+            stopPlaying()
+            isPlaying = false
+        }
+    }
+    
+    func startPlaying() {
+        
+        playButton.setImage(Button.playOffImg, for: .normal)
+    
+    }
+    
+    func stopPlaying() {
+        
+        self.playButton.setImage(Button.playOnImg, for: .normal)
+        
     }
     
 
