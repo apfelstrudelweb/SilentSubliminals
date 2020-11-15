@@ -12,17 +12,18 @@ import AVFoundation
 import Accelerate
 import PureLayout
 
-let outputFilename: String = "affirmation.fus"
+let sampleCount = 1024
+let outputFilename: String = "affirmation.mp3"
 
-let modulationFrequency: Double = 15592
-let bandwidth: Double = 2000
+let modulationFrequency: Float = 18000
 
 let cornerRadius: CGFloat = 15
 let alpha: CGFloat = 0.85
 
-
+//https://stackoverflow.com/questions/52693784/audiokit-exporting-avaudiopcmbuffer-array-to-audio-file-with-fade-in-out
+// https://gist.github.com/michaeldorner/746c659476429a86a9970faaa6f95ec4   (FM Synthesizer)
 // https://stackoverflow.com/questions/48911800/avaudioengine-realtime-frequency-modulation
-class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDelegate {
+class SubliminalMakerController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDelegate {
     
     @IBOutlet weak var controlView: UIView!
     @IBOutlet weak var playerView: UIView!
@@ -31,6 +32,9 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
     
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var playButton: UIButton!
+    
+    var writer: AVAssetWriter?
+    var isRecording: Bool = false
     
     struct Button {
         static var micOnImg = UIImage(named: "startRecordingButton.png")
@@ -61,8 +65,81 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
     let spectrumLayer = CAShapeLayer.init()
     
     
+    var biquadFilter: vDSP.Biquad<Float>?
+    
+    let forwardDCT = vDSP.DCT(count: sampleCount,
+                              transformType: .II)
+    
+    let inverseDCT = vDSP.DCT(count: sampleCount,
+                              transformType: .III)
+    
+    var frequencyDomainGraphLayerIndex = 0
+    let frequencyDomainGraphLayers = [CAShapeLayer(), CAShapeLayer(),
+                                      CAShapeLayer(), CAShapeLayer()]
+    
+    let envelopeLayer = CAShapeLayer()
+    
+    lazy var forwardDCT_PreProcessed = [Float](repeating: 0,
+                                               count: sampleCount)
+    
+    lazy var forwardDCT_PostProcessed = [Float](repeating: 0,
+                                                count: sampleCount)
+    
+    lazy var inverseDCT_Result = [Float](repeating: 0,
+                                  count: sampleCount)
+    
+    var equalizationMode: EqualizationMode = .flat {
+        didSet {
+            if let multiplier = equalizationMode.dctMultiplier() {
+                GraphUtility.drawGraphInLayer(envelopeLayer,
+                                              strokeColor: UIColor.red.cgColor,
+                                              lineWidth: 2,
+                                              values: multiplier,
+                                              minimum: -10,
+                                              maximum: 10)
+            } else {
+                envelopeLayer.path = nil
+            }
+        }
+    }
+    
+    
+    let samples: (naturalTimeScale: Int32, data: [Float]) = {
+        guard let samples = AudioUtilities.getAudioSamples(
+            forResource: "affirmation",
+            withExtension: "mp3") else {
+                fatalError("Unable to parse the audio resource.")
+        }
+        
+        var samples1: (Int32, [Float]) = (44100, [])
+        
+        let modulationFrequency: Float = 20000
+        
+        for (index, sampleData) in samples.data.enumerated() {
+            let value = sinf(2.0 * .pi * modulationFrequency * Float(index) / Float(samples.naturalTimeScale)) * sampleData * 10.0
+            samples1.1.append(value)
+        }
+        
+        return samples1
+    }()
+    
+    var pageNumber = 0
+
+    lazy var signalGenerator = SignalGenerator(signalProvider: self,
+                                               sampleRate: samples.naturalTimeScale)
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        equalizationMode = .dctHighPass
+        
+        frequencyDomainGraphLayers.forEach {
+            self.graphView.layer.addSublayer($0)
+        }
+        
+        envelopeLayer.fillColor = UIColor.red.cgColor
+        self.graphView.layer.addSublayer(envelopeLayer)
         
         view.layer.contents = #imageLiteral(resourceName: "subliminalMakerBackground.png").cgImage
         
@@ -78,6 +155,7 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
         
         graphView.layer.cornerRadius = cornerRadius
         graphView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        graphView.clipsToBounds = true
         
         recordButton.alpha = 0.1
         recordButton.isEnabled = false
@@ -89,9 +167,18 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
         
         checkForPermission()
         
-        initializeAudioEngine()
+        //initializeAudioEngine()
         
         fftSetup = vDSP_DFT_zop_CreateSetup(nil, 1024, vDSP_DFT_Direction.FORWARD)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        frequencyDomainGraphLayers.forEach {
+            $0.frame = self.graphView.frame.insetBy(dx: 0, dy: 0)
+        }
+        envelopeLayer.frame = self.graphView.frame.insetBy(dx: 0, dy: 0)
     }
     
     func initializeAudioEngine() {
@@ -99,18 +186,18 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
         engine.stop()
         engine.reset()
         engine = AVAudioEngine()
-        
+
         do {
             try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
-            
+
             try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord)
-            
+
             let ioBufferDuration = 128.0 / 44100.0
-            
+
             try AVAudioSession.sharedInstance().setPreferredIOBufferDuration(ioBufferDuration)
-            
+
         } catch {
-            
+
             assertionFailure("AVAudioSession setup error: \(error)")
         }
     }
@@ -128,19 +215,21 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
     
     @IBAction func recordButtonTouched(_ sender: Any) {
         
-        if audioRecorder == nil {
+        if isRecording == false {
             startRecording()
+            isRecording = true
         } else {
             stopRecording(success: true)
+            isRecording = false
         }
     }
     
     @IBAction func playButtonTouched(_ sender: Any) {
         
-        if audioPlayer == nil {
-            startPlaying()
-        } else {
+        if signalGenerator.isPlaying() {
             stopPlaying()
+        } else {
+            startPlaying()
         }
     }
     
@@ -148,88 +237,9 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
         
         playButton.setImage(Button.playOffImg, for: .normal)
         recordButton.isEnabled = false;
- 
-        var audioBuffer: AVAudioPCMBuffer!
-        engine = AVAudioEngine()
-        _ = engine.mainMixerNode
         
-        engine.prepare()
-        do {
-            try engine.start()
-        } catch {
-            print(error)
-        }
-        
-        let audioFilename = getDocumentsDirectory().appendingPathComponent(outputFilename)
-        
-        do {
-            let audioFile = try AVAudioFile(forReading: audioFilename)
-            let format = audioFile.processingFormat
-            
-            audioPlayer = AVAudioPlayerNode()
-            audioPlayer?.volume = 1.0
-            engine.attach(audioPlayer!)
-            engine.connect(audioPlayer!, to: engine.mainMixerNode, format: format)
-            
-            audioBuffer = AVAudioPCMBuffer(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(audioFile.length))!
- 
-            do {
-                print("read")
-                try audioFile.read(into: audioBuffer)
-            } catch _ {
-                print("error reading audiofile into buffer")
-            }
-
-            let audioBuffer2 = modulate(buffer: audioBuffer)!//bytesToAudioBuffer(array2)
-            audioPlayer?.scheduleBuffer(audioBuffer2, completionHandler: {
-
-                DispatchQueue.main.async {
-                    if self.audioPlayer != nil {
-                        self.stopPlaying()
-                    }
-                }
-            })
-            
-            audioPlayer!.scheduleFile(audioFile, at: nil, completionHandler: nil)
-        } catch {
-            print("could not load file")
-        }
-        
-        engine.mainMixerNode.installTap(onBus: 0, bufferSize: 1024, format: nil) { (buffer, time) in
-            
-            DispatchQueue.main.async {
-                self.processAudioData(buffer: buffer)
-            }
-        }
-        
-        audioPlayer?.play()
+        try? signalGenerator.start()
     }
-    
-    // TODO: frequency modulation 20.000 Hz
-    // TODO: low pass filter after modulation
-    func modulate(buffer: AVAudioPCMBuffer) -> AVAudioPCMBuffer? {
-        
-        guard let floatData = buffer.floatChannelData else { return buffer }
-
-        let modulatedBuffer = AVAudioPCMBuffer(pcmFormat: buffer.format,
-                                                frameCapacity: buffer.frameCapacity)
-
-        let length: AVAudioFrameCount = buffer.frameLength
-        let channelCount = Int(buffer.format.channelCount)
-
-        // i is the index in the buffer
-        for i in 0 ..< Int(length) {
-            // n is the channel
-            for n in 0 ..< channelCount {
-                let sample = floatData[n][i] * Float(5.0 * sin(0.6 * Float(i)))
-                modulatedBuffer?.floatChannelData?[n][i] = sample
-            }
-        }
-        modulatedBuffer?.frameLength = length
-
-        return modulatedBuffer
-    }
-
 
     func stopPlaying() {
         
@@ -239,15 +249,7 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
             self.spectrumLayer.removeFromSuperlayer()
         }
         
-        engine.detach(audioPlayer!)
-        
-        audioPlayer?.stop()
-        audioPlayer = nil
-        
-        let inputNode = engine.inputNode
-        let bus = 0
-        inputNode.removeTap(onBus: bus)
-        self.engine.stop()
+        signalGenerator.stop()
     }
     
     func startRecording() {
@@ -256,7 +258,7 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
         
         let inputNode = engine.inputNode
         let bus = 0
-        inputNode.installTap(onBus: bus, bufferSize: 2048, format: inputNode.inputFormat(forBus: bus)) {
+        inputNode.installTap(onBus: bus, bufferSize: 1024, format: inputNode.inputFormat(forBus: bus)) {
             (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
             
             DispatchQueue.main.async {
@@ -269,22 +271,47 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
         let audioFilename = getDocumentsDirectory().appendingPathComponent(outputFilename)
         
         let settings = [
-            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-            AVSampleRateKey: 48000,
+            AVFormatIDKey: Int(kAudioFormatAppleIMA4),
+            AVSampleRateKey: 44100,
             AVNumberOfChannelsKey: 1,
             AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
         ]
         
-        do {
-            audioRecorder = try AVAudioRecorder(url: audioFilename, settings: settings)
-            audioRecorder?.delegate = self
-            audioRecorder?.record()
-            
-            self.playButton.isEnabled = false
-            recordButton.setImage(Button.micOffImg, for: .normal)
-        } catch {
-            stopRecording(success: false)
+//        let session = AVAudioSession.sharedInstance()
+//        try! session.setCategory(AVAudioSession.Category.playAndRecord, options: .defaultToSpeaker)
+
+        let asset = AVAsset(url: audioFilename.absoluteURL)
+        
+
+        writer = try? AVAssetWriter(url: audioFilename.absoluteURL, fileType: AVFileType.caf)
+        
+        let audioOutputSettings: [String: Any] = [
+                        AVNumberOfChannelsKey: 1,
+                        AVFormatIDKey: kAudioFormatMPEG4AAC,
+                        AVSampleRateKey: 44100,
+                        AVEncoderBitRateKey: 128000
+                    ]
+        
+        let audioInput = AVAssetWriterInput(mediaType: .audio, outputSettings: audioOutputSettings)
+        audioInput.expectsMediaDataInRealTime = true
+        writer?.add(audioInput)
+
+        if writer?.status == AVAssetWriter.Status.unknown {
+            writer?.startWriting()
+            writer?.startSession(atSourceTime: .zero)
         }
+
+        
+//        do {
+//            audioRecorder = try AVAudioRecorder(url: audioFilename, settings: settings)
+//            audioRecorder?.delegate = self
+//            audioRecorder?.record()
+//            
+//            self.playButton.isEnabled = false
+//            recordButton.setImage(Button.micOffImg, for: .normal)
+//        } catch {
+//            stopRecording(success: false)
+//        }
     }
     
     func stopRecording(success: Bool) {
@@ -295,13 +322,21 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, AVAudioRecorderDe
             self.spectrumLayer.removeFromSuperlayer()
         }
         
-        audioRecorder?.stop()
-        audioRecorder = nil
+        let audioFilename = getDocumentsDirectory().appendingPathComponent(outputFilename)
+        let asset = AVAsset(url: audioFilename.absoluteURL)
         
-        let inputNode = engine.inputNode
-        let bus = 0
-        inputNode.removeTap(onBus: bus)
-        self.engine.stop()
+        writer?.endSession(atSourceTime: asset.duration)
+        writer?.finishWriting {
+            print("finish writing")
+        }
+        
+//        audioRecorder?.stop()
+//        audioRecorder = nil
+//
+//        let inputNode = engine.inputNode
+//        let bus = 0
+//        inputNode.removeTap(onBus: bus)
+//        self.engine.stop()
         
     }
     
