@@ -27,6 +27,14 @@
 		65A8405825611EA50072531F /* subliminalPlayerTeaser.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8405625611EA50072531F /* subliminalPlayerTeaser.png */; };
 		65A8405B25612D1B0072531F /* PlayerMakerChoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A8405A25612D1B0072531F /* PlayerMakerChoiceViewController.swift */; };
 		65A8405E2561325E0072531F /* SubliminalPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A8405D2561325E0072531F /* SubliminalPlayerViewController.swift */; };
+		65A84062256169840072531F /* TransparentNavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A84061256169840072531F /* TransparentNavBar.swift */; };
+		65A8406525616CEF0072531F /* subliminalPlayerBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8406425616CEF0072531F /* subliminalPlayerBackground.png */; };
+		65A84068256172590072531F /* RoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A84067256172590072531F /* RoundedView.swift */; };
+		65A8406F25618DBB0072531F /* moonIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8406A25618DBA0072531F /* moonIcon.png */; };
+		65A8407025618DBB0072531F /* sunIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8406B25618DBA0072531F /* sunIcon.png */; };
+		65A8407125618DBB0072531F /* noneIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8406C25618DBB0072531F /* noneIcon.png */; };
+		65A8407225618DBB0072531F /* chairIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8406D25618DBB0072531F /* chairIcon.png */; };
+		65A8407325618DBB0072531F /* bedIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8406E25618DBB0072531F /* bedIcon.png */; };
 		65CA93522558533200AE7A9F /* ViewController+SignalProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CA93512558533200AE7A9F /* ViewController+SignalProvider.swift */; };
 		65CA93562558534400AE7A9F /* AudioUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CA93542558534300AE7A9F /* AudioUtilities.swift */; };
 		65CA93572558534400AE7A9F /* EqualizationFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CA93552558534300AE7A9F /* EqualizationFilters.swift */; };
@@ -64,6 +72,14 @@
 		65A8405625611EA50072531F /* subliminalPlayerTeaser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = subliminalPlayerTeaser.png; sourceTree = "<group>"; };
 		65A8405A25612D1B0072531F /* PlayerMakerChoiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerMakerChoiceViewController.swift; sourceTree = "<group>"; };
 		65A8405D2561325E0072531F /* SubliminalPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubliminalPlayerViewController.swift; sourceTree = "<group>"; };
+		65A84061256169840072531F /* TransparentNavBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransparentNavBar.swift; sourceTree = "<group>"; };
+		65A8406425616CEF0072531F /* subliminalPlayerBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = subliminalPlayerBackground.png; sourceTree = "<group>"; };
+		65A84067256172590072531F /* RoundedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedView.swift; sourceTree = "<group>"; };
+		65A8406A25618DBA0072531F /* moonIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = moonIcon.png; sourceTree = "<group>"; };
+		65A8406B25618DBA0072531F /* sunIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sunIcon.png; sourceTree = "<group>"; };
+		65A8406C25618DBB0072531F /* noneIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noneIcon.png; sourceTree = "<group>"; };
+		65A8406D25618DBB0072531F /* chairIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chairIcon.png; sourceTree = "<group>"; };
+		65A8406E25618DBB0072531F /* bedIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bedIcon.png; sourceTree = "<group>"; };
 		65CA93512558533200AE7A9F /* ViewController+SignalProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ViewController+SignalProvider.swift"; sourceTree = "<group>"; };
 		65CA93542558534300AE7A9F /* AudioUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioUtilities.swift; sourceTree = "<group>"; };
 		65CA93552558534300AE7A9F /* EqualizationFilters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EqualizationFilters.swift; sourceTree = "<group>"; };
@@ -146,6 +162,8 @@
 				6558D31624684935004E8660 /* Info.plist */,
 				6558D31C24684C01004E8660 /* affirmation_01.mp3 */,
 				6536D4B32545924300FBA11E /* SignalProcessing.swift */,
+				65A84061256169840072531F /* TransparentNavBar.swift */,
+				65A84067256172590072531F /* RoundedView.swift */,
 			);
 			path = SilentSubliminals;
 			sourceTree = "<group>";
@@ -153,6 +171,11 @@
 		65699FF9253C36C5000E7F95 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				65A8406E25618DBB0072531F /* bedIcon.png */,
+				65A8406D25618DBB0072531F /* chairIcon.png */,
+				65A8406A25618DBA0072531F /* moonIcon.png */,
+				65A8406C25618DBB0072531F /* noneIcon.png */,
+				65A8406B25618DBA0072531F /* sunIcon.png */,
 				6569A002253C3EFD000E7F95 /* playButton.png */,
 				6569A007253C43A7000E7F95 /* plusButton.png */,
 				65F0727E2544615D004C8BA3 /* startRecordingButton.png */,
@@ -170,6 +193,7 @@
 		65699FFA253C36CF000E7F95 /* background */ = {
 			isa = PBXGroup;
 			children = (
+				65A8406425616CEF0072531F /* subliminalPlayerBackground.png */,
 				65699FFB253C3706000E7F95 /* subliminalMakerBackground.png */,
 			);
 			path = background;
@@ -237,11 +261,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				65F072822544615D004C8BA3 /* stopButton.png in Resources */,
+				65A8406F25618DBB0072531F /* moonIcon.png in Resources */,
 				65F072832544615D004C8BA3 /* stopRecordingButton.png in Resources */,
+				65A8407225618DBB0072531F /* chairIcon.png in Resources */,
 				65699FFE253C392B000E7F95 /* help-circle.png in Resources */,
 				6569A000253C3A15000E7F95 /* arrow-left.png in Resources */,
 				65F072812544615D004C8BA3 /* startRecordingButton.png in Resources */,
+				65A8407025618DBB0072531F /* sunIcon.png in Resources */,
 				65699FFC253C3706000E7F95 /* subliminalMakerBackground.png in Resources */,
+				65A8406525616CEF0072531F /* subliminalPlayerBackground.png in Resources */,
+				65A8407325618DBB0072531F /* bedIcon.png in Resources */,
 				6569A008253C43A7000E7F95 /* plusButton.png in Resources */,
 				6558D31D24684C01004E8660 /* affirmation_01.mp3 in Resources */,
 				6558D31524684935004E8660 /* LaunchScreen.storyboard in Resources */,
@@ -249,6 +278,7 @@
 				6569A004253C3EFD000E7F95 /* playButton.png in Resources */,
 				65A8405725611EA50072531F /* subliminalMakerTeaser.png in Resources */,
 				65A8405825611EA50072531F /* subliminalPlayerTeaser.png in Resources */,
+				65A8407125618DBB0072531F /* noneIcon.png in Resources */,
 				6558D31024684934004E8660 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -304,9 +334,11 @@
 			files = (
 				65A8405B25612D1B0072531F /* PlayerMakerChoiceViewController.swift in Sources */,
 				65CA93522558533200AE7A9F /* ViewController+SignalProvider.swift in Sources */,
+				65A84068256172590072531F /* RoundedView.swift in Sources */,
 				6569A006253C413B000E7F95 /* ShadowView.swift in Sources */,
 				6558D30D24684934004E8660 /* SubliminalMakerViewController.swift in Sources */,
 				6536D4B42545924300FBA11E /* SignalProcessing.swift in Sources */,
+				65A84062256169840072531F /* TransparentNavBar.swift in Sources */,
 				6558D30924684934004E8660 /* AppDelegate.swift in Sources */,
 				65CA93562558534400AE7A9F /* AudioUtilities.swift in Sources */,
 				65CA93572558534400AE7A9F /* EqualizationFilters.swift in Sources */,

@@ -67,10 +67,6 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.isTranslucent = true
-        
         let backbutton = UIButton(type: .custom)
         backbutton.setImage(UIImage(named: "arrow-left.png"), for: [.normal]) 
         backbutton.addTarget(self, action: #selector(self.close(_:)), for: .touchUpInside)

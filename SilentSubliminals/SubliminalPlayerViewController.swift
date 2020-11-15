@@ -13,14 +13,12 @@ class SubliminalPlayerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.isTranslucent = true
-        
         let backbutton = UIButton(type: .custom)
         backbutton.setImage(UIImage(named: "arrow-left.png"), for: [.normal])
         backbutton.addTarget(self, action: #selector(self.close(_:)), for: .touchUpInside)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backbutton)
+        
+        //view.layer.contents = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.8470588235).cgImage
     }
     
 
