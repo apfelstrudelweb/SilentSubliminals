@@ -13,10 +13,6 @@ import Accelerate
 import PureLayout
 
 //let sampleCount = 512
-let outputFilename: String = "affirmation.caf"
-let outputFilenameSilent: String = "affirmationSilent.caf"
-
-let modulationFrequency: Double = 20000
 
 let cornerRadius: CGFloat = 15
 let alpha: CGFloat = 0.85
@@ -167,9 +163,14 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
                 for i in 0..<Int(renderBuffer.frameLength) {
                     let val: Double =  Double(1) * sin(Double(2 * modulationFrequency) * Double(index) * Double.pi / Double(renderBuffer.format.sampleRate))
                     let sourceData: Double = Double((readBuffer.floatChannelData?.pointee[i])!)
+                    //let val: Double = Double(10) * sin(Double(2) * Double.pi * Double(modulationFrequency + Double(0.25 * sourceData)) * Double(index)  / Double(renderBuffer.format.sampleRate))
                     let targetData: Double = val * sourceData
                     renderBuffer.floatChannelData?.pointee[i] = Float(targetData)
                     index += 1
+                }
+                
+                if index == Int(file.fileFormat.sampleRate) {
+                    index = 0
                 }
 
                 // Write the audio
@@ -186,6 +187,7 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
         player.stop()
         engine.stop()
     }
+
     
     func initializeAudioEngine() {
         
@@ -281,7 +283,6 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
                 print("error reading audiofile into buffer")
             }
             
-            //let audioBuffer2 = modulate(buffer: audioBuffer)!//bytesToAudioBuffer(array2)
             audioPlayer?.scheduleBuffer(audioBuffer, completionHandler: {
                 
                 DispatchQueue.main.async {
@@ -295,37 +296,7 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
         } catch {
             print("could not load file")
         }
-        
-        //        engine.mainMixerNode.installTap(onBus: 0, bufferSize: 1024, format: nil) { (buffer, time) in
-        //
-        //            DispatchQueue.main.async {
-        //                self.processAudioData(buffer: buffer)
-        //            }
-        //        }
-        
-        let outputFile: AVAudioFile
-        
-        
-        let settings = self.engine.mainMixerNode.outputFormat(forBus: 0).settings
-        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        let outputURL = documentsURL.appendingPathComponent("affirmationSilent.caf")
-        try! outputFile = AVAudioFile(forWriting: outputURL, settings: settings, commonFormat: .pcmFormatFloat32, interleaved: false)
-        
-        engine.mainMixerNode.installTap(onBus: 0, bufferSize: 4096, format: self.engine.mainMixerNode.outputFormat(forBus: 0)) { (buffer, time) -> Void in
-            
-            DispatchQueue.main.async {
-                self.processAudioData(buffer: buffer)
-            }
-            
-            do {
-                try outputFile.write(from: buffer)
-                //self.processAudioData(buffer: buffer)
-            } catch let error as NSError {
-                NSLog("Error writing %@", error.localizedDescription)
-            }
-        }
-        
-        
+
         audioPlayer?.play()
     }
     
@@ -508,12 +479,6 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
         stopPlaying()
     }
     
-    
-    func getDocumentsDirectory() -> URL {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let documentsDirectory = paths[0]
-        return documentsDirectory
-    }
     
     @IBAction func close(_ sender: UIButton) {
         self.navigationController?.dismiss(animated: true, completion: nil)

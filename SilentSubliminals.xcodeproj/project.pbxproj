@@ -17,6 +17,8 @@
 		6558D31524684935004E8660 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6558D31324684935004E8660 /* LaunchScreen.storyboard */; };
 		6563E03525763B90000E261B /* EqualizationFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6563E03425763B90000E261B /* EqualizationFilters.swift */; };
 		6563E03725763C6C000E261B /* SignalProcessing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6563E03625763C6C000E261B /* SignalProcessing.swift */; };
+		6563E03925763DFF000E261B /* AVAudioBufferConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6563E03825763DFF000E261B /* AVAudioBufferConvenience.swift */; };
+		6563E03B257691CE000E261B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6563E03A257691CE000E261B /* Constants.swift */; };
 		65699FFC253C3706000E7F95 /* subliminalMakerBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 65699FFB253C3706000E7F95 /* subliminalMakerBackground.png */; };
 		65699FFE253C392B000E7F95 /* help-circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 65699FFD253C392B000E7F95 /* help-circle.png */; };
 		6569A000253C3A15000E7F95 /* arrow-left.png in Resources */ = {isa = PBXBuildFile; fileRef = 65699FFF253C3A15000E7F95 /* arrow-left.png */; };
@@ -57,6 +59,8 @@
 		6558D31624684935004E8660 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6563E03425763B90000E261B /* EqualizationFilters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EqualizationFilters.swift; sourceTree = "<group>"; };
 		6563E03625763C6C000E261B /* SignalProcessing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignalProcessing.swift; sourceTree = "<group>"; };
+		6563E03825763DFF000E261B /* AVAudioBufferConvenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVAudioBufferConvenience.swift; sourceTree = "<group>"; };
+		6563E03A257691CE000E261B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		65699FFB253C3706000E7F95 /* subliminalMakerBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = subliminalMakerBackground.png; sourceTree = "<group>"; };
 		65699FFD253C392B000E7F95 /* help-circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "help-circle.png"; sourceTree = "<group>"; };
 		65699FFF253C3A15000E7F95 /* arrow-left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-left.png"; sourceTree = "<group>"; };
@@ -143,6 +147,7 @@
 				65699FF9253C36C5000E7F95 /* images */,
 				6558D30824684934004E8660 /* AppDelegate.swift */,
 				6558D30A24684934004E8660 /* SceneDelegate.swift */,
+				6563E03A257691CE000E261B /* Constants.swift */,
 				6563E03425763B90000E261B /* EqualizationFilters.swift */,
 				65A8405A25612D1B0072531F /* PlayerMakerChoiceViewController.swift */,
 				6558D30C24684934004E8660 /* SubliminalMakerViewController.swift */,
@@ -158,6 +163,7 @@
 				6558D31624684935004E8660 /* Info.plist */,
 				65A84061256169840072531F /* TransparentNavBar.swift */,
 				65A84067256172590072531F /* RoundedView.swift */,
+				6563E03825763DFF000E261B /* AVAudioBufferConvenience.swift */,
 			);
 			path = SilentSubliminals;
 			sourceTree = "<group>";
@@ -326,9 +332,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				65A8405B25612D1B0072531F /* PlayerMakerChoiceViewController.swift in Sources */,
+				6563E03925763DFF000E261B /* AVAudioBufferConvenience.swift in Sources */,
 				65A84068256172590072531F /* RoundedView.swift in Sources */,
 				6563E03725763C6C000E261B /* SignalProcessing.swift in Sources */,
 				6569A006253C413B000E7F95 /* ShadowView.swift in Sources */,
+				6563E03B257691CE000E261B /* Constants.swift in Sources */,
 				6563E03525763B90000E261B /* EqualizationFilters.swift in Sources */,
 				6558D30D24684934004E8660 /* SubliminalMakerViewController.swift in Sources */,
 				65A84062256169840072531F /* TransparentNavBar.swift in Sources */,
