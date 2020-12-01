@@ -10,6 +10,8 @@ import UIKit
 
 class RoundedView: UIView {
     
+    var imageView: UIImageView?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -18,7 +20,7 @@ class RoundedView: UIView {
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
-        self.addBlurEffect(frame: self.globalFrame!)
+        self.addBlurEffect(imageView: imageView ?? UIImageView(), frame: self.globalFrame!)
     }
     
     override func layoutSubviews() {
@@ -35,8 +37,7 @@ extension UIView {
         return self.superview?.convert(self.frame, to: rootView)
     }
     
-    func addBlurEffect(frame: CGRect) {
-        let imageView: UIImageView = self.superview?.superview?.superview?.subviews.filter{$0 is UIImageView}.first as! UIImageView
+    func addBlurEffect(imageView: UIImageView, frame: CGRect) {
         imageView.makeBlurImage(targetImageView:imageView, frame: frame)
     }
 }
@@ -46,7 +47,7 @@ extension UIImageView {
     func makeBlurImage(targetImageView:UIImageView?, frame: CGRect) {
         let blurEffect = UIBlurEffect(style: .light)
         //let blurEffectView = PSORoundedVisualEffectView(effect: blurEffect)
-        let blurEffectView = CustomIntensityVisualEffectView(effect: blurEffect, intensity: 0.5)
+        let blurEffectView = CustomIntensityVisualEffectView(effect: blurEffect, intensity: 0.2)
         blurEffectView.frame = frame
         blurEffectView.layer.cornerRadius = cornerRadius
         blurEffectView.alpha = 1

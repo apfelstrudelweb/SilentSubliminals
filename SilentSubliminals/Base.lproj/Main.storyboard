@@ -513,6 +513,9 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="MCu-q1-tlA">
                                                         <rect key="frame" x="34" y="144.99999999999994" width="290" height="31"/>
                                                         <color key="tintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <connections>
+                                                            <action selector="volumeSliderChanged:" destination="Wlk-fN-YWe" eventType="valueChanged" id="nML-Cs-o0J"/>
+                                                        </connections>
                                                     </slider>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jaw Relaxation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eI0-MH-Rsd">
                                                         <rect key="frame" x="118.33333333333333" y="112" width="137.33333333333337" height="24"/>
@@ -559,6 +562,9 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                         </constraints>
                                                         <color key="tintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <state key="normal" image="earSilentIcon"/>
+                                                        <connections>
+                                                            <action selector="silentButtonTouched:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="d7m-Pu-OjA"/>
+                                                        </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DEe-tW-fzs">
                                                         <rect key="frame" x="322" y="104" width="40" height="40"/>
@@ -668,8 +674,13 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                     </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="backgroundImageView" destination="KIc-QH-czb" id="Yh7-UH-0bm"/>
                         <outlet property="graphView" destination="o5j-AJ-IcV" id="td8-3C-e4d"/>
                         <outlet property="playButton" destination="SKF-7G-fNA" id="NYA-ku-FJY"/>
+                        <outlet property="playerView" destination="wux-KS-pjg" id="uDz-IZ-zX1"/>
+                        <outlet property="silentButton" destination="rc5-V6-YXt" id="Whp-4d-4SH"/>
+                        <outlet property="soundView" destination="tg5-ND-tqn" id="mkP-QH-NS4"/>
+                        <outlet property="volumeSlider" destination="MCu-q1-tlA" id="0cs-Yb-0pO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XWw-Sa-g8I" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

@@ -12,10 +12,11 @@ import AVFoundation
 import Accelerate
 import PureLayout
 
-let sampleCount = 1024
-let outputFilename: String = "affirmation.fus"
+//let sampleCount = 512
+let outputFilename: String = "affirmation.caf"
+let outputFilenameSilent: String = "affirmationSilent.caf"
 
-let modulationFrequency: Float = 18000
+let modulationFrequency: Double = 20000
 
 let cornerRadius: CGFloat = 15
 let alpha: CGFloat = 0.85
@@ -63,10 +64,9 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
     
     let spectrumLayer = CAShapeLayer.init()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         let backbutton = UIButton(type: .custom)
         backbutton.setImage(UIImage(named: "arrow-left.png"), for: [.normal]) 
         backbutton.addTarget(self, action: #selector(self.close(_:)), for: .touchUpInside)
@@ -97,9 +97,94 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
         
         checkForPermission()
         
-        initializeAudioEngine()
+        //initializeAudioEngine()
         
         fftSetup = vDSP_DFT_zop_CreateSetup(nil, 1024, vDSP_DFT_Direction.FORWARD)
+    }
+
+    func createSilentSubliminalFile() {
+
+        let file = try! AVAudioFile(forReading: getDocumentsDirectory().appendingPathComponent(outputFilename))
+        let engine = AVAudioEngine()
+        let player = AVAudioPlayerNode()
+        
+        engine.attach(player)
+ 
+        //engine.connect(player, to:engine.mainMixerNode, format: AVAudioFormat.init(standardFormatWithSampleRate: sampleRate, channels: 1))
+        let busFormat = AVAudioFormat(standardFormatWithSampleRate: file.fileFormat.sampleRate, channels: file.fileFormat.channelCount)
+        
+        engine.disconnectNodeInput(engine.outputNode, bus: 0)
+        engine.connect(engine.mainMixerNode, to: engine.outputNode, format: busFormat)
+        
+        engine.connect(player, to:engine.mainMixerNode, format: busFormat)
+        
+        print(engine)
+        
+        // Run the engine in manual rendering mode using chunks of 512 frames
+        let renderSize: AVAudioFrameCount = 512
+        
+        // Use the file's processing format as the rendering format
+        let renderFormat = AVAudioFormat(commonFormat: file.processingFormat.commonFormat, sampleRate: file.processingFormat.sampleRate, channels: file.processingFormat.channelCount, interleaved: true)!
+        let renderBuffer = AVAudioPCMBuffer(pcmFormat: renderFormat, frameCapacity: renderSize)!
+        
+        try! engine.enableManualRenderingMode(.offline, format: renderFormat, maximumFrameCount: renderBuffer.frameCapacity)
+        
+        try! engine.start()
+        player.play()
+        
+        // Read using a buffer sized to produce `renderSize` frames of output
+        let readBuffer = AVAudioPCMBuffer(pcmFormat: file.processingFormat, frameCapacity: renderSize)!
+        
+        var settings: [String : Any] = [:]
+        
+        settings[AVFormatIDKey] = kAudioFormatAppleLossless
+        settings[AVAudioFileTypeKey] = kAudioFileCAFType
+        settings[AVSampleRateKey] = readBuffer.format.sampleRate
+        settings[AVNumberOfChannelsKey] = 1
+        settings[AVLinearPCMIsFloatKey] = (readBuffer.format.commonFormat == .pcmFormatInt32)
+        settings[AVSampleRateConverterAudioQualityKey] = AVAudioQuality.max
+        settings[AVLinearPCMBitDepthKey] = 32
+        settings[AVEncoderAudioQualityKey] = AVAudioQuality.max
+        
+        // The render format is also the output format
+        let output = try! AVAudioFile(forWriting: getDocumentsDirectory().appendingPathComponent(outputFilenameSilent), settings: settings, commonFormat: renderFormat.commonFormat, interleaved: renderFormat.isInterleaved)
+
+        var index: Int = 0;
+        // Process the file
+        while true {
+            do {
+                // Processing is finished if all frames have been read
+                if file.framePosition == file.length {
+                    break
+                }
+                
+                try file.read(into: readBuffer)
+                player.scheduleBuffer(readBuffer, completionHandler: nil)
+                
+                let result = try engine.renderOffline(readBuffer.frameLength, to: renderBuffer)
+
+                // Process the audio in `renderBuffer` here
+                for i in 0..<Int(renderBuffer.frameLength) {
+                    let val: Double =  Double(1) * sin(Double(2 * modulationFrequency) * Double(index) * Double.pi / Double(renderBuffer.format.sampleRate))
+                    let sourceData: Double = Double((readBuffer.floatChannelData?.pointee[i])!)
+                    let targetData: Double = val * sourceData
+                    renderBuffer.floatChannelData?.pointee[i] = Float(targetData)
+                    index += 1
+                }
+
+                // Write the audio
+                try output.write(from: renderBuffer)
+                if result != .success {
+                    break
+                }
+            }
+            catch {
+                break
+            }
+        }
+        
+        player.stop()
+        engine.stop()
     }
     
     func initializeAudioEngine() {
@@ -156,6 +241,15 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
         playButton.setImage(Button.playOffImg, for: .normal)
         recordButton.isEnabled = false;
         
+        do {
+            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord)
+            let ioBufferDuration = 128.0 / 44100.0
+            try AVAudioSession.sharedInstance().setPreferredIOBufferDuration(ioBufferDuration)
+        } catch {
+            assertionFailure("AVAudioSession setup error: \(error)")
+        }
+        
         var audioBuffer: AVAudioPCMBuffer!
         engine = AVAudioEngine()
         _ = engine.mainMixerNode
@@ -202,41 +296,38 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
             print("could not load file")
         }
         
-        engine.mainMixerNode.installTap(onBus: 0, bufferSize: 1024, format: nil) { (buffer, time) in
+        //        engine.mainMixerNode.installTap(onBus: 0, bufferSize: 1024, format: nil) { (buffer, time) in
+        //
+        //            DispatchQueue.main.async {
+        //                self.processAudioData(buffer: buffer)
+        //            }
+        //        }
+        
+        let outputFile: AVAudioFile
+        
+        
+        let settings = self.engine.mainMixerNode.outputFormat(forBus: 0).settings
+        let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let outputURL = documentsURL.appendingPathComponent("affirmationSilent.caf")
+        try! outputFile = AVAudioFile(forWriting: outputURL, settings: settings, commonFormat: .pcmFormatFloat32, interleaved: false)
+        
+        engine.mainMixerNode.installTap(onBus: 0, bufferSize: 4096, format: self.engine.mainMixerNode.outputFormat(forBus: 0)) { (buffer, time) -> Void in
             
             DispatchQueue.main.async {
                 self.processAudioData(buffer: buffer)
             }
+            
+            do {
+                try outputFile.write(from: buffer)
+                //self.processAudioData(buffer: buffer)
+            } catch let error as NSError {
+                NSLog("Error writing %@", error.localizedDescription)
+            }
         }
+        
         
         audioPlayer?.play()
     }
-    
-//    // TODO: frequency modulation 20.000 Hz
-//    // TODO: low pass filter after modulation
-//    func modulate(buffer: AVAudioPCMBuffer) -> AVAudioPCMBuffer? {
-//
-//        guard let floatData = buffer.floatChannelData else { return buffer }
-//
-//        let modulatedBuffer = AVAudioPCMBuffer(pcmFormat: buffer.format,
-//                                               frameCapacity: buffer.frameCapacity)
-//
-//        let length: AVAudioFrameCount = buffer.frameLength
-//        let channelCount = Int(buffer.format.channelCount)
-//
-//        // i is the index in the buffer
-//        for i in 0 ..< Int(length) {
-//            // n is the channel
-//            for n in 0 ..< channelCount {
-//                let sample = floatData[n][i] * Float(5.0 * sin(0.6 * Float(i)))
-//                modulatedBuffer?.floatChannelData?[n][i] = sample
-//            }
-//        }
-//        modulatedBuffer?.frameLength = length
-//
-//        return modulatedBuffer
-//    }
-    
     
     func stopPlaying() {
         
@@ -250,6 +341,7 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
         
         audioPlayer?.stop()
         audioPlayer = nil
+        isPlaying = false
         
         let inputNode = engine.inputNode
         let bus = 0
@@ -281,7 +373,7 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
             AVNumberOfChannelsKey: 1,
             AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
         ]
-           
+        
         do {
             audioRecorder = try AVAudioRecorder(url: audioFilename, settings: settings)
             audioRecorder?.delegate = self
@@ -306,15 +398,18 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
         audioRecorder = nil
         
         let inputNode = engine.inputNode
-        let bus = 0
-        inputNode.removeTap(onBus: bus)
+        inputNode.removeTap(onBus: 0)
         self.engine.stop()
         
+        let audioQueue: DispatchQueue = DispatchQueue(label: "FMSynthesizerQueue", attributes: [])
+        audioQueue.async {
+            self.createSilentSubliminalFile()
+        }
     }
     
-    var prevRMSValue : Float = 0.3
-    
+
     func processAudioData(buffer: AVAudioPCMBuffer){
+
         guard let channelData = buffer.floatChannelData?[0] else {return}
         let frames = buffer.frameLength
         

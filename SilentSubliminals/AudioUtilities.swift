@@ -75,10 +75,12 @@ class AudioUtilities {
         return (naturalTimeScale: track.naturalTimeScale,
                 data: samplesData)
     }
+    
+
 }
 
 class SignalGenerator {
-    private let engine = AVAudioEngine()
+    public let engine = AVAudioEngine()
     
     /// The current page of single-precision audio samples
     private var page = [Float]()
@@ -87,20 +89,28 @@ class SignalGenerator {
     private let signalProvider: SignalProvider
 
     /// The sample rate for the input and output format.
-    let sampleRate: CMTimeScale
+    public var sampleRate: CMTimeScale
     
     private lazy var format = AVAudioFormat(standardFormatWithSampleRate: Double(sampleRate),
                                             channels: 1)
+    var index: Int = 0
+    var isSilent: Bool = false
     
-    private lazy var srcNode = AVAudioSourceNode { _, _, frameCount, audioBufferList -> OSStatus in
+    public lazy var srcNode = AVAudioSourceNode { _, _, frameCount, audioBufferList -> OSStatus in
         let ablPointer = UnsafeMutableAudioBufferListPointer(audioBufferList)
+        
+        
+        
         for frame in 0..<Int(frameCount) {
             let value = self.getSignalElement()
-
+            
+            
             for buffer in ablPointer {
                 let buf: UnsafeMutableBufferPointer<Float> = UnsafeMutableBufferPointer(buffer)
+                //buf[frame] = self.isSilent == true ? 10 * sinf(20000 * 2 * .pi * Float(self.index) / Float(CMTimeScale(self.sampleRate))) : value
                 buf[frame] = value
             }
+            //self.index += 1
         }
         return noErr
     }
@@ -108,7 +118,7 @@ class SignalGenerator {
     init(signalProvider: SignalProvider, sampleRate: CMTimeScale) {
         self.signalProvider = signalProvider
         self.sampleRate = sampleRate
-        
+
         engine.attach(srcNode)
         
         engine.connect(srcNode,
@@ -120,6 +130,8 @@ class SignalGenerator {
                        format: format)
         
         engine.mainMixerNode.outputVolume = 1.0
+        
+
     }
     
     public func start() throws {

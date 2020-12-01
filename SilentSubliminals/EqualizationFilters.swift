@@ -7,6 +7,8 @@ Enum containing equalization filters.
 
 import Accelerate
 
+let sampleCount = 512
+
 enum EqualizationMode: String, CaseIterable {
     case dctLowPass = "DCT Low-Pass"
     case dctHighPass = "DCT High-Pass"
