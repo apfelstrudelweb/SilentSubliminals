@@ -561,7 +561,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                             <constraint firstAttribute="height" constant="40" id="xVI-wj-mYZ"/>
                                                         </constraints>
                                                         <color key="tintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <state key="normal" image="earSilentIcon"/>
+                                                        <state key="normal" image="earLoudIcon"/>
                                                         <connections>
                                                             <action selector="silentButtonTouched:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="d7m-Pu-OjA"/>
                                                         </connections>
@@ -711,7 +711,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
         <image name="arrow-left.png" width="20" height="29"/>
         <image name="bedIcon.png" width="49" height="48"/>
         <image name="chairIcon.png" width="42" height="40"/>
-        <image name="earSilentIcon" width="27" height="40"/>
+        <image name="earLoudIcon" width="55" height="79"/>
         <image name="help-circle.png" width="30" height="30"/>
         <image name="loudspeakerHighSymbol" width="20" height="17"/>
         <image name="loudspeakerLowSymbol" width="10" height="14"/>

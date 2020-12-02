@@ -62,7 +62,7 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         let backbutton = UIButton(type: .custom)
         backbutton.setImage(UIImage(named: "arrow-left.png"), for: [.normal]) 
         backbutton.addTarget(self, action: #selector(self.close(_:)), for: .touchUpInside)
@@ -96,16 +96,25 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
         //initializeAudioEngine()
         
         fftSetup = vDSP_DFT_zop_CreateSetup(nil, 1024, vDSP_DFT_Direction.FORWARD)
+        
+        do {
+            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord)
+            let ioBufferDuration = 128.0 / 44100.0
+            try AVAudioSession.sharedInstance().setPreferredIOBufferDuration(ioBufferDuration)
+        } catch {
+            assertionFailure("AVAudioSession setup error: \(error)")
+        }
     }
-
+    
     func createSilentSubliminalFile() {
-
+        
         let file = try! AVAudioFile(forReading: getDocumentsDirectory().appendingPathComponent(outputFilename))
         let engine = AVAudioEngine()
         let player = AVAudioPlayerNode()
         
         engine.attach(player)
- 
+        
         //engine.connect(player, to:engine.mainMixerNode, format: AVAudioFormat.init(standardFormatWithSampleRate: sampleRate, channels: 1))
         let busFormat = AVAudioFormat(standardFormatWithSampleRate: file.fileFormat.sampleRate, channels: file.fileFormat.channelCount)
         
@@ -144,7 +153,7 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
         
         // The render format is also the output format
         let output = try! AVAudioFile(forWriting: getDocumentsDirectory().appendingPathComponent(outputFilenameSilent), settings: settings, commonFormat: renderFormat.commonFormat, interleaved: renderFormat.isInterleaved)
-
+        
         var index: Int = 0;
         // Process the file
         while true {
@@ -158,7 +167,7 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
                 player.scheduleBuffer(readBuffer, completionHandler: nil)
                 
                 let result = try engine.renderOffline(readBuffer.frameLength, to: renderBuffer)
-
+                
                 // Process the audio in `renderBuffer` here
                 for i in 0..<Int(renderBuffer.frameLength) {
                     let val: Double =  Double(1) * sin(Double(2 * modulationFrequency) * Double(index) * Double.pi / Double(renderBuffer.format.sampleRate))
@@ -172,7 +181,7 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
                 if index == Int(file.fileFormat.sampleRate) {
                     index = 0
                 }
-
+                
                 // Write the audio
                 try output.write(from: renderBuffer)
                 if result != .success {
@@ -187,7 +196,7 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
         player.stop()
         engine.stop()
     }
-
+    
     
     func initializeAudioEngine() {
         
@@ -252,9 +261,20 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
             assertionFailure("AVAudioSession setup error: \(error)")
         }
         
+        
         var audioBuffer: AVAudioPCMBuffer!
         engine = AVAudioEngine()
         _ = engine.mainMixerNode
+        
+        let inputNode = engine.inputNode
+        let bus = 0
+        inputNode.installTap(onBus: bus, bufferSize: 1024, format: inputNode.inputFormat(forBus: bus)) {
+            (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
+            
+            DispatchQueue.main.async {
+                self.processAudioData(buffer: buffer)
+            }
+        }
         
         engine.prepare()
         do {
@@ -296,7 +316,7 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
         } catch {
             print("could not load file")
         }
-
+        
         audioPlayer?.play()
     }
     
@@ -378,9 +398,9 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
         }
     }
     
-
+    
     func processAudioData(buffer: AVAudioPCMBuffer){
-
+        
         guard let channelData = buffer.floatChannelData?[0] else {return}
         let frames = buffer.frameLength
         
