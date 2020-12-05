@@ -23,12 +23,7 @@ class SubliminalPlayerViewController: UIViewController {
     @IBOutlet weak var playerView: RoundedView!
     @IBOutlet weak var soundView: RoundedView!
     @IBOutlet weak var volumeSlider: UISlider!
-    
-    //    var audioPlayer: AVAudioPlayerNode?
-    //    var engine = AVAudioEngine()
-    //    var distortion = AVAudioUnitDistortion()
-    //    var reverb = AVAudioUnitReverb()
-    //    var audioBuffer = AVAudioPCMBuffer()
+    @IBOutlet weak var volumeView: UIView!
     
     struct AudioFileTypes {
         var filename = ""
@@ -37,7 +32,7 @@ class SubliminalPlayerViewController: UIViewController {
     }
     
     private var audioFiles: Array<AudioFileTypes> = [AudioFileTypes(filename: outputFilename, isSilent: false), AudioFileTypes(filename: outputFilenameSilent, isSilent: true)]
-    //private var audioFiles: Array<AudioFileTypes> = [AudioFileTypes(filename: "test1.caf", isSilent: false), AudioFileTypes(filename: "test2.caf", isSilent: true)]
+
     private var audioEngine: AVAudioEngine = AVAudioEngine()
     private var mixer: AVAudioMixerNode = AVAudioMixerNode()
     private var equalizerLow: AVAudioUnitEQ = AVAudioUnitEQ(numberOfBands: 1)
@@ -46,11 +41,11 @@ class SubliminalPlayerViewController: UIViewController {
     
     var isPlaying: Bool = false
     var isSilent: Bool = false
+    var masterVolume: Float = 0.5
     
     var audioFileBuffer: AVAudioPCMBuffer?
     var audioFrameCount: UInt32?
     
-    var backup = [Float]()
     
     struct Button {
         static var playOnImg = UIImage(named: "playButton.png")
@@ -65,11 +60,8 @@ class SubliminalPlayerViewController: UIViewController {
     let frequencyDomainGraphLayers = [CAShapeLayer(), CAShapeLayer(),
                                       CAShapeLayer(), CAShapeLayer()]
     
-    var dict: NSDictionary!
-    
-    //var audioFilePlayer: AVAudioPlayerNode = AVAudioPlayerNode()
-    
-    
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -87,6 +79,8 @@ class SubliminalPlayerViewController: UIViewController {
         
         playerView.imageView = backgroundImageView
         soundView.imageView = backgroundImageView
+        
+        volumeSlider.value = masterVolume
         
         fftSetup = vDSP_DFT_zop_CreateSetup(nil, 1024, vDSP_DFT_Direction.FORWARD)
         
@@ -168,6 +162,7 @@ class SubliminalPlayerViewController: UIViewController {
         }
     }
     
+    
     func startPlaying() {
         
         playButton.setImage(Button.playOffImg, for: .normal)
@@ -179,19 +174,17 @@ class SubliminalPlayerViewController: UIViewController {
             do {
                 
                 let lowPass = self.equalizerLow.bands[0]
-                lowPass.filterType = .highPass//audioFile.isSilent ? .highPass : .lowPass
-                lowPass.frequency = 20000 //audioFile.isSilent ? 22000 : 400
+                lowPass.filterType = .highPass
+                lowPass.frequency = 20000
                 lowPass.bandwidth = 200
                 lowPass.bypass = false
                 
                 self.audioEngine.attach(self.equalizerLow)
                 self.audioEngine.attach(self.mixer)
-                
-                
+
                 // !important - start the engine *before* setting up the player nodes
                 //try self.audioEngine.start()
-                
-                
+
                 for audioFile in self.audioFiles {
                     //self.audioEngine.stop()
                     // Create and attach the audioPlayer node for this file
@@ -200,8 +193,6 @@ class SubliminalPlayerViewController: UIViewController {
                     
                     let audioFilename = getDocumentsDirectory().appendingPathComponent(audioFile.filename)
                     let avAudioFile = try AVAudioFile(forReading: audioFilename)
-                    
-                    // Notice the output is the mixer in this case
                     let format =  AVAudioFormat(standardFormatWithSampleRate: avAudioFile.fileFormat.sampleRate, channels: avAudioFile.fileFormat.channelCount)
                     
                     audioPlayer.removeTap(onBus: 0)
@@ -212,20 +203,12 @@ class SubliminalPlayerViewController: UIViewController {
                         
                     } else {
                         self.audioEngine.connect(audioPlayer, to: self.mixer, format: format)
-                        audioPlayer.installTap(onBus: 0, bufferSize: 1024, format: format) {
-                            (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
-                            
-                            DispatchQueue.main.async {
-                                self.processAudioData(buffer: buffer)
-                            }
-                        }
-                        
                     }
                     
                     self.audioEngine.connect(self.mixer, to: self.audioEngine.outputNode, format: format)
                     try self.audioEngine.start()
                     
-                    audioPlayer.volume = 0.5 //audioFile.isSilent ? 0 : 0.5
+                    self.switchAndAnalyze(audioFile: audioFile)
   
                     let audioFileBuffer = AVAudioPCMBuffer(pcmFormat: avAudioFile.processingFormat, frameCapacity: AVAudioFrameCount(avAudioFile.length))!
                     try avAudioFile.read(into: audioFileBuffer)
@@ -245,12 +228,11 @@ class SubliminalPlayerViewController: UIViewController {
     func stopPlaying() {
         
         self.playButton.setImage(Button.playOnImg, for: .normal)
-        //        for audioFile in self.audioFiles {
-        //            // Create and attach the audioPlayer node for this file
-        //            let audioPlayer = audioFile.audioPlayer
-        //            audioPlayer.stop()
-        //        }
-        
+            for audioFile in self.audioFiles {
+                let audioPlayer = audioFile.audioPlayer
+                audioPlayer.stop()
+            }
+        self.audioEngine.stop()
     }
     
     @IBAction func silentButtonTouched(_ sender: Any) {
@@ -263,44 +245,104 @@ class SubliminalPlayerViewController: UIViewController {
 
         for audioFile in self.audioFiles {
  
-            let audioPlayer = audioFile.audioPlayer
-            audioPlayer.volume = audioFile.isSilent ? (isSilent ? 1 : 0) : (isSilent ? 0 : 1)
-            
-            let audioFilename = getDocumentsDirectory().appendingPathComponent(audioFile.filename)
-            let avAudioFile = try! AVAudioFile(forReading: audioFilename)
-            let format =  AVAudioFormat(standardFormatWithSampleRate: avAudioFile.fileFormat.sampleRate, channels: avAudioFile.fileFormat.channelCount)
-            
-            audioPlayer.removeTap(onBus: 0)
-            
-            if isSilent && audioFile.isSilent || !isSilent && !audioFile.isSilent {
-                audioPlayer.installTap(onBus: 0, bufferSize: 1024, format: format) {
-                    (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
-                    
-                    DispatchQueue.main.async {
-                        self.processAudioData(buffer: buffer)
-                    }
-                }
-            }
- 
+            self.switchAndAnalyze(audioFile: audioFile)
         }
-        
-        // TODO: change ear symbol
-        
     }
     
+    fileprivate func switchAndAnalyze(audioFile: SubliminalPlayerViewController.AudioFileTypes) {
+        
+        let audioPlayer = audioFile.audioPlayer
+        audioPlayer.volume = audioFile.isSilent ? (isSilent ? masterVolume : 0) : (isSilent ? 0 : masterVolume)
+        
+        let audioFilename = getDocumentsDirectory().appendingPathComponent(audioFile.filename)
+        let avAudioFile = try! AVAudioFile(forReading: audioFilename)
+        let format =  AVAudioFormat(standardFormatWithSampleRate: avAudioFile.fileFormat.sampleRate, channels: avAudioFile.fileFormat.channelCount)
+        
+        audioPlayer.volume = audioFile.isSilent ? (self.isSilent ? self.masterVolume : 0) : (self.isSilent ? 0 : self.masterVolume)
+        audioPlayer.removeTap(onBus: 0)
+        
+        if self.isSilent && audioFile.isSilent || !self.isSilent && !audioFile.isSilent {
+            
+            var index = 0
+            
+            audioPlayer.installTap(onBus: 0, bufferSize: 1024, format: format) {
+                (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
+                
+                DispatchQueue.main.async {
+
+                    self.processAudioData(buffer: buffer)
+                    
+                    if index % 2 == 0 {
+                        
+                        for view in self.volumeView.subviews {
+                            view.removeFromSuperview()
+                        }
+                        let volumeBar = UIView()
+                        volumeBar.backgroundColor = .red
+                        let volume = self.getVolume(from: buffer, bufferSize: 1024)
+                        self.volumeView.addSubview(volumeBar)
+                        volumeBar.autoPinEdge(.left, to: .left, of: self.volumeView)
+                        volumeBar.autoPinEdge(.bottom, to: .bottom, of: self.volumeView)
+                        volumeBar.autoPinEdge(.top, to: .top, of: self.volumeView)
+                        volumeBar.autoSetDimension(.width, toSize: CGFloat(10000 * volume * self.masterVolume))
+                    }
+                    
+                    index += 1
+                    
+                    if index > 100 {
+                        index = 0
+                    }
+                    
+                }
+            }
+        }
+    }
     
     @IBAction func volumeSliderChanged(_ sender: Any) {
         
-        let volume = Float(volumeSlider.value)
+        masterVolume = Float(volumeSlider.value)
         
         for audioFile in self.audioFiles {
             let audioPlayer = audioFile.audioPlayer
-            audioPlayer.volume = audioFile.isSilent ? (isSilent ? volume : 0) : (isSilent ? 0 : volume)
+            audioPlayer.volume = audioFile.isSilent ? (isSilent ? masterVolume : 0) : (isSilent ? 0 : masterVolume)
         }
     }
     
     @IBAction func close(_ sender: UIButton) {
         self.navigationController?.dismiss(animated: true, completion: nil)
+    }
+    
+    private func getVolume(from buffer: AVAudioPCMBuffer, bufferSize: Int) -> Float {
+        guard let channelData = buffer.floatChannelData?[0] else {
+            return 0
+        }
+
+        let channelDataArray = Array(UnsafeBufferPointer(start:channelData, count: bufferSize))
+
+        var outEnvelope = [Float]()
+        var envelopeState:Float = 0
+        let envConstantAtk:Float = 0.16
+        let envConstantDec:Float = 0.003
+
+        for sample in channelDataArray {
+            let rectified = abs(sample)
+
+            if envelopeState < rectified {
+                envelopeState += envConstantAtk * (rectified - envelopeState)
+            } else {
+                envelopeState += envConstantDec * (rectified - envelopeState)
+            }
+            outEnvelope.append(envelopeState)
+        }
+
+        // 0.007 is the low pass filter to prevent
+        // getting the noise entering from the microphone
+        if let maxVolume = outEnvelope.max(),
+            maxVolume > Float(0.015) {
+            return maxVolume
+        } else {
+            return 0.0
+        }
     }
     
     func processAudioData(buffer: AVAudioPCMBuffer){
