@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Oks-ci-etv">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Oks-ci-etv">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -16,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ndb-XF-lc8" userLabel="MakerButton">
-                                <rect key="frame" x="20.666666666666657" y="90.666666666666657" width="372.66666666666674" height="311.33333333333337"/>
+                                <rect key="frame" x="25" y="94.333333333333314" width="364" height="304"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="ndb-XF-lc8" secondAttribute="height" multiplier="91:76" id="TJP-js-Mh7"/>
                                 </constraints>
@@ -32,7 +34,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aeS-iP-u04" userLabel="PlayerButton">
-                                <rect key="frame" x="20.666666666666657" y="503.66666666666663" width="372.66666666666674" height="291.66666666666663"/>
+                                <rect key="frame" x="25" y="507" width="364" height="285"/>
                                 <state key="normal" backgroundImage="subliminalPlayerTeaser.png"/>
                                 <connections>
                                     <segue destination="4ji-Uz-873" kind="presentation" identifier="showPlayerSegue" modalPresentationStyle="fullScreen" modalTransitionStyle="flipHorizontal" id="5ut-E7-bKH"/>
@@ -45,7 +47,8 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="2u7-7J-IQV"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="aeS-iP-u04" firstAttribute="height" secondItem="ndb-XF-lc8" secondAttribute="height" multiplier="0.9375" id="7f4-FF-Ab1"/>
                             <constraint firstItem="nB9-7R-tLa" firstAttribute="centerY" secondItem="aeS-iP-u04" secondAttribute="centerY" multiplier="1.15" id="CwF-dS-wCt"/>
@@ -59,7 +62,6 @@
                             <constraint firstItem="FFQ-IH-XON" firstAttribute="centerY" secondItem="ndb-XF-lc8" secondAttribute="centerY" multiplier="1.4" id="tYm-vn-VbE"/>
                             <constraint firstItem="aeS-iP-u04" firstAttribute="centerX" secondItem="JQl-fF-kjL" secondAttribute="centerX" id="xck-d5-S1c"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="2u7-7J-IQV"/>
                     </view>
                     <navigationItem key="navigationItem" id="Lev-RS-JN9"/>
                     <nil key="simulatedTopBarMetrics"/>
@@ -204,6 +206,7 @@
                                 </connections>
                             </containerView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="0.59784709166754313" green="0.19557927529698466" blue="0.15634311989031985" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="Yvy-h8-CaA" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="2xc-o2-S1k">
@@ -224,7 +227,6 @@
                             <constraint firstItem="KHd-hc-lYm" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.35" id="vBm-Xj-B6t"/>
                             <constraint firstItem="Yvy-h8-CaA" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.2" id="xrS-lj-QSd"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="UIy-om-Eve"/>
@@ -271,7 +273,7 @@
                                         <string key="text">I’m releasing all my fears and worries. I’m living my full potential.
 
 I attract the perfect partner. I welcome a bright future full of love.</string>
-                                        <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" systemColor="labelColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         <variation key="heightClass=regular-widthClass=regular">
@@ -298,7 +300,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JOn-ae-Wv5">
                                 <rect key="frame" x="0.0" y="257.33333333333331" width="377" height="56.333333333333314"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="50C-8g-wow">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="50C-8g-wow">
                                         <rect key="frame" x="0.0" y="-3.9999999999999716" width="181" height="45.333333333333336"/>
                                         <color key="backgroundColor" red="0.28600493069999999" green="0.26861456039999998" blue="0.26840257639999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="21"/>
@@ -309,7 +311,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                             <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                         </variation>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J1l-Ma-ooR">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J1l-Ma-ooR">
                                         <rect key="frame" x="196" y="-3.9999999999999716" width="181" height="45.333333333333336"/>
                                         <color key="backgroundColor" red="0.28600493069999999" green="0.26861456039999998" blue="0.26840257639999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="21"/>
@@ -336,6 +338,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                 </constraints>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="T7Q-4p-MWN"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="GEd-oc-aDl" secondAttribute="trailing" id="1c0-nV-XJM"/>
@@ -352,7 +355,6 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                             <constraint firstItem="L9L-jU-5pK" firstAttribute="top" secondItem="avG-j5-3Gc" secondAttribute="top" id="t3I-CS-r7K"/>
                             <constraint firstItem="JOn-ae-Wv5" firstAttribute="leading" secondItem="T7Q-4p-MWN" secondAttribute="leading" id="v6Y-lC-jEo"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="T7Q-4p-MWN"/>
                     </view>
                     <connections>
                         <outlet property="buttonView" destination="JOn-ae-Wv5" id="eSp-55-edi"/>
@@ -421,49 +423,49 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                 <rect key="frame" x="0.0" y="0.0" width="374" height="194.66666666666666"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="INTRODUCTION" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CsQ-FE-C27">
-                                                        <rect key="frame" x="12" y="12" width="146.33333333333334" height="24"/>
+                                                        <rect key="frame" x="12" y="12" width="145" height="24"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WTQ-46-HQ2">
-                                                        <rect key="frame" x="211.33333333333334" y="8.6666666666666572" width="51.000000000000028" height="31"/>
+                                                        <rect key="frame" x="211" y="8.6666666666666572" width="51" height="31"/>
                                                         <color key="onTintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </switch>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LEAD IN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Vo-TK-6Ii">
-                                                        <rect key="frame" x="12" y="80" width="73" height="24"/>
+                                                        <rect key="frame" x="12" y="80" width="72.666666666666671" height="24"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LEAD OUT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hKZ-yX-a0r">
-                                                        <rect key="frame" x="12" y="134" width="95" height="24"/>
+                                                        <rect key="frame" x="12" y="134" width="94.666666666666671" height="24"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1lW-ea-hYl">
-                                                        <rect key="frame" x="139.33333333333334" y="72" width="42" height="40"/>
+                                                        <rect key="frame" x="139" y="72" width="42" height="40"/>
                                                         <state key="normal" image="chairIcon.png"/>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nss-hv-Sk9">
-                                                        <rect key="frame" x="211.33333333333334" y="68" width="49.000000000000028" height="48"/>
+                                                        <rect key="frame" x="211" y="68" width="49" height="48"/>
                                                         <state key="normal" image="bedIcon.png"/>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q6l-Tj-038">
-                                                        <rect key="frame" x="290.33333333333331" y="72" width="41" height="40"/>
+                                                        <rect key="frame" x="290" y="72" width="41" height="40"/>
                                                         <state key="normal" image="noneIcon.png"/>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d8R-wR-p82">
-                                                        <rect key="frame" x="139.33333333333334" y="126" width="42" height="40"/>
+                                                        <rect key="frame" x="139" y="126" width="42" height="40"/>
                                                         <state key="normal" image="sunIcon.png"/>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6XP-Xy-aRO">
-                                                        <rect key="frame" x="215" y="126" width="42" height="40"/>
+                                                        <rect key="frame" x="214.66666666666666" y="126" width="41.999999999999972" height="40"/>
                                                         <state key="normal" image="moonIcon.png"/>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I2n-2P-ia1">
-                                                        <rect key="frame" x="290.33333333333331" y="126" width="41" height="40"/>
+                                                        <rect key="frame" x="290" y="126" width="41" height="40"/>
                                                         <state key="normal" image="noneIcon.png"/>
                                                     </button>
                                                 </subviews>
@@ -516,7 +518,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                         </connections>
                                                     </slider>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jaw Relaxation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eI0-MH-Rsd">
-                                                        <rect key="frame" x="118.00000000000001" y="108.33333333333331" width="138.33333333333337" height="24"/>
+                                                        <rect key="frame" x="118.33333333333333" y="108.33333333333331" width="137.33333333333337" height="24"/>
                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                                         <color key="textColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -623,7 +625,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                 <rect key="frame" x="0.0" y="0.0" width="374" height="194.66666666666666"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Background Sound" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qwq-UC-mWg">
-                                                        <rect key="frame" x="100" y="12" width="174" height="24"/>
+                                                        <rect key="frame" x="99.666666666666671" y="12" width="174.66666666666663" height="24"/>
                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                                         <color key="textColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -648,6 +650,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </stackView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="55b-UD-eoa"/>
                         <color key="backgroundColor" red="0.54260799032741114" green="0.12134506275179087" blue="0.10610188721823315" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="KIc-QH-czb" secondAttribute="bottom" id="8bH-Mt-kOS"/>
@@ -659,7 +662,6 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                             <constraint firstItem="KIc-QH-czb" firstAttribute="leading" secondItem="55b-UD-eoa" secondAttribute="leading" id="s8W-9q-sj4"/>
                             <constraint firstItem="fxU-QY-bkn" firstAttribute="centerX" secondItem="S0S-wa-Cfu" secondAttribute="centerX" id="sI1-TW-TsM"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="55b-UD-eoa"/>
                     </view>
                     <toolbarItems>
                         <barButtonItem style="plain" id="j0f-lL-edU">
@@ -734,5 +736,11 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
         <image name="subliminalPlayerTeaser.png" width="364" height="285"/>
         <image name="sunIcon.png" width="42" height="40"/>
         <image name="timerIcon" width="30" height="30"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

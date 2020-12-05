@@ -20,14 +20,14 @@ class RoundedView: UIView {
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
+        
         self.addBlurEffect(imageView: imageView ?? UIImageView(), frame: self.globalFrame!)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
     }
-
+    
 }
 
 extension UIView {
@@ -36,7 +36,7 @@ extension UIView {
         let rootView = UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.rootViewController?.view
         return self.superview?.convert(self.frame, to: rootView)
     }
-    
+
     func addBlurEffect(imageView: UIImageView, frame: CGRect) {
         imageView.makeBlurImage(targetImageView:imageView, frame: frame)
     }
@@ -45,13 +45,25 @@ extension UIView {
 extension UIImageView {
     
     func makeBlurImage(targetImageView:UIImageView?, frame: CGRect) {
+        
+        if let subviews = targetImageView?.subviews {
+            if subviews.count == 2 {
+                for view in subviews {
+                    if view.isKind(of: CustomIntensityVisualEffectView.self) {
+                        view.removeFromSuperview()
+                        break
+                    }
+                }
+            }
+        }
+        
         let blurEffect = UIBlurEffect(style: .light)
         //let blurEffectView = PSORoundedVisualEffectView(effect: blurEffect)
         let blurEffectView = CustomIntensityVisualEffectView(effect: blurEffect, intensity: 0.2)
         blurEffectView.frame = frame
         blurEffectView.layer.cornerRadius = cornerRadius
         blurEffectView.alpha = 1
-
+        
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight] // for supporting device rotation
         targetImageView?.addSubview(blurEffectView)
         targetImageView?.layer.cornerRadius = cornerRadius
@@ -59,7 +71,7 @@ extension UIImageView {
 }
 
 class CustomIntensityVisualEffectView: UIVisualEffectView {
-
+    
     /// Create visual effect view with given effect and its intensity
     ///
     /// - Parameters:
@@ -70,7 +82,7 @@ class CustomIntensityVisualEffectView: UIVisualEffectView {
         animator = UIViewPropertyAnimator(duration: 1, curve: .linear) { [unowned self] in self.effect = effect }
         animator.fractionComplete = intensity
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError()
     }
@@ -80,14 +92,14 @@ class CustomIntensityVisualEffectView: UIVisualEffectView {
         updateMaskLayer()
         //self.backgroundColor = .lightGray
     }
-
+    
     func updateMaskLayer(){
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = UIBezierPath(roundedRect: self.bounds, cornerRadius: cornerRadius).cgPath
         self.layer.mask = shapeLayer
     }
-
+    
     // MARK: Private
     private var animator: UIViewPropertyAnimator!
-
+    
 }

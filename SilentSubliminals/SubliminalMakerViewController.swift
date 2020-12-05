@@ -39,11 +39,6 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
         static var playOffImg = UIImage(named: "stopButton.png")
     }
     
-    struct Manager {
-        static var recordingSession: AVAudioSession!
-        static var micAuthorised = Bool()
-    }
-    
     var recording: Bool = false
     var playing: Bool = false
     
@@ -105,6 +100,11 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
         } catch {
             assertionFailure("AVAudioSession setup error: \(error)")
         }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        stopPlaying()
     }
     
     func createSilentSubliminalFile() {
@@ -328,10 +328,14 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
             self.spectrumLayer.removeFromSuperlayer()
         }
         
-        engine.detach(audioPlayer!)
+        guard let player = audioPlayer else {
+            return
+        }
         
-        audioPlayer?.stop()
-        audioPlayer = nil
+        engine.detach(player)
+        
+        player.stop()
+        //player = nil
         isPlaying = false
         
         let inputNode = engine.inputNode

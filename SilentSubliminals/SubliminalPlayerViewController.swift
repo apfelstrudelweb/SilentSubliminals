@@ -24,6 +24,7 @@ class SubliminalPlayerViewController: UIViewController {
     @IBOutlet weak var soundView: RoundedView!
     @IBOutlet weak var volumeSlider: UISlider!
     @IBOutlet weak var volumeView: UIView!
+    let maskView = UIView()
     
     struct AudioFileTypes {
         var filename = ""
@@ -32,10 +33,10 @@ class SubliminalPlayerViewController: UIViewController {
     }
     
     private var audioFiles: Array<AudioFileTypes> = [AudioFileTypes(filename: outputFilename, isSilent: false), AudioFileTypes(filename: outputFilenameSilent, isSilent: true)]
-
+    
     private var audioEngine: AVAudioEngine = AVAudioEngine()
     private var mixer: AVAudioMixerNode = AVAudioMixerNode()
-    private var equalizerLow: AVAudioUnitEQ = AVAudioUnitEQ(numberOfBands: 1)
+    private var equalizerHighPass: AVAudioUnitEQ = AVAudioUnitEQ(numberOfBands: 1)
     
     var fftSetup : vDSP_DFT_Setup?
     
@@ -45,7 +46,6 @@ class SubliminalPlayerViewController: UIViewController {
     
     var audioFileBuffer: AVAudioPCMBuffer?
     var audioFrameCount: UInt32?
-    
     
     struct Button {
         static var playOnImg = UIImage(named: "playButton.png")
@@ -60,8 +60,8 @@ class SubliminalPlayerViewController: UIViewController {
     let frequencyDomainGraphLayers = [CAShapeLayer(), CAShapeLayer(),
                                       CAShapeLayer(), CAShapeLayer()]
     
-
-
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -82,64 +82,29 @@ class SubliminalPlayerViewController: UIViewController {
         
         volumeSlider.value = masterVolume
         
+        let colors = [UIColor.blue, UIColor.green, UIColor.yellow, UIColor.red]
+        self.maskView.backgroundColor = .white
+        self.volumeView.showGradientColors(colors)
+        self.volumeView.addSubview(self.maskView)
+        self.volumeView.mask = self.maskView
+        self.maskView.frame = .zero
+        
         fftSetup = vDSP_DFT_zop_CreateSetup(nil, 1024, vDSP_DFT_Direction.FORWARD)
         
+        checkForPermission()
         
         do {
             try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playAndRecord)
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
             let ioBufferDuration = 128.0 / 44100.0
             try AVAudioSession.sharedInstance().setPreferredIOBufferDuration(ioBufferDuration)
         } catch {
             assertionFailure("AVAudioSession setup error: \(error)")
         }
-        
-        
-        
-        //        var audioBuffer: AVAudioPCMBuffer!
-        //        engine = AVAudioEngine()
-        //        _ = engine.mainMixerNode
-        //
-        //        engine.prepare()
-        //        do {
-        //            try engine.start()
-        //        } catch {
-        //            print(error)
-        //        }
-        //
-        //        let audioFilename = getDocumentsDirectory().appendingPathComponent(outputFilenameSilent)
-        //
-        //        do {
-        //            let audioFile = try AVAudioFile(forReading: audioFilename)
-        //            let format = audioFile.processingFormat
-        //
-        //            audioPlayer = AVAudioPlayerNode()
-        //            audioPlayer?.volume = 1.0
-        //            engine.attach(audioPlayer!)
-        //            engine.connect(audioPlayer!, to: engine.mainMixerNode, format: format)
-        //
-        //            audioBuffer = AVAudioPCMBuffer(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(audioFile.length))!
-        //
-        //            do {
-        //                print("read")
-        //                try audioFile.read(into: audioBuffer)
-        //            } catch _ {
-        //                print("error reading audiofile into buffer")
-        //            }
-        //
-        //            audioPlayer?.scheduleBuffer(audioBuffer, completionHandler: {
-        //
-        //                DispatchQueue.main.async {
-        //                    if self.audioPlayer != nil {
-        //                        self.stopPlaying()
-        //                    }
-        //                }
-        //            })
-        //
-        //            audioPlayer!.scheduleFile(audioFile, at: nil, completionHandler: nil)
-        //        } catch {
-        //            print("could not load file")
-        //        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     }
     
     override func viewDidLayoutSubviews() {
@@ -173,18 +138,18 @@ class SubliminalPlayerViewController: UIViewController {
         audioQueue.async {
             do {
                 
-                let lowPass = self.equalizerLow.bands[0]
+                let lowPass = self.equalizerHighPass.bands[0]
                 lowPass.filterType = .highPass
                 lowPass.frequency = 20000
                 lowPass.bandwidth = 200
                 lowPass.bypass = false
                 
-                self.audioEngine.attach(self.equalizerLow)
+                self.audioEngine.attach(self.equalizerHighPass)
                 self.audioEngine.attach(self.mixer)
-
+                
                 // !important - start the engine *before* setting up the player nodes
                 //try self.audioEngine.start()
-
+                
                 for audioFile in self.audioFiles {
                     //self.audioEngine.stop()
                     // Create and attach the audioPlayer node for this file
@@ -198,8 +163,8 @@ class SubliminalPlayerViewController: UIViewController {
                     audioPlayer.removeTap(onBus: 0)
                     
                     if audioFile.isSilent {
-                        self.audioEngine.connect(audioPlayer, to: self.equalizerLow, format: format)
-                        self.audioEngine.connect(self.equalizerLow, to: self.mixer, format: format)
+                        self.audioEngine.connect(audioPlayer, to: self.equalizerHighPass, format: format)
+                        self.audioEngine.connect(self.equalizerHighPass, to: self.mixer, format: format)
                         
                     } else {
                         self.audioEngine.connect(audioPlayer, to: self.mixer, format: format)
@@ -209,7 +174,7 @@ class SubliminalPlayerViewController: UIViewController {
                     try self.audioEngine.start()
                     
                     self.switchAndAnalyze(audioFile: audioFile)
-  
+                    
                     let audioFileBuffer = AVAudioPCMBuffer(pcmFormat: avAudioFile.processingFormat, frameCapacity: AVAudioFrameCount(avAudioFile.length))!
                     try avAudioFile.read(into: audioFileBuffer)
                     
@@ -228,10 +193,10 @@ class SubliminalPlayerViewController: UIViewController {
     func stopPlaying() {
         
         self.playButton.setImage(Button.playOnImg, for: .normal)
-            for audioFile in self.audioFiles {
-                let audioPlayer = audioFile.audioPlayer
-                audioPlayer.stop()
-            }
+        for audioFile in self.audioFiles {
+            let audioPlayer = audioFile.audioPlayer
+            audioPlayer.stop()
+        }
         self.audioEngine.stop()
     }
     
@@ -242,9 +207,9 @@ class SubliminalPlayerViewController: UIViewController {
         let buttonImage = isSilent ? Button.silentOnImg : Button.silentOffImg
         
         self.silentButton.setImage(buttonImage, for: .normal)
-
+        
         for audioFile in self.audioFiles {
- 
+            
             self.switchAndAnalyze(audioFile: audioFile)
         }
     }
@@ -261,42 +226,42 @@ class SubliminalPlayerViewController: UIViewController {
         audioPlayer.volume = audioFile.isSilent ? (self.isSilent ? self.masterVolume : 0) : (self.isSilent ? 0 : self.masterVolume)
         audioPlayer.removeTap(onBus: 0)
         
+        let audioSession = AVAudioSession.sharedInstance()
+        var deviceVolume: Float?
+
         if self.isSilent && audioFile.isSilent || !self.isSilent && !audioFile.isSilent {
-            
-            var index = 0
-            
+
             audioPlayer.installTap(onBus: 0, bufferSize: 1024, format: format) {
                 (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
                 
+                do {
+                    try audioSession.setActive(true)
+                    deviceVolume = audioSession.outputVolume
+                } catch {
+                    print("Error Setting Up Audio Session")
+                }
+                
                 DispatchQueue.main.async {
-
+                    
                     self.processAudioData(buffer: buffer)
-                    
-                    if index % 2 == 0 {
-                        
-                        for view in self.volumeView.subviews {
-                            view.removeFromSuperview()
-                        }
-                        let volumeBar = UIView()
-                        volumeBar.backgroundColor = .red
-                        let volume = self.getVolume(from: buffer, bufferSize: 1024)
-                        self.volumeView.addSubview(volumeBar)
-                        volumeBar.autoPinEdge(.left, to: .left, of: self.volumeView)
-                        volumeBar.autoPinEdge(.bottom, to: .bottom, of: self.volumeView)
-                        volumeBar.autoPinEdge(.top, to: .top, of: self.volumeView)
-                        volumeBar.autoSetDimension(.width, toSize: CGFloat(10000 * volume * self.masterVolume))
-                    }
-                    
-                    index += 1
-                    
-                    if index > 100 {
-                        index = 0
-                    }
-                    
+
+                    let volume = self.getVolume(from: buffer, bufferSize: 1024) * (deviceVolume ?? 0.5) * self.masterVolume
+                    self.displayVolume(volume: volume)
                 }
             }
         }
     }
+    
+    func displayVolume(volume: Float) {
+            
+            let w = Double(self.volumeView.frame.size.width)
+            let h = Double(self.volumeView.bounds.size.height)
+     
+            UIView.animate(withDuration: 0.2) {
+                self.maskView.frame = CGRect(x: 0.0, y: 0.0, width: Double(5 * volume) * w, height: h)
+            }
+            
+        }
     
     @IBAction func volumeSliderChanged(_ sender: Any) {
         
@@ -316,17 +281,17 @@ class SubliminalPlayerViewController: UIViewController {
         guard let channelData = buffer.floatChannelData?[0] else {
             return 0
         }
-
+        
         let channelDataArray = Array(UnsafeBufferPointer(start:channelData, count: bufferSize))
-
+        
         var outEnvelope = [Float]()
         var envelopeState:Float = 0
         let envConstantAtk:Float = 0.16
         let envConstantDec:Float = 0.003
-
+        
         for sample in channelDataArray {
             let rectified = abs(sample)
-
+            
             if envelopeState < rectified {
                 envelopeState += envConstantAtk * (rectified - envelopeState)
             } else {
@@ -334,11 +299,11 @@ class SubliminalPlayerViewController: UIViewController {
             }
             outEnvelope.append(envelopeState)
         }
-
+        
         // 0.007 is the low pass filter to prevent
         // getting the noise entering from the microphone
         if let maxVolume = outEnvelope.max(),
-            maxVolume > Float(0.015) {
+           maxVolume > Float(0.015) {
             return maxVolume
         } else {
             return 0.0
@@ -412,6 +377,58 @@ class SubliminalPlayerViewController: UIViewController {
         spectrumLayer.path = path.cgPath
         spectrumLayer.fillColor = UIColor.green.cgColor
         graphView.layer.addSublayer(spectrumLayer)
+    }
+    
+    func checkForPermission() {
+        Manager.recordingSession = AVAudioSession.sharedInstance()
+        do {
+            try Manager.recordingSession.setCategory(AVAudioSession.Category.playAndRecord, options: .defaultToSpeaker)
+            
+            Manager.recordingSession.requestRecordPermission({ (allowed) in
+                if allowed {
+                    Manager.micAuthorised = true
+                    DispatchQueue.main.async {
+                        self.playButton.alpha = 1
+                        self.playButton.isEnabled = true
+                    }
+                    print("Mic Authorised")
+                } else {
+                    Manager.micAuthorised = false
+                    print("Mic not Authorised")
+                }
+            })
+        } catch {
+            print("Failed to set Category", error.localizedDescription)
+        }
+    }
+    
+}
+
+
+extension UIView {
+    
+    enum GradientColorDirection {
+        case vertical
+        case horizontal
+    }
+    
+    func showGradientColors(_ colors: [UIColor], opacity: Float = 0.8, direction: GradientColorDirection = .horizontal) {
+        
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.opacity = opacity
+        gradientLayer.colors = colors.map { $0.cgColor }
+        
+        if case .horizontal = direction {
+            gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
+            gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.0)
+        }
+        
+        gradientLayer.locations = [0.0, 0.2, 0.5, 0.8]
+        
+        gradientLayer.bounds = self.bounds  //CGRect(x: 0, y: 0, width: 100, height: 20)//self.bounds
+        gradientLayer.anchorPoint = CGPoint.zero
+        gradientLayer.cornerRadius = self.layer.cornerRadius
+        self.layer.addSublayer(gradientLayer)
     }
     
 }

@@ -7,11 +7,16 @@
 //
 
 import Foundation
-
+import AVFoundation
 
 let outputFilename: String = "affirmation.caf"
 let outputFilenameSilent: String = "affirmationSilent.caf"
 let modulationFrequency: Double = 20000
+
+struct Manager {
+    static var recordingSession: AVAudioSession!
+    static var micAuthorised = Bool()
+}
 
 
 func getDocumentsDirectory() -> URL {
