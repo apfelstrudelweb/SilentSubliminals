@@ -24,11 +24,11 @@ class SubliminalPlayerViewController: UIViewController {
     @IBOutlet weak var soundView: RoundedView!
     @IBOutlet weak var volumeSlider: UISlider!
     
-//    var audioPlayer: AVAudioPlayerNode?
-//    var engine = AVAudioEngine()
-//    var distortion = AVAudioUnitDistortion()
-//    var reverb = AVAudioUnitReverb()
-//    var audioBuffer = AVAudioPCMBuffer()
+    //    var audioPlayer: AVAudioPlayerNode?
+    //    var engine = AVAudioEngine()
+    //    var distortion = AVAudioUnitDistortion()
+    //    var reverb = AVAudioUnitReverb()
+    //    var audioBuffer = AVAudioPCMBuffer()
     
     struct AudioFileTypes {
         var filename = ""
@@ -36,7 +36,7 @@ class SubliminalPlayerViewController: UIViewController {
         var audioPlayer = AVAudioPlayerNode()
     }
     
-    private var audioFiles: Array<AudioFileTypes> = [AudioFileTypes(filename: outputFilename, isSilent: false)]//, AudioFileTypes(filename: outputFilenameSilent, isSilent: true)]
+    private var audioFiles: Array<AudioFileTypes> = [AudioFileTypes(filename: outputFilename, isSilent: false), AudioFileTypes(filename: outputFilenameSilent, isSilent: true)]
     //private var audioFiles: Array<AudioFileTypes> = [AudioFileTypes(filename: "test1.caf", isSilent: false), AudioFileTypes(filename: "test2.caf", isSilent: true)]
     private var audioEngine: AVAudioEngine = AVAudioEngine()
     private var mixer: AVAudioMixerNode = AVAudioMixerNode()
@@ -100,7 +100,7 @@ class SubliminalPlayerViewController: UIViewController {
             assertionFailure("AVAudioSession setup error: \(error)")
         }
         
-       
+        
         
         //        var audioBuffer: AVAudioPCMBuffer!
         //        engine = AVAudioEngine()
@@ -179,30 +179,21 @@ class SubliminalPlayerViewController: UIViewController {
             do {
                 
                 let lowPass = self.equalizerLow.bands[0]
-                lowPass.filterType = .lowPass//audioFile.isSilent ? .highPass : .lowPass
+                lowPass.filterType = .highPass//audioFile.isSilent ? .highPass : .lowPass
                 lowPass.frequency = 20000 //audioFile.isSilent ? 22000 : 400
                 lowPass.bandwidth = 200
                 lowPass.bypass = false
- 
+                
                 self.audioEngine.attach(self.equalizerLow)
                 self.audioEngine.attach(self.mixer)
-
-//                // TODO: not mic, but player!
-//                let inputNode = self.audioEngine.inputNode
-//                  let bus = 0
-//                  inputNode.installTap(onBus: bus, bufferSize: 1024, format: inputNode.inputFormat(forBus: bus)) {
-//                      (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
-//
-//                      DispatchQueue.main.async {
-//                          self.processAudioData(buffer: buffer)
-//                      }
-//                  }
+                
                 
                 // !important - start the engine *before* setting up the player nodes
                 //try self.audioEngine.start()
-
+                
+                
                 for audioFile in self.audioFiles {
-                    self.audioEngine.stop()
+                    //self.audioEngine.stop()
                     // Create and attach the audioPlayer node for this file
                     let audioPlayer = audioFile.audioPlayer
                     self.audioEngine.attach(audioPlayer)
@@ -212,44 +203,53 @@ class SubliminalPlayerViewController: UIViewController {
                     
                     // Notice the output is the mixer in this case
                     let format =  AVAudioFormat(standardFormatWithSampleRate: avAudioFile.fileFormat.sampleRate, channels: avAudioFile.fileFormat.channelCount)
-                    self.audioEngine.connect(audioPlayer, to: self.equalizerLow, format: format)
-                    self.audioEngine.connect(self.equalizerLow, to: self.mixer, format: format)
+                    
+                    audioPlayer.removeTap(onBus: 0)
+                    
+                    if audioFile.isSilent {
+                        self.audioEngine.connect(audioPlayer, to: self.equalizerLow, format: format)
+                        self.audioEngine.connect(self.equalizerLow, to: self.mixer, format: format)
+                        
+                    } else {
+                        self.audioEngine.connect(audioPlayer, to: self.mixer, format: format)
+                        audioPlayer.installTap(onBus: 0, bufferSize: 1024, format: format) {
+                            (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
+                            
+                            DispatchQueue.main.async {
+                                self.processAudioData(buffer: buffer)
+                            }
+                        }
+                        
+                    }
+                    
                     self.audioEngine.connect(self.mixer, to: self.audioEngine.outputNode, format: format)
                     try self.audioEngine.start()
-  
-                    audioPlayer.volume = audioFile.isSilent ? 0 : 0.5
                     
-                    audioPlayer.installTap(onBus: 0, bufferSize: 1024, format: format) {
-                        (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
-
-                        DispatchQueue.main.async {
-                            self.processAudioData(buffer: buffer)
-                        }
-                    }
-
+                    audioPlayer.volume = 0.5 //audioFile.isSilent ? 0 : 0.5
+  
                     let audioFileBuffer = AVAudioPCMBuffer(pcmFormat: avAudioFile.processingFormat, frameCapacity: AVAudioFrameCount(avAudioFile.length))!
                     try avAudioFile.read(into: audioFileBuffer)
-
+                    
                     audioPlayer.scheduleBuffer(audioFileBuffer, at: nil, options:.loops, completionHandler: nil)
                     audioPlayer.scheduleFile(avAudioFile, at: nil, completionHandler: nil)
-  
+                    
                     audioPlayer.play()
                 }
             } catch {
                 print("File read error", error)
             }
         }
-
+        
     }
     
     func stopPlaying() {
         
         self.playButton.setImage(Button.playOnImg, for: .normal)
-//        for audioFile in self.audioFiles {
-//            // Create and attach the audioPlayer node for this file
-//            let audioPlayer = audioFile.audioPlayer
-//            audioPlayer.stop()
-//        }
+        //        for audioFile in self.audioFiles {
+        //            // Create and attach the audioPlayer node for this file
+        //            let audioPlayer = audioFile.audioPlayer
+        //            audioPlayer.stop()
+        //        }
         
     }
     
@@ -260,11 +260,28 @@ class SubliminalPlayerViewController: UIViewController {
         let buttonImage = isSilent ? Button.silentOnImg : Button.silentOffImg
         
         self.silentButton.setImage(buttonImage, for: .normal)
-        
+
         for audioFile in self.audioFiles {
-            // Create and attach the audioPlayer node for this file
+ 
             let audioPlayer = audioFile.audioPlayer
             audioPlayer.volume = audioFile.isSilent ? (isSilent ? 1 : 0) : (isSilent ? 0 : 1)
+            
+            let audioFilename = getDocumentsDirectory().appendingPathComponent(audioFile.filename)
+            let avAudioFile = try! AVAudioFile(forReading: audioFilename)
+            let format =  AVAudioFormat(standardFormatWithSampleRate: avAudioFile.fileFormat.sampleRate, channels: avAudioFile.fileFormat.channelCount)
+            
+            audioPlayer.removeTap(onBus: 0)
+            
+            if isSilent && audioFile.isSilent || !isSilent && !audioFile.isSilent {
+                audioPlayer.installTap(onBus: 0, bufferSize: 1024, format: format) {
+                    (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
+                    
+                    DispatchQueue.main.async {
+                        self.processAudioData(buffer: buffer)
+                    }
+                }
+            }
+ 
         }
         
         // TODO: change ear symbol
@@ -287,72 +304,72 @@ class SubliminalPlayerViewController: UIViewController {
     }
     
     func processAudioData(buffer: AVAudioPCMBuffer){
-           
-           guard let channelData = buffer.floatChannelData?[0] else {return}
-           let frames = buffer.frameLength
-           
-           let rmsValue = SignalProcessing.rms(data: channelData, frameLength: UInt(frames))
-           
-           
-           spectrumLayer.removeFromSuperlayer()
-           
-           //fft
-           let fftMagnitudes: [Float] =  SignalProcessing.fft(data: channelData, setup: fftSetup!)
-           
-           let path = UIBezierPath.init()
-           let width = graphView.frame.size.width
-           let height = graphView.frame.size.height
-           
-           var maxFFT: Float = 0
-           
-           for magn in fftMagnitudes {
-               if magn.magnitude > maxFFT {
-                   maxFFT = magn.magnitude
-               }
-           }
-           
-           path.move(to: CGPoint(x: 0, y: height))
-           
-           var x1: CGFloat = 0
-           var y1: CGFloat = height
-           var x2: CGFloat = 0
-           var y2: CGFloat = height
-           
-           for (index, element) in fftMagnitudes.enumerated() {
-               //print("Item \(index): \(element)")
-               
-               x2 = x1
-               y2 = y1
-               
-               //            if index == fftMagnitudes.count / 4 {
-               //                break
-               //            }
-               
-               let xUnit = width / log10(1000)
-               
-               x1 = CGFloat(log10f(Float(index + 1))) * xUnit //CGFloat(4 * index) * width / CGFloat(fftMagnitudes.count)
-               y1 = height - CGFloat(rmsValue / 80) * CGFloat(element.magnitude) * height / CGFloat(maxFFT)
-               
-               if y1 < 0 {
-                   y1 = 0
-               }
-               
-               //path.addLine(to: CGPoint(x: x, y: y))
-               
-               if x1 > width {
-                   break
-               }
-               
-               path.addQuadCurve(to: CGPoint(x: x1, y: y1), controlPoint: CGPoint(x: x2, y: y2))
-           }
-           
-           path.addLine(to: CGPoint(x: width, y: height))
-           
-           path.close()
-
-           spectrumLayer.path = path.cgPath
-           spectrumLayer.fillColor = UIColor.green.cgColor
-           graphView.layer.addSublayer(spectrumLayer)
-       }
+        
+        guard let channelData = buffer.floatChannelData?[0] else {return}
+        let frames = buffer.frameLength
+        
+        let rmsValue = SignalProcessing.rms(data: channelData, frameLength: UInt(frames))
+        
+        
+        spectrumLayer.removeFromSuperlayer()
+        
+        //fft
+        let fftMagnitudes: [Float] =  SignalProcessing.fft(data: channelData, setup: fftSetup!)
+        
+        let path = UIBezierPath.init()
+        let width = graphView.frame.size.width
+        let height = graphView.frame.size.height
+        
+        var maxFFT: Float = 0
+        
+        for magn in fftMagnitudes {
+            if magn.magnitude > maxFFT {
+                maxFFT = magn.magnitude
+            }
+        }
+        
+        path.move(to: CGPoint(x: 0, y: height))
+        
+        var x1: CGFloat = 0
+        var y1: CGFloat = height
+        var x2: CGFloat = 0
+        var y2: CGFloat = height
+        
+        for (index, element) in fftMagnitudes.enumerated() {
+            //print("Item \(index): \(element)")
+            
+            x2 = x1
+            y2 = y1
+            
+            //            if index == fftMagnitudes.count / 4 {
+            //                break
+            //            }
+            
+            let xUnit = width / log10(1000)
+            
+            x1 = CGFloat(log10f(Float(index + 1))) * xUnit //CGFloat(4 * index) * width / CGFloat(fftMagnitudes.count)
+            y1 = height - CGFloat(rmsValue / 80) * CGFloat(element.magnitude) * height / CGFloat(maxFFT)
+            
+            if y1 < 0 {
+                y1 = 0
+            }
+            
+            //path.addLine(to: CGPoint(x: x, y: y))
+            
+            if x1 > width {
+                break
+            }
+            
+            path.addQuadCurve(to: CGPoint(x: x1, y: y1), controlPoint: CGPoint(x: x2, y: y2))
+        }
+        
+        path.addLine(to: CGPoint(x: width, y: height))
+        
+        path.close()
+        
+        spectrumLayer.path = path.cgPath
+        spectrumLayer.fillColor = UIColor.green.cgColor
+        graphView.layer.addSublayer(spectrumLayer)
+    }
     
 }
