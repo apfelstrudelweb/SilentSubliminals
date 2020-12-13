@@ -21,7 +21,7 @@ class AudioUtilities {
             return documentsDirectory
         }
         
-        let audioFilename = getDocumentsDirectory().appendingPathComponent(outputFilename)
+        let audioFilename = getDocumentsDirectory().appendingPathComponent(spokenAffirmation)
         let asset = AVAsset(url: audioFilename.absoluteURL)
         
 //        guard let path = Bundle.main.url(forResource: forResource,

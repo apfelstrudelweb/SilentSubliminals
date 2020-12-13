@@ -109,7 +109,7 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
     
     func createSilentSubliminalFile() {
         
-        let file = try! AVAudioFile(forReading: getDocumentsDirectory().appendingPathComponent(outputFilename))
+        let file = try! AVAudioFile(forReading: getFileFromSandbox(filename: spokenAffirmation))
         let engine = AVAudioEngine()
         let player = AVAudioPlayerNode()
         
@@ -143,7 +143,7 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
         var settings: [String : Any] = [:]
         
         settings[AVFormatIDKey] = kAudioFormatAppleLossless
-        settings[AVAudioFileTypeKey] = kAudioFileCAFType
+        settings[AVAudioFileTypeKey] = kAudioFileM4AType
         settings[AVSampleRateKey] = readBuffer.format.sampleRate
         settings[AVNumberOfChannelsKey] = 1
         settings[AVLinearPCMIsFloatKey] = (readBuffer.format.commonFormat == .pcmFormatInt32)
@@ -152,7 +152,7 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
         settings[AVEncoderAudioQualityKey] = AVAudioQuality.max
         
         // The render format is also the output format
-        let output = try! AVAudioFile(forWriting: getDocumentsDirectory().appendingPathComponent(outputFilenameSilent), settings: settings, commonFormat: renderFormat.commonFormat, interleaved: renderFormat.isInterleaved)
+        let output = try! AVAudioFile(forWriting: getFileFromSandbox(filename: spokenAffirmationSilent), settings: settings, commonFormat: renderFormat.commonFormat, interleaved: renderFormat.isInterleaved)
         
         var index: Int = 0;
         // Process the file
@@ -283,7 +283,7 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
             print(error)
         }
         
-        let audioFilename = getDocumentsDirectory().appendingPathComponent(outputFilename)
+        let audioFilename = getFileFromSandbox(filename: spokenAffirmation)
         
         do {
             let audioFile = try AVAudioFile(forReading: audioFilename)
@@ -360,14 +360,16 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
         
         engine.prepare()
         try! engine.start()
-        let audioFilename = getDocumentsDirectory().appendingPathComponent(outputFilename)
+        let audioFilename = getFileFromSandbox(filename: spokenAffirmation)
         
         let settings = [
+            //AVFormatIDKey: Int(kAudioFormatM4a),
+            //AVAudioFileTypeKey: kAudioFileM4AType,
             AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
             AVSampleRateKey: 48000,
             AVNumberOfChannelsKey: 1,
             AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
-        ]
+        ] as [String : Any]
         
         do {
             audioRecorder = try AVAudioRecorder(url: audioFilename, settings: settings)
@@ -377,6 +379,7 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
             self.playButton.isEnabled = false
             recordButton.setImage(Button.micOffImg, for: .normal)
         } catch {
+            print(error)
             stopRecording(success: false)
         }
     }

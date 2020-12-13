@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		520D2AD085DC72B48BD62F53 /* Pods_SilentSubliminals.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 749DEE320F1CABD6CEF99A9F /* Pods_SilentSubliminals.framework */; };
+		409FD791161B2B31BCCC8FE1 /* Pods_SilentSubliminals.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F8D2A2BE13FD35B88F3C5F7 /* Pods_SilentSubliminals.framework */; };
 		652D5C5A2546B6170083165B /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 652D5C592546B6170083165B /* Accelerate.framework */; };
+		654F42CF258623C10065D490 /* intro.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 654F42CD258623C10065D490 /* intro.aiff */; };
+		654F42D0258623C10065D490 /* outro.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 654F42CE258623C10065D490 /* outro.aiff */; };
 		6558D30924684934004E8660 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558D30824684934004E8660 /* AppDelegate.swift */; };
 		6558D30B24684934004E8660 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558D30A24684934004E8660 /* SceneDelegate.swift */; };
 		6558D30D24684934004E8660 /* SubliminalMakerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558D30C24684934004E8660 /* SubliminalMakerViewController.swift */; };
@@ -47,6 +49,8 @@
 
 /* Begin PBXFileReference section */
 		652D5C592546B6170083165B /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		654F42CD258623C10065D490 /* intro.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = intro.aiff; sourceTree = "<group>"; };
+		654F42CE258623C10065D490 /* outro.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = outro.aiff; sourceTree = "<group>"; };
 		6558D30524684934004E8660 /* SilentSubliminals.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SilentSubliminals.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6558D30824684934004E8660 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6558D30A24684934004E8660 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -83,9 +87,9 @@
 		65F0727E2544615D004C8BA3 /* startRecordingButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = startRecordingButton.png; sourceTree = "<group>"; };
 		65F0727F2544615D004C8BA3 /* stopButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stopButton.png; sourceTree = "<group>"; };
 		65F072802544615D004C8BA3 /* stopRecordingButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stopRecordingButton.png; sourceTree = "<group>"; };
-		749DEE320F1CABD6CEF99A9F /* Pods_SilentSubliminals.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SilentSubliminals.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A3352884DDB56A247B51A363 /* Pods-SilentSubliminals.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SilentSubliminals.release.xcconfig"; path = "Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals.release.xcconfig"; sourceTree = "<group>"; };
-		C6A60921E0E11F7020F3264C /* Pods-SilentSubliminals.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SilentSubliminals.debug.xcconfig"; path = "Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals.debug.xcconfig"; sourceTree = "<group>"; };
+		6F8D2A2BE13FD35B88F3C5F7 /* Pods_SilentSubliminals.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SilentSubliminals.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E45D9B591E9BF544E2BEF636 /* Pods-SilentSubliminals.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SilentSubliminals.release.xcconfig"; path = "Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals.release.xcconfig"; sourceTree = "<group>"; };
+		F9990493C9D9F4421DE40182 /* Pods-SilentSubliminals.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SilentSubliminals.debug.xcconfig"; path = "Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,7 +99,7 @@
 			files = (
 				652D5C5A2546B6170083165B /* Accelerate.framework in Frameworks */,
 				65F0727C25445673004C8BA3 /* AVFoundation.framework in Frameworks */,
-				520D2AD085DC72B48BD62F53 /* Pods_SilentSubliminals.framework in Frameworks */,
+				409FD791161B2B31BCCC8FE1 /* Pods_SilentSubliminals.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,8 +109,8 @@
 		2AA53B5A417622581E635D17 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				C6A60921E0E11F7020F3264C /* Pods-SilentSubliminals.debug.xcconfig */,
-				A3352884DDB56A247B51A363 /* Pods-SilentSubliminals.release.xcconfig */,
+				F9990493C9D9F4421DE40182 /* Pods-SilentSubliminals.debug.xcconfig */,
+				E45D9B591E9BF544E2BEF636 /* Pods-SilentSubliminals.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -116,7 +120,7 @@
 			children = (
 				652D5C592546B6170083165B /* Accelerate.framework */,
 				65F0727B25445673004C8BA3 /* AVFoundation.framework */,
-				749DEE320F1CABD6CEF99A9F /* Pods_SilentSubliminals.framework */,
+				6F8D2A2BE13FD35B88F3C5F7 /* Pods_SilentSubliminals.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -142,6 +146,7 @@
 		6558D30724684934004E8660 /* SilentSubliminals */ = {
 			isa = PBXGroup;
 			children = (
+				65A003CC257CFB8200EADAB8 /* Sounds */,
 				65699FF9253C36C5000E7F95 /* images */,
 				6558D30824684934004E8660 /* AppDelegate.swift */,
 				6558D30A24684934004E8660 /* SceneDelegate.swift */,
@@ -196,6 +201,15 @@
 			path = background;
 			sourceTree = "<group>";
 		};
+		65A003CC257CFB8200EADAB8 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				654F42CD258623C10065D490 /* intro.aiff */,
+				654F42CE258623C10065D490 /* outro.aiff */,
+			);
+			path = Sounds;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -203,11 +217,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6558D31924684935004E8660 /* Build configuration list for PBXNativeTarget "SilentSubliminals" */;
 			buildPhases = (
-				31C38B5512EB2422652BAD78 /* [CP] Check Pods Manifest.lock */,
+				70C920A2F5C9B447BCE5106E /* [CP] Check Pods Manifest.lock */,
 				6558D30124684934004E8660 /* Sources */,
 				6558D30224684934004E8660 /* Frameworks */,
 				6558D30324684934004E8660 /* Resources */,
-				075208C66043290763298093 /* [CP] Embed Pods Frameworks */,
+				EA121883A50ECFB38AD7D999 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -269,8 +283,10 @@
 				65A8406525616CEF0072531F /* subliminalPlayerBackground.png in Resources */,
 				65A8407325618DBB0072531F /* bedIcon.png in Resources */,
 				6569A008253C43A7000E7F95 /* plusButton.png in Resources */,
+				654F42D0258623C10065D490 /* outro.aiff in Resources */,
 				6558D31524684935004E8660 /* LaunchScreen.storyboard in Resources */,
 				6558D31224684935004E8660 /* Assets.xcassets in Resources */,
+				654F42CF258623C10065D490 /* intro.aiff in Resources */,
 				6569A004253C3EFD000E7F95 /* playButton.png in Resources */,
 				65A8405725611EA50072531F /* subliminalMakerTeaser.png in Resources */,
 				65A8405825611EA50072531F /* subliminalPlayerTeaser.png in Resources */,
@@ -282,24 +298,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		075208C66043290763298093 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		31C38B5512EB2422652BAD78 /* [CP] Check Pods Manifest.lock */ = {
+		70C920A2F5C9B447BCE5106E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -319,6 +318,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EA121883A50ECFB38AD7D999 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -483,10 +499,11 @@
 		};
 		6558D31A24684935004E8660 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C6A60921E0E11F7020F3264C /* Pods-SilentSubliminals.debug.xcconfig */;
+			baseConfigurationReference = F9990493C9D9F4421DE40182 /* Pods-SilentSubliminals.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = P2EQM7YAFH;
 				INFOPLIST_FILE = SilentSubliminals/Info.plist;
@@ -497,6 +514,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = ch.vormbrock.SilentSubliminals;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -506,10 +524,11 @@
 		};
 		6558D31B24684935004E8660 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A3352884DDB56A247B51A363 /* Pods-SilentSubliminals.release.xcconfig */;
+			baseConfigurationReference = E45D9B591E9BF544E2BEF636 /* Pods-SilentSubliminals.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = P2EQM7YAFH;
 				INFOPLIST_FILE = SilentSubliminals/Info.plist;
@@ -520,6 +539,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = ch.vormbrock.SilentSubliminals;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
