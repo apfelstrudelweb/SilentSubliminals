@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 import AVFoundation
 
 // from main bundle
@@ -16,10 +17,21 @@ let spokenOutro = "outro.aiff"
 // from documents dir
 let spokenAffirmation: String = "spokenAffirmation.caf"
 let spokenAffirmationSilent: String = "spokenAffirmationSilent.caf"
-let toListenAffirmation: String = "toListenAffirmation.caf"
-let toListenAffirmationSilent: String = "toListenAffirmationSilent.caf"
 
-let modulationFrequency: Double = 20000
+struct Button {
+    static var playOnImg = UIImage(named: "playButton.png")
+    static var playOffImg = UIImage(named: "stopButton.png")
+    static var silentOnImg = UIImage(named: "earSilentIcon.png")
+    static var silentOffImg = UIImage(named: "earLoudIcon.png")
+}
+
+enum Induction {
+    case Intro
+    case Outro
+}
+
+let modulationFrequency: Float = 20000
+let bandwidth: Float = 1000
 
 struct Manager {
     static var recordingSession: AVAudioSession!
@@ -42,14 +54,14 @@ func getFileFromSandbox(filename: String) -> URL {
 }
 
 func clearToListenFiles() {
-    let fileManager = FileManager.default
+//    let fileManager = FileManager.default
     //let myDocuments = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-    do {
-        try fileManager.removeItem(at: getFileFromSandbox(filename: toListenAffirmation))
-        try fileManager.removeItem(at: getFileFromSandbox(filename: toListenAffirmationSilent))
-    } catch {
-        print(error)
-    }
+//    do {
+//        try fileManager.removeItem(at: getFileFromSandbox(filename: toListenAffirmation))
+//        try fileManager.removeItem(at: getFileFromSandbox(filename: toListenAffirmationSilent))
+//    } catch {
+//        print(error)
+//    }
 }
 
 
@@ -58,3 +70,4 @@ func getDocumentsDirectory() -> URL {
     let documentsDirectory = paths[0]
     return documentsDirectory
 }
+

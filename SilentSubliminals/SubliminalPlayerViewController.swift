@@ -32,13 +32,9 @@ class SubliminalPlayerViewController: UIViewController {
         var audioPlayer = AVAudioPlayerNode()
     }
     
-    private var audioFiles: Array<AudioFileTypes> = [AudioFileTypes(filename: toListenAffirmation, isSilent: false), AudioFileTypes(filename: toListenAffirmationSilent, isSilent: true)]
-//    private var audioFiles: Array<AudioFileTypes> = [AudioFileTypes(filename: spokenAffirmation, isSilent: false), AudioFileTypes(filename: spokenAffirmationSilent, isSilent: true)]
-    //private var audioFiles: Array<AudioFileTypes> = [AudioFileTypes(filename: outputFilenameMixed, isSilent: false), AudioFileTypes(filename: outputFilenameSilent, isSilent: true)]
-    
-    // Intro and Lead Out
-    //private var introOutroPlayer: AVAudioPlayer?
-    private var introOutroPlayerNode: AVAudioPlayerNode = AVAudioPlayerNode()
+    private var audioFiles: Array<AudioFileTypes> = [AudioFileTypes(filename: spokenAffirmation, isSilent: false), AudioFileTypes(filename: spokenAffirmationSilent, isSilent: true)]
+
+    var activePlayerNodesSet = Set<AVAudioPlayerNode>()
     
     private var audioEngine: AVAudioEngine = AVAudioEngine()
     private var mixer: AVAudioMixerNode = AVAudioMixerNode()
@@ -47,18 +43,16 @@ class SubliminalPlayerViewController: UIViewController {
     var fftSetup : vDSP_DFT_Setup?
     
     var isPlaying: Bool = false
+    var isPausing: Bool = false
     var isSilent: Bool = false
+    var affirmationIsRunning: Bool = false
     var masterVolume: Float = 0.5
+    
+    var timer: Timer?
+    let affirmationDuration = 5 * 60
     
     var audioFileBuffer: AVAudioPCMBuffer?
     var audioFrameCount: UInt32?
-    
-    struct Button {
-        static var playOnImg = UIImage(named: "playButton.png")
-        static var playOffImg = UIImage(named: "stopButton.png")
-        static var silentOnImg = UIImage(named: "earSilentIcon.png")
-        static var silentOffImg = UIImage(named: "earLoudIcon.png")
-    }
     
     let spectrumLayer = CAShapeLayer.init()
     
@@ -66,7 +60,12 @@ class SubliminalPlayerViewController: UIViewController {
     let frequencyDomainGraphLayers = [CAShapeLayer(), CAShapeLayer(),
                                       CAShapeLayer(), CAShapeLayer()]
     
+    var introLength: TimeInterval?
+    var outroLength: TimeInterval?
+    var totalLength: TimeInterval?
+    var currentTimeInterval: TimeInterval?
     
+    let audioQueue: DispatchQueue = DispatchQueue(label: "PlayerQueue", attributes: [])
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -118,44 +117,9 @@ class SubliminalPlayerViewController: UIViewController {
 //            assertionFailure("AVAudioSession setup error: \(error)")
 //        }
         
-        clearToListenFiles()
-        
-        createCompleteAudio(silent: false)
-        createCompleteAudio(silent: true)
-    }
-    
-    func createCompleteAudio(silent: Bool) {
-        
-        let audioQueue: DispatchQueue = DispatchQueue(label: "PlayerQueue", attributes: [])
-        //audioQueue.async { [self] in
-        audioQueue.async {
-            
-            let composition = AVMutableComposition()
-            let compositionAudioTrack = composition.addMutableTrack(withMediaType: AVMediaType.audio, preferredTrackID: kCMPersistentTrackID_Invalid)
-            
-            guard let intro = getFileFromMainBundle(filename: spokenIntro), let outro = getFileFromMainBundle(filename: spokenOutro) else { return }
-            let message = silent == true ? getFileFromSandbox(filename: spokenAffirmationSilent) : getFileFromSandbox(filename: spokenAffirmation)
-            let outputURL = silent == true ? getFileFromSandbox(filename: toListenAffirmationSilent) : getFileFromSandbox(filename: toListenAffirmation)
-            
-            compositionAudioTrack?.append(url: intro)
-            // TODO: loop in order to fill for example 5 minutes
-            compositionAudioTrack?.append(url: message)
-            compositionAudioTrack?.append(url: message)
-            compositionAudioTrack?.append(url: message)
-            compositionAudioTrack?.append(url: outro)
-            
-            if let assetExport = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetAppleM4A) {
-                assetExport.outputFileType = .m4a
-                assetExport.outputURL = outputURL
-                assetExport.exportAsynchronously(completionHandler: {
-                    if assetExport.status == .completed {
-                        print("Export complete")
-                    } else if assetExport.status == .failed {
-                        print("Export failed - \(String(describing: assetExport.error))")
-                    }
-                })
-            }
-        }
+
+        self.introLength = try? AVAudioFile(forReading: getFileFromMainBundle(filename: spokenIntro)!).duration
+        self.outroLength = try? AVAudioFile(forReading: getFileFromMainBundle(filename: spokenOutro)!).duration
     }
     
     
@@ -171,71 +135,10 @@ class SubliminalPlayerViewController: UIViewController {
         }
     }
     
-//    func playIntro() {
-//
-//        guard let filePath: String = Bundle.main.path(forResource: "test", ofType: "aiff") else { return }
-//        let fileURL: URL = URL(fileURLWithPath: filePath)
-//        guard let audioFile = try? AVAudioFile(forReading: fileURL) else { return }
-//
-//        let audioFormat = audioFile.processingFormat
-//        let audioFrameCount = UInt32(audioFile.length)
-//        guard let audioBuffer = AVAudioPCMBuffer(pcmFormat: audioFormat, frameCapacity: audioFrameCount)  else{ return }
-//
-//        do{
-//            try audioFile.read(into: audioBuffer)
-//        } catch{
-//            print("over")
-//        }
-//
-//        let mainMixer = audioEngine.mainMixerNode
-//        audioEngine.attach(introOutroPlayerNode)
-//        audioEngine.connect(introOutroPlayerNode, to:mainMixer, format: audioBuffer.format)
-//        try? audioEngine.start()
-//
-//        introOutroPlayerNode.installTap(onBus: 0, bufferSize: 1024, format: audioBuffer.format) {
-//            (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
-//
-//            DispatchQueue.main.async {
-//
-//                let audioSession = AVAudioSession.sharedInstance()
-//                var deviceVolume: Float?
-//
-//                do {
-//                    try audioSession.setActive(true)
-//                    deviceVolume = audioSession.outputVolume
-//                } catch {
-//                    print("Error Setting Up Audio Session")
-//                }
-//
-//                self.processAudioData(buffer: buffer)
-//                let volume = self.getVolume(from: buffer, bufferSize: 1024) * (deviceVolume ?? 0.5) * self.masterVolume
-//                self.displayVolume(volume: volume)
-//            }
-//        }
-//
-//        introOutroPlayerNode.play()
-//        introOutroPlayerNode.volume = masterVolume
-//        introOutroPlayerNode.scheduleBuffer(audioBuffer, completionHandler: {
-//            DispatchQueue.main.async {
-//
-//                self.audioEngine.stop()
-//                self.startPlaying()
-//            }
-//        })
-//    }
-//
-//
-//    func playLeadOut() {
-//
-//    }
-    
-    
     @IBAction func playButtonTouchUpInside(_ sender: Any) {
         
         if isPlaying == false {
             startPlaying()
-            //playIntro()
-            playButton.setImage(Button.playOffImg, for: .normal)
             isPlaying = true
         } else {
             stopPlaying()
@@ -245,42 +148,159 @@ class SubliminalPlayerViewController: UIViewController {
     
     
     func startPlaying() {
- 
-        // https://medium.com/@ian.mundy/audio-mixing-on-ios-4cd51dfaac9a
-        // do work in a background thread
-        let audioQueue: DispatchQueue = DispatchQueue(label: "PlayerQueue", attributes: [])
+        
+        playButton.setImage(Button.playOffImg, for: .normal)
+        
+        if isPausing == true {
+            
+            for playerNode in activePlayerNodesSet {
+                playerNode.play()
+            }
+            
+            return
+        }
+        
+        self.playInduction(type: Induction.Intro) {_ in
+            print("Intro terminated")
+            self.affirmationIsRunning = true
+            self.playAffirmationLoop {_ in
+                print("Affirmation terminated")
+                self.affirmationIsRunning = false
+                self.timer?.invalidate()
+                self.timer = nil
+                self.playInduction(type: Induction.Outro) { [self]_ in
+                    print("Outro terminated")
+                    isPausing = false
+                    isPlaying = false
+                    DispatchQueue.main.async {
+                        self.playButton.setImage(Button.playOnImg, for: .normal)
+                    }
+                }
+            }
+        }
+    }
+    
+    func stopPlaying() {
+        
+        for playerNode in activePlayerNodesSet {
+            playerNode.pause()
+            //self.timer?.invalidate()
+        }
+        
+        self.playButton.setImage(Button.playOnImg, for: .normal)
+        
+//        for audioFile in self.audioFiles {
+//            let audioPlayer = audioFile.audioPlayer
+//            audioPlayer.pause()
+//        }
+        
+        //audioPlayerNode.pause()
+        //audioPlayerNode.removeTap(onBus: 0)
+
+        //audioPlayerNodeIntroOutro.stop()
+        //self.audioEngine.pause()
+
+        // TODO: later, set to false again
+        isPausing = true
+        
+        //self.timer?.invalidate()
+    }
+    
+    func playInduction(type: Induction, completion: @escaping (Bool) -> Void) {
+        
+        audioQueue.async {
+            
+            let audioPlayerNode = AVAudioPlayerNode()
+            self.activePlayerNodesSet.insert(audioPlayerNode)
+            
+            //self.audioEngine.detach(self.audioPlayerNode)
+            self.audioEngine.stop()
+            self.audioEngine.attach(audioPlayerNode)
+            
+            let filename = type == .Intro ? spokenIntro : spokenOutro
+            
+            let avAudioFile = try! AVAudioFile(forReading: getFileFromMainBundle(filename: filename)!)
+            let format =  AVAudioFormat(standardFormatWithSampleRate: avAudioFile.fileFormat.sampleRate, channels: avAudioFile.fileFormat.channelCount)
+            
+            audioPlayerNode.removeTap(onBus: 0)
+            
+            self.audioEngine.connect(audioPlayerNode, to: self.audioEngine.outputNode, format: format)
+            try! self.audioEngine.start()
+            
+            let audioSession = AVAudioSession.sharedInstance()
+            var deviceVolume: Float?
+            
+            do {
+                try audioSession.setActive(true)
+                deviceVolume = audioSession.outputVolume
+            } catch {
+                print("Error Setting Up Audio Session")
+            }
+            
+            audioPlayerNode.installTap(onBus: 0, bufferSize: 1024, format: format) {
+                (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
+
+                DispatchQueue.main.async {
+
+                    self.processAudioData(buffer: buffer)
+
+                    let volume = self.getVolume(from: buffer, bufferSize: 1024) * (deviceVolume ?? 0.5) * self.masterVolume
+                    self.displayVolume(volume: volume)
+                }
+            }
+            
+            let audioFileBuffer = AVAudioPCMBuffer(pcmFormat: avAudioFile.processingFormat, frameCapacity: AVAudioFrameCount(avAudioFile.length))!
+            try! avAudioFile.read(into: audioFileBuffer)
+            
+            audioPlayerNode.scheduleBuffer(audioFileBuffer, completionHandler: {
+                //self.audioEngine.stop()
+                self.activePlayerNodesSet.remove(audioPlayerNode)
+                completion(true)
+            })
+            
+            audioPlayerNode.scheduleFile(avAudioFile, at: nil, completionHandler: nil)
+            audioPlayerNode.play()
+        }
+    }
+    
+    func playAffirmationLoop(completion: @escaping (Bool) -> Void) {
+        
+        var elpasedTime = 0
+        
         audioQueue.async {
             do {
                 
-                let lowPass = self.equalizerHighPass.bands[0]
-                lowPass.filterType = .highPass
-                lowPass.frequency = Float(modulationFrequency)
-                lowPass.bandwidth = 200
-                lowPass.bypass = false
-                
+                let highPass = self.equalizerHighPass.bands[0]
+                highPass.filterType = .highPass
+                highPass.frequency = modulationFrequency
+                highPass.bandwidth = bandwidth
+                highPass.bypass = false
+
                 self.audioEngine.attach(self.equalizerHighPass)
                 self.audioEngine.attach(self.mixer)
                 
                 // !important - start the engine *before* setting up the player nodes
                 //try self.audioEngine.start()
+                self.audioEngine.stop()
                 
                 for audioFile in self.audioFiles {
                     //self.audioEngine.stop()
                     // Create and attach the audioPlayer node for this file
-                    let audioPlayer = audioFile.audioPlayer
-                    self.audioEngine.attach(audioPlayer)
+                    let audioPlayerNode = audioFile.audioPlayer
+                    self.activePlayerNodesSet.insert(audioPlayerNode)
+                    self.audioEngine.attach(audioPlayerNode)
                     
                     let avAudioFile = try AVAudioFile(forReading: getFileFromSandbox(filename: audioFile.filename))
                     let format =  AVAudioFormat(standardFormatWithSampleRate: avAudioFile.fileFormat.sampleRate, channels: avAudioFile.fileFormat.channelCount)
                     
-                    audioPlayer.removeTap(onBus: 0)
+                    audioPlayerNode.removeTap(onBus: 0)
                     
                     if audioFile.isSilent {
-                        self.audioEngine.connect(audioPlayer, to: self.equalizerHighPass, format: format)
+                        self.audioEngine.connect(audioPlayerNode, to: self.equalizerHighPass, format: format)
                         self.audioEngine.connect(self.equalizerHighPass, to: self.mixer, format: format)
-                        
+
                     } else {
-                        self.audioEngine.connect(audioPlayer, to: self.mixer, format: format)
+                        self.audioEngine.connect(audioPlayerNode, to: self.mixer, format: format)
                     }
                     
                     self.audioEngine.connect(self.mixer, to: self.audioEngine.outputNode, format: format)
@@ -291,26 +311,38 @@ class SubliminalPlayerViewController: UIViewController {
                     let audioFileBuffer = AVAudioPCMBuffer(pcmFormat: avAudioFile.processingFormat, frameCapacity: AVAudioFrameCount(avAudioFile.length))!
                     try avAudioFile.read(into: audioFileBuffer)
                     
-                    audioPlayer.scheduleBuffer(audioFileBuffer, at: nil, options:.loops, completionHandler: nil)
-                    audioPlayer.scheduleFile(avAudioFile, at: nil, completionHandler: nil)
+                    audioPlayerNode.scheduleBuffer(audioFileBuffer, at: nil, options:.loops, completionHandler: nil)
+                    audioPlayerNode.play()
                     
-                    audioPlayer.play()
+                    DispatchQueue.main.async {
+                        
+                        if self.timer != nil { return }
+                        
+                        self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+                            print(elpasedTime)
+                            elpasedTime += 1
+                            
+                            if Int(audioPlayerNode.current) >= self.affirmationDuration {
+                                self.activePlayerNodesSet = Set<AVAudioPlayerNode>()
+                                audioPlayerNode.stop()
+                                self.audioEngine.stop()
+                                completion(true)
+                            }
+                            
+//                            if elpasedTime > self.affirmationDuration {
+//                                self.activePlayerNodesSet = Set<AVAudioPlayerNode>()
+//                                audioPlayerNode.stop()
+//                                self.audioEngine.stop()
+//                                timer.invalidate()
+//                                completion(true)
+//                            }
+                        }
+                    }
                 }
             } catch {
                 print("File read error", error)
             }
         }
-        
-    }
-    
-    func stopPlaying() {
-        
-        self.playButton.setImage(Button.playOnImg, for: .normal)
-        for audioFile in self.audioFiles {
-            let audioPlayer = audioFile.audioPlayer
-            audioPlayer.stop()
-        }
-        self.audioEngine.stop()
     }
     
     @IBAction func silentButtonTouched(_ sender: Any) {
@@ -328,7 +360,7 @@ class SubliminalPlayerViewController: UIViewController {
     }
     
     fileprivate func switchAndAnalyze(audioFile: SubliminalPlayerViewController.AudioFileTypes) {
-        
+        if !affirmationIsRunning { return }
         if !self.audioEngine.isRunning { return }
         
         let audioPlayer = audioFile.audioPlayer
@@ -343,25 +375,42 @@ class SubliminalPlayerViewController: UIViewController {
         
         let audioSession = AVAudioSession.sharedInstance()
         var deviceVolume: Float?
+        
+        do {
+            try audioSession.setActive(true)
+            deviceVolume = audioSession.outputVolume
+        } catch {
+            print("Error Setting Up Audio Session")
+        }
 
         if self.isSilent && audioFile.isSilent || !self.isSilent && !audioFile.isSilent {
+            
+            //self.equalizerHighPass.bypass = true
 
             audioPlayer.installTap(onBus: 0, bufferSize: 1024, format: format) {
                 (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
-                
-                do {
-                    try audioSession.setActive(true)
-                    deviceVolume = audioSession.outputVolume
-                } catch {
-                    print("Error Setting Up Audio Session")
-                }
-                
+  
                 DispatchQueue.main.async {
                     
                     self.processAudioData(buffer: buffer)
 
                     let volume = self.getVolume(from: buffer, bufferSize: 1024) * (deviceVolume ?? 0.5) * self.masterVolume
                     self.displayVolume(volume: volume)
+                    
+//                    self.currentTimeInterval = audioPlayer.current
+//
+//                    if audioPlayer.current > self.introLength! && audioPlayer.current < (self.totalLength! - self.outroLength!) {
+//                        self.equalizerHighPass.bypass = false
+//                        //print("************** MESSAGE *****************")
+//                    } else {
+//                        //print("************** INTRO / OUTRO *****************")
+//                        self.equalizerHighPass.bypass = true
+//                    }
+//
+//                    if audioPlayer.current >= self.totalLength! {
+//                        print("************** END *****************")
+//                        self.isPausing = false
+//                    }
                 }
             }
         }
@@ -381,8 +430,7 @@ class SubliminalPlayerViewController: UIViewController {
     @IBAction func volumeSliderChanged(_ sender: Any) {
         
         masterVolume = Float(volumeSlider.value)
-        introOutroPlayerNode.volume = masterVolume
-        
+
         for audioFile in self.audioFiles {
             let audioPlayer = audioFile.audioPlayer
             audioPlayer.volume = audioFile.isSilent ? (isSilent ? masterVolume : 0) : (isSilent ? 0 : masterVolume)
@@ -433,8 +481,10 @@ class SubliminalPlayerViewController: UIViewController {
         
         let rmsValue = SignalProcessing.rms(data: channelData, frameLength: UInt(frames))
         
+        if rmsValue == -.infinity { return }
         
         spectrumLayer.removeFromSuperlayer()
+        
         
         //fft
         let fftMagnitudes: [Float] =  SignalProcessing.fft(data: channelData, setup: fftSetup!)
@@ -450,6 +500,8 @@ class SubliminalPlayerViewController: UIViewController {
                 maxFFT = magn.magnitude
             }
         }
+        
+        if maxFFT == 0 { return }
         
         path.move(to: CGPoint(x: 0, y: height))
         
@@ -560,5 +612,33 @@ extension AVMutableCompositionTrack {
         if let track = newAsset.tracks(withMediaType: AVMediaType.audio).first {
             try! insertTimeRange(range, of: track, at: end)
         }
+    }
+}
+
+extension AVAudioFile {
+
+    var duration: TimeInterval {
+        let sampleRateSong = Double(processingFormat.sampleRate)
+        let lengthSongSeconds = Double(length) / sampleRateSong
+        print("**********************")
+        print(length)
+        return lengthSongSeconds
+    }
+}
+
+extension AVAudioPlayerNode {
+
+    var current: TimeInterval {
+        if let nodeTime = lastRenderTime,let playerTime = playerTime(forNodeTime: nodeTime) {
+            return Double(playerTime.sampleTime) / playerTime.sampleRate
+        }
+        return 0
+    }
+}
+
+extension AVPlayer {
+
+    var isPlaying2: Bool {
+        return ((rate != 0) && (error == nil))
     }
 }
