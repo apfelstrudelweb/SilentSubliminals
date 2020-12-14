@@ -51,7 +51,7 @@
 		652D5C592546B6170083165B /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		654F42CD258623C10065D490 /* intro.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = intro.aiff; sourceTree = "<group>"; };
 		654F42CE258623C10065D490 /* outro.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = outro.aiff; sourceTree = "<group>"; };
-		6558D30524684934004E8660 /* SilentSubliminals.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SilentSubliminals.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6558D30524684934004E8660 /* FREE UR SPIRIT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FREE UR SPIRIT.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6558D30824684934004E8660 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6558D30A24684934004E8660 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		6558D30C24684934004E8660 /* SubliminalMakerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubliminalMakerViewController.swift; sourceTree = "<group>"; };
@@ -138,7 +138,7 @@
 		6558D30624684934004E8660 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6558D30524684934004E8660 /* SilentSubliminals.app */,
+				6558D30524684934004E8660 /* FREE UR SPIRIT.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -213,9 +213,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		6558D30424684934004E8660 /* SilentSubliminals */ = {
+		6558D30424684934004E8660 /* FREE UR SPIRIT */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6558D31924684935004E8660 /* Build configuration list for PBXNativeTarget "SilentSubliminals" */;
+			buildConfigurationList = 6558D31924684935004E8660 /* Build configuration list for PBXNativeTarget "FREE UR SPIRIT" */;
 			buildPhases = (
 				70C920A2F5C9B447BCE5106E /* [CP] Check Pods Manifest.lock */,
 				6558D30124684934004E8660 /* Sources */,
@@ -227,9 +227,9 @@
 			);
 			dependencies = (
 			);
-			name = SilentSubliminals;
+			name = "FREE UR SPIRIT";
 			productName = SilentSubliminals;
-			productReference = 6558D30524684934004E8660 /* SilentSubliminals.app */;
+			productReference = 6558D30524684934004E8660 /* FREE UR SPIRIT.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -261,7 +261,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6558D30424684934004E8660 /* SilentSubliminals */,
+				6558D30424684934004E8660 /* FREE UR SPIRIT */,
 			);
 		};
 /* End PBXProject section */
@@ -558,7 +558,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6558D31924684935004E8660 /* Build configuration list for PBXNativeTarget "SilentSubliminals" */ = {
+		6558D31924684935004E8660 /* Build configuration list for PBXNativeTarget "FREE UR SPIRIT" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6558D31A24684935004E8660 /* Debug */,

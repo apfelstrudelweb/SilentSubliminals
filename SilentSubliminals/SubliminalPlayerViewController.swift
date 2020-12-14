@@ -18,6 +18,7 @@ class SubliminalPlayerViewController: UIViewController {
     @IBOutlet weak var graphView: UIView!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var silentButton: UIButton!
+    @IBOutlet weak var resetButton: UIButton!
     
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var playerView: RoundedView!
@@ -42,6 +43,7 @@ class SubliminalPlayerViewController: UIViewController {
     
     var fftSetup : vDSP_DFT_Setup?
     
+    var isStopped: Bool = false
     var isPlaying: Bool = false
     var isPausing: Bool = false
     var isSilent: Bool = false
@@ -86,6 +88,8 @@ class SubliminalPlayerViewController: UIViewController {
         soundView.imageView = backgroundImageView
         
         volumeSlider.value = masterVolume
+        
+        //resetButton.isEnabled = false
         
         let colors = [UIColor.blue, UIColor.green, UIColor.yellow, UIColor.red]
         self.maskView.backgroundColor = .white
@@ -141,13 +145,15 @@ class SubliminalPlayerViewController: UIViewController {
             startPlaying()
             isPlaying = true
         } else {
-            stopPlaying()
+            pausePlaying()
             isPlaying = false
         }
     }
     
     
     func startPlaying() {
+        
+        isStopped = false
         
         playButton.setImage(Button.playOffImg, for: .normal)
         
@@ -163,6 +169,12 @@ class SubliminalPlayerViewController: UIViewController {
         self.playInduction(type: Induction.Intro) {_ in
             print("Intro terminated")
             self.affirmationIsRunning = true
+            DispatchQueue.main.async {
+                self.resetButton.isEnabled = true
+            }
+            
+            if self.isStopped { return }
+            
             self.playAffirmationLoop {_ in
                 print("Affirmation terminated")
                 self.affirmationIsRunning = false
@@ -174,36 +186,38 @@ class SubliminalPlayerViewController: UIViewController {
                     isPlaying = false
                     DispatchQueue.main.async {
                         self.playButton.setImage(Button.playOnImg, for: .normal)
+                        self.resetButton.isEnabled = false
                     }
                 }
             }
         }
     }
     
-    func stopPlaying() {
+    func pausePlaying() {
         
         for playerNode in activePlayerNodesSet {
             playerNode.pause()
-            //self.timer?.invalidate()
         }
         
         self.playButton.setImage(Button.playOnImg, for: .normal)
-        
-//        for audioFile in self.audioFiles {
-//            let audioPlayer = audioFile.audioPlayer
-//            audioPlayer.pause()
-//        }
-        
-        //audioPlayerNode.pause()
-        //audioPlayerNode.removeTap(onBus: 0)
-
-        //audioPlayerNodeIntroOutro.stop()
-        //self.audioEngine.pause()
-
-        // TODO: later, set to false again
         isPausing = true
+    }
+    
+    func stopPlaying() {
         
-        //self.timer?.invalidate()
+        isStopped = true
+        
+        for playerNode in activePlayerNodesSet {
+            playerNode.stop()
+        }
+        self.audioEngine.stop()
+        
+        activePlayerNodesSet = Set<AVAudioPlayerNode>()
+        
+        self.playButton.setImage(Button.playOnImg, for: .normal)
+        self.resetButton.isEnabled = false
+        isPausing = false
+        isPlaying = false
     }
     
     func playInduction(type: Induction, completion: @escaping (Bool) -> Void) {
@@ -213,18 +227,19 @@ class SubliminalPlayerViewController: UIViewController {
             let audioPlayerNode = AVAudioPlayerNode()
             self.activePlayerNodesSet.insert(audioPlayerNode)
             
-            //self.audioEngine.detach(self.audioPlayerNode)
-            self.audioEngine.stop()
+            self.audioEngine.attach(self.mixer)
             self.audioEngine.attach(audioPlayerNode)
             
+            self.audioEngine.stop()
+
             let filename = type == .Intro ? spokenIntro : spokenOutro
             
             let avAudioFile = try! AVAudioFile(forReading: getFileFromMainBundle(filename: filename)!)
             let format =  AVAudioFormat(standardFormatWithSampleRate: avAudioFile.fileFormat.sampleRate, channels: avAudioFile.fileFormat.channelCount)
             
-            audioPlayerNode.removeTap(onBus: 0)
+            self.audioEngine.connect(audioPlayerNode, to: self.mixer, format: format)
+            self.audioEngine.connect(self.mixer, to: self.audioEngine.outputNode, format: format)
             
-            self.audioEngine.connect(audioPlayerNode, to: self.audioEngine.outputNode, format: format)
             try! self.audioEngine.start()
             
             let audioSession = AVAudioSession.sharedInstance()
@@ -328,14 +343,6 @@ class SubliminalPlayerViewController: UIViewController {
                                 self.audioEngine.stop()
                                 completion(true)
                             }
-                            
-//                            if elpasedTime > self.affirmationDuration {
-//                                self.activePlayerNodesSet = Set<AVAudioPlayerNode>()
-//                                audioPlayerNode.stop()
-//                                self.audioEngine.stop()
-//                                timer.invalidate()
-//                                completion(true)
-//                            }
                         }
                     }
                 }
@@ -343,6 +350,12 @@ class SubliminalPlayerViewController: UIViewController {
                 print("File read error", error)
             }
         }
+    }
+    
+    
+    @IBAction func resetButtonTouched(_ sender: Any) {
+        
+        stopPlaying()
     }
     
     @IBAction func silentButtonTouched(_ sender: Any) {
@@ -384,8 +397,6 @@ class SubliminalPlayerViewController: UIViewController {
         }
 
         if self.isSilent && audioFile.isSilent || !self.isSilent && !audioFile.isSilent {
-            
-            //self.equalizerHighPass.bypass = true
 
             audioPlayer.installTap(onBus: 0, bufferSize: 1024, format: format) {
                 (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
@@ -396,21 +407,6 @@ class SubliminalPlayerViewController: UIViewController {
 
                     let volume = self.getVolume(from: buffer, bufferSize: 1024) * (deviceVolume ?? 0.5) * self.masterVolume
                     self.displayVolume(volume: volume)
-                    
-//                    self.currentTimeInterval = audioPlayer.current
-//
-//                    if audioPlayer.current > self.introLength! && audioPlayer.current < (self.totalLength! - self.outroLength!) {
-//                        self.equalizerHighPass.bypass = false
-//                        //print("************** MESSAGE *****************")
-//                    } else {
-//                        //print("************** INTRO / OUTRO *****************")
-//                        self.equalizerHighPass.bypass = true
-//                    }
-//
-//                    if audioPlayer.current >= self.totalLength! {
-//                        print("************** END *****************")
-//                        self.isPausing = false
-//                    }
                 }
             }
         }
@@ -430,7 +426,12 @@ class SubliminalPlayerViewController: UIViewController {
     @IBAction func volumeSliderChanged(_ sender: Any) {
         
         masterVolume = Float(volumeSlider.value)
+        
 
+        for playerNode in activePlayerNodesSet {
+            playerNode.volume = masterVolume
+            //print(playerNode.volume)
+        }
         for audioFile in self.audioFiles {
             let audioPlayer = audioFile.audioPlayer
             audioPlayer.volume = audioFile.isSilent ? (isSilent ? masterVolume : 0) : (isSilent ? 0 : masterVolume)
