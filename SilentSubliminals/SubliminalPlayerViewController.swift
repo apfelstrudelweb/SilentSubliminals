@@ -46,12 +46,12 @@ class SubliminalPlayerViewController: UIViewController {
     var isStopped: Bool = false
     var isPlaying: Bool = false
     var isPausing: Bool = false
-    var isSilent: Bool = false
+    var isSilentMode: Bool = false
     var affirmationIsRunning: Bool = false
     var masterVolume: Float = 0.5
     
     var timer: Timer?
-    let affirmationDuration = 5 * 60
+    let affirmationLoopDuration = 5 * 60
     
     var audioFileBuffer: AVAudioPCMBuffer?
     var audioFrameCount: UInt32?
@@ -62,8 +62,9 @@ class SubliminalPlayerViewController: UIViewController {
     let frequencyDomainGraphLayers = [CAShapeLayer(), CAShapeLayer(),
                                       CAShapeLayer(), CAShapeLayer()]
     
-    var introLength: TimeInterval?
-    var outroLength: TimeInterval?
+    var introDuration: TimeInterval?
+    var outroDuration: TimeInterval?
+    var singleAffirmationDuration: TimeInterval?
     var totalLength: TimeInterval?
     var currentTimeInterval: TimeInterval?
     
@@ -122,13 +123,20 @@ class SubliminalPlayerViewController: UIViewController {
 //        }
         
 
-        self.introLength = try? AVAudioFile(forReading: getFileFromMainBundle(filename: spokenIntro)!).duration
-        self.outroLength = try? AVAudioFile(forReading: getFileFromMainBundle(filename: spokenOutro)!).duration
+        self.introDuration = try? AVAudioFile(forReading: getFileFromMainBundle(filename: spokenIntro)!).duration
+        self.outroDuration = try? AVAudioFile(forReading: getFileFromMainBundle(filename: spokenOutro)!).duration
+        self.singleAffirmationDuration = try? AVAudioFile(forReading: getFileFromSandbox(filename: spokenAffirmation)).duration
+        
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        stopPlaying()
     }
     
     override func viewDidLayoutSubviews() {
@@ -329,15 +337,37 @@ class SubliminalPlayerViewController: UIViewController {
                     audioPlayerNode.scheduleBuffer(audioFileBuffer, at: nil, options:.loops, completionHandler: nil)
                     audioPlayerNode.play()
                     
+                    var switchedAutomaticallyToSilent = false
+                    
                     DispatchQueue.main.async {
                         
                         if self.timer != nil { return }
                         
-                        self.timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+                        self.timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { timer in
                             print(elpasedTime)
                             elpasedTime += 1
                             
-                            if Int(audioPlayerNode.current) >= self.affirmationDuration {
+                            if audioPlayerNode.current <= self.singleAffirmationDuration! {
+                                // loud
+                                self.isSilentMode = false
+                                for audioFile in self.audioFiles {
+                                    self.switchAndAnalyze(audioFile: audioFile)
+                                }
+                                self.silentButton.setImage(Button.silentOffImg, for: .normal)
+                            } else {
+                                // silent
+                                if !switchedAutomaticallyToSilent {
+                                    self.isSilentMode = true
+                                    for audioFile in self.audioFiles {
+                                        self.switchAndAnalyze(audioFile: audioFile)
+                                    }
+                                    switchedAutomaticallyToSilent = true
+                                    self.silentButton.setImage(Button.silentOnImg, for: .normal)
+                                }
+                            }
+
+                            
+                            if Int(audioPlayerNode.current) >= self.affirmationLoopDuration {
                                 self.activePlayerNodesSet = Set<AVAudioPlayerNode>()
                                 audioPlayerNode.stop()
                                 self.audioEngine.stop()
@@ -360,14 +390,11 @@ class SubliminalPlayerViewController: UIViewController {
     
     @IBAction func silentButtonTouched(_ sender: Any) {
         
-        isSilent = !isSilent
+        isSilentMode = !isSilentMode
         
-        let buttonImage = isSilent ? Button.silentOnImg : Button.silentOffImg
-        
+        let buttonImage = isSilentMode ? Button.silentOnImg : Button.silentOffImg
         self.silentButton.setImage(buttonImage, for: .normal)
-        
         for audioFile in self.audioFiles {
-            
             self.switchAndAnalyze(audioFile: audioFile)
         }
     }
@@ -377,13 +404,13 @@ class SubliminalPlayerViewController: UIViewController {
         if !self.audioEngine.isRunning { return }
         
         let audioPlayer = audioFile.audioPlayer
-        audioPlayer.volume = audioFile.isSilent ? (isSilent ? masterVolume : 0) : (isSilent ? 0 : masterVolume)
+        audioPlayer.volume = audioFile.isSilent ? (isSilentMode ? masterVolume : 0) : (isSilentMode ? 0 : masterVolume)
         
         let audioFilename = getFileFromSandbox(filename: audioFile.filename)
         let avAudioFile = try! AVAudioFile(forReading: audioFilename)
         let format =  AVAudioFormat(standardFormatWithSampleRate: avAudioFile.fileFormat.sampleRate, channels: avAudioFile.fileFormat.channelCount)
         
-        audioPlayer.volume = audioFile.isSilent ? (self.isSilent ? self.masterVolume : 0) : (self.isSilent ? 0 : self.masterVolume)
+        audioPlayer.volume = audioFile.isSilent ? (self.isSilentMode ? self.masterVolume : 0) : (self.isSilentMode ? 0 : self.masterVolume)
         audioPlayer.removeTap(onBus: 0)
         
         let audioSession = AVAudioSession.sharedInstance()
@@ -396,7 +423,7 @@ class SubliminalPlayerViewController: UIViewController {
             print("Error Setting Up Audio Session")
         }
 
-        if self.isSilent && audioFile.isSilent || !self.isSilent && !audioFile.isSilent {
+        if self.isSilentMode && audioFile.isSilent || !self.isSilentMode && !audioFile.isSilent {
 
             audioPlayer.installTap(onBus: 0, bufferSize: 1024, format: format) {
                 (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
@@ -434,7 +461,7 @@ class SubliminalPlayerViewController: UIViewController {
         }
         for audioFile in self.audioFiles {
             let audioPlayer = audioFile.audioPlayer
-            audioPlayer.volume = audioFile.isSilent ? (isSilent ? masterVolume : 0) : (isSilent ? 0 : masterVolume)
+            audioPlayer.volume = audioFile.isSilent ? (isSilentMode ? masterVolume : 0) : (isSilentMode ? 0 : masterVolume)
         }
     }
     

@@ -32,13 +32,7 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
     var isRecording: Bool = false
     var isPlaying: Bool = false
     
-    struct Button {
-        static var micOnImg = UIImage(named: "startRecordingButton.png")
-        static var micOffImg = UIImage(named: "stopRecordingButton.png")
-        static var playOnImg = UIImage(named: "playButton.png")
-        static var playOffImg = UIImage(named: "stopButton.png")
-    }
-    
+
     var recording: Bool = false
     var playing: Bool = false
     

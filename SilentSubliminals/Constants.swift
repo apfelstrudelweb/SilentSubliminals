@@ -19,10 +19,12 @@ let spokenAffirmation: String = "spokenAffirmation.caf"
 let spokenAffirmationSilent: String = "spokenAffirmationSilent.caf"
 
 struct Button {
-    static var playOnImg = UIImage(named: "playButton.png")
-    static var playOffImg = UIImage(named: "stopButton.png")
-    static var silentOnImg = UIImage(named: "earSilentIcon.png")
-    static var silentOffImg = UIImage(named: "earLoudIcon.png")
+    static var playOnImg = UIImage(named: "playIcon.svg")
+    static var playOffImg = UIImage(named: "stopIcon.svg")
+    static var silentOnImg = UIImage(named: "earSilentIcon.svg")
+    static var silentOffImg = UIImage(named: "earLoudIcon.svg")
+    static var micOnImg = UIImage(named: "startRecordingButton.png")
+    static var micOffImg = UIImage(named: "stopRecordingButton.png")
 }
 
 enum Induction {

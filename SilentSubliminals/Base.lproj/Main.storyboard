@@ -79,18 +79,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view alpha="0.75" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yvy-h8-CaA" userLabel="Player View" customClass="ShadowView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                <rect key="frame" x="20" y="135.33333333333331" width="377" height="179.33333333333331"/>
+                                <rect key="frame" x="20" y="135.33333333333331" width="378" height="179.33333333333331"/>
                                 <subviews>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mdr-3Q-yuN">
-                                        <rect key="frame" x="0.0" y="89.666666666666657" width="377" height="89.666666666666657"/>
+                                        <rect key="frame" x="0.0" y="89.666666666666657" width="378" height="89.666666666666657"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2kD-4u-X7j">
-                                                <rect key="frame" x="306" y="21.333333333333343" width="47" height="47"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2kD-4u-X7j" customClass="ShadowButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                <rect key="frame" x="306" y="20.666666666666657" width="48" height="48"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="2kD-4u-X7j" secondAttribute="height" multiplier="1:1" id="h0W-f1-WMi"/>
-                                                    <constraint firstAttribute="width" constant="47" id="y6g-NE-9cC"/>
+                                                    <constraint firstAttribute="width" constant="48" id="y6g-NE-9cC"/>
                                                 </constraints>
-                                                <state key="normal" image="playButton.png"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" image="playIcon"/>
                                                 <connections>
                                                     <action selector="playButtonTouched:" destination="BYZ-38-t0r" eventType="touchUpInside" id="g5C-MF-wHg"/>
                                                 </connections>
@@ -163,7 +164,7 @@
                                         </variation>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X4C-zh-GbL">
-                                        <rect key="frame" x="0.0" y="0.0" width="377" height="89.666666666666671"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="378" height="89.666666666666671"/>
                                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                 </subviews>
@@ -180,7 +181,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create your script" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="z8r-ZA-9nh">
-                                <rect key="frame" x="20" y="388.66666666666669" width="301.66666666666669" height="29"/>
+                                <rect key="frame" x="20" y="388.66666666666669" width="302.33333333333331" height="29"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="24"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -189,7 +190,7 @@
                                 </variation>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H1h-4Z-2C0">
-                                <rect key="frame" x="352.33333333333331" y="380.66666666666669" width="44.666666666666686" height="45"/>
+                                <rect key="frame" x="353.33333333333331" y="380.66666666666669" width="44.666666666666686" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="H1h-4Z-2C0" secondAttribute="height" id="blw-3e-pod"/>
                                 </constraints>
@@ -199,7 +200,7 @@
                                 </connections>
                             </button>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KHd-hc-lYm">
-                                <rect key="frame" x="20" y="492.66666666666663" width="377" height="313.66666666666663"/>
+                                <rect key="frame" x="20" y="492.66666666666663" width="378" height="313.66666666666663"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <segue destination="HOc-7b-b6k" kind="embed" id="uhL-Bl-3aJ"/>
@@ -261,14 +262,14 @@
             <objects>
                 <viewController id="HOc-7b-b6k" customClass="ScriptViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="avG-j5-3Gc">
-                        <rect key="frame" x="0.0" y="0.0" width="377" height="313.66666666666669"/>
+                        <rect key="frame" x="0.0" y="0.0" width="378" height="314"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GEd-oc-aDl" customClass="ShadowView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="31.333333333333343" width="377" height="282.33333333333326"/>
+                                <rect key="frame" x="0.0" y="31.333333333333343" width="378" height="282.33333333333326"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Iz0-AX-dXj">
-                                        <rect key="frame" x="0.0" y="0.0" width="377" height="226"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="378" height="226"/>
                                         <color key="backgroundColor" red="0.61338037249999999" green="0.64416187999999996" blue="0.68199056390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <string key="text">I’m releasing all my fears and worries. I’m living my full potential.
 
@@ -289,7 +290,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jaw Relaxation" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L9L-jU-5pK">
-                                <rect key="frame" x="0.0" y="0.0" width="377" height="31.333333333333332"/>
+                                <rect key="frame" x="0.0" y="0.0" width="378" height="31.333333333333332"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="24"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -298,10 +299,10 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                 </variation>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JOn-ae-Wv5">
-                                <rect key="frame" x="0.0" y="257.33333333333331" width="377" height="56.333333333333314"/>
+                                <rect key="frame" x="0.0" y="257.33333333333331" width="378" height="56.333333333333314"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="50C-8g-wow">
-                                        <rect key="frame" x="0.0" y="-3.9999999999999716" width="181" height="45.333333333333336"/>
+                                        <rect key="frame" x="0.0" y="-3.9999999999999716" width="181.33333333333334" height="45.333333333333336"/>
                                         <color key="backgroundColor" red="0.28600493069999999" green="0.26861456039999998" blue="0.26840257639999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                         <state key="normal" title="Save">
@@ -312,7 +313,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                         </variation>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J1l-Ma-ooR">
-                                        <rect key="frame" x="196" y="-3.9999999999999716" width="181" height="45.333333333333336"/>
+                                        <rect key="frame" x="196.66666666666663" y="-3.9999999999999716" width="181.33333333333337" height="45.333333333333336"/>
                                         <color key="backgroundColor" red="0.28600493069999999" green="0.26861456039999998" blue="0.26840257639999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                         <state key="normal" title="Export">
@@ -511,40 +512,43 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                 <rect key="frame" x="0.0" y="0.0" width="374" height="194.66666666666666"/>
                                                 <subviews>
                                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="MCu-q1-tlA">
-                                                        <rect key="frame" x="34" y="141.33333333333331" width="290" height="31"/>
+                                                        <rect key="frame" x="34" y="153.33333333333331" width="290" height="31"/>
                                                         <color key="tintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <connections>
                                                             <action selector="volumeSliderChanged:" destination="Wlk-fN-YWe" eventType="valueChanged" id="nML-Cs-o0J"/>
                                                         </connections>
                                                     </slider>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jaw Relaxation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eI0-MH-Rsd">
-                                                        <rect key="frame" x="118.33333333333333" y="108.33333333333331" width="137.33333333333337" height="24"/>
+                                                        <rect key="frame" x="118.33333333333333" y="120.33333333333331" width="137.33333333333337" height="24"/>
                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                                         <color key="textColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loudspeakerLowSymbol" translatesAutoresizingMaskIntoConstraints="NO" id="nxf-ce-GFG">
-                                                        <rect key="frame" x="12" y="149.33333333333331" width="10" height="14"/>
+                                                        <rect key="frame" x="12" y="161.33333333333331" width="10" height="14"/>
                                                         <color key="tintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="10" id="Rjc-Xs-I5t"/>
                                                         </constraints>
                                                     </imageView>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loudspeakerHighSymbol" translatesAutoresizingMaskIntoConstraints="NO" id="nSG-D6-S8T">
-                                                        <rect key="frame" x="335" y="140.33333333333331" width="27" height="32"/>
+                                                        <rect key="frame" x="335" y="152.33333333333331" width="27" height="32"/>
                                                         <color key="tintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="32" id="D4u-ai-2Tj"/>
                                                             <constraint firstAttribute="width" constant="27" id="tlU-Lb-YXm"/>
                                                         </constraints>
                                                     </imageView>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SKF-7G-fNA">
-                                                        <rect key="frame" x="167" y="66.333333333333314" width="40" height="40"/>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SKF-7G-fNA" customClass="ShadowButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                        <rect key="frame" x="163" y="66.333333333333314" width="48" height="48"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="40" id="tox-yo-yKS"/>
-                                                            <constraint firstAttribute="width" constant="40" id="vpS-wC-7lm"/>
+                                                            <constraint firstAttribute="height" constant="48" id="tox-yo-yKS"/>
+                                                            <constraint firstAttribute="width" constant="48" id="vpS-wC-7lm"/>
                                                         </constraints>
-                                                        <state key="normal" image="playButton.png"/>
+                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <state key="normal" image="playIcon">
+                                                            <color key="titleShadowColor" red="0.61338037249999999" green="0.64416187999999996" blue="0.68199056390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
                                                         <connections>
                                                             <action selector="playButtonTouchUpInside:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="7q2-T2-saB"/>
                                                             <action selector="playButtonTouched:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ryv-d7-eca"/>
@@ -562,10 +566,10 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                         </constraints>
                                                     </view>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rc5-V6-YXt">
-                                                        <rect key="frame" x="12" y="100.33333333333331" width="27" height="40"/>
+                                                        <rect key="frame" x="12" y="108.33333333333331" width="30" height="44"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="width" constant="27" id="lT3-BC-GSG"/>
-                                                            <constraint firstAttribute="height" constant="40" id="xVI-wj-mYZ"/>
+                                                            <constraint firstAttribute="width" constant="30" id="lT3-BC-GSG"/>
+                                                            <constraint firstAttribute="height" constant="44" id="xVI-wj-mYZ"/>
                                                         </constraints>
                                                         <color key="tintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <state key="normal" image="earLoudIcon"/>
@@ -574,28 +578,40 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DEe-tW-fzs">
-                                                        <rect key="frame" x="322" y="100.33333333333331" width="40" height="40"/>
+                                                        <rect key="frame" x="318" y="108.33333333333331" width="44" height="44"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="40" id="aMm-OK-g6N"/>
-                                                            <constraint firstAttribute="width" constant="40" id="cKm-KH-z0e"/>
+                                                            <constraint firstAttribute="height" constant="44" id="aMm-OK-g6N"/>
+                                                            <constraint firstAttribute="width" constant="44" id="cKm-KH-z0e"/>
                                                         </constraints>
                                                         <color key="tintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <state key="normal" image="timerIcon"/>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CsD-QE-lCH">
-                                                        <rect key="frame" x="72" y="70.333333333333314" width="48" height="32"/>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CsD-QE-lCH" customClass="ShadowButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                        <rect key="frame" x="72" y="74.333333333333314" width="48" height="32"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="32" id="krR-ql-QuK"/>
                                                             <constraint firstAttribute="width" constant="48" id="nPW-Tp-e9o"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                                        <color key="tintColor" red="0.85063463449999999" green="0.86665540929999996" blue="0.86666828389999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                        <state key="normal" image="resetIcon">
+                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <state key="normal" image="rewindIcon">
                                                             <color key="titleColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </state>
                                                         <connections>
                                                             <action selector="resetButtonTouched:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="RyS-jS-iGF"/>
                                                         </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qPP-wD-Fyb" customClass="ShadowButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                        <rect key="frame" x="241.66666666666669" y="74.333333333333314" width="48" height="32"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="32" id="8OU-0M-CGA"/>
+                                                            <constraint firstAttribute="width" constant="48" id="PKu-B8-CO1"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <state key="normal" image="forwardIcon">
+                                                            <color key="titleColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
                                                     </button>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -615,6 +631,8 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                     <constraint firstItem="nSG-D6-S8T" firstAttribute="centerY" secondItem="MCu-q1-tlA" secondAttribute="centerY" id="Zts-J2-iaF"/>
                                                     <constraint firstItem="nSG-D6-S8T" firstAttribute="leading" secondItem="MCu-q1-tlA" secondAttribute="trailing" constant="13" id="a7t-up-gfT"/>
                                                     <constraint firstItem="oPM-Nv-Zm8" firstAttribute="leading" secondItem="o5j-AJ-IcV" secondAttribute="leading" id="cD7-QE-sFF"/>
+                                                    <constraint firstItem="qPP-wD-Fyb" firstAttribute="trailing" secondItem="DEe-tW-fzs" secondAttribute="trailing" multiplier="0.8" id="cio-wI-Uak"/>
+                                                    <constraint firstItem="qPP-wD-Fyb" firstAttribute="centerY" secondItem="SKF-7G-fNA" secondAttribute="centerY" id="fqE-Cm-tOl"/>
                                                     <constraint firstItem="nxf-ce-GFG" firstAttribute="top" secondItem="eI0-MH-Rsd" secondAttribute="bottom" constant="17" id="g4f-xF-Qvu"/>
                                                     <constraint firstItem="MCu-q1-tlA" firstAttribute="leading" secondItem="nxf-ce-GFG" secondAttribute="trailing" constant="14" id="hTq-ZP-OAw"/>
                                                     <constraint firstItem="nSG-D6-S8T" firstAttribute="trailing" secondItem="DEe-tW-fzs" secondAttribute="trailing" id="md1-qg-xRE"/>
@@ -740,21 +758,22 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
         <image name="arrow-left.png" width="20" height="29"/>
         <image name="bedIcon.png" width="49" height="48"/>
         <image name="chairIcon.png" width="42" height="40"/>
-        <image name="earLoudIcon" width="101" height="162"/>
+        <image name="earLoudIcon" width="1314" height="2115"/>
+        <image name="forwardIcon" width="84" height="84"/>
         <image name="help-circle.png" width="30" height="30"/>
         <image name="loudspeakerHighSymbol" width="20" height="17"/>
         <image name="loudspeakerLowSymbol" width="10" height="14"/>
         <image name="moonIcon.png" width="42" height="40"/>
         <image name="noneIcon.png" width="41" height="40"/>
-        <image name="playButton.png" width="50" height="50"/>
+        <image name="playIcon" width="417" height="417"/>
         <image name="plusButton.png" width="35" height="33"/>
-        <image name="resetIcon" width="103" height="80"/>
+        <image name="rewindIcon" width="84" height="84"/>
         <image name="startRecordingButton.png" width="50" height="50"/>
         <image name="subliminalMakerTeaser.png" width="364" height="304"/>
         <image name="subliminalPlayerBackground.png" width="414" height="896"/>
         <image name="subliminalPlayerTeaser.png" width="364" height="285"/>
         <image name="sunIcon.png" width="42" height="40"/>
-        <image name="timerIcon" width="30" height="30"/>
+        <image name="timerIcon" width="268" height="309"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
