@@ -13,8 +13,9 @@ import Accelerate
 import PureLayout
 
 // https://medium.com/@ian.mundy/audio-mixing-on-ios-4cd51dfaac9a
-class SubliminalPlayerViewController: UIViewController {
+class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var graphView: UIView!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var silentButton: UIButton!
@@ -72,6 +73,8 @@ class SubliminalPlayerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        scrollView.delegate = self
         
         frequencyDomainGraphLayers.forEach {
             self.graphView.layer.addSublayer($0)
@@ -145,6 +148,11 @@ class SubliminalPlayerViewController: UIViewController {
         frequencyDomainGraphLayers.forEach {
             $0.frame = self.graphView.frame.insetBy(dx: 0, dy: 0)
         }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        playerView.layoutSubviews()
+        soundView.layoutSubviews()
     }
     
     @IBAction func playButtonTouchUpInside(_ sender: Any) {

@@ -26,6 +26,7 @@ class RoundedView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        self.addBlurEffect(imageView: imageView ?? UIImageView(), frame: self.globalFrame!)
     }
     
 }

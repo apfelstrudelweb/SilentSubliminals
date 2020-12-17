@@ -36,10 +36,7 @@
 		65A84062256169840072531F /* TransparentNavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A84061256169840072531F /* TransparentNavBar.swift */; };
 		65A8406525616CEF0072531F /* subliminalPlayerBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8406425616CEF0072531F /* subliminalPlayerBackground.png */; };
 		65A8406F25618DBB0072531F /* moonIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8406A25618DBA0072531F /* moonIcon.png */; };
-		65A8407025618DBB0072531F /* sunIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8406B25618DBA0072531F /* sunIcon.png */; };
 		65A8407125618DBB0072531F /* noneIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8406C25618DBB0072531F /* noneIcon.png */; };
-		65A8407225618DBB0072531F /* chairIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8406D25618DBB0072531F /* chairIcon.png */; };
-		65A8407325618DBB0072531F /* bedIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8406E25618DBB0072531F /* bedIcon.png */; };
 		65CA93562558534400AE7A9F /* AudioUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CA93542558534300AE7A9F /* AudioUtilities.swift */; };
 		65F0727C25445673004C8BA3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F0727B25445673004C8BA3 /* AVFoundation.framework */; };
 		65F072812544615D004C8BA3 /* startRecordingButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 65F0727E2544615D004C8BA3 /* startRecordingButton.png */; };
@@ -274,14 +271,11 @@
 			files = (
 				65A8406F25618DBB0072531F /* moonIcon.png in Resources */,
 				65F072832544615D004C8BA3 /* stopRecordingButton.png in Resources */,
-				65A8407225618DBB0072531F /* chairIcon.png in Resources */,
 				65699FFE253C392B000E7F95 /* help-circle.png in Resources */,
 				6569A000253C3A15000E7F95 /* arrow-left.png in Resources */,
 				65F072812544615D004C8BA3 /* startRecordingButton.png in Resources */,
-				65A8407025618DBB0072531F /* sunIcon.png in Resources */,
 				65699FFC253C3706000E7F95 /* subliminalMakerBackground.png in Resources */,
 				65A8406525616CEF0072531F /* subliminalPlayerBackground.png in Resources */,
-				65A8407325618DBB0072531F /* bedIcon.png in Resources */,
 				6569A008253C43A7000E7F95 /* plusButton.png in Resources */,
 				654F42D0258623C10065D490 /* outro.aiff in Resources */,
 				6558D31524684935004E8660 /* LaunchScreen.storyboard in Resources */,
