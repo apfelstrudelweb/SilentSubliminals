@@ -262,7 +262,7 @@
             <objects>
                 <viewController id="HOc-7b-b6k" customClass="ScriptViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="avG-j5-3Gc">
-                        <rect key="frame" x="0.0" y="0.0" width="378" height="314"/>
+                        <rect key="frame" x="0.0" y="0.0" width="378" height="313.66666666666669"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GEd-oc-aDl" customClass="ShadowView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
@@ -512,31 +512,32 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                 <rect key="frame" x="0.0" y="0.0" width="374" height="194.66666666666666"/>
                                                 <subviews>
                                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="MCu-q1-tlA">
-                                                        <rect key="frame" x="34" y="153.33333333333331" width="290" height="31"/>
+                                                        <rect key="frame" x="34.333333333333343" y="154.33333333333331" width="287.66666666666663" height="31"/>
                                                         <color key="tintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <connections>
                                                             <action selector="volumeSliderChanged:" destination="Wlk-fN-YWe" eventType="valueChanged" id="nML-Cs-o0J"/>
                                                         </connections>
                                                     </slider>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jaw Relaxation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eI0-MH-Rsd">
-                                                        <rect key="frame" x="118.33333333333333" y="120.33333333333331" width="137.33333333333337" height="24"/>
+                                                        <rect key="frame" x="118.33333333333333" y="117.33333333333331" width="137.33333333333337" height="24"/>
                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                                         <color key="textColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loudspeakerLowSymbol" translatesAutoresizingMaskIntoConstraints="NO" id="nxf-ce-GFG">
-                                                        <rect key="frame" x="12" y="161.33333333333331" width="10" height="14"/>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loudspeakerSymbolLow" translatesAutoresizingMaskIntoConstraints="NO" id="nxf-ce-GFG">
+                                                        <rect key="frame" x="14.333333333333336" y="158.33333333333331" width="22" height="22"/>
                                                         <color key="tintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="width" constant="10" id="Rjc-Xs-I5t"/>
+                                                            <constraint firstAttribute="height" constant="22" id="1Gg-hT-zaT"/>
+                                                            <constraint firstAttribute="width" constant="22" id="Rjc-Xs-I5t"/>
                                                         </constraints>
                                                     </imageView>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loudspeakerHighSymbol" translatesAutoresizingMaskIntoConstraints="NO" id="nSG-D6-S8T">
-                                                        <rect key="frame" x="335" y="152.33333333333331" width="27" height="32"/>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loudspeakerSymbolHigh" translatesAutoresizingMaskIntoConstraints="NO" id="nSG-D6-S8T">
+                                                        <rect key="frame" x="328" y="152.33333333333331" width="34" height="34"/>
                                                         <color key="tintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="32" id="D4u-ai-2Tj"/>
-                                                            <constraint firstAttribute="width" constant="27" id="tlU-Lb-YXm"/>
+                                                            <constraint firstAttribute="height" constant="34" id="D4u-ai-2Tj"/>
+                                                            <constraint firstAttribute="width" constant="34" id="tlU-Lb-YXm"/>
                                                         </constraints>
                                                     </imageView>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SKF-7G-fNA" customClass="ShadowButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
@@ -629,18 +630,18 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                     <constraint firstItem="oPM-Nv-Zm8" firstAttribute="trailing" secondItem="o5j-AJ-IcV" secondAttribute="trailing" id="XRU-0R-LPU"/>
                                                     <constraint firstItem="SKF-7G-fNA" firstAttribute="centerX" secondItem="wux-KS-pjg" secondAttribute="centerX" id="Ych-P6-NWv"/>
                                                     <constraint firstItem="nSG-D6-S8T" firstAttribute="centerY" secondItem="MCu-q1-tlA" secondAttribute="centerY" id="Zts-J2-iaF"/>
-                                                    <constraint firstItem="nSG-D6-S8T" firstAttribute="leading" secondItem="MCu-q1-tlA" secondAttribute="trailing" constant="13" id="a7t-up-gfT"/>
+                                                    <constraint firstItem="nSG-D6-S8T" firstAttribute="leading" secondItem="MCu-q1-tlA" secondAttribute="trailing" constant="8" id="a7t-up-gfT"/>
                                                     <constraint firstItem="oPM-Nv-Zm8" firstAttribute="leading" secondItem="o5j-AJ-IcV" secondAttribute="leading" id="cD7-QE-sFF"/>
                                                     <constraint firstItem="qPP-wD-Fyb" firstAttribute="trailing" secondItem="DEe-tW-fzs" secondAttribute="trailing" multiplier="0.8" id="cio-wI-Uak"/>
                                                     <constraint firstItem="qPP-wD-Fyb" firstAttribute="centerY" secondItem="SKF-7G-fNA" secondAttribute="centerY" id="fqE-Cm-tOl"/>
                                                     <constraint firstItem="nxf-ce-GFG" firstAttribute="top" secondItem="eI0-MH-Rsd" secondAttribute="bottom" constant="17" id="g4f-xF-Qvu"/>
-                                                    <constraint firstItem="MCu-q1-tlA" firstAttribute="leading" secondItem="nxf-ce-GFG" secondAttribute="trailing" constant="14" id="hTq-ZP-OAw"/>
+                                                    <constraint firstItem="MCu-q1-tlA" firstAttribute="leading" secondItem="nxf-ce-GFG" secondAttribute="trailing" id="hTq-ZP-OAw"/>
                                                     <constraint firstItem="nSG-D6-S8T" firstAttribute="trailing" secondItem="DEe-tW-fzs" secondAttribute="trailing" id="md1-qg-xRE"/>
                                                     <constraint firstItem="SKF-7G-fNA" firstAttribute="top" secondItem="o5j-AJ-IcV" secondAttribute="bottom" constant="8" symbolic="YES" id="oYj-X1-RiE"/>
                                                     <constraint firstItem="eI0-MH-Rsd" firstAttribute="centerX" secondItem="wux-KS-pjg" secondAttribute="centerX" id="q2Z-eF-aCp"/>
                                                     <constraint firstAttribute="trailing" secondItem="o5j-AJ-IcV" secondAttribute="trailing" id="vOy-wo-aQz"/>
                                                     <constraint firstAttribute="trailing" secondItem="DEe-tW-fzs" secondAttribute="trailing" constant="12" id="xLL-ci-sPz"/>
-                                                    <constraint firstItem="nxf-ce-GFG" firstAttribute="leading" secondItem="rc5-V6-YXt" secondAttribute="leading" id="xy5-2A-9h7"/>
+                                                    <constraint firstItem="nxf-ce-GFG" firstAttribute="leading" secondItem="rc5-V6-YXt" secondAttribute="leading" multiplier="1.2" id="xy5-2A-9h7"/>
                                                     <constraint firstItem="o5j-AJ-IcV" firstAttribute="height" secondItem="wux-KS-pjg" secondAttribute="height" multiplier="0.3" id="yia-PG-hpN"/>
                                                 </constraints>
                                             </view>
@@ -759,15 +760,15 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
         <image name="bedIcon.png" width="49" height="48"/>
         <image name="chairIcon.png" width="42" height="40"/>
         <image name="earLoudIcon" width="1314" height="2115"/>
-        <image name="forwardIcon" width="84" height="84"/>
+        <image name="forwardIcon" width="320" height="313"/>
         <image name="help-circle.png" width="30" height="30"/>
-        <image name="loudspeakerHighSymbol" width="20" height="17"/>
-        <image name="loudspeakerLowSymbol" width="10" height="14"/>
+        <image name="loudspeakerSymbolHigh" width="100" height="79"/>
+        <image name="loudspeakerSymbolLow" width="80" height="80"/>
         <image name="moonIcon.png" width="42" height="40"/>
         <image name="noneIcon.png" width="41" height="40"/>
         <image name="playIcon" width="417" height="417"/>
         <image name="plusButton.png" width="35" height="33"/>
-        <image name="rewindIcon" width="84" height="84"/>
+        <image name="rewindIcon" width="320" height="313"/>
         <image name="startRecordingButton.png" width="50" height="50"/>
         <image name="subliminalMakerTeaser.png" width="364" height="304"/>
         <image name="subliminalPlayerBackground.png" width="414" height="896"/>
