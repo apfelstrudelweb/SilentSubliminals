@@ -15,16 +15,35 @@ import PureLayout
 // https://medium.com/@ian.mundy/audio-mixing-on-ios-4cd51dfaac9a
 class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
     
+    // 1. section
+    @IBOutlet weak var introductionSwitch: UISwitch!
+    @IBOutlet weak var leadInChairButton: UIButton!
+    @IBOutlet weak var leadInBedButton: UIButton!
+    @IBOutlet weak var noLeadInButton: UIButton!
+    @IBOutlet weak var leadOutDayButton: UIButton!
+    @IBOutlet weak var leadOutNightButton: UIButton!
+    @IBOutlet weak var noLeadOutButton: UIButton!
+    @IBOutlet weak var introductionLabel: ShadowLabel!
+    @IBOutlet weak var leadInLabel: ShadowLabel!
+    @IBOutlet weak var leadOutLabel: ShadowLabel!
+    
+    // 2. section
+    @IBOutlet weak var rewindButton: ShadowButton!
+    @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var forwardButton: ShadowButton!
+    @IBOutlet weak var silentButton: UIButton!
+    @IBOutlet weak var affirmationTitleLabel: UILabel!
+    @IBOutlet weak var timerButton: UIButton!
+    @IBOutlet weak var loudspeakerLowSymbol: UIImageView!
+    @IBOutlet weak var loudspeakerHighSymbol: UIImageView!
+    @IBOutlet weak var volumeSlider: UISlider!
+    
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var graphView: UIView!
-    @IBOutlet weak var playButton: UIButton!
-    @IBOutlet weak var silentButton: UIButton!
-    @IBOutlet weak var resetButton: UIButton!
-    
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var playerView: RoundedView!
     @IBOutlet weak var soundView: RoundedView!
-    @IBOutlet weak var volumeSlider: UISlider!
+    
     @IBOutlet weak var volumeView: UIView!
     let maskView = UIView()
     
@@ -35,7 +54,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private var audioFiles: Array<AudioFileTypes> = [AudioFileTypes(filename: spokenAffirmation, isSilent: false), AudioFileTypes(filename: spokenAffirmationSilent, isSilent: true)]
-
+    
     var activePlayerNodesSet = Set<AVAudioPlayerNode>()
     
     private var audioEngine: AVAudioEngine = AVAudioEngine()
@@ -71,17 +90,21 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
     
     let audioQueue: DispatchQueue = DispatchQueue(label: "PlayerQueue", attributes: [])
     
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         scrollView.delegate = self
+        
+        setControlColors()
         
         frequencyDomainGraphLayers.forEach {
             self.graphView.layer.addSublayer($0)
         }
         
         let backbutton = UIButton(type: .custom)
-        backbutton.setImage(UIImage(named: "arrow-left.png"), for: [.normal])
+        backbutton.setImage(UIImage(named: "backButton.png"), for: [.normal])
+        backbutton.tintColor = PlayerControlColor.lightColor
         backbutton.addTarget(self, action: #selector(self.close(_:)), for: .touchUpInside)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backbutton)
         
@@ -92,15 +115,6 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
         soundView.imageView = backgroundImageView
         
         volumeSlider.value = masterVolume
-        
-        //resetButton.isEnabled = false
-        
-        let colors = [UIColor.blue, UIColor.green, UIColor.yellow, UIColor.red]
-        self.maskView.backgroundColor = .white
-        self.volumeView.showGradientColors(colors)
-        self.volumeView.addSubview(self.maskView)
-        self.volumeView.mask = self.maskView
-        self.maskView.frame = .zero
         
         fftSetup = vDSP_DFT_zop_CreateSetup(nil, 1024, vDSP_DFT_Direction.FORWARD)
         
@@ -115,17 +129,17 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
             assertionFailure("AVAudioSession setup error: \(error)")
         }
         
-//        do {
-//            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
-//            //try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
-//            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers, .allowAirPlay])
-//            let ioBufferDuration = 128.0 / 44100.0
-//            try AVAudioSession.sharedInstance().setPreferredIOBufferDuration(ioBufferDuration)
-//        } catch {
-//            assertionFailure("AVAudioSession setup error: \(error)")
-//        }
+        //        do {
+        //            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
+        //            //try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
+        //            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers, .allowAirPlay])
+        //            let ioBufferDuration = 128.0 / 44100.0
+        //            try AVAudioSession.sharedInstance().setPreferredIOBufferDuration(ioBufferDuration)
+        //        } catch {
+        //            assertionFailure("AVAudioSession setup error: \(error)")
+        //        }
         
-
+        
         self.introDuration = try? AVAudioFile(forReading: getFileFromMainBundle(filename: spokenIntro)!).duration
         self.outroDuration = try? AVAudioFile(forReading: getFileFromMainBundle(filename: spokenOutro)!).duration
         self.singleAffirmationDuration = try? AVAudioFile(forReading: getFileFromSandbox(filename: spokenAffirmation)).duration
@@ -186,7 +200,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
             print("Intro terminated")
             self.affirmationIsRunning = true
             DispatchQueue.main.async {
-                self.resetButton.isEnabled = true
+                self.rewindButton.isEnabled = true
             }
             
             if self.isStopped { return }
@@ -202,7 +216,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
                     isPlaying = false
                     DispatchQueue.main.async {
                         self.playButton.setImage(Button.playOnImg, for: .normal)
-                        self.resetButton.isEnabled = false
+                        self.rewindButton.isEnabled = false
                     }
                 }
             }
@@ -231,9 +245,10 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
         activePlayerNodesSet = Set<AVAudioPlayerNode>()
         
         self.playButton.setImage(Button.playOnImg, for: .normal)
-        self.resetButton.isEnabled = false
+        self.rewindButton.isEnabled = false
         isPausing = false
         isPlaying = false
+        timer?.invalidate()
     }
     
     func playInduction(type: Induction, completion: @escaping (Bool) -> Void) {
@@ -247,7 +262,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
             self.audioEngine.attach(audioPlayerNode)
             
             self.audioEngine.stop()
-
+            
             let filename = type == .Intro ? spokenIntro : spokenOutro
             
             let avAudioFile = try! AVAudioFile(forReading: getFileFromMainBundle(filename: filename)!)
@@ -270,11 +285,11 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
             
             audioPlayerNode.installTap(onBus: 0, bufferSize: 1024, format: format) {
                 (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
-
+                
                 DispatchQueue.main.async {
-
+                    
                     self.processAudioData(buffer: buffer)
-
+                    
                     let volume = self.getVolume(from: buffer, bufferSize: 1024) * (deviceVolume ?? 0.5) * self.masterVolume
                     self.displayVolume(volume: volume)
                 }
@@ -306,7 +321,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
                 highPass.frequency = modulationFrequency
                 highPass.bandwidth = bandwidth
                 highPass.bypass = false
-
+                
                 self.audioEngine.attach(self.equalizerHighPass)
                 self.audioEngine.attach(self.mixer)
                 
@@ -329,7 +344,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
                     if audioFile.isSilent {
                         self.audioEngine.connect(audioPlayerNode, to: self.equalizerHighPass, format: format)
                         self.audioEngine.connect(self.equalizerHighPass, to: self.mixer, format: format)
-
+                        
                     } else {
                         self.audioEngine.connect(audioPlayerNode, to: self.mixer, format: format)
                     }
@@ -373,7 +388,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
                                     self.silentButton.setImage(Button.silentOnImg, for: .normal)
                                 }
                             }
-
+                            
                             
                             if Int(audioPlayerNode.current) >= self.affirmationLoopDuration {
                                 self.activePlayerNodesSet = Set<AVAudioPlayerNode>()
@@ -430,16 +445,16 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
         } catch {
             print("Error Setting Up Audio Session")
         }
-
+        
         if self.isSilentMode && audioFile.isSilent || !self.isSilentMode && !audioFile.isSilent {
-
+            
             audioPlayer.installTap(onBus: 0, bufferSize: 1024, format: format) {
                 (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
-  
+                
                 DispatchQueue.main.async {
                     
                     self.processAudioData(buffer: buffer)
-
+                    
                     let volume = self.getVolume(from: buffer, bufferSize: 1024) * (deviceVolume ?? 0.5) * self.masterVolume
                     self.displayVolume(volume: volume)
                 }
@@ -448,21 +463,21 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func displayVolume(volume: Float) {
-            
-            let w = Double(self.volumeView.frame.size.width)
-            let h = Double(self.volumeView.bounds.size.height)
-     
-            UIView.animate(withDuration: 0.2) {
-                self.maskView.frame = CGRect(x: 0.0, y: 0.0, width: Double(5 * volume) * w, height: h)
-            }
-            
+        
+        let w = Double(self.volumeView.frame.size.width)
+        let h = Double(self.volumeView.bounds.size.height)
+        
+        UIView.animate(withDuration: 0.2) {
+            self.maskView.frame = CGRect(x: 0.0, y: 0.0, width: Double(5 * volume) * w, height: h)
         }
+        
+    }
     
     @IBAction func volumeSliderChanged(_ sender: Any) {
         
         masterVolume = Float(volumeSlider.value)
         
-
+        
         for playerNode in activePlayerNodesSet {
             playerNode.volume = masterVolume
             //print(playerNode.volume)
@@ -606,6 +621,46 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
+    
+    fileprivate func setControlColors() {
+
+        introductionSwitch.onTintColor = PlayerControlColor.darkGrayColor
+        introductionSwitch.thumbTintColor = PlayerControlColor.lightColor
+        leadInChairButton.tintColor = PlayerControlColor.lightColor
+        leadInChairButton.backgroundColor = PlayerControlColor.lightGrayColor
+        leadInBedButton.tintColor = PlayerControlColor.lightColor
+        leadInBedButton.backgroundColor = PlayerControlColor.lightGrayColor
+        noLeadInButton.tintColor = PlayerControlColor.lightColor
+        noLeadInButton.backgroundColor = PlayerControlColor.lightGrayColor
+        leadOutDayButton.tintColor = PlayerControlColor.lightColor
+        leadOutDayButton.backgroundColor = PlayerControlColor.lightGrayColor
+        leadOutNightButton.tintColor = PlayerControlColor.lightColor
+        leadOutNightButton.backgroundColor = PlayerControlColor.lightGrayColor
+        noLeadOutButton.tintColor = PlayerControlColor.lightColor
+        noLeadOutButton.backgroundColor = PlayerControlColor.lightGrayColor
+        introductionLabel.textColor = PlayerControlColor.lightColor
+        leadInLabel.textColor = PlayerControlColor.lightColor
+        leadOutLabel.textColor = PlayerControlColor.lightColor
+        
+        rewindButton.tintColor = PlayerControlColor.lightColor
+        playButton.tintColor = PlayerControlColor.lightColor
+        forwardButton.tintColor = PlayerControlColor.lightColor
+        silentButton.tintColor = PlayerControlColor.darkGrayColor
+        affirmationTitleLabel.textColor = PlayerControlColor.darkGrayColor
+        timerButton.tintColor = PlayerControlColor.darkGrayColor
+        loudspeakerLowSymbol.tintColor = PlayerControlColor.darkGrayColor
+        loudspeakerHighSymbol.tintColor = PlayerControlColor.darkGrayColor
+        volumeSlider.tintColor = PlayerControlColor.darkGrayColor
+        volumeSlider.thumbTintColor = PlayerControlColor.lightColor
+        
+        let colors = [UIColor.blue, UIColor.green, UIColor.yellow, UIColor.red]
+        self.maskView.backgroundColor = .white
+        self.volumeView.showGradientColors(colors)
+        self.volumeView.addSubview(self.maskView)
+        self.volumeView.mask = self.maskView
+        self.maskView.frame = .zero
+    }
+    
 }
 
 
@@ -652,7 +707,7 @@ extension AVMutableCompositionTrack {
 }
 
 extension AVAudioFile {
-
+    
     var duration: TimeInterval {
         let sampleRateSong = Double(processingFormat.sampleRate)
         let lengthSongSeconds = Double(length) / sampleRateSong
@@ -663,7 +718,7 @@ extension AVAudioFile {
 }
 
 extension AVAudioPlayerNode {
-
+    
     var current: TimeInterval {
         if let nodeTime = lastRenderTime,let playerTime = playerTime(forNodeTime: nodeTime) {
             return Double(playerTime.sampleTime) / playerTime.sampleRate
@@ -673,7 +728,7 @@ extension AVAudioPlayerNode {
 }
 
 extension AVPlayer {
-
+    
     var isPlaying2: Bool {
         return ((rate != 0) && (error == nil))
     }

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17700" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Oks-ci-etv">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Oks-ci-etv">
     <device id="retina6_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Player Maker Choice View Controller-->
+        <!--Choose-->
         <scene sceneID="OmM-8X-FMy">
             <objects>
-                <viewController id="Jae-VP-25f" customClass="PlayerMakerChoiceViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Choose" id="Jae-VP-25f" customClass="PlayerMakerChoiceViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="JQl-fF-kjL">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -63,21 +63,24 @@
                             <constraint firstItem="aeS-iP-u04" firstAttribute="centerX" secondItem="JQl-fF-kjL" secondAttribute="centerX" id="xck-d5-S1c"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Lev-RS-JN9"/>
+                    <navigationItem key="navigationItem" title="test" id="Lev-RS-JN9"/>
                     <nil key="simulatedTopBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kz6-N2-mlM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-23.188405797101453" y="320.08928571428572"/>
         </scene>
-        <!--Subliminal Maker View Controller-->
+        <!--Maker-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="SubliminalMakerViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Maker" id="BYZ-38-t0r" customClass="SubliminalMakerViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JwT-Xp-0iE">
+                                <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                            </imageView>
                             <view alpha="0.75" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yvy-h8-CaA" userLabel="Player View" customClass="ShadowView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                 <rect key="frame" x="20" y="140" width="378" height="185"/>
                                 <subviews>
@@ -208,7 +211,6 @@
                             </containerView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" red="0.59784709166754313" green="0.19557927529698466" blue="0.15634311989031985" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="Yvy-h8-CaA" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="2xc-o2-S1k">
                                 <variation key="heightClass=regular-widthClass=regular" constant="100"/>
@@ -216,16 +218,20 @@
                             <constraint firstItem="H1h-4Z-2C0" firstAttribute="trailing" secondItem="mdr-3Q-yuN" secondAttribute="trailing" id="4qK-hP-njW"/>
                             <constraint firstItem="Yvy-h8-CaA" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="0.5" constant="1" id="6vs-GG-Wkt"/>
                             <constraint firstItem="z8r-ZA-9nh" firstAttribute="width" secondItem="Yvy-h8-CaA" secondAttribute="width" multiplier="0.8" id="780-eT-M02"/>
+                            <constraint firstItem="JwT-Xp-0iE" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="8CS-NY-E5Y"/>
                             <constraint firstItem="KHd-hc-lYm" firstAttribute="trailing" secondItem="Yvy-h8-CaA" secondAttribute="trailing" id="FuY-ya-sk4"/>
                             <constraint firstItem="H1h-4Z-2C0" firstAttribute="centerY" secondItem="z8r-ZA-9nh" secondAttribute="centerY" id="GHc-2l-euO"/>
                             <constraint firstItem="KHd-hc-lYm" firstAttribute="leading" secondItem="Yvy-h8-CaA" secondAttribute="leading" id="K0h-DS-heB"/>
                             <constraint firstItem="z8r-ZA-9nh" firstAttribute="leading" secondItem="mdr-3Q-yuN" secondAttribute="leading" id="NOC-6s-2jS"/>
                             <constraint firstItem="KHd-hc-lYm" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="1.45" priority="750" id="UIy-om-Eve"/>
+                            <constraint firstAttribute="bottom" secondItem="JwT-Xp-0iE" secondAttribute="bottom" id="VyJ-tP-s3U"/>
                             <constraint firstItem="z8r-ZA-9nh" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="0.9" id="W9D-RU-prN"/>
+                            <constraint firstItem="JwT-Xp-0iE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="e1k-8m-pii"/>
                             <constraint firstItem="H1h-4Z-2C0" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="z8r-ZA-9nh" secondAttribute="trailing" constant="8" symbolic="YES" id="sGP-fM-iyr"/>
                             <constraint firstItem="KHd-hc-lYm" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="1.45" placeholder="YES" id="tFI-Kg-TW4"/>
                             <constraint firstItem="H1h-4Z-2C0" firstAttribute="height" secondItem="mdr-3Q-yuN" secondAttribute="height" multiplier="0.5" id="uLt-MU-204"/>
                             <constraint firstItem="KHd-hc-lYm" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.35" id="vBm-Xj-B6t"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="JwT-Xp-0iE" secondAttribute="trailing" id="xdg-qX-NSu"/>
                             <constraint firstItem="Yvy-h8-CaA" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.2" id="xrS-lj-QSd"/>
                         </constraints>
                         <variation key="default">
@@ -234,15 +240,8 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" id="ryt-4f-M2V">
-                        <barButtonItem key="backBarButtonItem" title="Zurück" id="vvW-bz-3tC"/>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="HWl-Jb-Jpe">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="PGf-8U-sZW">
-                                <rect key="frame" x="348" y="0.0" width="60" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" backgroundImage="help-circle.png"/>
-                            </button>
-                        </barButtonItem>
+                    <navigationItem key="navigationItem" title="Maker" id="ryt-4f-M2V">
+                        <barButtonItem key="backBarButtonItem" title="Zurück" id="bDt-ot-ely"/>
                     </navigationItem>
                     <connections>
                         <outlet property="containerView" destination="KHd-hc-lYm" id="9Ib-2F-cxU"/>
@@ -255,7 +254,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1957.9710144927537" y="85.714285714285708"/>
+            <point key="canvasLocation" x="1957.0093457943924" y="85.529157667386613"/>
         </scene>
         <!--Script View Controller-->
         <scene sceneID="TWN-q5-UWo">
@@ -387,19 +386,27 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
         <!--Navigation Controller-->
         <scene sceneID="BpO-uA-FgA">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Zta-aU-fHV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0tR-Mz-vf3" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" backIndicatorImage="arrow-left.png" id="iCR-Hc-kvh" customClass="TransparentNavBar" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="iCR-Hc-kvh">
                         <rect key="frame" x="0.0" y="44" width="428" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
+                        <textAttributes key="largeTitleTextAttributes">
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="xSw-hZ-jJw"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Zta-aU-fHV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1047.8260869565217" y="85.714285714285708"/>
         </scene>
@@ -418,7 +425,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                 <rect key="frame" x="21.333333333333343" y="88" width="385.33333333333326" height="788"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="44" translatesAutoresizingMaskIntoConstraints="NO" id="fxU-QY-bkn">
-                                        <rect key="frame" x="0.0" y="100" width="385.33333333333331" height="1200"/>
+                                        <rect key="frame" x="0.0" y="44" width="385.33333333333331" height="1200"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g3I-n3-Zh4">
                                                 <rect key="frame" x="0.0" y="0.0" width="385.33333333333331" height="370.66666666666669"/>
@@ -426,7 +433,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jd3-Ih-3A7">
                                                         <rect key="frame" x="0.0" y="0.0" width="385.33333333333331" height="370.66666666666669"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="752" text="INTRODUCTION" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CsQ-FE-C27">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="752" text="INTRODUCTION" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CsQ-FE-C27" customClass="ShadowLabel" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="12" y="12" width="145" height="24"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -436,13 +443,13 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                 <rect key="frame" x="210.66666666666666" y="8.6666666666666572" width="50.999999999999972" height="31"/>
                                                                 <color key="onTintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             </switch>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="751" text="LEAD IN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Vo-TK-6Ii">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="751" text="LEAD IN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Vo-TK-6Ii" customClass="ShadowLabel" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="12.000000000000007" y="80" width="72.666666666666686" height="24"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LEAD OUT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hKZ-yX-a0r">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LEAD OUT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hKZ-yX-a0r" customClass="ShadowLabel" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="12.000000000000007" y="134" width="94.666666666666686" height="216.66666666666663"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -732,7 +739,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                         <rect key="frame" x="0.0" y="0.0" width="385.33333333333331" height="370.66666666666669"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Background Sound" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qwq-UC-mWg">
-                                                                <rect key="frame" x="105.33333333333336" y="11.999999999999886" width="174.66666666666663" height="24"/>
+                                                                <rect key="frame" x="105.33333333333336" y="12" width="174.66666666666663" height="24"/>
                                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                                                 <color key="textColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
@@ -762,7 +769,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                     <constraint firstItem="fxU-QY-bkn" firstAttribute="bottom" secondItem="TfJ-Cw-Dcf" secondAttribute="bottom" id="7FI-tS-VF5"/>
                                     <constraint firstItem="fxU-QY-bkn" firstAttribute="leading" secondItem="TfJ-Cw-Dcf" secondAttribute="leading" id="No9-WI-xfI"/>
                                     <constraint firstItem="fxU-QY-bkn" firstAttribute="width" secondItem="MVf-zu-prw" secondAttribute="width" id="d4S-ay-qcv"/>
-                                    <constraint firstItem="fxU-QY-bkn" firstAttribute="top" secondItem="TfJ-Cw-Dcf" secondAttribute="top" constant="100" id="gnF-G2-wEI"/>
+                                    <constraint firstItem="fxU-QY-bkn" firstAttribute="top" secondItem="TfJ-Cw-Dcf" secondAttribute="top" constant="44" id="gnF-G2-wEI"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="TfJ-Cw-Dcf"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="MVf-zu-prw"/>
@@ -772,7 +779,6 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                             </scrollView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="55b-UD-eoa"/>
-                        <color key="backgroundColor" red="0.54260799032741114" green="0.12134506275179087" blue="0.10610188721823315" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="KIc-QH-czb" secondAttribute="bottom" id="8bH-Mt-kOS"/>
                             <constraint firstItem="iUg-V1-pPz" firstAttribute="width" secondItem="S0S-wa-Cfu" secondAttribute="width" multiplier="0.9" id="Bvd-Oq-No3"/>
@@ -784,35 +790,33 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                             <constraint firstItem="KIc-QH-czb" firstAttribute="leading" secondItem="55b-UD-eoa" secondAttribute="leading" id="s8W-9q-sj4"/>
                         </constraints>
                     </view>
-                    <toolbarItems>
-                        <barButtonItem style="plain" id="j0f-lL-edU">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Mxx-ye-eoa">
-                                <rect key="frame" x="20" y="12" width="374" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" backgroundImage="help-circle.png"/>
-                            </button>
-                        </barButtonItem>
-                    </toolbarItems>
-                    <navigationItem key="navigationItem" title="Player" id="3Jk-qe-5on">
-                        <barButtonItem key="backBarButtonItem" title="Zurück" id="FWE-hl-efQ"/>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="Gyk-ga-WLd">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="w40-Tw-7ON">
-                                <rect key="frame" x="378" y="7" width="30" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" backgroundImage="help-circle.png"/>
-                            </button>
-                        </barButtonItem>
-                    </navigationItem>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Player" id="3Jk-qe-5on"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="affirmationTitleLabel" destination="eI0-MH-Rsd" id="SGr-2e-Gun"/>
                         <outlet property="backgroundImageView" destination="KIc-QH-czb" id="Yh7-UH-0bm"/>
+                        <outlet property="forwardButton" destination="qPP-wD-Fyb" id="kru-YK-jOT"/>
                         <outlet property="graphView" destination="o5j-AJ-IcV" id="td8-3C-e4d"/>
+                        <outlet property="introductionLabel" destination="CsQ-FE-C27" id="15j-L1-MFA"/>
+                        <outlet property="introductionSwitch" destination="WTQ-46-HQ2" id="VYC-5c-29u"/>
+                        <outlet property="leadInBedButton" destination="Nss-hv-Sk9" id="fwE-JN-EeA"/>
+                        <outlet property="leadInChairButton" destination="1lW-ea-hYl" id="BUL-7a-xEV"/>
+                        <outlet property="leadInLabel" destination="2Vo-TK-6Ii" id="Nrm-aZ-bJh"/>
+                        <outlet property="leadOutDayButton" destination="d8R-wR-p82" id="wcY-vi-T55"/>
+                        <outlet property="leadOutLabel" destination="hKZ-yX-a0r" id="Kuk-Ie-2J1"/>
+                        <outlet property="leadOutNightButton" destination="6XP-Xy-aRO" id="3gm-iy-fJT"/>
+                        <outlet property="loudspeakerHighSymbol" destination="nSG-D6-S8T" id="L1V-jg-f10"/>
+                        <outlet property="loudspeakerLowSymbol" destination="nxf-ce-GFG" id="L10-5H-xEc"/>
+                        <outlet property="noLeadInButton" destination="q6l-Tj-038" id="ppx-WL-RRD"/>
+                        <outlet property="noLeadOutButton" destination="I2n-2P-ia1" id="42O-1r-ppd"/>
                         <outlet property="playButton" destination="SKF-7G-fNA" id="NYA-ku-FJY"/>
                         <outlet property="playerView" destination="wux-KS-pjg" id="uDz-IZ-zX1"/>
-                        <outlet property="resetButton" destination="CsD-QE-lCH" id="Dsa-O9-Gg4"/>
+                        <outlet property="rewindButton" destination="CsD-QE-lCH" id="Em4-ye-TOX"/>
                         <outlet property="scrollView" destination="iUg-V1-pPz" id="Kcl-f9-OIM"/>
                         <outlet property="silentButton" destination="rc5-V6-YXt" id="Whp-4d-4SH"/>
                         <outlet property="soundView" destination="tg5-ND-tqn" id="mkP-QH-NS4"/>
+                        <outlet property="timerButton" destination="DEe-tW-fzs" id="C2P-2g-PTJ"/>
                         <outlet property="volumeSlider" destination="MCu-q1-tlA" id="0cs-Yb-0pO"/>
                         <outlet property="volumeView" destination="oPM-Nv-Zm8" id="UY1-h3-aXh"/>
                     </connections>
@@ -827,7 +831,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="4ji-Uz-873" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="kze-iT-uns" customClass="TransparentNavBar" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="kze-iT-uns">
                         <rect key="frame" x="0.0" y="44" width="428" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -842,13 +846,11 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
         </scene>
     </scenes>
     <resources>
-        <image name="arrow-left.png" width="20" height="29"/>
         <image name="bedIcon" width="100" height="100"/>
         <image name="cancelIcon" width="100" height="100"/>
         <image name="chairIcon" width="100" height="100"/>
         <image name="earLoudIcon" width="1314" height="2115"/>
         <image name="forwardIcon" width="320" height="313"/>
-        <image name="help-circle.png" width="30" height="30"/>
         <image name="loudspeakerSymbolHigh" width="100" height="79"/>
         <image name="loudspeakerSymbolLow" width="80" height="80"/>
         <image name="moonIcon.svg" width="128" height="128"/>

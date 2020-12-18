@@ -53,7 +53,8 @@ class SubliminalMakerViewController: UIViewController, AVAudioPlayerDelegate, AV
         super.viewDidLoad()
         
         let backbutton = UIButton(type: .custom)
-        backbutton.setImage(UIImage(named: "arrow-left.png"), for: [.normal]) 
+        backbutton.setImage(UIImage(named: "backButton.png"), for: [.normal])
+        backbutton.tintColor = PlayerControlColor.lightColor
         backbutton.addTarget(self, action: #selector(self.close(_:)), for: .touchUpInside)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backbutton)
         
