@@ -122,7 +122,9 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
         
         do {
             try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
+            //try AVAudioSession.sharedInstance().setCategory(.ambient, options: .allowBluetooth)
+            try AVAudioSession.sharedInstance().setCategory(.playback)
+            try AVAudioSession.sharedInstance().setActive(true, options: [])
             let ioBufferDuration = 128.0 / 44100.0
             try AVAudioSession.sharedInstance().setPreferredIOBufferDuration(ioBufferDuration)
         } catch {
@@ -146,6 +148,10 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
         
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        let vc = segue.destination
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

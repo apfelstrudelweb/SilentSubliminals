@@ -4,12 +4,11 @@ platform :ios, '13.7'
 source 'https://github.com/AudioKit/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
-target 'SilentSubliminals' do
+target 'FREE UR SPIRIT' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
   # Pods for SilentSubliminals
-  #pod 'AudioKit/UI', :git => 'https://github.com/AudioKit/AudioKit.git', :branch => 'v5-develop'
-  #pod 'AudioKit/UI', '5.0.b1'
   pod 'PureLayout'
+  pod 'DateTimePicker'
 end
