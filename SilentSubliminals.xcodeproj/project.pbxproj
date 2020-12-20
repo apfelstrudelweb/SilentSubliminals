@@ -35,8 +35,6 @@
 		65A8405B25612D1B0072531F /* PlayerMakerChoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A8405A25612D1B0072531F /* PlayerMakerChoiceViewController.swift */; };
 		65A8405E2561325E0072531F /* SubliminalPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A8405D2561325E0072531F /* SubliminalPlayerViewController.swift */; };
 		65A8406525616CEF0072531F /* subliminalPlayerBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8406425616CEF0072531F /* subliminalPlayerBackground.png */; };
-		65A8406F25618DBB0072531F /* moonIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8406A25618DBA0072531F /* moonIcon.png */; };
-		65A8407125618DBB0072531F /* noneIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8406C25618DBB0072531F /* noneIcon.png */; };
 		65DDE232258BC1560082BD99 /* ShadowLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DDE231258BC1560082BD99 /* ShadowLabel.swift */; };
 		65F0727C25445673004C8BA3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F0727B25445673004C8BA3 /* AVFoundation.framework */; };
 		65F072812544615D004C8BA3 /* startRecordingButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 65F0727E2544615D004C8BA3 /* startRecordingButton.png */; };
@@ -304,7 +302,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				65A8406F25618DBB0072531F /* moonIcon.png in Resources */,
 				65F072832544615D004C8BA3 /* stopRecordingButton.png in Resources */,
 				65699FFE253C392B000E7F95 /* help-circle.png in Resources */,
 				65F072812544615D004C8BA3 /* startRecordingButton.png in Resources */,
@@ -317,7 +314,6 @@
 				654F42CF258623C10065D490 /* intro.aiff in Resources */,
 				65A8405725611EA50072531F /* subliminalMakerTeaser.png in Resources */,
 				65A8405825611EA50072531F /* subliminalPlayerTeaser.png in Resources */,
-				65A8407125618DBB0072531F /* noneIcon.png in Resources */,
 				6558D31024684934004E8660 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

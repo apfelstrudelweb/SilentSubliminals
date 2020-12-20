@@ -1081,9 +1081,9 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
         </scene>
     </scenes>
     <resources>
-        <image name="bedIcon" width="100" height="100"/>
-        <image name="cancelIcon" width="100" height="100"/>
-        <image name="chairIcon" width="100" height="100"/>
+        <image name="bedIcon" width="417" height="417"/>
+        <image name="cancelIcon" width="417" height="417"/>
+        <image name="chairIcon" width="417" height="417"/>
         <image name="earLoudIcon" width="1314" height="2115"/>
         <image name="forwardIcon" width="320" height="313"/>
         <image name="loudspeakerSymbolHigh" width="100" height="79"/>

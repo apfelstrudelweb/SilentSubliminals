@@ -159,8 +159,20 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
             self.startPlaying()
             return .success
         }
+        commandCenter.previousTrackCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
+            print("BEGIN")
+            self.stopPlaying()
+            return .success
+        }
+        commandCenter.skipForwardCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
+            print("NEXT")
+            // TODO: next affirmation
+            return .success
+        }
         commandCenter.playCommand.isEnabled = true
         commandCenter.pauseCommand.isEnabled = true
+        commandCenter.previousTrackCommand.isEnabled = true
+        commandCenter.skipForwardCommand.isEnabled = false // later on, set to true
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -200,6 +212,10 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
+    @IBAction func resetButtonTouched(_ sender: Any) {
+        stopPlaying()
+    }
+    
     
     fileprivate func setAffirmationLoopDuration() {
         
@@ -236,6 +252,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
         updateLockScreenInfo()
   
         isStopped = false
+        elapsedTime = 0
         
         playButton.setImage(Button.playOffImg, for: .normal)
         
@@ -487,11 +504,6 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    
-    @IBAction func resetButtonTouched(_ sender: Any) {
-        
-        stopPlaying()
-    }
     
     @IBAction func silentButtonTouched(_ sender: Any) {
         

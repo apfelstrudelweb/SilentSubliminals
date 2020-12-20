@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "cancelIcon.png",
+      "filename" : "cancelIcon.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
