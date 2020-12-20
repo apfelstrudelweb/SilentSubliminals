@@ -11,6 +11,7 @@ import CoreAudio
 import AVFoundation
 import Accelerate
 import PureLayout
+import MediaPlayer
 
 // https://medium.com/@ian.mundy/audio-mixing-on-ios-4cd51dfaac9a
 class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
@@ -82,11 +83,11 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
     let frequencyDomainGraphLayers = [CAShapeLayer(), CAShapeLayer(),
                                       CAShapeLayer(), CAShapeLayer()]
     
-    var introDuration: TimeInterval?
-    var outroDuration: TimeInterval?
-    var singleAffirmationDuration: TimeInterval?
-    var totalLength: TimeInterval?
-    var currentTimeInterval: TimeInterval?
+    var introDuration: TimeInterval = 0
+    var outroDuration: TimeInterval = 0
+    var singleAffirmationDuration: TimeInterval = 0
+    var totalLength: TimeInterval = 0
+    var elapsedTime: TimeInterval = 0
     
     let audioQueue: DispatchQueue = DispatchQueue(label: "PlayerQueue", attributes: [])
     
@@ -142,15 +143,28 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
         //        }
         
         
-        self.introDuration = try? AVAudioFile(forReading: getFileFromMainBundle(filename: spokenIntro)!).duration
-        self.outroDuration = try? AVAudioFile(forReading: getFileFromMainBundle(filename: spokenOutro)!).duration
-        self.singleAffirmationDuration = try? AVAudioFile(forReading: getFileFromSandbox(filename: spokenAffirmation)).duration
+        self.introDuration = try! AVAudioFile(forReading: getFileFromMainBundle(filename: spokenIntro)!).duration
+        self.outroDuration = try! AVAudioFile(forReading: getFileFromMainBundle(filename: spokenOutro)!).duration
+        self.singleAffirmationDuration = try! AVAudioFile(forReading: getFileFromSandbox(filename: spokenAffirmation)).duration
         
+        let commandCenter = MPRemoteCommandCenter.shared()
+                
+        commandCenter.pauseCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
+            print("PAUSE")
+            self.pausePlaying()
+            return .success
+        }
+        commandCenter.playCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
+            print("PLAY")
+            self.startPlaying()
+            return .success
+        }
+        commandCenter.playCommand.isEnabled = true
+        commandCenter.pauseCommand.isEnabled = true
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-        let vc = segue.destination
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -211,11 +225,16 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
             }))
             alert.addAction(UIAlertAction(title: "NO", style: .cancel, handler: nil))
             self.present(alert, animated: true)
+        } else {
+            self.startPlaying()
+            isPlaying = true
         }
     }
     
     func startPlaying() {
-
+        
+        updateLockScreenInfo()
+  
         isStopped = false
         
         playButton.setImage(Button.playOffImg, for: .normal)
@@ -226,6 +245,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
                 playerNode.play()
             }
             
+            isPausing = false
             return
         }
         
@@ -256,7 +276,29 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
+    fileprivate func updateLockScreenInfo() {
+        
+        let totalDuration = introDuration + (affirmationLoopDuration ?? 5 * 60) + outroDuration
+        let image = UIImage(named: "schmettering_1024")!
+        let mediaArtwork = MPMediaItemArtwork(boundsSize: image.size) { (size: CGSize) -> UIImage in
+            return image
+        }
+        
+        print("updateLockScreenInfo")
+        
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = [
+            MPMediaItemPropertyTitle: "FREE UR SPIRIT",
+            MPMediaItemPropertyAlbumTitle: "Jaw Relaxation",
+            MPMediaItemPropertyArtist: "Maren",
+            MPMediaItemPropertyPlaybackDuration: totalDuration,
+            MPNowPlayingInfoPropertyElapsedPlaybackTime: self.elapsedTime,
+            MPMediaItemPropertyArtwork: mediaArtwork
+        ]
+    }
+    
     func pausePlaying() {
+
+        updateLockScreenInfo()
         
         for playerNode in activePlayerNodesSet {
             playerNode.pause()
@@ -264,9 +306,12 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
         
         self.playButton.setImage(Button.playOnImg, for: .normal)
         isPausing = true
+
     }
     
     func stopPlaying() {
+        
+        //updateLockScreenInfo()
         
         isStopped = true
         
@@ -400,10 +445,10 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
                         if self.timer != nil { return }
                         
                         self.timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { timer in
-                            print(elpasedTime)
+                            //print(elpasedTime)
                             elpasedTime += 1
                             
-                            if audioPlayerNode.current <= self.singleAffirmationDuration! {
+                            if audioPlayerNode.current <= self.singleAffirmationDuration {
                                 // loud
                                 self.isSilentMode = false
                                 for audioFile in self.audioFiles {
@@ -422,7 +467,11 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
                                 }
                             }
                             
-                            
+                            if !self.isPausing {
+                                self.elapsedTime = self.introDuration + audioPlayerNode.current
+                                print("elapsedTime:\(self.elapsedTime as Any)")
+                            }
+              
                             if audioPlayerNode.current >= self.affirmationLoopDuration ?? 5 * 60 {
                                 self.activePlayerNodesSet = Set<AVAudioPlayerNode>()
                                 audioPlayerNode.stop()
