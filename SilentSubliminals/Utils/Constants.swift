@@ -42,41 +42,9 @@ enum Induction {
 let modulationFrequency: Float = 20000
 let bandwidth: Float = 1000
 
+let criticalLopDurationInHours: Int = 6
+
 struct Manager {
     static var recordingSession: AVAudioSession!
     static var micAuthorised = Bool()
 }
-
-
-func getFileFromMainBundle(filename: String) -> URL? {
-    
-    let array = filename.split(separator: ".")
-    
-    if let filePath: String = Bundle.main.path(forResource: String(array.first!), ofType: String(array.last!)) {
-        return URL(fileURLWithPath: filePath)
-    }
-    return nil
-}
-
-func getFileFromSandbox(filename: String) -> URL {
-    return getDocumentsDirectory().appendingPathComponent(filename)
-}
-
-func clearToListenFiles() {
-//    let fileManager = FileManager.default
-    //let myDocuments = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-//    do {
-//        try fileManager.removeItem(at: getFileFromSandbox(filename: toListenAffirmation))
-//        try fileManager.removeItem(at: getFileFromSandbox(filename: toListenAffirmationSilent))
-//    } catch {
-//        print(error)
-//    }
-}
-
-
-func getDocumentsDirectory() -> URL {
-    let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-    let documentsDirectory = paths[0]
-    return documentsDirectory
-}
-

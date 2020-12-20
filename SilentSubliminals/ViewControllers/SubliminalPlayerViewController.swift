@@ -71,7 +71,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
     var masterVolume: Float = 0.5
     
     var timer: Timer?
-    let affirmationLoopDuration = 5 * 60
+    var affirmationLoopDuration = TimerManager.shared.remainingTime
     
     var audioFileBuffer: AVAudioPCMBuffer?
     var audioFrameCount: UInt32?
@@ -178,8 +178,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
     @IBAction func playButtonTouchUpInside(_ sender: Any) {
         
         if isPlaying == false {
-            startPlaying()
-            isPlaying = true
+            setAffirmationLoopDuration()
+            //startPlaying()
         } else {
             pausePlaying()
             isPlaying = false
@@ -187,8 +187,35 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
     }
     
     
-    func startPlaying() {
+    fileprivate func setAffirmationLoopDuration() {
         
+        if TimerManager.shared.countdownSet == true {
+            self.affirmationLoopDuration = TimerManager.shared.remainingTime
+        } else {
+            let stopTime = TimerManager.shared.stopTime
+            self.affirmationLoopDuration = stopTime?.timeIntervalSinceNow
+            
+            guard let duration = self.affirmationLoopDuration else { return }
+            if duration < 0 {
+                self.affirmationLoopDuration! += 24 * 60 * 60
+            }
+        }
+        
+        let hours: Int = Int(self.affirmationLoopDuration! / 3600)
+        
+        if hours >= criticalLopDurationInHours {
+            let alert = UIAlertController(title: "Information", message: "You've set a very long time interval of about \(hours) hours. Are you sure that you want to listen to the silent subliminals for so long?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "YES", style: .default, handler: { [self]_ in
+                self.startPlaying()
+                isPlaying = true
+            }))
+            alert.addAction(UIAlertAction(title: "NO", style: .cancel, handler: nil))
+            self.present(alert, animated: true)
+        }
+    }
+    
+    func startPlaying() {
+
         isStopped = false
         
         playButton.setImage(Button.playOffImg, for: .normal)
@@ -218,8 +245,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
                 self.timer = nil
                 self.playInduction(type: Induction.Outro) { [self]_ in
                     print("Outro terminated")
-                    isPausing = false
-                    isPlaying = false
+                    self.isPausing = false
+                    self.isPlaying = false
                     DispatchQueue.main.async {
                         self.playButton.setImage(Button.playOnImg, for: .normal)
                         self.rewindButton.isEnabled = false
@@ -396,7 +423,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
                             }
                             
                             
-                            if Int(audioPlayerNode.current) >= self.affirmationLoopDuration {
+                            if audioPlayerNode.current >= self.affirmationLoopDuration ?? 5 * 60 {
                                 self.activePlayerNodesSet = Set<AVAudioPlayerNode>()
                                 audioPlayerNode.stop()
                                 self.audioEngine.stop()
@@ -426,6 +453,10 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
         for audioFile in self.audioFiles {
             self.switchAndAnalyze(audioFile: audioFile)
         }
+        
+//        // TEST
+//        print(TimerManager.shared.remainingTime)
+//        print(TimerManager.shared.stopTime)
     }
     
     fileprivate func switchAndAnalyze(audioFile: SubliminalPlayerViewController.AudioFileTypes) {

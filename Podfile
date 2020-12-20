@@ -10,5 +10,4 @@ target 'FREE UR SPIRIT' do
 
   # Pods for SilentSubliminals
   pod 'PureLayout'
-  pod 'DateTimePicker'
 end

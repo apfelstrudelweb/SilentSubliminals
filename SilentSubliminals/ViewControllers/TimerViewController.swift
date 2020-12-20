@@ -8,16 +8,21 @@
 
 import UIKit
 
-class TimerViewController: UIViewController {
-    
+class TimerViewController: UIViewController, TimerDelegate {
+
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var endtimeContainerView: UIView!
     @IBOutlet weak var durationContainerView: UIView!
     
+    @IBOutlet weak var closeButton: UIButton!
+    @IBOutlet weak var durationLabel: UILabel!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        closeButton.setTitleColor(PlayerControlColor.lightColor, for: .normal)
+        durationLabel.textColor = PlayerControlColor.lightColor
         
         segmentedControl.backgroundColor = PlayerControlColor.darkGrayColor
         segmentedControl.selectedSegmentTintColor = PlayerControlColor.lightColor
@@ -25,6 +30,8 @@ class TimerViewController: UIViewController {
         segmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: PlayerControlColor.lightGrayColor], for: UIControl.State.normal)
         
         setActiveView()
+        
+        self.durationLabel.text = TimerManager.shared.remainingTime?.stringFromTimeInterval()
     }
     
     fileprivate func setActiveView() {
@@ -40,6 +47,7 @@ class TimerViewController: UIViewController {
         }
     }
     
+    
     @IBAction func segmentedControlValueChanged(_ sender: Any) {
         
         setActiveView()
@@ -51,4 +59,45 @@ class TimerViewController: UIViewController {
         }
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let vc = segue.destination
+        
+        if vc.isKind(of: SetDurationViewController.self) {
+            let vc1 = vc as! SetDurationViewController
+            vc1.delegate = self
+        } else if vc.isKind(of: SetEndtimeViewController.self) {
+            let vc1 = vc as! SetEndtimeViewController
+            vc1.delegate = self
+        }
+    }
+    
+    func timeIntervalChanged(time: TimeInterval) {
+        self.durationLabel.text = time.stringFromTimeInterval()
+    }
+    
+    func stopTimeChanged(date: Date) {
+        
+        var timeInterval = date.timeIntervalSinceNow
+        
+        if timeInterval < 0 {
+            timeInterval += 26 * 60 * 60
+        }
+        
+        self.durationLabel.text = timeInterval.stringFromTimeInterval()
+    }
+    
 }
+
+
+extension TimeInterval {
+
+        func stringFromTimeInterval() -> String {
+
+            let time = NSInteger(self)
+
+            let minutes = (time / 60) % 60
+            let hours = (time / 3600)
+
+            return String(format: "%0.2dh %0.2dm",hours,minutes)
+        }
+    }

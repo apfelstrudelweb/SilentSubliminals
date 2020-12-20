@@ -14,6 +14,8 @@ class SetEndtimeViewController: UIViewController {
     @IBOutlet weak var timerPicker: UIDatePicker!
     @IBOutlet weak var activeTimeView: UIView!
     
+    weak var delegate : TimerDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,9 +25,16 @@ class SetEndtimeViewController: UIViewController {
         activeTimeView.backgroundColor = PlayerControlColor.darkGrayColor.withAlphaComponent(0.75)
     }
     
-    @IBAction func timePickerValueChanged(_ sender: Any) {
-        print(timerPicker.date)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // we need it, otherwise datepicker's valuechanged does not update the first spin
+        self.timerPicker.date = Date()
     }
     
-
+    @IBAction func timePickerValueChanged(_ sender: Any) {
+        print(timerPicker.date)
+        TimerManager.shared.countdownSet = false
+        TimerManager.shared.stopTime = timerPicker.date
+        delegate?.stopTimeChanged(date: timerPicker.date)
+    }
 }

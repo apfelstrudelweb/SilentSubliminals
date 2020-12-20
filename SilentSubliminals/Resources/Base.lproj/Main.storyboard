@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17700" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Oks-ci-etv">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Oks-ci-etv">
     <device id="retina6_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -873,11 +873,18 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                             <segue destination="sRY-Z6-nyr" kind="embed" id="ObU-m2-MkK"/>
                                         </connections>
                                     </containerView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1h 5min" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8fc-YE-AyF">
+                                        <rect key="frame" x="8" y="17" width="62" height="20.333333333333329"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wI9-6z-LOJ">
-                                        <rect key="frame" x="245" y="12" width="39" height="30"/>
+                                        <rect key="frame" x="239" y="12" width="45" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="oNv-bk-s7n"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                         <state key="normal" title="Close">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
@@ -892,6 +899,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                     <constraint firstAttribute="bottom" secondItem="seJ-5E-aNr" secondAttribute="bottom" constant="10" id="Aem-Tx-As8"/>
                                     <constraint firstAttribute="bottom" secondItem="f0d-uX-8da" secondAttribute="bottom" id="BOa-AF-vjv"/>
                                     <constraint firstAttribute="trailing" secondItem="seJ-5E-aNr" secondAttribute="trailing" id="Dhl-TX-doG"/>
+                                    <constraint firstItem="8fc-YE-AyF" firstAttribute="centerY" secondItem="wI9-6z-LOJ" secondAttribute="centerY" id="Fkg-Xy-MKR"/>
                                     <constraint firstAttribute="trailing" secondItem="f0d-uX-8da" secondAttribute="trailing" id="NSh-wE-0pm"/>
                                     <constraint firstAttribute="trailing" secondItem="wI9-6z-LOJ" secondAttribute="trailing" constant="16" id="Ue4-za-tRE"/>
                                     <constraint firstItem="f0d-uX-8da" firstAttribute="leading" secondItem="VAr-Uq-wX3" secondAttribute="leading" id="VIv-td-MpS"/>
@@ -902,6 +910,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                     <constraint firstAttribute="bottom" secondItem="twz-lf-lcu" secondAttribute="bottom" constant="10" id="j2e-Rf-HgL"/>
                                     <constraint firstAttribute="width" constant="300" id="oEV-ZK-TTc"/>
                                     <constraint firstItem="twz-lf-lcu" firstAttribute="leading" secondItem="VAr-Uq-wX3" secondAttribute="leading" id="pNE-Ik-YDP"/>
+                                    <constraint firstItem="8fc-YE-AyF" firstAttribute="leading" secondItem="VAr-Uq-wX3" secondAttribute="leading" constant="8" id="vkc-nK-TNE"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -938,7 +947,9 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                     <navigationItem key="navigationItem" id="xHi-BE-gUS"/>
                     <value key="contentSizeForViewInPopover" type="size" width="400" height="200"/>
                     <connections>
+                        <outlet property="closeButton" destination="wI9-6z-LOJ" id="yYH-RU-VB6"/>
                         <outlet property="durationContainerView" destination="twz-lf-lcu" id="HUG-sZ-qbC"/>
+                        <outlet property="durationLabel" destination="8fc-YE-AyF" id="0gC-a0-5Ds"/>
                         <outlet property="endtimeContainerView" destination="seJ-5E-aNr" id="1VJ-VE-lnx"/>
                         <outlet property="segmentedControl" destination="Bpb-bN-BWa" id="5ZL-Ag-z7d"/>
                     </connections>

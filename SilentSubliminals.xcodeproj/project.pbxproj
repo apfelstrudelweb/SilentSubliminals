@@ -19,31 +19,29 @@
 		6558D31024684934004E8660 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6558D30E24684934004E8660 /* Main.storyboard */; };
 		6558D31224684935004E8660 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6558D31124684935004E8660 /* Assets.xcassets */; };
 		6558D31524684935004E8660 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6558D31324684935004E8660 /* LaunchScreen.storyboard */; };
-		6563E03525763B90000E261B /* EqualizationFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6563E03425763B90000E261B /* EqualizationFilters.swift */; };
 		6563E03725763C6C000E261B /* SignalProcessing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6563E03625763C6C000E261B /* SignalProcessing.swift */; };
-		6563E03925763DFF000E261B /* AVAudioBufferConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6563E03825763DFF000E261B /* AVAudioBufferConvenience.swift */; };
 		6563E03B257691CE000E261B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6563E03A257691CE000E261B /* Constants.swift */; };
 		65678FCC258932B60075518C /* ShadowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65678FCB258932B60075518C /* ShadowButton.swift */; };
+		6568E648258F50F8009390D5 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6568E647258F50F8009390D5 /* TimerManager.swift */; };
 		65699FFC253C3706000E7F95 /* subliminalMakerBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 65699FFB253C3706000E7F95 /* subliminalMakerBackground.png */; };
 		65699FFE253C392B000E7F95 /* help-circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 65699FFD253C392B000E7F95 /* help-circle.png */; };
 		6569A006253C413B000E7F95 /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6569A005253C413B000E7F95 /* ShadowView.swift */; };
 		6569A008253C43A7000E7F95 /* plusButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 6569A007253C43A7000E7F95 /* plusButton.png */; };
 		6569A00A253C4834000E7F95 /* ScriptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6569A009253C4834000E7F95 /* ScriptViewController.swift */; };
+		657AA0C6258F544200320465 /* Misc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657AA0C5258F544200320465 /* Misc.swift */; };
 		65A169C2257C1693005D179A /* RoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A169C0257C1693005D179A /* RoundedView.swift */; };
 		65A8405725611EA50072531F /* subliminalMakerTeaser.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8405525611EA50072531F /* subliminalMakerTeaser.png */; };
 		65A8405825611EA50072531F /* subliminalPlayerTeaser.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8405625611EA50072531F /* subliminalPlayerTeaser.png */; };
 		65A8405B25612D1B0072531F /* PlayerMakerChoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A8405A25612D1B0072531F /* PlayerMakerChoiceViewController.swift */; };
 		65A8405E2561325E0072531F /* SubliminalPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A8405D2561325E0072531F /* SubliminalPlayerViewController.swift */; };
-		65A84062256169840072531F /* TransparentNavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A84061256169840072531F /* TransparentNavBar.swift */; };
 		65A8406525616CEF0072531F /* subliminalPlayerBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8406425616CEF0072531F /* subliminalPlayerBackground.png */; };
 		65A8406F25618DBB0072531F /* moonIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8406A25618DBA0072531F /* moonIcon.png */; };
 		65A8407125618DBB0072531F /* noneIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8406C25618DBB0072531F /* noneIcon.png */; };
-		65CA93562558534400AE7A9F /* AudioUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CA93542558534300AE7A9F /* AudioUtilities.swift */; };
 		65DDE232258BC1560082BD99 /* ShadowLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DDE231258BC1560082BD99 /* ShadowLabel.swift */; };
 		65F0727C25445673004C8BA3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F0727B25445673004C8BA3 /* AVFoundation.framework */; };
 		65F072812544615D004C8BA3 /* startRecordingButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 65F0727E2544615D004C8BA3 /* startRecordingButton.png */; };
 		65F072832544615D004C8BA3 /* stopRecordingButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 65F072802544615D004C8BA3 /* stopRecordingButton.png */; };
-		74269686993496BED24ECD95 /* Pods_FREE_UR_SPIRIT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7738E4F1BF9BDB30F29728AA /* Pods_FREE_UR_SPIRIT.framework */; };
+		968B5DAED13C8A843A5BA654 /* Pods_FREE_UR_SPIRIT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9383A2BB2BD24F9DF3D4D4D0 /* Pods_FREE_UR_SPIRIT.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,41 +59,32 @@
 		6558D31124684935004E8660 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6558D31424684935004E8660 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6558D31624684935004E8660 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6563E03425763B90000E261B /* EqualizationFilters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EqualizationFilters.swift; sourceTree = "<group>"; };
 		6563E03625763C6C000E261B /* SignalProcessing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignalProcessing.swift; sourceTree = "<group>"; };
-		6563E03825763DFF000E261B /* AVAudioBufferConvenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVAudioBufferConvenience.swift; sourceTree = "<group>"; };
 		6563E03A257691CE000E261B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		65678FCB258932B60075518C /* ShadowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowButton.swift; sourceTree = "<group>"; };
+		6568E647258F50F8009390D5 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
 		65699FFB253C3706000E7F95 /* subliminalMakerBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = subliminalMakerBackground.png; sourceTree = "<group>"; };
 		65699FFD253C392B000E7F95 /* help-circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "help-circle.png"; sourceTree = "<group>"; };
-		65699FFF253C3A15000E7F95 /* arrow-left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow-left.png"; sourceTree = "<group>"; };
-		6569A002253C3EFD000E7F95 /* playButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = playButton.png; sourceTree = "<group>"; };
 		6569A005253C413B000E7F95 /* ShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowView.swift; sourceTree = "<group>"; };
 		6569A007253C43A7000E7F95 /* plusButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plusButton.png; sourceTree = "<group>"; };
 		6569A009253C4834000E7F95 /* ScriptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptViewController.swift; sourceTree = "<group>"; };
+		657AA0C5258F544200320465 /* Misc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Misc.swift; sourceTree = "<group>"; };
 		65A169C0257C1693005D179A /* RoundedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedView.swift; sourceTree = "<group>"; };
 		65A8405525611EA50072531F /* subliminalMakerTeaser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = subliminalMakerTeaser.png; sourceTree = "<group>"; };
 		65A8405625611EA50072531F /* subliminalPlayerTeaser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = subliminalPlayerTeaser.png; sourceTree = "<group>"; };
 		65A8405A25612D1B0072531F /* PlayerMakerChoiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerMakerChoiceViewController.swift; sourceTree = "<group>"; };
 		65A8405D2561325E0072531F /* SubliminalPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubliminalPlayerViewController.swift; sourceTree = "<group>"; };
-		65A84061256169840072531F /* TransparentNavBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransparentNavBar.swift; sourceTree = "<group>"; };
 		65A8406425616CEF0072531F /* subliminalPlayerBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = subliminalPlayerBackground.png; sourceTree = "<group>"; };
 		65A8406A25618DBA0072531F /* moonIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = moonIcon.png; sourceTree = "<group>"; };
-		65A8406B25618DBA0072531F /* sunIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sunIcon.png; sourceTree = "<group>"; };
 		65A8406C25618DBB0072531F /* noneIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noneIcon.png; sourceTree = "<group>"; };
-		65A8406D25618DBB0072531F /* chairIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chairIcon.png; sourceTree = "<group>"; };
-		65A8406E25618DBB0072531F /* bedIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bedIcon.png; sourceTree = "<group>"; };
-		65CA93542558534300AE7A9F /* AudioUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioUtilities.swift; sourceTree = "<group>"; };
 		65DDE231258BC1560082BD99 /* ShadowLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowLabel.swift; sourceTree = "<group>"; };
 		65F0727B25445673004C8BA3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		65F0727E2544615D004C8BA3 /* startRecordingButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = startRecordingButton.png; sourceTree = "<group>"; };
 		65F0727F2544615D004C8BA3 /* stopButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stopButton.png; sourceTree = "<group>"; };
 		65F072802544615D004C8BA3 /* stopRecordingButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stopRecordingButton.png; sourceTree = "<group>"; };
-		7738E4F1BF9BDB30F29728AA /* Pods_FREE_UR_SPIRIT.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FREE_UR_SPIRIT.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		B5B4B355754FF9C91A7A3396 /* Pods-FREE UR SPIRIT.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FREE UR SPIRIT.debug.xcconfig"; path = "Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT.debug.xcconfig"; sourceTree = "<group>"; };
-		D4D308B458B05111CF3A7BB9 /* Pods-FREE UR SPIRIT.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FREE UR SPIRIT.release.xcconfig"; path = "Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT.release.xcconfig"; sourceTree = "<group>"; };
-		E45D9B591E9BF544E2BEF636 /* Pods-SilentSubliminals.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SilentSubliminals.release.xcconfig"; path = "Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals.release.xcconfig"; sourceTree = "<group>"; };
-		F9990493C9D9F4421DE40182 /* Pods-SilentSubliminals.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SilentSubliminals.debug.xcconfig"; path = "Target Support Files/Pods-SilentSubliminals/Pods-SilentSubliminals.debug.xcconfig"; sourceTree = "<group>"; };
+		8B84D791AD27901163397E49 /* Pods-FREE UR SPIRIT.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FREE UR SPIRIT.debug.xcconfig"; path = "Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT.debug.xcconfig"; sourceTree = "<group>"; };
+		9383A2BB2BD24F9DF3D4D4D0 /* Pods_FREE_UR_SPIRIT.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FREE_UR_SPIRIT.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C1F238D2415C6B1260535F19 /* Pods-FREE UR SPIRIT.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FREE UR SPIRIT.release.xcconfig"; path = "Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,7 +94,7 @@
 			files = (
 				652D5C5A2546B6170083165B /* Accelerate.framework in Frameworks */,
 				65F0727C25445673004C8BA3 /* AVFoundation.framework in Frameworks */,
-				74269686993496BED24ECD95 /* Pods_FREE_UR_SPIRIT.framework in Frameworks */,
+				968B5DAED13C8A843A5BA654 /* Pods_FREE_UR_SPIRIT.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,10 +104,8 @@
 		2AA53B5A417622581E635D17 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				F9990493C9D9F4421DE40182 /* Pods-SilentSubliminals.debug.xcconfig */,
-				E45D9B591E9BF544E2BEF636 /* Pods-SilentSubliminals.release.xcconfig */,
-				B5B4B355754FF9C91A7A3396 /* Pods-FREE UR SPIRIT.debug.xcconfig */,
-				D4D308B458B05111CF3A7BB9 /* Pods-FREE UR SPIRIT.release.xcconfig */,
+				8B84D791AD27901163397E49 /* Pods-FREE UR SPIRIT.debug.xcconfig */,
+				C1F238D2415C6B1260535F19 /* Pods-FREE UR SPIRIT.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -128,7 +115,7 @@
 			children = (
 				652D5C592546B6170083165B /* Accelerate.framework */,
 				65F0727B25445673004C8BA3 /* AVFoundation.framework */,
-				7738E4F1BF9BDB30F29728AA /* Pods_FREE_UR_SPIRIT.framework */,
+				9383A2BB2BD24F9DF3D4D4D0 /* Pods_FREE_UR_SPIRIT.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -154,49 +141,74 @@
 		6558D30724684934004E8660 /* SilentSubliminals */ = {
 			isa = PBXGroup;
 			children = (
-				65A003CC257CFB8200EADAB8 /* Sounds */,
+				6568E64D258F5268009390D5 /* Resources */,
+				6568E64C258F5230009390D5 /* ViewControllers */,
+				6568E64B258F51F3009390D5 /* Subviews */,
+				6568E64A258F51E2009390D5 /* Utils */,
+				65A003CC257CFB8200EADAB8 /* Soundfiles */,
 				65699FF9253C36C5000E7F95 /* images */,
 				6558D30824684934004E8660 /* AppDelegate.swift */,
 				6558D30A24684934004E8660 /* SceneDelegate.swift */,
+				6558D31624684935004E8660 /* Info.plist */,
+			);
+			path = SilentSubliminals;
+			sourceTree = "<group>";
+		};
+		6568E64A258F51E2009390D5 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				657AA0C7258F54C700320465 /* Singletons */,
 				6563E03A257691CE000E261B /* Constants.swift */,
-				6563E03425763B90000E261B /* EqualizationFilters.swift */,
+				6563E03625763C6C000E261B /* SignalProcessing.swift */,
+				657AA0C5258F544200320465 /* Misc.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		6568E64B258F51F3009390D5 /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				65A169C0257C1693005D179A /* RoundedView.swift */,
+				65DDE231258BC1560082BD99 /* ShadowLabel.swift */,
+				6569A005253C413B000E7F95 /* ShadowView.swift */,
+				65678FCB258932B60075518C /* ShadowButton.swift */,
+			);
+			path = Subviews;
+			sourceTree = "<group>";
+		};
+		6568E64C258F5230009390D5 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
 				65A8405A25612D1B0072531F /* PlayerMakerChoiceViewController.swift */,
 				6558D30C24684934004E8660 /* SubliminalMakerViewController.swift */,
 				65A8405D2561325E0072531F /* SubliminalPlayerViewController.swift */,
-				65CA93542558534300AE7A9F /* AudioUtilities.swift */,
-				6569A005253C413B000E7F95 /* ShadowView.swift */,
-				65678FCB258932B60075518C /* ShadowButton.swift */,
-				6563E03625763C6C000E261B /* SignalProcessing.swift */,
 				6569A009253C4834000E7F95 /* ScriptViewController.swift */,
-				6558D30E24684934004E8660 /* Main.storyboard */,
-				6558D31124684935004E8660 /* Assets.xcassets */,
-				6558D31324684935004E8660 /* LaunchScreen.storyboard */,
-				6558D31624684935004E8660 /* Info.plist */,
-				65A84061256169840072531F /* TransparentNavBar.swift */,
-				65A169C0257C1693005D179A /* RoundedView.swift */,
-				6563E03825763DFF000E261B /* AVAudioBufferConvenience.swift */,
-				65DDE231258BC1560082BD99 /* ShadowLabel.swift */,
 				653BA539258E2DFF004A0BA7 /* TimerViewController.swift */,
 				653BA541258E69EB004A0BA7 /* SetDurationViewController.swift */,
 				653BA544258E69FC004A0BA7 /* SetEndtimeViewController.swift */,
 			);
-			path = SilentSubliminals;
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		6568E64D258F5268009390D5 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6558D30E24684934004E8660 /* Main.storyboard */,
+				6558D31124684935004E8660 /* Assets.xcassets */,
+				6558D31324684935004E8660 /* LaunchScreen.storyboard */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		65699FF9253C36C5000E7F95 /* images */ = {
 			isa = PBXGroup;
 			children = (
-				65A8406E25618DBB0072531F /* bedIcon.png */,
-				65A8406D25618DBB0072531F /* chairIcon.png */,
 				65A8406A25618DBA0072531F /* moonIcon.png */,
 				65A8406C25618DBB0072531F /* noneIcon.png */,
-				65A8406B25618DBA0072531F /* sunIcon.png */,
-				6569A002253C3EFD000E7F95 /* playButton.png */,
 				6569A007253C43A7000E7F95 /* plusButton.png */,
 				65F0727E2544615D004C8BA3 /* startRecordingButton.png */,
 				65F0727F2544615D004C8BA3 /* stopButton.png */,
 				65F072802544615D004C8BA3 /* stopRecordingButton.png */,
-				65699FFF253C3A15000E7F95 /* arrow-left.png */,
 				65699FFD253C392B000E7F95 /* help-circle.png */,
 				65A8405525611EA50072531F /* subliminalMakerTeaser.png */,
 				65A8405625611EA50072531F /* subliminalPlayerTeaser.png */,
@@ -214,13 +226,21 @@
 			path = background;
 			sourceTree = "<group>";
 		};
-		65A003CC257CFB8200EADAB8 /* Sounds */ = {
+		657AA0C7258F54C700320465 /* Singletons */ = {
+			isa = PBXGroup;
+			children = (
+				6568E647258F50F8009390D5 /* TimerManager.swift */,
+			);
+			path = Singletons;
+			sourceTree = "<group>";
+		};
+		65A003CC257CFB8200EADAB8 /* Soundfiles */ = {
 			isa = PBXGroup;
 			children = (
 				654F42CD258623C10065D490 /* intro.aiff */,
 				654F42CE258623C10065D490 /* outro.aiff */,
 			);
-			path = Sounds;
+			path = Soundfiles;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -230,11 +250,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6558D31924684935004E8660 /* Build configuration list for PBXNativeTarget "FREE UR SPIRIT" */;
 			buildPhases = (
-				70C920A2F5C9B447BCE5106E /* [CP] Check Pods Manifest.lock */,
+				9D9D4D40FF92E71256BE1E9A /* [CP] Check Pods Manifest.lock */,
 				6558D30124684934004E8660 /* Sources */,
 				6558D30224684934004E8660 /* Frameworks */,
 				6558D30324684934004E8660 /* Resources */,
-				EA121883A50ECFB38AD7D999 /* [CP] Embed Pods Frameworks */,
+				3B56789E959F0DE0C66E2CBD /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -305,7 +325,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		70C920A2F5C9B447BCE5106E /* [CP] Check Pods Manifest.lock */ = {
+		3B56789E959F0DE0C66E2CBD /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9D9D4D40FF92E71256BE1E9A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -327,23 +364,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		EA121883A50ECFB38AD7D999 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -352,21 +372,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				653BA545258E69FC004A0BA7 /* SetEndtimeViewController.swift in Sources */,
+				657AA0C6258F544200320465 /* Misc.swift in Sources */,
+				6568E648258F50F8009390D5 /* TimerManager.swift in Sources */,
 				65A8405B25612D1B0072531F /* PlayerMakerChoiceViewController.swift in Sources */,
 				65678FCC258932B60075518C /* ShadowButton.swift in Sources */,
 				65DDE232258BC1560082BD99 /* ShadowLabel.swift in Sources */,
 				653BA542258E69EB004A0BA7 /* SetDurationViewController.swift in Sources */,
-				6563E03925763DFF000E261B /* AVAudioBufferConvenience.swift in Sources */,
 				6563E03725763C6C000E261B /* SignalProcessing.swift in Sources */,
 				6569A006253C413B000E7F95 /* ShadowView.swift in Sources */,
 				6563E03B257691CE000E261B /* Constants.swift in Sources */,
-				6563E03525763B90000E261B /* EqualizationFilters.swift in Sources */,
 				6558D30D24684934004E8660 /* SubliminalMakerViewController.swift in Sources */,
 				65A169C2257C1693005D179A /* RoundedView.swift in Sources */,
-				65A84062256169840072531F /* TransparentNavBar.swift in Sources */,
 				6558D30924684934004E8660 /* AppDelegate.swift in Sources */,
 				653BA53A258E2DFF004A0BA7 /* TimerViewController.swift in Sources */,
-				65CA93562558534400AE7A9F /* AudioUtilities.swift in Sources */,
 				6558D30B24684934004E8660 /* SceneDelegate.swift in Sources */,
 				6569A00A253C4834000E7F95 /* ScriptViewController.swift in Sources */,
 				65A8405E2561325E0072531F /* SubliminalPlayerViewController.swift in Sources */,
@@ -511,7 +529,7 @@
 		};
 		6558D31A24684935004E8660 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B5B4B355754FF9C91A7A3396 /* Pods-FREE UR SPIRIT.debug.xcconfig */;
+			baseConfigurationReference = 8B84D791AD27901163397E49 /* Pods-FREE UR SPIRIT.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -536,7 +554,7 @@
 		};
 		6558D31B24684935004E8660 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D4D308B458B05111CF3A7BB9 /* Pods-FREE UR SPIRIT.release.xcconfig */;
+			baseConfigurationReference = C1F238D2415C6B1260535F19 /* Pods-FREE UR SPIRIT.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
