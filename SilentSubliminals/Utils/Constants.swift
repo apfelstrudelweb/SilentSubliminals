@@ -42,7 +42,7 @@ enum Induction {
 let modulationFrequency: Float = 20000
 let bandwidth: Float = 1000
 
-let criticalLopDurationInHours: Int = 6
+let criticalLoopDurationInHours: Int = 6
 
 struct Manager {
     static var recordingSession: AVAudioSession!

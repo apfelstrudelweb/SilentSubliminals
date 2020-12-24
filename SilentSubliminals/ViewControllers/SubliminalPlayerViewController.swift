@@ -12,18 +12,19 @@ import AVFoundation
 import Accelerate
 import PureLayout
 import MediaPlayer
+//import SwiftState
 
 // https://medium.com/@ian.mundy/audio-mixing-on-ios-4cd51dfaac9a
-class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
+class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, StateMachineDelegate {
     
     // 1. section
     @IBOutlet weak var introductionSwitch: UISwitch!
-    @IBOutlet weak var leadInChairButton: UIButton!
-    @IBOutlet weak var leadInBedButton: UIButton!
-    @IBOutlet weak var noLeadInButton: UIButton!
-    @IBOutlet weak var leadOutDayButton: UIButton!
-    @IBOutlet weak var leadOutNightButton: UIButton!
-    @IBOutlet weak var noLeadOutButton: UIButton!
+    @IBOutlet weak var leadInChairButton: ToggleButton!
+    @IBOutlet weak var leadInBedButton: ToggleButton!
+    @IBOutlet weak var noLeadInButton: ToggleButton!
+    @IBOutlet weak var leadOutDayButton: ToggleButton!
+    @IBOutlet weak var leadOutNightButton: ToggleButton!
+    @IBOutlet weak var noLeadOutButton: ToggleButton!
     @IBOutlet weak var introductionLabel: ShadowLabel!
     @IBOutlet weak var leadInLabel: ShadowLabel!
     @IBOutlet weak var leadOutLabel: ShadowLabel!
@@ -44,9 +45,10 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var playerView: RoundedView!
     @IBOutlet weak var soundView: RoundedView!
+
+    @IBOutlet weak var volumeContainerViewController: UIView!
+    private var volumeViewController: VolumeViewController?
     
-    @IBOutlet weak var volumeView: UIView!
-    let maskView = UIView()
     
     struct AudioFileTypes {
         var filename = ""
@@ -64,11 +66,6 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
     
     var fftSetup : vDSP_DFT_Setup?
     
-    var isStopped: Bool = false
-    var isPlaying: Bool = false
-    var isPausing: Bool = false
-    var isSilentMode: Bool = false
-    var affirmationIsRunning: Bool = false
     var masterVolume: Float = 0.5
     
     var timer: Timer?
@@ -91,14 +88,13 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
     
     let audioQueue: DispatchQueue = DispatchQueue(label: "PlayerQueue", attributes: [])
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         scrollView.delegate = self
+        StateMachine.shared.delegate = self
         
-        setControlColors()
-        
+
         frequencyDomainGraphLayers.forEach {
             self.graphView.layer.addSublayer($0)
         }
@@ -147,8 +143,170 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
         self.outroDuration = try! AVAudioFile(forReading: getFileFromMainBundle(filename: spokenOutro)!).duration
         self.singleAffirmationDuration = try! AVAudioFile(forReading: getFileFromSandbox(filename: spokenAffirmation)).duration
         
+        addCommandCenter() // later on, set to true
+        
+        StateMachine.shared.introState = .none
+        StateMachine.shared.outroState = .none
+        
+    }
+    
+    // MARK: user interaction
+    @IBAction func leadInChairTouched(_ sender: Any) {
+        StateMachine.shared.introState = .chair
+    }
+    
+    @IBAction func leadInBedTouched(_ sender: Any) {
+        StateMachine.shared.introState = .bed
+    }
+    
+    @IBAction func leadInNoneTouched(_ sender: Any) {
+        StateMachine.shared.introState = .none
+    }
+    
+    @IBAction func leadOutDayTouched(_ sender: Any) {
+        StateMachine.shared.outroState = .day
+    }
+    
+    @IBAction func leadOutNightTouched(_ sender: Any) {
+        StateMachine.shared.outroState = .night
+    }
+    
+    @IBAction func leadOutNoneTouched(_ sender: Any) {
+        StateMachine.shared.outroState = .none
+    }
+    
+    @IBAction func silentButtonTouched(_ sender: Any) {
+        
+        volumeViewController?.displayVolume(volume: 1) // TEST
+        
+        StateMachine.shared.affirmationState = StateMachine.shared.affirmationState.nextState
+        
+//        isSilentMode = !isSilentMode
+//
+//        let buttonImage = isSilentMode ? Button.silentOnImg : Button.silentOffImg
+//        self.silentButton.setImage(buttonImage, for: .normal)
+//        for audioFile in self.audioFiles {
+//            self.switchAndAnalyze(audioFile: audioFile)
+//        }
+        
+    }
+    
+    @IBAction func playButtonTouchUpInside(_ sender: Any) {
+        StateMachine.shared.doNextState()
+    }
+    
+    @IBAction func resetButtonTouched(_ sender: Any) {
+        StateMachine.shared.toggleState()
+    }
+    
+
+    func updateIntroButtons() {
+        switch StateMachine.shared.introState {
+        case .chair:
+            leadInChairButton.setState(active: true)
+            leadInBedButton.setState(active: false)
+            noLeadInButton.setState(active: false)
+        case .bed:
+            leadInChairButton.setState(active: false)
+            leadInBedButton.setState(active: true)
+            noLeadInButton.setState(active: false)
+        case .none:
+            leadInChairButton.setState(active: false)
+            leadInBedButton.setState(active: false)
+            noLeadInButton.setState(active: true)
+        }
+        switch StateMachine.shared.playerState {
+        case .ready:
+            leadInChairButton.isEnabled = true
+            leadInBedButton.isEnabled = true
+            noLeadInButton.isEnabled = true
+        case .intro, .affirmation, .outro:
+            leadInChairButton.isEnabled = false
+            leadInBedButton.isEnabled = false
+            noLeadInButton.isEnabled = false
+        }
+    }
+    
+    func updateOutroButtons() {
+        switch StateMachine.shared.outroState {
+        case .day:
+            leadOutDayButton.setState(active: true)
+            leadOutNightButton.setState(active: false)
+            noLeadOutButton.setState(active: false)
+        case .night:
+            leadOutDayButton.setState(active: false)
+            leadOutNightButton.setState(active: true)
+            noLeadOutButton.setState(active: false)
+        case .none:
+            leadOutDayButton.setState(active: false)
+            leadOutNightButton.setState(active: false)
+            noLeadOutButton.setState(active: true)
+        }
+        switch StateMachine.shared.playerState {
+        case .ready:
+            leadOutDayButton.isEnabled = true
+            leadOutNightButton.isEnabled = true
+            noLeadOutButton.isEnabled = true
+        case .intro, .affirmation, .outro:
+            leadOutDayButton.isEnabled = false
+            leadOutNightButton.isEnabled = false
+            noLeadOutButton.isEnabled = false
+        }
+    }
+    
+    
+    func updateSilentButton() {
+        switch StateMachine.shared.affirmationState {
+        case .loud:
+            self.silentButton.setImage(Button.silentOffImg, for: .normal)
+        case .silent:
+            self.silentButton.setImage(Button.silentOnImg, for: .normal)
+        }
+    }
+    
+    func updateInterface() {
+        
+        //playButton.setImage(Button.playOffImg, for: .normal)
+        //setAffirmationLoopDuration()
+        
+        switch StateMachine.shared.pauseState {
+        case .pause:
+            print("pause")
+            break
+            
+        case .play:
+            switch StateMachine.shared.playerState {
+            case .ready:
+                print("ready")
+                break
+            case .intro:
+                switch StateMachine.shared.introState {
+                case .chair, .bed:
+                    print("intro")
+                case .none:
+                    print("no intro")
+                    StateMachine.shared.doNextState()
+                }
+                break
+            case .affirmation:
+                print("affirmation")
+                break
+            case .outro:
+                switch StateMachine.shared.outroState {
+                case .day, .night:
+                    print("outro")
+                case .none:
+                    print("no outro")
+                    StateMachine.shared.doNextState()
+                }
+            }
+        }
+    }
+    
+
+    fileprivate func addCommandCenter() {
         let commandCenter = MPRemoteCommandCenter.shared()
-                
+        
         commandCenter.pauseCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
             print("PAUSE")
             self.pausePlaying()
@@ -172,11 +330,26 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
         commandCenter.playCommand.isEnabled = true
         commandCenter.pauseCommand.isEnabled = true
         commandCenter.previousTrackCommand.isEnabled = true
-        commandCenter.skipForwardCommand.isEnabled = false // later on, set to true
+        commandCenter.skipForwardCommand.isEnabled = false
     }
+    
+    fileprivate func removeCommandCenter() {
+        let commandCenter = MPRemoteCommandCenter.shared()
+        
+        commandCenter.playCommand.isEnabled = false
+        commandCenter.pauseCommand.isEnabled = false
+        commandCenter.previousTrackCommand.isEnabled = false
+        commandCenter.skipForwardCommand.isEnabled = false
+    }
+    
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
+        
+        if let vc = segue.destination as? VolumeViewController {
+            volumeViewController = vc
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -201,20 +374,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
         soundView.layoutSubviews()
     }
     
-    @IBAction func playButtonTouchUpInside(_ sender: Any) {
-        
-        if isPlaying == false {
-            setAffirmationLoopDuration()
-            //startPlaying()
-        } else {
-            pausePlaying()
-            isPlaying = false
-        }
-    }
-    
-    @IBAction func resetButtonTouched(_ sender: Any) {
-        stopPlaying()
-    }
+
     
     
     fileprivate func setAffirmationLoopDuration() {
@@ -233,60 +393,59 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
         
         let hours: Int = Int(self.affirmationLoopDuration! / 3600)
         
-        if hours >= criticalLopDurationInHours {
-            let alert = UIAlertController(title: "Information", message: "You've set a very long time interval of about \(hours) hours. Are you sure that you want to listen to the silent subliminals for so long?", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "YES", style: .default, handler: { [self]_ in
-                self.startPlaying()
-                isPlaying = true
-            }))
-            alert.addAction(UIAlertAction(title: "NO", style: .cancel, handler: nil))
-            self.present(alert, animated: true)
-        } else {
-            self.startPlaying()
-            isPlaying = true
-        }
+//        if hours >= criticalLoopDurationInHours {
+//            let alert = UIAlertController(title: "Information", message: "You've set a very long time interval of about \(hours) hours. Are you sure that you want to listen to the silent subliminals for so long?", preferredStyle: .alert)
+//            alert.addAction(UIAlertAction(title: "YES", style: .default, handler: { [self]_ in
+//                self.startPlaying()
+//                self.isPlaying = true
+//            }))
+//            alert.addAction(UIAlertAction(title: "NO", style: .cancel, handler: nil))
+//            self.present(alert, animated: true)
+//        } else {
+//            self.startPlaying()
+//            isPlaying = true
+//        }
     }
     
     func startPlaying() {
         
         updateLockScreenInfo()
   
-        isStopped = false
-        elapsedTime = 0
-        
-        playButton.setImage(Button.playOffImg, for: .normal)
-        
-        if isPausing == true {
-            
-            for playerNode in activePlayerNodesSet {
-                playerNode.play()
-            }
-            
-            isPausing = false
-            return
-        }
+//        isStopped = false
+//        elapsedTime = 0
+//
+//        playButton.setImage(Button.playOffImg, for: .normal)
+//
+//        if isPausing == true {
+//
+//            for playerNode in activePlayerNodesSet {
+//                playerNode.play()
+//            }
+//
+//            isPausing = false
+//            return
+//        }
         
         self.playInduction(type: Induction.Intro) {_ in
             print("Intro terminated")
-            self.affirmationIsRunning = true
             DispatchQueue.main.async {
                 self.rewindButton.isEnabled = true
             }
             
-            if self.isStopped { return }
+//            if self.isStopped { return }
             
             self.playAffirmationLoop {_ in
                 print("Affirmation terminated")
-                self.affirmationIsRunning = false
+                //self.affirmationIsRunning = false
                 self.timer?.invalidate()
                 self.timer = nil
                 self.playInduction(type: Induction.Outro) { [self]_ in
                     print("Outro terminated")
-                    self.isPausing = false
-                    self.isPlaying = false
+//                    self.isPausing = false
+//                    self.isPlaying = false
                     DispatchQueue.main.async {
                         self.playButton.setImage(Button.playOnImg, for: .normal)
-                        self.rewindButton.isEnabled = false
+                        //self.rewindButton.isEnabled = false
                     }
                 }
             }
@@ -320,18 +479,14 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
         for playerNode in activePlayerNodesSet {
             playerNode.pause()
         }
-        
-        self.playButton.setImage(Button.playOnImg, for: .normal)
-        isPausing = true
 
     }
     
     func stopPlaying() {
         
         //updateLockScreenInfo()
-        
-        isStopped = true
-        
+        //removeCommandCenter()
+           
         for playerNode in activePlayerNodesSet {
             playerNode.stop()
         }
@@ -340,9 +495,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
         activePlayerNodesSet = Set<AVAudioPlayerNode>()
         
         self.playButton.setImage(Button.playOnImg, for: .normal)
-        self.rewindButton.isEnabled = false
-        isPausing = false
-        isPlaying = false
+        //self.rewindButton.isEnabled = false
         timer?.invalidate()
     }
     
@@ -386,7 +539,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
                     self.processAudioData(buffer: buffer)
                     
                     let volume = self.getVolume(from: buffer, bufferSize: 1024) * (deviceVolume ?? 0.5) * self.masterVolume
-                    self.displayVolume(volume: volume)
+                    //self.displayVolume(volume: volume)
                 }
             }
             
@@ -467,7 +620,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
                             
                             if audioPlayerNode.current <= self.singleAffirmationDuration {
                                 // loud
-                                self.isSilentMode = false
+                                //self.isSilentMode = false
                                 for audioFile in self.audioFiles {
                                     self.switchAndAnalyze(audioFile: audioFile)
                                 }
@@ -475,7 +628,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
                             } else {
                                 // silent
                                 if !switchedAutomaticallyToSilent {
-                                    self.isSilentMode = true
+                                    //self.isSilentMode = true
                                     for audioFile in self.audioFiles {
                                         self.switchAndAnalyze(audioFile: audioFile)
                                     }
@@ -484,10 +637,10 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
                                 }
                             }
                             
-                            if !self.isPausing {
-                                self.elapsedTime = self.introDuration + audioPlayerNode.current
-                                print("elapsedTime:\(self.elapsedTime as Any)")
-                            }
+//                            if !self.isPausing {
+//                                self.elapsedTime = self.introDuration + audioPlayerNode.current
+//                                print("elapsedTime:\(self.elapsedTime as Any)")
+//                            }
               
                             if audioPlayerNode.current >= self.affirmationLoopDuration ?? 5 * 60 {
                                 self.activePlayerNodesSet = Set<AVAudioPlayerNode>()
@@ -503,35 +656,19 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
             }
         }
     }
-    
-    
-    @IBAction func silentButtonTouched(_ sender: Any) {
-        
-        isSilentMode = !isSilentMode
-        
-        let buttonImage = isSilentMode ? Button.silentOnImg : Button.silentOffImg
-        self.silentButton.setImage(buttonImage, for: .normal)
-        for audioFile in self.audioFiles {
-            self.switchAndAnalyze(audioFile: audioFile)
-        }
-        
-//        // TEST
-//        print(TimerManager.shared.remainingTime)
-//        print(TimerManager.shared.stopTime)
-    }
-    
+
     fileprivate func switchAndAnalyze(audioFile: SubliminalPlayerViewController.AudioFileTypes) {
-        if !affirmationIsRunning { return }
+        //if !affirmationIsRunning { return }
         if !self.audioEngine.isRunning { return }
         
         let audioPlayer = audioFile.audioPlayer
-        audioPlayer.volume = audioFile.isSilent ? (isSilentMode ? masterVolume : 0) : (isSilentMode ? 0 : masterVolume)
+        //audioPlayer.volume = audioFile.isSilent ? (isSilentMode ? masterVolume : 0) : (isSilentMode ? 0 : masterVolume)
         
         let audioFilename = getFileFromSandbox(filename: audioFile.filename)
         let avAudioFile = try! AVAudioFile(forReading: audioFilename)
         let format =  AVAudioFormat(standardFormatWithSampleRate: avAudioFile.fileFormat.sampleRate, channels: avAudioFile.fileFormat.channelCount)
         
-        audioPlayer.volume = audioFile.isSilent ? (self.isSilentMode ? self.masterVolume : 0) : (self.isSilentMode ? 0 : self.masterVolume)
+        //audioPlayer.volume = audioFile.isSilent ? (self.isSilentMode ? self.masterVolume : 0) : (self.isSilentMode ? 0 : self.masterVolume)
         audioPlayer.removeTap(onBus: 0)
         
         let audioSession = AVAudioSession.sharedInstance()
@@ -544,32 +681,32 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
             print("Error Setting Up Audio Session")
         }
         
-        if self.isSilentMode && audioFile.isSilent || !self.isSilentMode && !audioFile.isSilent {
-            
-            audioPlayer.installTap(onBus: 0, bufferSize: 1024, format: format) {
-                (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
-                
-                DispatchQueue.main.async {
-                    
-                    self.processAudioData(buffer: buffer)
-                    
-                    let volume = self.getVolume(from: buffer, bufferSize: 1024) * (deviceVolume ?? 0.5) * self.masterVolume
-                    self.displayVolume(volume: volume)
-                }
-            }
-        }
+//        if self.isSilentMode && audioFile.isSilent || !self.isSilentMode && !audioFile.isSilent {
+//
+//            audioPlayer.installTap(onBus: 0, bufferSize: 1024, format: format) {
+//                (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
+//
+//                DispatchQueue.main.async {
+//
+//                    self.processAudioData(buffer: buffer)
+//
+//                    let volume = self.getVolume(from: buffer, bufferSize: 1024) * (deviceVolume ?? 0.5) * self.masterVolume
+//                    self.displayVolume(volume: volume)
+//                }
+//            }
+//        }
     }
     
-    func displayVolume(volume: Float) {
-        
-        let w = Double(self.volumeView.frame.size.width)
-        let h = Double(self.volumeView.bounds.size.height)
-        
-        UIView.animate(withDuration: 0.2) {
-            self.maskView.frame = CGRect(x: 0.0, y: 0.0, width: Double(5 * volume) * w, height: h)
-        }
-        
-    }
+//    func displayVolume(volume: Float) {
+//
+//        let w = Double(self.volumeView.frame.size.width)
+//        let h = Double(self.volumeView.bounds.size.height)
+//
+//        UIView.animate(withDuration: 0.2) {
+//            self.maskView.frame = CGRect(x: 0.0, y: 0.0, width: Double(5 * volume) * w, height: h)
+//        }
+//
+//    }
     
     @IBAction func volumeSliderChanged(_ sender: Any) {
         
@@ -582,7 +719,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
         }
         for audioFile in self.audioFiles {
             let audioPlayer = audioFile.audioPlayer
-            audioPlayer.volume = audioFile.isSilent ? (isSilentMode ? masterVolume : 0) : (isSilentMode ? 0 : masterVolume)
+            //audioPlayer.volume = audioFile.isSilent ? (isSilentMode ? masterVolume : 0) : (isSilentMode ? 0 : masterVolume)
         }
     }
     
@@ -719,115 +856,4 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
-    
-    fileprivate func setControlColors() {
-
-        introductionSwitch.onTintColor = PlayerControlColor.darkGrayColor
-        introductionSwitch.thumbTintColor = PlayerControlColor.lightColor
-        leadInChairButton.tintColor = PlayerControlColor.lightColor
-        leadInChairButton.backgroundColor = PlayerControlColor.lightGrayColor
-        leadInBedButton.tintColor = PlayerControlColor.lightColor
-        leadInBedButton.backgroundColor = PlayerControlColor.lightGrayColor
-        noLeadInButton.tintColor = PlayerControlColor.lightColor
-        noLeadInButton.backgroundColor = PlayerControlColor.lightGrayColor
-        leadOutDayButton.tintColor = PlayerControlColor.lightColor
-        leadOutDayButton.backgroundColor = PlayerControlColor.lightGrayColor
-        leadOutNightButton.tintColor = PlayerControlColor.lightColor
-        leadOutNightButton.backgroundColor = PlayerControlColor.lightGrayColor
-        noLeadOutButton.tintColor = PlayerControlColor.lightColor
-        noLeadOutButton.backgroundColor = PlayerControlColor.lightGrayColor
-        introductionLabel.textColor = PlayerControlColor.lightColor
-        leadInLabel.textColor = PlayerControlColor.lightColor
-        leadOutLabel.textColor = PlayerControlColor.lightColor
-        
-        rewindButton.tintColor = PlayerControlColor.lightColor
-        playButton.tintColor = PlayerControlColor.lightColor
-        forwardButton.tintColor = PlayerControlColor.lightColor
-        silentButton.tintColor = PlayerControlColor.darkGrayColor
-        affirmationTitleLabel.textColor = PlayerControlColor.darkGrayColor
-        timerButton.tintColor = PlayerControlColor.darkGrayColor
-        loudspeakerLowSymbol.tintColor = PlayerControlColor.darkGrayColor
-        loudspeakerHighSymbol.tintColor = PlayerControlColor.darkGrayColor
-        volumeSlider.tintColor = PlayerControlColor.darkGrayColor
-        volumeSlider.thumbTintColor = PlayerControlColor.lightColor
-        
-        let colors = [UIColor.blue, UIColor.green, UIColor.yellow, UIColor.red]
-        self.maskView.backgroundColor = .white
-        self.volumeView.showGradientColors(colors)
-        self.volumeView.addSubview(self.maskView)
-        self.volumeView.mask = self.maskView
-        self.maskView.frame = .zero
-    }
-    
-}
-
-
-extension UIView {
-    
-    enum GradientColorDirection {
-        case vertical
-        case horizontal
-    }
-    
-    func showGradientColors(_ colors: [UIColor], opacity: Float = 0.8, direction: GradientColorDirection = .horizontal) {
-        
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.opacity = opacity
-        gradientLayer.colors = colors.map { $0.cgColor }
-        
-        if case .horizontal = direction {
-            gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
-            gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.0)
-        }
-        
-        gradientLayer.locations = [0.0, 0.2, 0.4, 0.6]
-        
-        gradientLayer.bounds = self.bounds  //CGRect(x: 0, y: 0, width: 100, height: 20)//self.bounds
-        gradientLayer.anchorPoint = CGPoint.zero
-        gradientLayer.cornerRadius = self.layer.cornerRadius
-        self.layer.addSublayer(gradientLayer)
-    }
-    
-}
-
-
-extension AVMutableCompositionTrack {
-    
-    func append(url: URL) {
-        let newAsset = AVURLAsset(url: url)
-        let range = CMTimeRangeMake(start: CMTime.zero, duration: newAsset.duration)
-        let end = timeRange.end
-        print(end)
-        if let track = newAsset.tracks(withMediaType: AVMediaType.audio).first {
-            try! insertTimeRange(range, of: track, at: end)
-        }
-    }
-}
-
-extension AVAudioFile {
-    
-    var duration: TimeInterval {
-        let sampleRateSong = Double(processingFormat.sampleRate)
-        let lengthSongSeconds = Double(length) / sampleRateSong
-        print("**********************")
-        print(length)
-        return lengthSongSeconds
-    }
-}
-
-extension AVAudioPlayerNode {
-    
-    var current: TimeInterval {
-        if let nodeTime = lastRenderTime,let playerTime = playerTime(forNodeTime: nodeTime) {
-            return Double(playerTime.sampleTime) / playerTime.sampleRate
-        }
-        return 0
-    }
-}
-
-extension AVPlayer {
-    
-    var isPlaying2: Bool {
-        return ((rate != 0) && (error == nil))
-    }
 }

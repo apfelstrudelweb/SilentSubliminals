@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Oks-ci-etv">
-    <device id="retina6_7" orientation="portrait" appearance="light"/>
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
@@ -14,11 +14,11 @@
             <objects>
                 <viewController title="Choose" id="Jae-VP-25f" customClass="PlayerMakerChoiceViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="JQl-fF-kjL">
-                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ndb-XF-lc8" userLabel="MakerButton">
-                                <rect key="frame" x="32" y="102.66666666666669" width="364" height="304"/>
+                                <rect key="frame" x="25" y="94.5" width="364" height="304"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="ndb-XF-lc8" secondAttribute="height" multiplier="91:76" id="TJP-js-Mh7"/>
                                 </constraints>
@@ -28,20 +28,20 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subliminal Maker" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FFQ-IH-XON">
-                                <rect key="frame" x="82.666666666666686" y="336" width="263" height="41"/>
+                                <rect key="frame" x="75.5" y="324.5" width="263" height="41"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="34"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aeS-iP-u04" userLabel="PlayerButton">
-                                <rect key="frame" x="32" y="529" width="364" height="285"/>
+                                <rect key="frame" x="25" y="507" width="364" height="285"/>
                                 <state key="normal" backgroundImage="subliminalPlayerTeaser.png"/>
                                 <connections>
                                     <segue destination="4ji-Uz-873" kind="presentation" identifier="showPlayerSegue" modalPresentationStyle="fullScreen" modalTransitionStyle="flipHorizontal" id="5ut-E7-bKH"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Player" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nB9-7R-tLa">
-                                <rect key="frame" x="166" y="751.66666666666663" width="96" height="41"/>
+                                <rect key="frame" x="159" y="726.5" width="96" height="41"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="34"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -75,20 +75,20 @@
             <objects>
                 <viewController title="Maker" id="BYZ-38-t0r" customClass="SubliminalMakerViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JwT-Xp-0iE">
-                                <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
                             <view alpha="0.75" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yvy-h8-CaA" userLabel="Player View" customClass="ShadowView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                <rect key="frame" x="20" y="140" width="378" height="185"/>
+                                <rect key="frame" x="20" y="135.5" width="378" height="179"/>
                                 <subviews>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mdr-3Q-yuN">
-                                        <rect key="frame" x="0.0" y="92.666666666666657" width="378" height="92.333333333333343"/>
+                                        <rect key="frame" x="0.0" y="89.5" width="378" height="89.5"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2kD-4u-X7j" customClass="ShadowButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                                <rect key="frame" x="306" y="22" width="48" height="48"/>
+                                                <rect key="frame" x="306" y="21" width="48" height="48"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="2kD-4u-X7j" secondAttribute="height" multiplier="1:1" id="h0W-f1-WMi"/>
                                                     <constraint firstAttribute="width" constant="48" id="y6g-NE-9cC"/>
@@ -100,7 +100,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Record your Subliminal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="CeU-Ma-P7c">
-                                                <rect key="frame" x="8" y="22.666666666666686" width="211" height="24"/>
+                                                <rect key="frame" x="8" y="21.5" width="211" height="24"/>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -109,7 +109,7 @@
                                                 </variation>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add to Library with &quot;Save&quot;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="G2E-L2-5c1">
-                                                <rect key="frame" x="8" y="47.666666666666657" width="211" height="20"/>
+                                                <rect key="frame" x="8" y="46" width="211" height="20"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -118,7 +118,7 @@
                                                 </variation>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a0U-wz-QjM">
-                                                <rect key="frame" x="239" y="22.666666666666686" width="47" height="47"/>
+                                                <rect key="frame" x="239" y="21.5" width="47" height="47"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="a0U-wz-QjM" secondAttribute="height" multiplier="1:1" id="VBR-Qw-ZPS"/>
                                                     <constraint firstAttribute="width" constant="47" id="yAu-Fa-7Bi"/>
@@ -167,7 +167,7 @@
                                         </variation>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X4C-zh-GbL">
-                                        <rect key="frame" x="0.0" y="0.0" width="378" height="92.666666666666671"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="378" height="89.5"/>
                                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                 </subviews>
@@ -184,7 +184,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create your script" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="z8r-ZA-9nh">
-                                <rect key="frame" x="20" y="402.33333333333331" width="302.33333333333331" height="29"/>
+                                <rect key="frame" x="20" y="388.5" width="302.5" height="29"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="24"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -193,7 +193,7 @@
                                 </variation>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H1h-4Z-2C0">
-                                <rect key="frame" x="351.66666666666669" y="393.66666666666669" width="46.333333333333314" height="46.333333333333314"/>
+                                <rect key="frame" x="353" y="381" width="45" height="44.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="H1h-4Z-2C0" secondAttribute="height" id="blw-3e-pod"/>
                                 </constraints>
@@ -203,7 +203,7 @@
                                 </connections>
                             </button>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KHd-hc-lYm">
-                                <rect key="frame" x="20" y="509.33333333333326" width="378" height="324"/>
+                                <rect key="frame" x="20" y="493" width="378" height="313.5"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <segue destination="HOc-7b-b6k" kind="embed" id="uhL-Bl-3aJ"/>
@@ -261,14 +261,14 @@
             <objects>
                 <viewController id="HOc-7b-b6k" customClass="ScriptViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="avG-j5-3Gc">
-                        <rect key="frame" x="0.0" y="0.0" width="378" height="324"/>
+                        <rect key="frame" x="0.0" y="0.0" width="378" height="313.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GEd-oc-aDl" customClass="ShadowView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="32.333333333333343" width="378" height="291.66666666666663"/>
+                                <rect key="frame" x="0.0" y="31.5" width="378" height="282"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Iz0-AX-dXj">
-                                        <rect key="frame" x="0.0" y="0.0" width="378" height="233.33333333333334"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="378" height="225.5"/>
                                         <color key="backgroundColor" red="0.61338037249999999" green="0.64416187999999996" blue="0.68199056390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <string key="text">I’m releasing all my fears and worries. I’m living my full potential.
 
@@ -289,7 +289,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jaw Relaxation" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L9L-jU-5pK">
-                                <rect key="frame" x="0.0" y="0.0" width="378" height="32.333333333333336"/>
+                                <rect key="frame" x="0.0" y="0.0" width="378" height="31.5"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="24"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -298,10 +298,10 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                 </variation>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JOn-ae-Wv5">
-                                <rect key="frame" x="0.0" y="265.66666666666669" width="378" height="58.333333333333314"/>
+                                <rect key="frame" x="0.0" y="257" width="378" height="56.5"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="50C-8g-wow">
-                                        <rect key="frame" x="0.0" y="-3.3333333333333712" width="181.33333333333334" height="46.666666666666664"/>
+                                        <rect key="frame" x="0.0" y="-3.5" width="181.5" height="45"/>
                                         <color key="backgroundColor" red="0.28600493069999999" green="0.26861456039999998" blue="0.26840257639999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                         <state key="normal" title="Save">
@@ -312,7 +312,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                         </variation>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J1l-Ma-ooR">
-                                        <rect key="frame" x="196.66666666666663" y="-3.3333333333333712" width="181.33333333333337" height="46.666666666666664"/>
+                                        <rect key="frame" x="196.5" y="-3.5" width="181.5" height="45"/>
                                         <color key="backgroundColor" red="0.28600493069999999" green="0.26861456039999998" blue="0.26840257639999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                         <state key="normal" title="Export">
@@ -390,7 +390,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="iCR-Hc-kvh">
-                        <rect key="frame" x="0.0" y="44" width="428" height="44"/>
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <textAttributes key="titleTextAttributes">
@@ -415,23 +415,23 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
             <objects>
                 <viewController id="Wlk-fN-YWe" customClass="SubliminalPlayerViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="S0S-wa-Cfu">
-                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="subliminalPlayerBackground.png" translatesAutoresizingMaskIntoConstraints="NO" id="KIc-QH-czb">
-                                <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iUg-V1-pPz">
-                                <rect key="frame" x="21.333333333333343" y="88" width="385.33333333333326" height="788"/>
+                                <rect key="frame" x="20.5" y="88" width="373" height="758"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="44" translatesAutoresizingMaskIntoConstraints="NO" id="fxU-QY-bkn">
-                                        <rect key="frame" x="0.0" y="44" width="385.33333333333331" height="1200"/>
+                                        <rect key="frame" x="0.0" y="44" width="373" height="1201"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g3I-n3-Zh4">
-                                                <rect key="frame" x="0.0" y="0.0" width="385.33333333333331" height="370.66666666666669"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="373" height="371"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jd3-Ih-3A7">
-                                                        <rect key="frame" x="0.0" y="0.0" width="385.33333333333331" height="370.66666666666669"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="373" height="371"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="752" text="INTRODUCTION" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CsQ-FE-C27" customClass="ShadowLabel" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="12" y="12" width="145" height="24"/>
@@ -440,22 +440,22 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WTQ-46-HQ2">
-                                                                <rect key="frame" x="210.66666666666666" y="8.6666666666666572" width="50.999999999999972" height="31"/>
+                                                                <rect key="frame" x="210.5" y="8.5" width="51" height="31"/>
                                                                 <color key="onTintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             </switch>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="751" text="LEAD IN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Vo-TK-6Ii" customClass="ShadowLabel" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                                                <rect key="frame" x="12.000000000000007" y="80" width="72.666666666666686" height="24"/>
+                                                                <rect key="frame" x="12" y="80" width="72.5" height="24"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LEAD OUT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hKZ-yX-a0r" customClass="ShadowLabel" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                                                <rect key="frame" x="12.000000000000007" y="134" width="94.666666666666686" height="216.66666666666663"/>
+                                                                <rect key="frame" x="12" y="134" width="94.5" height="217"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1lW-ea-hYl">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1lW-ea-hYl" customClass="ToggleButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="139" y="70" width="44" height="44"/>
                                                                 <color key="backgroundColor" red="0.63859834640000002" green="0.64797228200000001" blue="0.67609408879999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                 <constraints>
@@ -469,8 +469,11 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                         <integer key="value" value="10"/>
                                                                     </userDefinedRuntimeAttribute>
                                                                 </userDefinedRuntimeAttributes>
+                                                                <connections>
+                                                                    <action selector="leadInChairTouched:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="kMZ-DJ-ZCG"/>
+                                                                </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nss-hv-Sk9">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nss-hv-Sk9" customClass="ToggleButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="213" y="70" width="44" height="44"/>
                                                                 <color key="backgroundColor" red="0.63859834640000002" green="0.64797228200000001" blue="0.67609408879999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                 <constraints>
@@ -484,8 +487,11 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                         <integer key="value" value="10"/>
                                                                     </userDefinedRuntimeAttribute>
                                                                 </userDefinedRuntimeAttributes>
+                                                                <connections>
+                                                                    <action selector="leadInBedTouched:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="nbl-mW-H3G"/>
+                                                                </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q6l-Tj-038">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q6l-Tj-038" customClass="ToggleButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="287" y="70" width="44" height="44"/>
                                                                 <color key="backgroundColor" red="0.63859834640000002" green="0.64797228200000001" blue="0.67609408879999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                 <constraints>
@@ -499,9 +505,12 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                         <integer key="value" value="10"/>
                                                                     </userDefinedRuntimeAttribute>
                                                                 </userDefinedRuntimeAttributes>
+                                                                <connections>
+                                                                    <action selector="leadInNoneTouched:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="yrx-Xt-0HN"/>
+                                                                </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d8R-wR-p82">
-                                                                <rect key="frame" x="139" y="220.33333333333331" width="44" height="44"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d8R-wR-p82" customClass="ToggleButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                                <rect key="frame" x="139" y="220.5" width="44" height="44"/>
                                                                 <color key="backgroundColor" red="0.638598346410438" green="0.64797228199628032" blue="0.67609408875380717" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="44" id="6lc-Vr-6T6"/>
@@ -514,9 +523,12 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                         <integer key="value" value="10"/>
                                                                     </userDefinedRuntimeAttribute>
                                                                 </userDefinedRuntimeAttributes>
+                                                                <connections>
+                                                                    <action selector="leadOutDayTouched:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="06l-bd-yc6"/>
+                                                                </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6XP-Xy-aRO">
-                                                                <rect key="frame" x="213" y="220.33333333333331" width="44" height="44"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6XP-Xy-aRO" customClass="ToggleButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                                <rect key="frame" x="213" y="220.5" width="44" height="44"/>
                                                                 <color key="backgroundColor" red="0.638598346410438" green="0.64797228199628032" blue="0.67609408875380717" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="44" id="URZ-4e-pmF"/>
@@ -529,9 +541,12 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                         <integer key="value" value="10"/>
                                                                     </userDefinedRuntimeAttribute>
                                                                 </userDefinedRuntimeAttributes>
+                                                                <connections>
+                                                                    <action selector="leadOutNightTouched:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="qdr-mJ-Gkz"/>
+                                                                </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I2n-2P-ia1">
-                                                                <rect key="frame" x="287" y="220.33333333333331" width="44" height="44"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I2n-2P-ia1" customClass="ToggleButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                                <rect key="frame" x="287" y="220.5" width="44" height="44"/>
                                                                 <color key="backgroundColor" red="0.63859834640000002" green="0.64797228200000001" blue="0.67609408879999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="44" id="kHa-1F-Tt7"/>
@@ -544,6 +559,9 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                         <integer key="value" value="10"/>
                                                                     </userDefinedRuntimeAttribute>
                                                                 </userDefinedRuntimeAttributes>
+                                                                <connections>
+                                                                    <action selector="leadOutNoneTouched:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="QzZ-FZ-PZQ"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -583,34 +601,34 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Acb-cm-dth">
-                                                <rect key="frame" x="0.0" y="414.66666666666663" width="385.33333333333331" height="370.66666666666663"/>
+                                                <rect key="frame" x="0.0" y="415" width="373" height="371"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wux-KS-pjg" customClass="RoundedView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="385.33333333333331" height="370.66666666666669"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="373" height="371"/>
                                                         <subviews>
-                                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="MCu-q1-tlA">
-                                                                <rect key="frame" x="34.333333333333314" y="93.666666666666742" width="299" height="258"/>
+                                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="MCu-q1-tlA" customClass="VolumeSlider" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                                <rect key="frame" x="34.5" y="93.5" width="286.5" height="258.5"/>
                                                                 <color key="tintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <connections>
                                                                     <action selector="volumeSliderChanged:" destination="Wlk-fN-YWe" eventType="valueChanged" id="nML-Cs-o0J"/>
                                                                 </connections>
                                                             </slider>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jaw Relaxation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eI0-MH-Rsd">
-                                                                <rect key="frame" x="124.00000000000001" y="170.33333333333337" width="137.33333333333337" height="24"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jaw Relaxation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eI0-MH-Rsd" customClass="SectionLabel" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                                <rect key="frame" x="118" y="170.5" width="137.5" height="24"/>
                                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                                                 <color key="textColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loudspeakerSymbolLow" translatesAutoresizingMaskIntoConstraints="NO" id="nxf-ce-GFG">
-                                                                <rect key="frame" x="14.333333333333332" y="211.33333333333337" width="21.999999999999996" height="22"/>
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loudspeakerSymbolLow" translatesAutoresizingMaskIntoConstraints="NO" id="nxf-ce-GFG" customClass="SymbolImageView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                                <rect key="frame" x="14.5" y="211.5" width="22" height="22"/>
                                                                 <color key="tintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="22" id="1Gg-hT-zaT"/>
                                                                     <constraint firstAttribute="width" constant="22" id="Rjc-Xs-I5t"/>
                                                                 </constraints>
                                                             </imageView>
-                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loudspeakerSymbolHigh" translatesAutoresizingMaskIntoConstraints="NO" id="nSG-D6-S8T">
-                                                                <rect key="frame" x="339.33333333333337" y="205.33333333333337" width="34" height="34"/>
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loudspeakerSymbolHigh" translatesAutoresizingMaskIntoConstraints="NO" id="nSG-D6-S8T" customClass="SymbolImageView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                                <rect key="frame" x="327" y="205.5" width="34" height="34"/>
                                                                 <color key="tintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="34" id="D4u-ai-2Tj"/>
@@ -618,7 +636,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                 </constraints>
                                                             </imageView>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SKF-7G-fNA" customClass="ShadowButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                                                <rect key="frame" x="168.66666666666666" y="119.33333333333337" width="48" height="48"/>
+                                                                <rect key="frame" x="162.5" y="119.5" width="48" height="48"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="48" id="tox-yo-yKS"/>
                                                                     <constraint firstAttribute="width" constant="48" id="vpS-wC-7lm"/>
@@ -633,18 +651,20 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                 </connections>
                                                             </button>
                                                             <view clipsSubviews="YES" alpha="0.45000000000000001" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o5j-AJ-IcV">
-                                                                <rect key="frame" x="0.0" y="0.0" width="385.33333333333331" height="111.33333333333333"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="373" height="111.5"/>
                                                                 <color key="backgroundColor" red="0.38731712100000004" green="0.33104551811765975" blue="0.31271345388540739" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                             </view>
-                                                            <view clipsSubviews="YES" alpha="0.69999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oPM-Nv-Zm8">
-                                                                <rect key="frame" x="0.0" y="111.33333333333337" width="385.33333333333331" height="4"/>
-                                                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8eD-ZX-UW6">
+                                                                <rect key="frame" x="0.0" y="108" width="373" height="4"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="height" constant="4" id="6jd-QY-4kj"/>
+                                                                    <constraint firstAttribute="height" constant="4" id="G8Z-jo-q2a"/>
                                                                 </constraints>
-                                                            </view>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rc5-V6-YXt">
-                                                                <rect key="frame" x="12.000000000000004" y="161.33333333333337" width="29.999999999999996" height="44"/>
+                                                                <connections>
+                                                                    <segue destination="JZe-ds-tZu" kind="embed" identifier="volumeSegue" id="vzB-wa-cYC"/>
+                                                                </connections>
+                                                            </containerView>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rc5-V6-YXt" customClass="SymbolButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                                <rect key="frame" x="12" y="161.5" width="30" height="44"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="30" id="lT3-BC-GSG"/>
                                                                     <constraint firstAttribute="height" constant="44" id="xVI-wj-mYZ"/>
@@ -655,8 +675,8 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                     <action selector="silentButtonTouched:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="d7m-Pu-OjA"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DEe-tW-fzs">
-                                                                <rect key="frame" x="329.33333333333337" y="161.33333333333337" width="44" height="44"/>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DEe-tW-fzs" customClass="SymbolButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                                <rect key="frame" x="317" y="161.5" width="44" height="44"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="44" id="aMm-OK-g6N"/>
                                                                     <constraint firstAttribute="width" constant="44" id="cKm-KH-z0e"/>
@@ -668,7 +688,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                 </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CsD-QE-lCH" customClass="ShadowButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                                                <rect key="frame" x="72" y="127.33333333333337" width="48" height="32"/>
+                                                                <rect key="frame" x="72" y="127.5" width="48" height="32"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="32" id="krR-ql-QuK"/>
                                                                     <constraint firstAttribute="width" constant="48" id="nPW-Tp-e9o"/>
@@ -683,7 +703,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                 </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qPP-wD-Fyb" customClass="ShadowButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                                                <rect key="frame" x="250.66666666666663" y="127.33333333333337" width="48" height="32"/>
+                                                                <rect key="frame" x="240.5" y="127.5" width="48" height="32"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="32" id="8OU-0M-CGA"/>
                                                                     <constraint firstAttribute="width" constant="48" id="PKu-B8-CO1"/>
@@ -699,24 +719,24 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                         <constraints>
                                                             <constraint firstItem="o5j-AJ-IcV" firstAttribute="leading" secondItem="wux-KS-pjg" secondAttribute="leading" id="1RZ-Ki-Yzt"/>
                                                             <constraint firstItem="DEe-tW-fzs" firstAttribute="centerY" secondItem="rc5-V6-YXt" secondAttribute="centerY" id="1nG-Pa-gPR"/>
+                                                            <constraint firstItem="8eD-ZX-UW6" firstAttribute="leading" secondItem="o5j-AJ-IcV" secondAttribute="leading" id="2hP-RJ-E24"/>
                                                             <constraint firstItem="rc5-V6-YXt" firstAttribute="top" secondItem="SKF-7G-fNA" secondAttribute="bottom" constant="-6" id="3oX-4Q-4rt"/>
                                                             <constraint firstItem="nSG-D6-S8T" firstAttribute="top" secondItem="DEe-tW-fzs" secondAttribute="bottom" constant="-5.6843418860808015e-14" id="C57-QS-pZQ"/>
-                                                            <constraint firstItem="oPM-Nv-Zm8" firstAttribute="top" secondItem="o5j-AJ-IcV" secondAttribute="bottom" id="Eoh-44-NPq"/>
                                                             <constraint firstItem="CsD-QE-lCH" firstAttribute="centerY" secondItem="SKF-7G-fNA" secondAttribute="centerY" id="FLj-gL-d67"/>
                                                             <constraint firstItem="rc5-V6-YXt" firstAttribute="leading" secondItem="wux-KS-pjg" secondAttribute="leading" constant="12" id="GFi-bo-pmo"/>
                                                             <constraint firstItem="MCu-q1-tlA" firstAttribute="centerY" secondItem="nxf-ce-GFG" secondAttribute="centerY" id="LoW-Mi-Cbb"/>
+                                                            <constraint firstItem="8eD-ZX-UW6" firstAttribute="bottom" secondItem="o5j-AJ-IcV" secondAttribute="bottom" id="PiB-O1-z5T"/>
                                                             <constraint firstItem="CsD-QE-lCH" firstAttribute="leading" secondItem="rc5-V6-YXt" secondAttribute="leading" multiplier="6" id="RnQ-Ag-1wB"/>
                                                             <constraint firstItem="o5j-AJ-IcV" firstAttribute="top" secondItem="wux-KS-pjg" secondAttribute="top" id="UTT-ZR-gf6"/>
-                                                            <constraint firstItem="oPM-Nv-Zm8" firstAttribute="trailing" secondItem="o5j-AJ-IcV" secondAttribute="trailing" id="XRU-0R-LPU"/>
                                                             <constraint firstItem="SKF-7G-fNA" firstAttribute="centerX" secondItem="wux-KS-pjg" secondAttribute="centerX" id="Ych-P6-NWv"/>
                                                             <constraint firstItem="nSG-D6-S8T" firstAttribute="centerY" secondItem="MCu-q1-tlA" secondAttribute="centerY" id="Zts-J2-iaF"/>
                                                             <constraint firstItem="nSG-D6-S8T" firstAttribute="leading" secondItem="MCu-q1-tlA" secondAttribute="trailing" constant="8" id="a7t-up-gfT"/>
-                                                            <constraint firstItem="oPM-Nv-Zm8" firstAttribute="leading" secondItem="o5j-AJ-IcV" secondAttribute="leading" id="cD7-QE-sFF"/>
                                                             <constraint firstItem="qPP-wD-Fyb" firstAttribute="trailing" secondItem="DEe-tW-fzs" secondAttribute="trailing" multiplier="0.8" id="cio-wI-Uak"/>
                                                             <constraint firstItem="qPP-wD-Fyb" firstAttribute="centerY" secondItem="SKF-7G-fNA" secondAttribute="centerY" id="fqE-Cm-tOl"/>
                                                             <constraint firstItem="nxf-ce-GFG" firstAttribute="top" secondItem="eI0-MH-Rsd" secondAttribute="bottom" constant="17" id="g4f-xF-Qvu"/>
                                                             <constraint firstItem="MCu-q1-tlA" firstAttribute="leading" secondItem="nxf-ce-GFG" secondAttribute="trailing" id="hTq-ZP-OAw"/>
                                                             <constraint firstItem="nSG-D6-S8T" firstAttribute="trailing" secondItem="DEe-tW-fzs" secondAttribute="trailing" id="md1-qg-xRE"/>
+                                                            <constraint firstItem="8eD-ZX-UW6" firstAttribute="trailing" secondItem="o5j-AJ-IcV" secondAttribute="trailing" id="mx9-Fn-gRa"/>
                                                             <constraint firstItem="SKF-7G-fNA" firstAttribute="top" secondItem="o5j-AJ-IcV" secondAttribute="bottom" constant="8" symbolic="YES" id="oYj-X1-RiE"/>
                                                             <constraint firstItem="eI0-MH-Rsd" firstAttribute="centerX" secondItem="wux-KS-pjg" secondAttribute="centerX" id="q2Z-eF-aCp"/>
                                                             <constraint firstAttribute="bottom" secondItem="MCu-q1-tlA" secondAttribute="bottom" constant="20" id="syO-TN-ZCc"/>
@@ -736,13 +756,13 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DzM-EX-Cb3">
-                                                <rect key="frame" x="0.0" y="829.33333333333337" width="385.33333333333331" height="370.66666666666663"/>
+                                                <rect key="frame" x="0.0" y="830" width="373" height="371"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tg5-ND-tqn" customClass="RoundedView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="385.33333333333331" height="370.66666666666669"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="373" height="371"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Background Sound" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qwq-UC-mWg">
-                                                                <rect key="frame" x="105.33333333333336" y="12" width="174.66666666666663" height="24"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Background Sound" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qwq-UC-mWg" customClass="SectionLabel" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                                <rect key="frame" x="99.5" y="12" width="174.5" height="24"/>
                                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                                                 <color key="textColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
@@ -820,24 +840,39 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                         <outlet property="silentButton" destination="rc5-V6-YXt" id="Whp-4d-4SH"/>
                         <outlet property="soundView" destination="tg5-ND-tqn" id="mkP-QH-NS4"/>
                         <outlet property="timerButton" destination="DEe-tW-fzs" id="C2P-2g-PTJ"/>
+                        <outlet property="volumeContainerViewController" destination="8eD-ZX-UW6" id="eRq-aQ-Bjv"/>
                         <outlet property="volumeSlider" destination="MCu-q1-tlA" id="0cs-Yb-0pO"/>
-                        <outlet property="volumeView" destination="oPM-Nv-Zm8" id="UY1-h3-aXh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XWw-Sa-g8I" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1957.0093457943924" y="787.25701943844501"/>
         </scene>
+        <!--Volume View Controller-->
+        <scene sceneID="WX0-yT-kfv">
+            <objects>
+                <viewController storyboardIdentifier="volumeViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="JZe-ds-tZu" customClass="VolumeViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="e26-fX-bIr">
+                        <rect key="frame" x="0.0" y="0.0" width="373" height="4"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="e9g-Ig-zWy"/>
+                        <color key="backgroundColor" red="0.65711861849999997" green="0.14934125540000001" blue="0.12536981699999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hDG-Hb-v6X" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2738" y="385"/>
+        </scene>
         <!--Timer View Controller-->
         <scene sceneID="Dsh-yr-3HQ">
             <objects>
                 <viewController modalPresentationStyle="formSheet" id="hDO-On-2rK" customClass="TimerViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" opaque="NO" contentMode="scaleToFill" id="pYQ-BN-KBl">
-                        <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VAr-Uq-wX3">
-                                <rect key="frame" x="64" y="236" width="300" height="400"/>
+                                <rect key="frame" x="57" y="221" width="300" height="400"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="subliminalPlayerBackground.png" translatesAutoresizingMaskIntoConstraints="NO" id="yFd-20-MIN">
                                         <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
@@ -874,7 +909,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                         </connections>
                                     </containerView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1h 5min" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8fc-YE-AyF">
-                                        <rect key="frame" x="8" y="17" width="62" height="20.333333333333329"/>
+                                        <rect key="frame" x="8" y="17" width="62" height="20"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -919,7 +954,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Bpb-bN-BWa">
-                                <rect key="frame" x="64" y="290" width="300" height="41"/>
+                                <rect key="frame" x="64" y="275" width="286" height="41"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="AaW-6Z-5wQ"/>
                                 </constraints>
@@ -956,7 +991,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LLr-sE-ErK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2978.9719626168221" y="787.9049676025918"/>
+            <point key="canvasLocation" x="2877" y="787"/>
         </scene>
         <!--Set Endtime View Controller-->
         <scene sceneID="vjh-rY-Dbu">
@@ -980,7 +1015,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                 </connections>
                             </datePicker>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Set the ending time of the affirmation loop" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bsE-Jc-ctT">
-                                <rect key="frame" x="8" y="64" width="284" height="40.666666666666657"/>
+                                <rect key="frame" x="8" y="64" width="284" height="41"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -1007,7 +1042,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Rq-jA-vZk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4108.8785046728972" y="959.61123110151198"/>
+            <point key="canvasLocation" x="3771" y="891"/>
         </scene>
         <!--Set Duration View Controller-->
         <scene sceneID="Jct-xI-6wQ">
@@ -1025,12 +1060,12 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Set the duration of the affirmation loop" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rr3-T3-3Qg">
-                                <rect key="frame" x="8" y="64" width="284" height="40.666666666666657"/>
+                                <rect key="frame" x="8" y="64" width="284" height="41"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="countDownTimer" countDownDuration="300" minuteInterval="1" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6fq-uc-apD">
+                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="countDownTimer" countDownDuration="300" minuteInterval="1" style="wheels" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6fq-uc-apD">
                                 <rect key="frame" x="0.0" y="124" width="300" height="162"/>
                                 <connections>
                                     <action selector="timePickerValueChanged:" destination="09b-ZI-7Cp" eventType="valueChanged" id="pQq-jl-g4g"/>
@@ -1058,7 +1093,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CNn-Ry-w4G" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4108.8785046728972" y="620.73434125269978"/>
+            <point key="canvasLocation" x="3772" y="585"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="9GK-Z9-cUi">
@@ -1067,7 +1102,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="kze-iT-uns">
-                        <rect key="frame" x="0.0" y="44" width="428" height="44"/>
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1078,6 +1113,20 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Iwh-nV-byd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1048" y="788"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="cXv-Yd-39N">
+            <objects>
+                <viewController id="uHi-k7-NyU" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="H1c-Xj-WTg">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x3g-mi-RUO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1917" y="1173"/>
         </scene>
     </scenes>
     <resources>

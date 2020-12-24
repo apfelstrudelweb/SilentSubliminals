@@ -21,8 +21,8 @@ class SignalProcessing {
         //Only take into account range from 120->160, so FSR = 40
         db = db - 60
 
-        let dividor = Float(40/0.3)
-        var adjustedVal = 0.3 + db/dividor
+//        let dividor = Float(40/0.3)
+//        var adjustedVal = 0.3 + db/dividor
         
         //print(adjustedVal)
 
