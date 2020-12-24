@@ -14,7 +14,6 @@ import PureLayout
 
 //let sampleCount = 512
 
-let cornerRadius: CGFloat = 15
 let alpha: CGFloat = 0.85
 
 

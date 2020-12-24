@@ -19,6 +19,7 @@
 		6558D31024684934004E8660 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6558D30E24684934004E8660 /* Main.storyboard */; };
 		6558D31224684935004E8660 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6558D31124684935004E8660 /* Assets.xcassets */; };
 		6558D31524684935004E8660 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6558D31324684935004E8660 /* LaunchScreen.storyboard */; };
+		656046A62594EA1000D1E9D2 /* VolumeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656046A52594EA1000D1E9D2 /* VolumeManager.swift */; };
 		6563E03725763C6C000E261B /* SignalProcessing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6563E03625763C6C000E261B /* SignalProcessing.swift */; };
 		6563E03B257691CE000E261B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6563E03A257691CE000E261B /* Constants.swift */; };
 		65678FCC258932B60075518C /* ShadowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65678FCB258932B60075518C /* ShadowButton.swift */; };
@@ -35,6 +36,8 @@
 		656D43102594B66C0067A4D8 /* SectionLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D430F2594B66C0067A4D8 /* SectionLabel.swift */; };
 		656D43162594BEBA0067A4D8 /* VolumeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D43152594BEBA0067A4D8 /* VolumeViewController.swift */; };
 		656D431E2594CF450067A4D8 /* AudioExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D431D2594CF450067A4D8 /* AudioExtensions.swift */; };
+		656D43212594E0900067A4D8 /* Switch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D43202594E0900067A4D8 /* Switch.swift */; };
+		656D43242594E3790067A4D8 /* SpectrumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D43232594E3790067A4D8 /* SpectrumViewController.swift */; };
 		657AA0C6258F544200320465 /* Misc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657AA0C5258F544200320465 /* Misc.swift */; };
 		6598C2F0259106FC0042A7E1 /* StateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6598C2EF259106FC0042A7E1 /* StateMachine.swift */; };
 		65A169C2257C1693005D179A /* RoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A169C0257C1693005D179A /* RoundedView.swift */; };
@@ -66,6 +69,7 @@
 		6558D31124684935004E8660 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6558D31424684935004E8660 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6558D31624684935004E8660 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		656046A52594EA1000D1E9D2 /* VolumeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeManager.swift; sourceTree = "<group>"; };
 		6563E03625763C6C000E261B /* SignalProcessing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignalProcessing.swift; sourceTree = "<group>"; };
 		6563E03A257691CE000E261B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		65678FCB258932B60075518C /* ShadowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowButton.swift; sourceTree = "<group>"; };
@@ -82,6 +86,8 @@
 		656D430F2594B66C0067A4D8 /* SectionLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionLabel.swift; sourceTree = "<group>"; };
 		656D43152594BEBA0067A4D8 /* VolumeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeViewController.swift; sourceTree = "<group>"; };
 		656D431D2594CF450067A4D8 /* AudioExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioExtensions.swift; sourceTree = "<group>"; };
+		656D43202594E0900067A4D8 /* Switch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Switch.swift; sourceTree = "<group>"; };
+		656D43232594E3790067A4D8 /* SpectrumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumViewController.swift; sourceTree = "<group>"; };
 		657AA0C5258F544200320465 /* Misc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Misc.swift; sourceTree = "<group>"; };
 		6598C2EF259106FC0042A7E1 /* StateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateMachine.swift; sourceTree = "<group>"; };
 		65A169C0257C1693005D179A /* RoundedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedView.swift; sourceTree = "<group>"; };
@@ -193,6 +199,7 @@
 				656D43092594B5840067A4D8 /* SymbolImageView.swift */,
 				656D430C2594B5F30067A4D8 /* VolumeSlider.swift */,
 				656D430F2594B66C0067A4D8 /* SectionLabel.swift */,
+				656D43202594E0900067A4D8 /* Switch.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -200,6 +207,7 @@
 		6568E64C258F5230009390D5 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				656D43262594E3800067A4D8 /* Controls */,
 				65A8405A25612D1B0072531F /* PlayerMakerChoiceViewController.swift */,
 				6558D30C24684934004E8660 /* SubliminalMakerViewController.swift */,
 				65A8405D2561325E0072531F /* SubliminalPlayerViewController.swift */,
@@ -207,7 +215,6 @@
 				653BA539258E2DFF004A0BA7 /* TimerViewController.swift */,
 				653BA541258E69EB004A0BA7 /* SetDurationViewController.swift */,
 				653BA544258E69FC004A0BA7 /* SetEndtimeViewController.swift */,
-				656D43152594BEBA0067A4D8 /* VolumeViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -256,10 +263,20 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		656D43262594E3800067A4D8 /* Controls */ = {
+			isa = PBXGroup;
+			children = (
+				656D43232594E3790067A4D8 /* SpectrumViewController.swift */,
+				656D43152594BEBA0067A4D8 /* VolumeViewController.swift */,
+			);
+			path = Controls;
+			sourceTree = "<group>";
+		};
 		657AA0C7258F54C700320465 /* Singletons */ = {
 			isa = PBXGroup;
 			children = (
 				6568E647258F50F8009390D5 /* TimerManager.swift */,
+				656046A52594EA1000D1E9D2 /* VolumeManager.swift */,
 			);
 			path = Singletons;
 			sourceTree = "<group>";
@@ -401,6 +418,7 @@
 			files = (
 				653BA545258E69FC004A0BA7 /* SetEndtimeViewController.swift in Sources */,
 				657AA0C6258F544200320465 /* Misc.swift in Sources */,
+				656D43242594E3790067A4D8 /* SpectrumViewController.swift in Sources */,
 				656807392593733500D09CBE /* ToggleButton.swift in Sources */,
 				6568E648258F50F8009390D5 /* TimerManager.swift in Sources */,
 				656D430D2594B5F30067A4D8 /* VolumeSlider.swift in Sources */,
@@ -419,7 +437,9 @@
 				6558D30924684934004E8660 /* AppDelegate.swift in Sources */,
 				656D430A2594B5840067A4D8 /* SymbolImageView.swift in Sources */,
 				6598C2F0259106FC0042A7E1 /* StateMachine.swift in Sources */,
+				656046A62594EA1000D1E9D2 /* VolumeManager.swift in Sources */,
 				653BA53A258E2DFF004A0BA7 /* TimerViewController.swift in Sources */,
+				656D43212594E0900067A4D8 /* Switch.swift in Sources */,
 				6558D30B24684934004E8660 /* SceneDelegate.swift in Sources */,
 				6569A00A253C4834000E7F95 /* ScriptViewController.swift in Sources */,
 				65A8405E2561325E0072531F /* SubliminalPlayerViewController.swift in Sources */,

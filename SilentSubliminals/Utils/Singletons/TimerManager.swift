@@ -21,8 +21,5 @@ class TimerManager {
         countdownSet = true
         remainingTime = 5 * 60
         stopTime = Date().addingTimeInterval(60 * 60)
-    }
-    
-   
-    
+    } 
 }

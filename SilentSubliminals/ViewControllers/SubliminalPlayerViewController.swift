@@ -47,6 +47,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
     @IBOutlet weak var soundView: RoundedView!
 
     @IBOutlet weak var volumeContainerViewController: UIView!
+    
+    private var spectrumViewController: SpectrumViewController?
     private var volumeViewController: VolumeViewController?
     
     
@@ -64,21 +66,11 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
     private var mixer: AVAudioMixerNode = AVAudioMixerNode()
     private var equalizerHighPass: AVAudioUnitEQ = AVAudioUnitEQ(numberOfBands: 1)
     
-    var fftSetup : vDSP_DFT_Setup?
-    
-    var masterVolume: Float = 0.5
-    
     var timer: Timer?
     var affirmationLoopDuration = TimerManager.shared.remainingTime
     
     var audioFileBuffer: AVAudioPCMBuffer?
     var audioFrameCount: UInt32?
-    
-    let spectrumLayer = CAShapeLayer.init()
-    
-    var frequencyDomainGraphLayerIndex = 0
-    let frequencyDomainGraphLayers = [CAShapeLayer(), CAShapeLayer(),
-                                      CAShapeLayer(), CAShapeLayer()]
     
     var introDuration: TimeInterval = 0
     var outroDuration: TimeInterval = 0
@@ -95,25 +87,17 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
         StateMachine.shared.delegate = self
         
 
-        frequencyDomainGraphLayers.forEach {
-            self.graphView.layer.addSublayer($0)
-        }
-        
         let backbutton = UIButton(type: .custom)
         backbutton.setImage(UIImage(named: "backButton.png"), for: [.normal])
         backbutton.tintColor = PlayerControlColor.lightColor
         backbutton.addTarget(self, action: #selector(self.close(_:)), for: .touchUpInside)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backbutton)
         
-        graphView.layer.cornerRadius = cornerRadius
-        graphView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         
         playerView.imageView = backgroundImageView
         soundView.imageView = backgroundImageView
         
-        volumeSlider.value = masterVolume
-        
-        fftSetup = vDSP_DFT_zop_CreateSetup(nil, 1024, vDSP_DFT_Direction.FORWARD)
+        volumeSlider.value = VolumeManager.shared.sliderVolume ?? defaultSliderVolume
         
         checkForPermission()
         
@@ -176,8 +160,6 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
     }
     
     @IBAction func silentButtonTouched(_ sender: Any) {
-        
-        volumeViewController?.displayVolume(volume: 1) // TEST
         
         StateMachine.shared.affirmationState = StateMachine.shared.affirmationState.nextState
         
@@ -350,6 +332,9 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
         if let vc = segue.destination as? VolumeViewController {
             volumeViewController = vc
         }
+        if let vc = segue.destination as? SpectrumViewController {
+            spectrumViewController = vc
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -361,13 +346,6 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
         stopPlaying()
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        frequencyDomainGraphLayers.forEach {
-            $0.frame = self.graphView.frame.insetBy(dx: 0, dy: 0)
-        }
-    }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         playerView.layoutSubviews()
@@ -536,10 +514,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
                 
                 DispatchQueue.main.async {
                     
-                    self.processAudioData(buffer: buffer)
-                    
-                    let volume = self.getVolume(from: buffer, bufferSize: 1024) * (deviceVolume ?? 0.5) * self.masterVolume
-                    //self.displayVolume(volume: volume)
+                    self.spectrumViewController?.processAudioData(buffer: buffer)
+                    self.volumeViewController?.processAudioData(buffer: buffer)
                 }
             }
             
@@ -710,11 +686,11 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
     
     @IBAction func volumeSliderChanged(_ sender: Any) {
         
-        masterVolume = Float(volumeSlider.value)
+        VolumeManager.shared.sliderVolume = Float(volumeSlider.value)
         
         
         for playerNode in activePlayerNodesSet {
-            playerNode.volume = masterVolume
+            playerNode.volume = VolumeManager.shared.sliderVolume ?? defaultSliderVolume
             //print(playerNode.volume)
         }
         for audioFile in self.audioFiles {
@@ -727,111 +703,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
-    private func getVolume(from buffer: AVAudioPCMBuffer, bufferSize: Int) -> Float {
-        guard let channelData = buffer.floatChannelData?[0] else {
-            return 0
-        }
-        
-        let channelDataArray = Array(UnsafeBufferPointer(start:channelData, count: bufferSize))
-        
-        var outEnvelope = [Float]()
-        var envelopeState:Float = 0
-        let envConstantAtk:Float = 0.16
-        let envConstantDec:Float = 0.003
-        
-        for sample in channelDataArray {
-            let rectified = abs(sample)
-            
-            if envelopeState < rectified {
-                envelopeState += envConstantAtk * (rectified - envelopeState)
-            } else {
-                envelopeState += envConstantDec * (rectified - envelopeState)
-            }
-            outEnvelope.append(envelopeState)
-        }
-        
-        // 0.007 is the low pass filter to prevent
-        // getting the noise entering from the microphone
-        if let maxVolume = outEnvelope.max(),
-           maxVolume > Float(0.015) {
-            return maxVolume
-        } else {
-            return 0.0
-        }
-    }
-    
-    func processAudioData(buffer: AVAudioPCMBuffer){
-        
-        guard let channelData = buffer.floatChannelData?[0] else {return}
-        let frames = buffer.frameLength
-        
-        let rmsValue = SignalProcessing.rms(data: channelData, frameLength: UInt(frames))
-        
-        if rmsValue == -.infinity { return }
-        
-        spectrumLayer.removeFromSuperlayer()
-        
-        
-        //fft
-        let fftMagnitudes: [Float] =  SignalProcessing.fft(data: channelData, setup: fftSetup!)
-        
-        let path = UIBezierPath.init()
-        let width = graphView.frame.size.width
-        let height = graphView.frame.size.height
-        
-        var maxFFT: Float = 0
-        
-        for magn in fftMagnitudes {
-            if magn.magnitude > maxFFT {
-                maxFFT = magn.magnitude
-            }
-        }
-        
-        if maxFFT == 0 { return }
-        
-        path.move(to: CGPoint(x: 0, y: height))
-        
-        var x1: CGFloat = 0
-        var y1: CGFloat = height
-        var x2: CGFloat = 0
-        var y2: CGFloat = height
-        
-        for (index, element) in fftMagnitudes.enumerated() {
-            //print("Item \(index): \(element)")
-            
-            x2 = x1
-            y2 = y1
-            
-            //            if index == fftMagnitudes.count / 4 {
-            //                break
-            //            }
-            
-            let xUnit = width / log10(1000)
-            
-            x1 = CGFloat(log10f(Float(index + 1))) * xUnit //CGFloat(4 * index) * width / CGFloat(fftMagnitudes.count)
-            y1 = height - CGFloat(rmsValue / 80) * CGFloat(element.magnitude) * height / CGFloat(maxFFT)
-            
-            if y1 < 0 {
-                y1 = 0
-            }
-            
-            //path.addLine(to: CGPoint(x: x, y: y))
-            
-            if x1 > width {
-                break
-            }
-            
-            path.addQuadCurve(to: CGPoint(x: x1, y: y1), controlPoint: CGPoint(x: x2, y: y2))
-        }
-        
-        path.addLine(to: CGPoint(x: width, y: height))
-        
-        path.close()
-        
-        spectrumLayer.path = path.cgPath
-        spectrumLayer.fillColor = UIColor.green.cgColor
-        graphView.layer.addSublayer(spectrumLayer)
-    }
+
     
     func checkForPermission() {
         Manager.recordingSession = AVAudioSession.sharedInstance()
