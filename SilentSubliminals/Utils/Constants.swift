@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import AVFoundation
 
 let cornerRadius: CGFloat = 15
 
@@ -41,10 +40,6 @@ struct PlayerControlColor {
 //    static var darkGrayColor: UIColor = .green
 }
 
-enum Induction {
-    case Intro
-    case Outro
-}
 
 let modulationFrequency: Float = 20000
 let bandwidth: Float = 1000
@@ -53,15 +48,3 @@ let defaultSliderVolume: Float = 0.5
 
 let criticalLoopDurationInHours: Int = 6
 
-struct Manager {
-    static var recordingSession: AVAudioSession!
-    static var micAuthorised = Bool()
-}
-
-struct AudioFileTypes {
-    var filename = ""
-    var isSilent = false
-    var audioPlayer = AVAudioPlayerNode()
-}
-
-var audioFiles: Array<AudioFileTypes> = [AudioFileTypes(filename: spokenAffirmation, isSilent: false), AudioFileTypes(filename: spokenAffirmationSilent, isSilent: true)]

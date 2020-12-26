@@ -14,6 +14,13 @@ protocol StateMachineDelegate : AnyObject {
     func updateIntroButtons()
     func updateOutroButtons()
     func toggleSilentMode()
+    func pauseSound()
+    func continueSound()
+}
+
+enum Induction {
+    case Intro
+    case Outro
 }
 
 class StateMachine {
@@ -22,27 +29,37 @@ class StateMachine {
     
     static let shared = StateMachine()
 
-    
     private init() {
 
     }
     
     enum PlayerState {
+        
         case ready
         case intro
         case affirmation
         case affirmationLoop
         case outro
+        
         var nextState : PlayerState {
+            
+            shared.setLoudMode()
             
             switch self {
             case .ready:
+                if shared.introState == .none {
+                    return .affirmation
+                }
                 return .intro
             case .intro:
                 return .affirmation
             case .affirmation:
+                shared.setSilentMode()
                 return .affirmationLoop
             case .affirmationLoop:
+                if shared.outroState == .none {
+                    return .ready
+                }
                 return .outro
             case .outro:
                 return .ready
@@ -75,10 +92,10 @@ class StateMachine {
         case none
     }
 
-    enum AffirmationState {
+    enum FrequencyState {
         case loud
         case silent
-        var nextState : AffirmationState {
+        var nextState : FrequencyState {
             switch self {
             case .loud:
                 return .silent
@@ -96,16 +113,19 @@ class StateMachine {
             delegate?.updateOutroButtons()
         }
     }
-    var pauseState : PauseState = .play {
+    var pauseState : PauseState = .pause {
         didSet {
-            delegate?.performAction()
+            //delegate?.performAction()
+            if pauseState == .pause {
+                delegate?.pauseSound()
+            } else {
+                delegate?.continueSound()
+            }
+            
         }
     }
 
     var introState : IntroState = .none {
-        willSet {
-            delegate?.updateIntroButtons()
-        }
         didSet {
             delegate?.updateIntroButtons()
         }
@@ -117,39 +137,37 @@ class StateMachine {
         }
     }
 
-    var affirmationState : AffirmationState = .loud {
+    var frequencyState : FrequencyState = .loud {
         didSet {
             delegate?.toggleSilentMode()
         }
     }
 
-    func doNextState() {
+    func doNextPlayerState() {
         playerState = self.playerState.nextState
     }
     
-    func toggleAffirmationState() {
-        affirmationState = self.affirmationState.nextState
+    func startPlayer() {
+        if playerState == .ready {
+            doNextPlayerState()
+        }
+    }
+    
+    func toggleFrequencyState() {
+        if playerState == .affirmationLoop {
+            frequencyState = self.frequencyState.nextState
+        }
+    }
+    
+    func setLoudMode() {
+        frequencyState = .loud
+    }
+    
+    func setSilentMode() {
+        frequencyState = .silent
     }
 
-    func toggleState() {
+    func togglePlayPauseState() {
         pauseState = pauseState.nextState
     }
 }
-
-
-
-//enum PlayerEvent: EventType {
-//    case playButtonTapped
-//    case pauseButtonTapped
-//    case rewindButtonTapped
-//    case forwardButtonTapped
-//    case timerButtonTapped
-//    case silentButtonTapped
-//    case loudButtonTapped
-//    case introChairButtonTapped
-//    case introBedButtonTapped
-//    case introNoneButtonTapped
-//    case outroDayButtonTapped
-//    case outroNightButtonTapped
-//    case outroNoneButtonTapped
-//}

@@ -49,6 +49,8 @@
 		65A8406525616CEF0072531F /* subliminalPlayerBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8406425616CEF0072531F /* subliminalPlayerBackground.png */; };
 		65D561C52595F66E00FC039C /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D561C42595F66E00FC039C /* BackButton.swift */; };
 		65D561C92595F94E00FC039C /* AudioSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D561C82595F94E00FC039C /* AudioSessionManager.swift */; };
+		65D561D12597517D00FC039C /* AudioHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D561D02597517D00FC039C /* AudioHelper.swift */; };
+		65D561D9259761FE00FC039C /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D561D8259761FE00FC039C /* PlayButton.swift */; };
 		65DDE232258BC1560082BD99 /* ShadowLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DDE231258BC1560082BD99 /* ShadowLabel.swift */; };
 		65F0727C25445673004C8BA3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F0727B25445673004C8BA3 /* AVFoundation.framework */; };
 		65F072812544615D004C8BA3 /* startRecordingButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 65F0727E2544615D004C8BA3 /* startRecordingButton.png */; };
@@ -104,6 +106,8 @@
 		65A8406C25618DBB0072531F /* noneIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noneIcon.png; sourceTree = "<group>"; };
 		65D561C42595F66E00FC039C /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		65D561C82595F94E00FC039C /* AudioSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSessionManager.swift; sourceTree = "<group>"; };
+		65D561D02597517D00FC039C /* AudioHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioHelper.swift; sourceTree = "<group>"; };
+		65D561D8259761FE00FC039C /* PlayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayButton.swift; sourceTree = "<group>"; };
 		65DDE231258BC1560082BD99 /* ShadowLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowLabel.swift; sourceTree = "<group>"; };
 		65F0727B25445673004C8BA3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		65F0727E2544615D004C8BA3 /* startRecordingButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = startRecordingButton.png; sourceTree = "<group>"; };
@@ -188,6 +192,7 @@
 				6563E03A257691CE000E261B /* Constants.swift */,
 				6563E03625763C6C000E261B /* SignalProcessing.swift */,
 				657AA0C5258F544200320465 /* Misc.swift */,
+				65D561D02597517D00FC039C /* AudioHelper.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -195,17 +200,10 @@
 		6568E64B258F51F3009390D5 /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
-				65A169C0257C1693005D179A /* RoundedView.swift */,
-				65DDE231258BC1560082BD99 /* ShadowLabel.swift */,
-				6569A005253C413B000E7F95 /* ShadowView.swift */,
-				65D561C42595F66E00FC039C /* BackButton.swift */,
-				65678FCB258932B60075518C /* ShadowButton.swift */,
-				656807382593733500D09CBE /* ToggleButton.swift */,
-				656D43062594B50D0067A4D8 /* SymbolButton.swift */,
-				656D43092594B5840067A4D8 /* SymbolImageView.swift */,
-				656D430C2594B5F30067A4D8 /* VolumeSlider.swift */,
-				656D430F2594B66C0067A4D8 /* SectionLabel.swift */,
-				656D43202594E0900067A4D8 /* Switch.swift */,
+				65D561D32597618100FC039C /* Buttons */,
+				65D561D6259761C800FC039C /* Controls */,
+				65D561D42597619800FC039C /* Labels */,
+				65D561D5259761B600FC039C /* Views */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -213,14 +211,12 @@
 		6568E64C258F5230009390D5 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				65D561DB259762A700FC039C /* Modal */,
 				656D43262594E3800067A4D8 /* Controls */,
 				65A8405A25612D1B0072531F /* PlayerMakerChoiceViewController.swift */,
 				6558D30C24684934004E8660 /* SubliminalMakerViewController.swift */,
 				65A8405D2561325E0072531F /* SubliminalPlayerViewController.swift */,
 				6569A009253C4834000E7F95 /* ScriptViewController.swift */,
-				653BA539258E2DFF004A0BA7 /* TimerViewController.swift */,
-				653BA541258E69EB004A0BA7 /* SetDurationViewController.swift */,
-				653BA544258E69FC004A0BA7 /* SetEndtimeViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -297,6 +293,56 @@
 				654F42CE258623C10065D490 /* outro.aiff */,
 			);
 			path = Soundfiles;
+			sourceTree = "<group>";
+		};
+		65D561D32597618100FC039C /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				65D561C42595F66E00FC039C /* BackButton.swift */,
+				65678FCB258932B60075518C /* ShadowButton.swift */,
+				656807382593733500D09CBE /* ToggleButton.swift */,
+				656D43062594B50D0067A4D8 /* SymbolButton.swift */,
+				65D561D8259761FE00FC039C /* PlayButton.swift */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
+		65D561D42597619800FC039C /* Labels */ = {
+			isa = PBXGroup;
+			children = (
+				65DDE231258BC1560082BD99 /* ShadowLabel.swift */,
+				656D430F2594B66C0067A4D8 /* SectionLabel.swift */,
+			);
+			path = Labels;
+			sourceTree = "<group>";
+		};
+		65D561D5259761B600FC039C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				656D43092594B5840067A4D8 /* SymbolImageView.swift */,
+				65A169C0257C1693005D179A /* RoundedView.swift */,
+				6569A005253C413B000E7F95 /* ShadowView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		65D561D6259761C800FC039C /* Controls */ = {
+			isa = PBXGroup;
+			children = (
+				656D430C2594B5F30067A4D8 /* VolumeSlider.swift */,
+				656D43202594E0900067A4D8 /* Switch.swift */,
+			);
+			path = Controls;
+			sourceTree = "<group>";
+		};
+		65D561DB259762A700FC039C /* Modal */ = {
+			isa = PBXGroup;
+			children = (
+				653BA539258E2DFF004A0BA7 /* TimerViewController.swift */,
+				653BA541258E69EB004A0BA7 /* SetDurationViewController.swift */,
+				653BA544258E69FC004A0BA7 /* SetEndtimeViewController.swift */,
+			);
+			path = Modal;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -430,6 +476,7 @@
 				656D43242594E3790067A4D8 /* SpectrumViewController.swift in Sources */,
 				656807392593733500D09CBE /* ToggleButton.swift in Sources */,
 				6568E648258F50F8009390D5 /* TimerManager.swift in Sources */,
+				65D561D9259761FE00FC039C /* PlayButton.swift in Sources */,
 				656D430D2594B5F30067A4D8 /* VolumeSlider.swift in Sources */,
 				656D431E2594CF450067A4D8 /* AudioExtensions.swift in Sources */,
 				65A8405B25612D1B0072531F /* PlayerMakerChoiceViewController.swift in Sources */,
@@ -455,6 +502,7 @@
 				6569A00A253C4834000E7F95 /* ScriptViewController.swift in Sources */,
 				65A8405E2561325E0072531F /* SubliminalPlayerViewController.swift in Sources */,
 				656D43072594B50D0067A4D8 /* SymbolButton.swift in Sources */,
+				65D561D12597517D00FC039C /* AudioHelper.swift in Sources */,
 				656654AE2595F36700DB03DC /* CommandCenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
