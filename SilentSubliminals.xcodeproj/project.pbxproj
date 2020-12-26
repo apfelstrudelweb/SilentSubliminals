@@ -22,6 +22,7 @@
 		656046A62594EA1000D1E9D2 /* VolumeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656046A52594EA1000D1E9D2 /* VolumeManager.swift */; };
 		6563E03725763C6C000E261B /* SignalProcessing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6563E03625763C6C000E261B /* SignalProcessing.swift */; };
 		6563E03B257691CE000E261B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6563E03A257691CE000E261B /* Constants.swift */; };
+		656654AE2595F36700DB03DC /* CommandCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656654AD2595F36700DB03DC /* CommandCenter.swift */; };
 		65678FCC258932B60075518C /* ShadowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65678FCB258932B60075518C /* ShadowButton.swift */; };
 		656807392593733500D09CBE /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656807382593733500D09CBE /* ToggleButton.swift */; };
 		6568E648258F50F8009390D5 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6568E647258F50F8009390D5 /* TimerManager.swift */; };
@@ -46,6 +47,8 @@
 		65A8405B25612D1B0072531F /* PlayerMakerChoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A8405A25612D1B0072531F /* PlayerMakerChoiceViewController.swift */; };
 		65A8405E2561325E0072531F /* SubliminalPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A8405D2561325E0072531F /* SubliminalPlayerViewController.swift */; };
 		65A8406525616CEF0072531F /* subliminalPlayerBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8406425616CEF0072531F /* subliminalPlayerBackground.png */; };
+		65D561C52595F66E00FC039C /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D561C42595F66E00FC039C /* BackButton.swift */; };
+		65D561C92595F94E00FC039C /* AudioSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D561C82595F94E00FC039C /* AudioSessionManager.swift */; };
 		65DDE232258BC1560082BD99 /* ShadowLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65DDE231258BC1560082BD99 /* ShadowLabel.swift */; };
 		65F0727C25445673004C8BA3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F0727B25445673004C8BA3 /* AVFoundation.framework */; };
 		65F072812544615D004C8BA3 /* startRecordingButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 65F0727E2544615D004C8BA3 /* startRecordingButton.png */; };
@@ -72,6 +75,7 @@
 		656046A52594EA1000D1E9D2 /* VolumeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeManager.swift; sourceTree = "<group>"; };
 		6563E03625763C6C000E261B /* SignalProcessing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignalProcessing.swift; sourceTree = "<group>"; };
 		6563E03A257691CE000E261B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		656654AD2595F36700DB03DC /* CommandCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandCenter.swift; sourceTree = "<group>"; };
 		65678FCB258932B60075518C /* ShadowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowButton.swift; sourceTree = "<group>"; };
 		656807382593733500D09CBE /* ToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleButton.swift; sourceTree = "<group>"; };
 		6568E647258F50F8009390D5 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
@@ -98,6 +102,8 @@
 		65A8406425616CEF0072531F /* subliminalPlayerBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = subliminalPlayerBackground.png; sourceTree = "<group>"; };
 		65A8406A25618DBA0072531F /* moonIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = moonIcon.png; sourceTree = "<group>"; };
 		65A8406C25618DBB0072531F /* noneIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noneIcon.png; sourceTree = "<group>"; };
+		65D561C42595F66E00FC039C /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
+		65D561C82595F94E00FC039C /* AudioSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSessionManager.swift; sourceTree = "<group>"; };
 		65DDE231258BC1560082BD99 /* ShadowLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowLabel.swift; sourceTree = "<group>"; };
 		65F0727B25445673004C8BA3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		65F0727E2544615D004C8BA3 /* startRecordingButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = startRecordingButton.png; sourceTree = "<group>"; };
@@ -182,7 +188,6 @@
 				6563E03A257691CE000E261B /* Constants.swift */,
 				6563E03625763C6C000E261B /* SignalProcessing.swift */,
 				657AA0C5258F544200320465 /* Misc.swift */,
-				6598C2EF259106FC0042A7E1 /* StateMachine.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -193,6 +198,7 @@
 				65A169C0257C1693005D179A /* RoundedView.swift */,
 				65DDE231258BC1560082BD99 /* ShadowLabel.swift */,
 				6569A005253C413B000E7F95 /* ShadowView.swift */,
+				65D561C42595F66E00FC039C /* BackButton.swift */,
 				65678FCB258932B60075518C /* ShadowButton.swift */,
 				656807382593733500D09CBE /* ToggleButton.swift */,
 				656D43062594B50D0067A4D8 /* SymbolButton.swift */,
@@ -276,7 +282,10 @@
 			isa = PBXGroup;
 			children = (
 				6568E647258F50F8009390D5 /* TimerManager.swift */,
+				65D561C82595F94E00FC039C /* AudioSessionManager.swift */,
 				656046A52594EA1000D1E9D2 /* VolumeManager.swift */,
+				656654AD2595F36700DB03DC /* CommandCenter.swift */,
+				6598C2EF259106FC0042A7E1 /* StateMachine.swift */,
 			);
 			path = Singletons;
 			sourceTree = "<group>";
@@ -430,11 +439,13 @@
 				653BA542258E69EB004A0BA7 /* SetDurationViewController.swift in Sources */,
 				6563E03725763C6C000E261B /* SignalProcessing.swift in Sources */,
 				656D43102594B66C0067A4D8 /* SectionLabel.swift in Sources */,
+				65D561C52595F66E00FC039C /* BackButton.swift in Sources */,
 				6569A006253C413B000E7F95 /* ShadowView.swift in Sources */,
 				6563E03B257691CE000E261B /* Constants.swift in Sources */,
 				6558D30D24684934004E8660 /* SubliminalMakerViewController.swift in Sources */,
 				65A169C2257C1693005D179A /* RoundedView.swift in Sources */,
 				6558D30924684934004E8660 /* AppDelegate.swift in Sources */,
+				65D561C92595F94E00FC039C /* AudioSessionManager.swift in Sources */,
 				656D430A2594B5840067A4D8 /* SymbolImageView.swift in Sources */,
 				6598C2F0259106FC0042A7E1 /* StateMachine.swift in Sources */,
 				656046A62594EA1000D1E9D2 /* VolumeManager.swift in Sources */,
@@ -444,6 +455,7 @@
 				6569A00A253C4834000E7F95 /* ScriptViewController.swift in Sources */,
 				65A8405E2561325E0072531F /* SubliminalPlayerViewController.swift in Sources */,
 				656D43072594B50D0067A4D8 /* SymbolButton.swift in Sources */,
+				656654AE2595F36700DB03DC /* CommandCenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

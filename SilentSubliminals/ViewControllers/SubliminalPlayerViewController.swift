@@ -12,11 +12,11 @@ import AVFoundation
 import Accelerate
 import PureLayout
 import MediaPlayer
-//import SwiftState
 
 // https://medium.com/@ian.mundy/audio-mixing-on-ios-4cd51dfaac9a
-class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, StateMachineDelegate {
-    
+class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, StateMachineDelegate, CommandCenterDelegate, BackButtonDelegate {
+
+
     // 1. section
     @IBOutlet weak var introductionSwitch: UISwitch!
     @IBOutlet weak var leadInChairButton: ToggleButton!
@@ -31,11 +31,11 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
     
     // 2. section
     @IBOutlet weak var rewindButton: ShadowButton!
-    @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var playButton: ShadowButton!
     @IBOutlet weak var forwardButton: ShadowButton!
-    @IBOutlet weak var silentButton: UIButton!
+    @IBOutlet weak var silentButton: SymbolButton!
     @IBOutlet weak var affirmationTitleLabel: UILabel!
-    @IBOutlet weak var timerButton: UIButton!
+    @IBOutlet weak var timerButton: SymbolButton!
     @IBOutlet weak var loudspeakerLowSymbol: UIImageView!
     @IBOutlet weak var loudspeakerHighSymbol: UIImageView!
     @IBOutlet weak var volumeSlider: UISlider!
@@ -45,22 +45,16 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var playerView: RoundedView!
     @IBOutlet weak var soundView: RoundedView!
-
-    @IBOutlet weak var volumeContainerViewController: UIView!
     
     private var spectrumViewController: SpectrumViewController?
     private var volumeViewController: VolumeViewController?
-    
-    
-    struct AudioFileTypes {
-        var filename = ""
-        var isSilent = false
-        var audioPlayer = AVAudioPlayerNode()
-    }
-    
+
     private var audioFiles: Array<AudioFileTypes> = [AudioFileTypes(filename: spokenAffirmation, isSilent: false), AudioFileTypes(filename: spokenAffirmationSilent, isSilent: true)]
     
     var activePlayerNodesSet = Set<AVAudioPlayerNode>()
+    
+    private var silentAffirmationAudioNode = AVAudioPlayerNode()
+    private var loudAffirmationAudioNode = AVAudioPlayerNode()
     
     private var audioEngine: AVAudioEngine = AVAudioEngine()
     private var mixer: AVAudioMixerNode = AVAudioMixerNode()
@@ -78,63 +72,70 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
     var totalLength: TimeInterval = 0
     var elapsedTime: TimeInterval = 0
     
+    var introButtons:[ToggleButton : StateMachine.IntroState]?
+    var outroButtons:[ToggleButton : StateMachine.OutroState]?
+    
+    
     let audioQueue: DispatchQueue = DispatchQueue(label: "PlayerQueue", attributes: [])
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        let commandCenter = CommandCenter.shared
+        commandCenter.delegate = self
+        commandCenter.addCommandCenter()
+        
         scrollView.delegate = self
         StateMachine.shared.delegate = self
         
+        introButtons = [leadInChairButton : .chair, leadInBedButton : .bed, noLeadInButton : .none]
+        outroButtons = [leadOutDayButton : .day, leadOutNightButton : .night, noLeadOutButton : .none]
+        
+        StateMachine.shared.introState = .chair
+        StateMachine.shared.outroState = .day
+        StateMachine.shared.affirmationState = .loud
 
-        let backbutton = UIButton(type: .custom)
-        backbutton.setImage(UIImage(named: "backButton.png"), for: [.normal])
-        backbutton.tintColor = PlayerControlColor.lightColor
-        backbutton.addTarget(self, action: #selector(self.close(_:)), for: .touchUpInside)
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backbutton)
-        
-        
+        let backButton = BackButton(type: .custom)
+        backButton.delegate = self
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
+
         playerView.imageView = backgroundImageView
         soundView.imageView = backgroundImageView
-        
-        volumeSlider.value = VolumeManager.shared.sliderVolume ?? defaultSliderVolume
-        
-        checkForPermission()
-        
-        do {
-            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
-            //try AVAudioSession.sharedInstance().setCategory(.ambient, options: .allowBluetooth)
-            try AVAudioSession.sharedInstance().setCategory(.playback)
-            try AVAudioSession.sharedInstance().setActive(true, options: [])
-            let ioBufferDuration = 128.0 / 44100.0
-            try AVAudioSession.sharedInstance().setPreferredIOBufferDuration(ioBufferDuration)
-        } catch {
-            assertionFailure("AVAudioSession setup error: \(error)")
-        }
-        
-        //        do {
-        //            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
-        //            //try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
-        //            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers, .allowAirPlay])
-        //            let ioBufferDuration = 128.0 / 44100.0
-        //            try AVAudioSession.sharedInstance().setPreferredIOBufferDuration(ioBufferDuration)
-        //        } catch {
-        //            assertionFailure("AVAudioSession setup error: \(error)")
-        //        }
-        
-        
+
         self.introDuration = try! AVAudioFile(forReading: getFileFromMainBundle(filename: spokenIntro)!).duration
         self.outroDuration = try! AVAudioFile(forReading: getFileFromMainBundle(filename: spokenOutro)!).duration
-        self.singleAffirmationDuration = try! AVAudioFile(forReading: getFileFromSandbox(filename: spokenAffirmation)).duration
         
-        addCommandCenter() // later on, set to true
-        
-        StateMachine.shared.introState = .none
-        StateMachine.shared.outroState = .none
-        
+        let affirmationFile = getFileFromSandbox(filename: spokenAffirmation)
+        if affirmationFile.checkFileExist() {
+            self.singleAffirmationDuration = try! AVAudioFile(forReading: affirmationFile).duration
+        } else {
+            let alert = UIAlertController(title: "Warning", message: "You first need to record an affirmation. You're redirected to the previous screen - there please choose the 'Affirmation Maker'.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: {_ in
+                self.close()
+            }))
+            self.present(alert, animated: true)
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        stopPlaying()
     }
     
-    // MARK: user interaction
+    // MARK: Segues
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        
+        if let vc = segue.destination as? VolumeViewController {
+            volumeViewController = vc
+        }
+        if let vc = segue.destination as? SpectrumViewController {
+            spectrumViewController = vc
+        }
+    }
+    
+    
+    // MARK: user interactions
     @IBAction func leadInChairTouched(_ sender: Any) {
         StateMachine.shared.introState = .chair
     }
@@ -181,75 +182,59 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
         StateMachine.shared.toggleState()
     }
     
+    @IBAction func volumeSliderChanged(_ sender: Any) {
+        
+        VolumeManager.shared.sliderVolume = Float(volumeSlider.value)
+        
+//
+//        for playerNode in activePlayerNodesSet {
+//            playerNode.volume = VolumeManager.shared.sliderVolume ?? defaultSliderVolume
+//            //print(playerNode.volume)
+//        }
+//        for audioFile in audioFiles {
+//            let audioPlayer = audioFile.audioPlayer
+//            //audioPlayer.volume = audioFile.isSilent ? (isSilentMode ? masterVolume : 0) : (isSilentMode ? 0 : masterVolume)
+//        }
+    }
 
     func updateIntroButtons() {
-        switch StateMachine.shared.introState {
-        case .chair:
-            leadInChairButton.setState(active: true)
-            leadInBedButton.setState(active: false)
-            noLeadInButton.setState(active: false)
-        case .bed:
-            leadInChairButton.setState(active: false)
-            leadInBedButton.setState(active: true)
-            noLeadInButton.setState(active: false)
-        case .none:
-            leadInChairButton.setState(active: false)
-            leadInBedButton.setState(active: false)
-            noLeadInButton.setState(active: true)
-        }
-        switch StateMachine.shared.playerState {
-        case .ready:
-            leadInChairButton.isEnabled = true
-            leadInBedButton.isEnabled = true
-            noLeadInButton.isEnabled = true
-        case .intro, .affirmation, .outro:
-            leadInChairButton.isEnabled = false
-            leadInBedButton.isEnabled = false
-            noLeadInButton.isEnabled = false
+        
+        DispatchQueue.main.async {
+            self.introButtons?.forEach {
+                $0.key.setState(active: $0.value == StateMachine.shared.introState)
+                $0.key.isEnabled = StateMachine.shared.playerState == .ready
+            }
         }
     }
     
     func updateOutroButtons() {
-        switch StateMachine.shared.outroState {
-        case .day:
-            leadOutDayButton.setState(active: true)
-            leadOutNightButton.setState(active: false)
-            noLeadOutButton.setState(active: false)
-        case .night:
-            leadOutDayButton.setState(active: false)
-            leadOutNightButton.setState(active: true)
-            noLeadOutButton.setState(active: false)
-        case .none:
-            leadOutDayButton.setState(active: false)
-            leadOutNightButton.setState(active: false)
-            noLeadOutButton.setState(active: true)
-        }
-        switch StateMachine.shared.playerState {
-        case .ready:
-            leadOutDayButton.isEnabled = true
-            leadOutNightButton.isEnabled = true
-            noLeadOutButton.isEnabled = true
-        case .intro, .affirmation, .outro:
-            leadOutDayButton.isEnabled = false
-            leadOutNightButton.isEnabled = false
-            noLeadOutButton.isEnabled = false
-        }
-    }
-    
-    
-    func updateSilentButton() {
-        switch StateMachine.shared.affirmationState {
-        case .loud:
-            self.silentButton.setImage(Button.silentOffImg, for: .normal)
-        case .silent:
-            self.silentButton.setImage(Button.silentOnImg, for: .normal)
-        }
-    }
-    
-    func updateInterface() {
         
-        //playButton.setImage(Button.playOffImg, for: .normal)
-        //setAffirmationLoopDuration()
+        DispatchQueue.main.async {
+            self.outroButtons?.forEach {
+                $0.key.setState(active: $0.value == StateMachine.shared.outroState)
+                $0.key.isEnabled = StateMachine.shared.playerState == .ready
+            }
+        }
+    }
+    
+    
+    func toggleSilentMode() {
+        
+        DispatchQueue.main.async {
+            switch StateMachine.shared.affirmationState {
+            case .loud:
+                self.silentButton.setImage(Button.silentOffImg, for: .normal)
+                self.silentAffirmationAudioNode.volume = 0
+                self.loudAffirmationAudioNode.volume = VolumeManager.shared.deviceVolume
+            case .silent:
+                self.silentButton.setImage(Button.silentOnImg, for: .normal)
+                self.silentAffirmationAudioNode.volume = VolumeManager.shared.deviceVolume
+                self.loudAffirmationAudioNode.volume = 0
+            }
+        }
+    }
+    
+    func performAction() {
         
         switch StateMachine.shared.pauseState {
         case .pause:
@@ -265,6 +250,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
                 switch StateMachine.shared.introState {
                 case .chair, .bed:
                     print("intro")
+                    self.playInduction(type: Induction.Intro)
                 case .none:
                     print("no intro")
                     StateMachine.shared.doNextState()
@@ -272,78 +258,26 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
                 break
             case .affirmation:
                 print("affirmation")
+                self.playAffirmation(loop: false)
+                break
+            case .affirmationLoop:
+                print("affirmation loop")
+                StateMachine.shared.toggleAffirmationState()
+                //self.playSilentLoop()
+                self.playLoop()
+                //self.playAffirmation(loop: true)
                 break
             case .outro:
                 switch StateMachine.shared.outroState {
                 case .day, .night:
                     print("outro")
+                    self.playInduction(type: Induction.Outro)
                 case .none:
                     print("no outro")
                     StateMachine.shared.doNextState()
                 }
             }
         }
-    }
-    
-
-    fileprivate func addCommandCenter() {
-        let commandCenter = MPRemoteCommandCenter.shared()
-        
-        commandCenter.pauseCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
-            print("PAUSE")
-            self.pausePlaying()
-            return .success
-        }
-        commandCenter.playCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
-            print("PLAY")
-            self.startPlaying()
-            return .success
-        }
-        commandCenter.previousTrackCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
-            print("BEGIN")
-            self.stopPlaying()
-            return .success
-        }
-        commandCenter.skipForwardCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
-            print("NEXT")
-            // TODO: next affirmation
-            return .success
-        }
-        commandCenter.playCommand.isEnabled = true
-        commandCenter.pauseCommand.isEnabled = true
-        commandCenter.previousTrackCommand.isEnabled = true
-        commandCenter.skipForwardCommand.isEnabled = false
-    }
-    
-    fileprivate func removeCommandCenter() {
-        let commandCenter = MPRemoteCommandCenter.shared()
-        
-        commandCenter.playCommand.isEnabled = false
-        commandCenter.pauseCommand.isEnabled = false
-        commandCenter.previousTrackCommand.isEnabled = false
-        commandCenter.skipForwardCommand.isEnabled = false
-    }
-    
-    
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        
-        if let vc = segue.destination as? VolumeViewController {
-            volumeViewController = vc
-        }
-        if let vc = segue.destination as? SpectrumViewController {
-            spectrumViewController = vc
-        }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        stopPlaying()
     }
     
     
@@ -353,8 +287,6 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
     }
     
 
-    
-    
     fileprivate func setAffirmationLoopDuration() {
         
         if TimerManager.shared.countdownSet == true {
@@ -387,7 +319,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
     
     func startPlaying() {
         
-        updateLockScreenInfo()
+        CommandCenter.shared.updateLockScreenInfo()
   
 //        isStopped = false
 //        elapsedTime = 0
@@ -404,60 +336,16 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
 //            return
 //        }
         
-        self.playInduction(type: Induction.Intro) {_ in
-            print("Intro terminated")
-            DispatchQueue.main.async {
-                self.rewindButton.isEnabled = true
-            }
-            
-//            if self.isStopped { return }
-            
-            self.playAffirmationLoop {_ in
-                print("Affirmation terminated")
-                //self.affirmationIsRunning = false
-                self.timer?.invalidate()
-                self.timer = nil
-                self.playInduction(type: Induction.Outro) { [self]_ in
-                    print("Outro terminated")
-//                    self.isPausing = false
-//                    self.isPlaying = false
-                    DispatchQueue.main.async {
-                        self.playButton.setImage(Button.playOnImg, for: .normal)
-                        //self.rewindButton.isEnabled = false
-                    }
-                }
-            }
-        }
     }
     
-    fileprivate func updateLockScreenInfo() {
-        
-        let totalDuration = introDuration + (affirmationLoopDuration ?? 5 * 60) + outroDuration
-        let image = UIImage(named: "schmettering_1024")!
-        let mediaArtwork = MPMediaItemArtwork(boundsSize: image.size) { (size: CGSize) -> UIImage in
-            return image
-        }
-        
-        print("updateLockScreenInfo")
-        
-        MPNowPlayingInfoCenter.default().nowPlayingInfo = [
-            MPMediaItemPropertyTitle: "FREE UR SPIRIT",
-            MPMediaItemPropertyAlbumTitle: "Jaw Relaxation",
-            MPMediaItemPropertyArtist: "Maren",
-            MPMediaItemPropertyPlaybackDuration: totalDuration,
-            MPNowPlayingInfoPropertyElapsedPlaybackTime: self.elapsedTime,
-            MPMediaItemPropertyArtwork: mediaArtwork
-        ]
-    }
     
     func pausePlaying() {
 
-        updateLockScreenInfo()
+        CommandCenter.shared.updateLockScreenInfo()
         
         for playerNode in activePlayerNodesSet {
             playerNode.pause()
         }
-
     }
     
     func stopPlaying() {
@@ -477,12 +365,12 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
         timer?.invalidate()
     }
     
-    func playInduction(type: Induction, completion: @escaping (Bool) -> Void) {
+    func playInduction(type: Induction) {
         
         audioQueue.async {
             
             let audioPlayerNode = AVAudioPlayerNode()
-            self.activePlayerNodesSet.insert(audioPlayerNode)
+            //self.activePlayerNodesSet.insert(audioPlayerNode)
             
             self.audioEngine.attach(self.mixer)
             self.audioEngine.attach(audioPlayerNode)
@@ -498,17 +386,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
             self.audioEngine.connect(self.mixer, to: self.audioEngine.outputNode, format: format)
             
             try! self.audioEngine.start()
-            
-            let audioSession = AVAudioSession.sharedInstance()
-            var deviceVolume: Float?
-            
-            do {
-                try audioSession.setActive(true)
-                deviceVolume = audioSession.outputVolume
-            } catch {
-                print("Error Setting Up Audio Session")
-            }
-            
+              
             audioPlayerNode.installTap(onBus: 0, bufferSize: 1024, format: format) {
                 (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
                 
@@ -524,8 +402,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
             
             audioPlayerNode.scheduleBuffer(audioFileBuffer, completionHandler: {
                 //self.audioEngine.stop()
-                self.activePlayerNodesSet.remove(audioPlayerNode)
-                completion(true)
+                StateMachine.shared.doNextState()
             })
             
             audioPlayerNode.scheduleFile(avAudioFile, at: nil, completionHandler: nil)
@@ -533,9 +410,69 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
         }
     }
     
-    func playAffirmationLoop(completion: @escaping (Bool) -> Void) {
+    func playAffirmation(loop: Bool) {
         
-        var elpasedTime = 0
+        audioQueue.async {
+            do {
+                self.audioEngine.attach(self.mixer)
+                
+                self.audioEngine.stop()
+                
+                let audioFile = self.audioFiles.first
+                self.loudAffirmationAudioNode = audioFile!.audioPlayer
+                self.activePlayerNodesSet.insert(self.loudAffirmationAudioNode)
+                self.audioEngine.attach(self.loudAffirmationAudioNode)
+                
+                let avAudioFile = try AVAudioFile(forReading: getFileFromSandbox(filename: audioFile!.filename))
+                let format =  AVAudioFormat(standardFormatWithSampleRate: avAudioFile.fileFormat.sampleRate, channels: avAudioFile.fileFormat.channelCount)
+                
+                self.loudAffirmationAudioNode.removeTap(onBus: 0)
+
+                self.audioEngine.connect(self.loudAffirmationAudioNode, to: self.mixer, format: format)
+                
+                self.audioEngine.connect(self.mixer, to: self.audioEngine.outputNode, format: format)
+                try self.audioEngine.start()
+                
+                self.loudAffirmationAudioNode.installTap(onBus: 0, bufferSize: 1024, format: format) {
+                    (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
+                    
+                    DispatchQueue.main.async {
+                        
+                        if loop && self.loudAffirmationAudioNode.current >= 10 {
+                            self.loudAffirmationAudioNode.stop()
+                            self.audioEngine.stop()
+                            StateMachine.shared.doNextState()
+                        }
+                        
+                        if StateMachine.shared.affirmationState == .loud {
+                            self.spectrumViewController?.processAudioData(buffer: buffer)
+                            self.volumeViewController?.processAudioData(buffer: buffer)
+                        }
+                    }
+                }
+                
+                let audioFileBuffer = AVAudioPCMBuffer(pcmFormat: avAudioFile.processingFormat, frameCapacity: AVAudioFrameCount(avAudioFile.length))!
+                try avAudioFile.read(into: audioFileBuffer)
+                
+                if loop {
+                    self.loudAffirmationAudioNode.scheduleBuffer(audioFileBuffer, at: nil, options:.loops, completionHandler: nil)
+                    self.playSilentLoop()
+                } else {
+                    self.loudAffirmationAudioNode.scheduleBuffer(audioFileBuffer, completionHandler: {
+                        self.activePlayerNodesSet.remove(self.loudAffirmationAudioNode)
+                        StateMachine.shared.doNextState()
+                    })
+                }
+
+                self.loudAffirmationAudioNode.play()
+ 
+            } catch {
+                print("File read error", error)
+            }
+        }
+    }
+    
+    func playLoop() {
         
         audioQueue.async {
             do {
@@ -576,69 +513,110 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
                     self.audioEngine.connect(self.mixer, to: self.audioEngine.outputNode, format: format)
                     try self.audioEngine.start()
                     
-                    self.switchAndAnalyze(audioFile: audioFile)
+                    audioPlayerNode.installTap(onBus: 0, bufferSize: 1024, format: format) {
+                        (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
+                        
+                        DispatchQueue.main.async {
+                            
+                            if self.loudAffirmationAudioNode.current >= 10 {
+                                self.loudAffirmationAudioNode.stop()
+                                self.audioEngine.stop()
+                                if StateMachine.shared.playerState == .affirmationLoop {
+                                    StateMachine.shared.doNextState()
+                                }
+                            }
+                            
+                            if StateMachine.shared.affirmationState == .loud {
+                                self.spectrumViewController?.processAudioData(buffer: buffer)
+                                self.volumeViewController?.processAudioData(buffer: buffer)
+                            }
+                        }
+                    }
+                    
+                    //self.switchAndAnalyze(audioFile: audioFile)
                     
                     let audioFileBuffer = AVAudioPCMBuffer(pcmFormat: avAudioFile.processingFormat, frameCapacity: AVAudioFrameCount(avAudioFile.length))!
                     try avAudioFile.read(into: audioFileBuffer)
                     
                     audioPlayerNode.scheduleBuffer(audioFileBuffer, at: nil, options:.loops, completionHandler: nil)
                     audioPlayerNode.play()
-                    
-                    var switchedAutomaticallyToSilent = false
-                    
-                    DispatchQueue.main.async {
-                        
-                        if self.timer != nil { return }
-                        
-                        self.timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { timer in
-                            //print(elpasedTime)
-                            elpasedTime += 1
-                            
-                            if audioPlayerNode.current <= self.singleAffirmationDuration {
-                                // loud
-                                //self.isSilentMode = false
-                                for audioFile in self.audioFiles {
-                                    self.switchAndAnalyze(audioFile: audioFile)
-                                }
-                                self.silentButton.setImage(Button.silentOffImg, for: .normal)
-                            } else {
-                                // silent
-                                if !switchedAutomaticallyToSilent {
-                                    //self.isSilentMode = true
-                                    for audioFile in self.audioFiles {
-                                        self.switchAndAnalyze(audioFile: audioFile)
-                                    }
-                                    switchedAutomaticallyToSilent = true
-                                    self.silentButton.setImage(Button.silentOnImg, for: .normal)
-                                }
-                            }
-                            
-//                            if !self.isPausing {
-//                                self.elapsedTime = self.introDuration + audioPlayerNode.current
-//                                print("elapsedTime:\(self.elapsedTime as Any)")
-//                            }
-              
-                            if audioPlayerNode.current >= self.affirmationLoopDuration ?? 5 * 60 {
-                                self.activePlayerNodesSet = Set<AVAudioPlayerNode>()
-                                audioPlayerNode.stop()
-                                self.audioEngine.stop()
-                                completion(true)
-                            }
-                        }
-                    }
+ 
                 }
             } catch {
                 print("File read error", error)
             }
         }
     }
+    
+    func playSilentLoop() {
+        
+        //audioQueue.async {
+            do {
+                
+                let highPass = self.equalizerHighPass.bands[0]
+                highPass.filterType = .highPass
+                highPass.frequency = modulationFrequency
+                highPass.bandwidth = bandwidth
+                highPass.bypass = false
+                
+                self.audioEngine.attach(self.equalizerHighPass)
+                self.audioEngine.attach(self.mixer)
+                
+                //self.audioEngine.stop()
+                
+                let audioFile = audioFiles.last
+                self.silentAffirmationAudioNode = audioFile!.audioPlayer
+                self.activePlayerNodesSet.insert(self.silentAffirmationAudioNode)
+                self.audioEngine.attach(self.silentAffirmationAudioNode)
+                
+                let avAudioFile = try AVAudioFile(forReading: getFileFromSandbox(filename: audioFile!.filename))
+                let format =  AVAudioFormat(standardFormatWithSampleRate: avAudioFile.fileFormat.sampleRate, channels: avAudioFile.fileFormat.channelCount)
+                
+                self.silentAffirmationAudioNode.removeTap(onBus: 0)
+                
+                self.audioEngine.connect(self.silentAffirmationAudioNode, to: self.equalizerHighPass, format: format)
+                self.audioEngine.connect(self.equalizerHighPass, to: self.mixer, format: format)
+                
+                self.audioEngine.connect(self.mixer, to: self.audioEngine.outputNode, format: format)
+                try self.audioEngine.start()
+                
+                self.silentAffirmationAudioNode.installTap(onBus: 0, bufferSize: 1024, format: format) {
+                    (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
+                    
+                    DispatchQueue.main.async {
+                        
+                        if StateMachine.shared.affirmationState == .silent {
+                            self.spectrumViewController?.processAudioData(buffer: buffer)
+                            self.volumeViewController?.processAudioData(buffer: buffer)
+                        }
+                       
+                        if self.silentAffirmationAudioNode.current >= 4 {
+                            self.silentAffirmationAudioNode.stop()
+                            self.audioEngine.stop()
+                            StateMachine.shared.doNextState()
+                        }
+                    }
+                }
 
-    fileprivate func switchAndAnalyze(audioFile: SubliminalPlayerViewController.AudioFileTypes) {
+                let audioFileBuffer = AVAudioPCMBuffer(pcmFormat: avAudioFile.processingFormat, frameCapacity: AVAudioFrameCount(avAudioFile.length))!
+                try avAudioFile.read(into: audioFileBuffer)
+                
+                self.silentAffirmationAudioNode.scheduleBuffer(audioFileBuffer, at: nil, options:.loops, completionHandler: nil)
+                self.silentAffirmationAudioNode.play()
+                
+            } catch {
+                print("File read error", error)
+            }
+       // }
+    }
+
+    fileprivate func switchAndAnalyze(audioFile: AudioFileTypes) {
         //if !affirmationIsRunning { return }
         if !self.audioEngine.isRunning { return }
         
         let audioPlayer = audioFile.audioPlayer
-        //audioPlayer.volume = audioFile.isSilent ? (isSilentMode ? masterVolume : 0) : (isSilentMode ? 0 : masterVolume)
+        let volume = VolumeManager.shared.sliderVolume
+        audioPlayer.volume = (audioFile.isSilent ? (StateMachine.shared.affirmationState == .silent ? volume : 0) : (StateMachine.shared.affirmationState == .silent ? 0 : volume))
         
         let audioFilename = getFileFromSandbox(filename: audioFile.filename)
         let avAudioFile = try! AVAudioFile(forReading: audioFilename)
@@ -647,15 +625,6 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
         //audioPlayer.volume = audioFile.isSilent ? (self.isSilentMode ? self.masterVolume : 0) : (self.isSilentMode ? 0 : self.masterVolume)
         audioPlayer.removeTap(onBus: 0)
         
-        let audioSession = AVAudioSession.sharedInstance()
-        var deviceVolume: Float?
-        
-        do {
-            try audioSession.setActive(true)
-            deviceVolume = audioSession.outputVolume
-        } catch {
-            print("Error Setting Up Audio Session")
-        }
         
 //        if self.isSilentMode && audioFile.isSilent || !self.isSilentMode && !audioFile.isSilent {
 //
@@ -672,60 +641,10 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
 //            }
 //        }
     }
-    
-//    func displayVolume(volume: Float) {
-//
-//        let w = Double(self.volumeView.frame.size.width)
-//        let h = Double(self.volumeView.bounds.size.height)
-//
-//        UIView.animate(withDuration: 0.2) {
-//            self.maskView.frame = CGRect(x: 0.0, y: 0.0, width: Double(5 * volume) * w, height: h)
-//        }
-//
-//    }
-    
-    @IBAction func volumeSliderChanged(_ sender: Any) {
-        
-        VolumeManager.shared.sliderVolume = Float(volumeSlider.value)
-        
-        
-        for playerNode in activePlayerNodesSet {
-            playerNode.volume = VolumeManager.shared.sliderVolume ?? defaultSliderVolume
-            //print(playerNode.volume)
-        }
-        for audioFile in self.audioFiles {
-            let audioPlayer = audioFile.audioPlayer
-            //audioPlayer.volume = audioFile.isSilent ? (isSilentMode ? masterVolume : 0) : (isSilentMode ? 0 : masterVolume)
-        }
-    }
-    
-    @IBAction func close(_ sender: UIButton) {
+      
+    // MARK: BackButtonDelegate
+    func close() {
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
-    
 
-    
-    func checkForPermission() {
-        Manager.recordingSession = AVAudioSession.sharedInstance()
-        do {
-            try Manager.recordingSession.setCategory(AVAudioSession.Category.playAndRecord, options: .defaultToSpeaker)
-            
-            Manager.recordingSession.requestRecordPermission({ (allowed) in
-                if allowed {
-                    Manager.micAuthorised = true
-                    DispatchQueue.main.async {
-                        self.playButton.alpha = 1
-                        self.playButton.isEnabled = true
-                    }
-                    print("Mic Authorised")
-                } else {
-                    Manager.micAuthorised = false
-                    print("Mic not Authorised")
-                }
-            })
-        } catch {
-            print("Failed to set Category", error.localizedDescription)
-        }
-    }
-    
 }

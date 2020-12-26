@@ -10,10 +10,10 @@ import Foundation
 
 protocol StateMachineDelegate : AnyObject {
     
-    func updateInterface()
+    func performAction()
     func updateIntroButtons()
     func updateOutroButtons()
-    func updateSilentButton()
+    func toggleSilentMode()
 }
 
 class StateMachine {
@@ -21,11 +21,17 @@ class StateMachine {
     weak var delegate : StateMachineDelegate?
     
     static let shared = StateMachine()
+
+    
+    private init() {
+
+    }
     
     enum PlayerState {
         case ready
         case intro
         case affirmation
+        case affirmationLoop
         case outro
         var nextState : PlayerState {
             
@@ -35,6 +41,8 @@ class StateMachine {
             case .intro:
                 return .affirmation
             case .affirmation:
+                return .affirmationLoop
+            case .affirmationLoop:
                 return .outro
             case .outro:
                 return .ready
@@ -83,18 +91,21 @@ class StateMachine {
     // MARK: State Handling
     var playerState : PlayerState = .ready {
         didSet {
-            delegate?.updateInterface()
+            delegate?.performAction()
             delegate?.updateIntroButtons()
             delegate?.updateOutroButtons()
         }
     }
     var pauseState : PauseState = .play {
         didSet {
-            delegate?.updateInterface()
+            delegate?.performAction()
         }
     }
 
     var introState : IntroState = .none {
+        willSet {
+            delegate?.updateIntroButtons()
+        }
         didSet {
             delegate?.updateIntroButtons()
         }
@@ -108,12 +119,16 @@ class StateMachine {
 
     var affirmationState : AffirmationState = .loud {
         didSet {
-            delegate?.updateSilentButton()
+            delegate?.toggleSilentMode()
         }
     }
 
     func doNextState() {
         playerState = self.playerState.nextState
+    }
+    
+    func toggleAffirmationState() {
+        affirmationState = self.affirmationState.nextState
     }
 
     func toggleState() {

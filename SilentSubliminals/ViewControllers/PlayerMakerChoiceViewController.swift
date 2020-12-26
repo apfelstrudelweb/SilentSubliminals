@@ -7,24 +7,35 @@
 //
 
 import UIKit
+import AVFoundation
 
-class PlayerMakerChoiceViewController: UIViewController {
+class PlayerMakerChoiceViewController: UIViewController, AudioSessionManagerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let audioSessionManager = AudioSessionManager.shared
+        audioSessionManager.delegate = self
+        audioSessionManager.checkForPermission()
 
         //self.navigationItem.title = "Choice"
     }
     
+    // MARK: AudioSessionManagerDelegate
+    func showWarning() {
+        
+        if let url = NSURL(string: UIApplication.openSettingsURLString) as URL? {
+            DispatchQueue.main.async {
+                
+                let alert = UIAlertController(title: "Warning", message: "You first need to grant permission to your microphone. You're redirected to 'Settings' -> 'Privacy' -> 'Microphone'", preferredStyle: .alert)
+                
+                    alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: {_ in
+                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    }))
+                self.present(alert, animated: true)
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+            }
+        }
     }
-    */
 
 }

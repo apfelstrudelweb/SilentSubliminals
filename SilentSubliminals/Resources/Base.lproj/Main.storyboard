@@ -426,7 +426,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
         <!--Player-->
         <scene sceneID="3hj-iy-9p8">
             <objects>
-                <viewController id="Wlk-fN-YWe" customClass="SubliminalPlayerViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PlayerViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Wlk-fN-YWe" customClass="SubliminalPlayerViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="S0S-wa-Cfu">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -863,7 +863,6 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                         <outlet property="silentButton" destination="rc5-V6-YXt" id="Whp-4d-4SH"/>
                         <outlet property="soundView" destination="tg5-ND-tqn" id="mkP-QH-NS4"/>
                         <outlet property="timerButton" destination="DEe-tW-fzs" id="C2P-2g-PTJ"/>
-                        <outlet property="volumeContainerViewController" destination="8eD-ZX-UW6" id="eRq-aQ-Bjv"/>
                         <outlet property="volumeSlider" destination="MCu-q1-tlA" id="0cs-Yb-0pO"/>
                     </connections>
                 </viewController>

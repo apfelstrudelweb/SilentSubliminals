@@ -57,3 +57,11 @@ struct Manager {
     static var recordingSession: AVAudioSession!
     static var micAuthorised = Bool()
 }
+
+struct AudioFileTypes {
+    var filename = ""
+    var isSilent = false
+    var audioPlayer = AVAudioPlayerNode()
+}
+
+var audioFiles: Array<AudioFileTypes> = [AudioFileTypes(filename: spokenAffirmation, isSilent: false), AudioFileTypes(filename: spokenAffirmationSilent, isSilent: true)]

@@ -15,5 +15,4 @@ class SymbolButton: UIButton {
 
         self.tintColor = PlayerControlColor.darkGrayColor
     }
-
 }

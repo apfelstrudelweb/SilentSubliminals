@@ -7,15 +7,26 @@
 //
 
 import Foundation
+import AVFoundation
 
 class VolumeManager {
     
     static let shared = VolumeManager()
     
-    var sliderVolume: Float?
+    var sliderVolume: Float = defaultSliderVolume
+    var deviceVolume: Float = defaultSliderVolume
+    
+    let audioSession = AVAudioSession.sharedInstance()
 
-  
     private init() {
+        
         sliderVolume = defaultSliderVolume
+        
+        do {
+            try audioSession.setActive(true)
+            deviceVolume = audioSession.outputVolume * sliderVolume
+        } catch {
+            print("Error Setting Up Audio Session")
+        }
     }
 }

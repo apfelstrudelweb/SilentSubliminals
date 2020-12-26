@@ -29,3 +29,16 @@ func getDocumentsDirectory() -> URL {
     let documentsDirectory = paths[0]
     return documentsDirectory
 }
+
+extension URL    {
+    func checkFileExist() -> Bool {
+        let path = self.path
+        if (FileManager.default.fileExists(atPath: path))   {
+            print("FILE AVAILABLE")
+            return true
+        }else        {
+            print("FILE NOT AVAILABLE")
+            return false;
+        }
+    }
+}
