@@ -11,19 +11,39 @@ import AVFoundation
 import PureLayout
 
 
-class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, StateMachineDelegate, CommandCenterDelegate, BackButtonDelegate, AudioHelperDelegate {
+class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, PlayerStateMachineDelegate, CommandCenterDelegate, BackButtonDelegate, AudioHelperDelegate {
 
     // 1. section
     @IBOutlet weak var introductionSwitch: UISwitch!
     @IBOutlet weak var leadInChairButton: ToggleButton!
+    @IBOutlet weak var leadInChairPulseImageView: UIImageView! {
+        didSet {
+            leadInChairPulseImageView.tintColor = PlayerControlColor.lightColor
+        }
+    }
     @IBOutlet weak var leadInBedButton: ToggleButton!
+    @IBOutlet weak var leadInBedPulseImageView: UIImageView!{
+        didSet {
+            leadInBedPulseImageView.tintColor = PlayerControlColor.lightColor
+        }
+    }
     @IBOutlet weak var noLeadInButton: ToggleButton! {
         didSet {
             introButtons = [leadInChairButton : .chair, leadInBedButton : .bed, noLeadInButton : .none]
         }
     }
     @IBOutlet weak var leadOutDayButton: ToggleButton!
+    @IBOutlet weak var leadOutDayPulseImageView: UIImageView! {
+        didSet {
+            leadOutDayPulseImageView.tintColor = PlayerControlColor.lightColor
+        }
+    }
     @IBOutlet weak var leadOutNightButton: ToggleButton!
+    @IBOutlet weak var leadOutNightPulseImageView: UIImageView! {
+        didSet {
+            leadOutNightPulseImageView.tintColor = PlayerControlColor.lightColor
+        }
+    }
     @IBOutlet weak var noLeadOutButton: ToggleButton! {
         didSet {
             outroButtons = [leadOutDayButton : .day, leadOutNightButton : .night, noLeadOutButton : .none]
@@ -61,8 +81,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
     private var spectrumViewController: SpectrumViewController?
     private var volumeViewController: VolumeViewController?
     
-    private var audioHelper = AudioHelper();
-
+    private var audioHelper = AudioHelper()
 
     var introDuration: TimeInterval = 0
     var outroDuration: TimeInterval = 0
@@ -70,8 +89,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
     var totalLength: TimeInterval = 0
     var elapsedTime: TimeInterval = 0
     
-    var introButtons:[ToggleButton : StateMachine.IntroState]?
-    var outroButtons:[ToggleButton : StateMachine.OutroState]?
+    var introButtons:[ToggleButton : PlayerStateMachine.IntroState]?
+    var outroButtons:[ToggleButton : PlayerStateMachine.OutroState]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,11 +101,11 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
         
         scrollView.delegate = self
         audioHelper.delegate = self
-        StateMachine.shared.delegate = self
+        PlayerStateMachine.shared.delegate = self
         
-        StateMachine.shared.introState = .chair
-        StateMachine.shared.outroState = .day
-        StateMachine.shared.frequencyState = .loud
+        PlayerStateMachine.shared.introState = .chair
+        PlayerStateMachine.shared.outroState = .day
+        PlayerStateMachine.shared.frequencyState = .loud
 
         let backButton = BackButton(type: .custom)
         backButton.delegate = self
@@ -105,11 +124,14 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
             }))
             self.present(alert, animated: true)
         }
+        
+        //audioHelper.initializeAudioEngine(recording: false)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        stopPlaying()
+        //stopPlaying()
+        audioHelper.stop()
     }
     
     // MARK: Segues
@@ -124,7 +146,6 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
         }
     }
     
-    
     // MARK: BackButtonDelegate
     func close() {
         self.navigationController?.dismiss(animated: true, completion: nil)
@@ -132,32 +153,32 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
     
     // MARK: user interactions
     @IBAction func leadInChairTouched(_ sender: Any) {
-        StateMachine.shared.introState = .chair
+        PlayerStateMachine.shared.introState = .chair
     }
     
     @IBAction func leadInBedTouched(_ sender: Any) {
-        StateMachine.shared.introState = .bed
+        PlayerStateMachine.shared.introState = .bed
     }
     
     @IBAction func leadInNoneTouched(_ sender: Any) {
-        StateMachine.shared.introState = .none
+        PlayerStateMachine.shared.introState = .none
     }
     
     @IBAction func leadOutDayTouched(_ sender: Any) {
-        StateMachine.shared.outroState = .day
+        PlayerStateMachine.shared.outroState = .day
     }
     
     @IBAction func leadOutNightTouched(_ sender: Any) {
-        StateMachine.shared.outroState = .night
+        PlayerStateMachine.shared.outroState = .night
     }
     
     @IBAction func leadOutNoneTouched(_ sender: Any) {
-        StateMachine.shared.outroState = .none
+        PlayerStateMachine.shared.outroState = .none
     }
     
     @IBAction func silentButtonTouched(_ sender: Any) {
         
-        StateMachine.shared.toggleFrequencyState()
+        PlayerStateMachine.shared.toggleFrequencyState()
         
 //        isSilentMode = !isSilentMode
 //
@@ -174,22 +195,20 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
     }
     
     @IBAction func resetButtonTouched(_ sender: Any) {
-        StateMachine.shared.togglePlayPauseState()
+        PlayerStateMachine.shared.togglePlayPauseState()
     }
     
     @IBAction func volumeSliderChanged(_ sender: Any) {
         
         VolumeManager.shared.sliderVolume = Float(volumeSlider.value)
-        
-
     }
 
     func updateIntroButtons() {
         
         DispatchQueue.main.async {
             self.introButtons?.forEach {
-                $0.key.setState(active: $0.value == StateMachine.shared.introState)
-                $0.key.isEnabled = StateMachine.shared.playerState == .ready
+                $0.key.setState(active: $0.value == PlayerStateMachine.shared.introState)
+                $0.key.isEnabled = PlayerStateMachine.shared.playerState == .ready
             }
         }
     }
@@ -198,8 +217,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
         
         DispatchQueue.main.async {
             self.outroButtons?.forEach {
-                $0.key.setState(active: $0.value == StateMachine.shared.outroState)
-                $0.key.isEnabled = StateMachine.shared.playerState == .ready
+                $0.key.setState(active: $0.value == PlayerStateMachine.shared.outroState)
+                $0.key.isEnabled = PlayerStateMachine.shared.playerState == .ready
             }
         }
     }
@@ -211,58 +230,90 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
         let loudNode = audioHelper.getLoudPlayerNode()
         
         DispatchQueue.main.async {
-            switch StateMachine.shared.frequencyState {
+            switch PlayerStateMachine.shared.frequencyState {
             case .loud:
                 self.silentButton.setImage(Button.silentOffImg, for: .normal)
                 silentNode.volume = 0
-                loudNode.volume = VolumeManager.shared.deviceVolume
+                loudNode.volume = VolumeManager.shared.sliderVolume
             case .silent:
                 self.silentButton.setImage(Button.silentOnImg, for: .normal)
-                silentNode.volume = VolumeManager.shared.deviceVolume
+                silentNode.volume = VolumeManager.shared.sliderVolume
                 loudNode.volume = 0
             }
         }
     }
     
     func performAction() {
+        
+        self.spectrumViewController?.clearGraph()
 
-        switch StateMachine.shared.pauseState {
+        switch PlayerStateMachine.shared.pauseState {
         case .pause:
             print("pause")
             break
             
         case .play:
-            switch StateMachine.shared.playerState {
+            switch PlayerStateMachine.shared.playerState {
             case .ready:
+                stopButtonAnimations()
                 print("ready")
+                playButton.setState(active: false)
                 break
             case .intro:
-                playButton.setImage(Button.playOffImg, for: .normal)
-                switch StateMachine.shared.introState {
+                switch PlayerStateMachine.shared.introState {
                 case .chair, .bed:
                     print("intro")
                     audioHelper.playInduction(type: Induction.Intro)
+                    animateIntroButton()
                 case .none:
                     print("no intro")
                 }
                 break
             case .affirmation:
                 print("affirmation")
-                audioHelper.playSingleAffirmation()
+                stopButtonAnimations()
+                audioHelper.playSingleAffirmation(instance: .player)
                 break
             case .affirmationLoop:
                 print("affirmation loop")
                 audioHelper.playAffirmationLoop()
                 break
             case .outro:
-                switch StateMachine.shared.outroState {
+                switch PlayerStateMachine.shared.outroState {
                 case .day, .night:
                     print("outro")
                     audioHelper.playInduction(type: Induction.Outro)
+                    animateOutroButton()
                 case .none:
                     print("no outro")
                 }
             }
+        }
+    }
+    
+    func animateIntroButton() {
+        if PlayerStateMachine.shared.introState == .chair {
+            leadInChairPulseImageView.layer.add(getLayerAnimation(), forKey: "growingAnimation")
+        } else if PlayerStateMachine.shared.introState == .bed {
+            leadInBedPulseImageView.layer.add(getLayerAnimation(), forKey: "growingAnimation")
+        }
+    }
+    
+    func animateOutroButton() {
+        if PlayerStateMachine.shared.outroState == .day {
+            leadOutDayPulseImageView.layer.add(getLayerAnimation(), forKey: "growingAnimation")
+            
+        } else if PlayerStateMachine.shared.outroState == .night {
+            leadOutNightPulseImageView.layer.add(getLayerAnimation(), forKey: "growingAnimation")
+        }
+    }
+    
+    func stopButtonAnimations() {
+        DispatchQueue.main.async {
+            self.leadInChairPulseImageView.layer.removeAllAnimations()
+            self.leadInBedPulseImageView.layer.removeAllAnimations()
+            self.leadOutDayPulseImageView.layer.removeAllAnimations()
+            self.leadOutNightPulseImageView.layer.removeAllAnimations()
         }
     }
     
@@ -276,6 +327,11 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
         audioHelper.continueSound()
     }
     
+    func terminateSound() {
+        print("Sound terminated")
+        playButton.setState(active: false)
+    }
+    
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         playerView.layoutSubviews()
@@ -286,13 +342,13 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
     
     func startPlaying() {
         
-        StateMachine.shared.togglePlayPauseState()
+        PlayerStateMachine.shared.togglePlayPauseState()
         
-        switch StateMachine.shared.pauseState {
+        switch PlayerStateMachine.shared.pauseState {
         
         case .play:
             playButton.setState(active: true)
-            StateMachine.shared.startPlayer()
+            PlayerStateMachine.shared.startPlayer()
         case .pause:
             playButton.setState(active: false)
         }
@@ -348,4 +404,5 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, St
         self.volumeViewController?.processAudioData(buffer: buffer)
         self.spectrumViewController?.processAudioData(buffer: buffer)
     }
+
 }

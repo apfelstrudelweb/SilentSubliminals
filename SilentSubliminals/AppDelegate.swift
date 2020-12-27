@@ -7,12 +7,12 @@
 //
 
 import UIKit
+import AVFoundation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    
-    
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         let navFont = UIFont.systemFont(ofSize: 26, weight: .medium)
@@ -26,6 +26,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
         UINavigationBar.appearance().shadowImage = UIImage()
         UINavigationBar.appearance().isTranslucent = true
+        
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setActive(false, options: .notifyOthersOnDeactivation)
+            try audioSession.overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
+            //try audioSession.setCategory(recording ? .playAndRecord : .playback)
+            try audioSession.setCategory(.playAndRecord, options: .defaultToSpeaker)
+            try audioSession.setPreferredIOBufferDuration(128.0 / 44100.0)
+            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+        } catch {
+            print("Failed to set audio session category.")
+        }
 
         return true
     }

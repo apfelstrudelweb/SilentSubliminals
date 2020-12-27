@@ -10,34 +10,101 @@ import UIKit
 import CoreAudio
 import AVFoundation
 import Accelerate
+import PureLayout
 
-class SpectrumViewController: UIViewController {
-    
-    var fftSetup : vDSP_DFT_Setup?
+class SpectrumView : UIView {
     
     let spectrumLayer = CAShapeLayer.init()
     var frequencyDomainGraphLayerIndex = 0
     let frequencyDomainGraphLayers = [CAShapeLayer(), CAShapeLayer(),
                                       CAShapeLayer(), CAShapeLayer()]
+    
+    var cgContext: CGContext?
+    
+    func drawBezier(points: Array<CGPoint>) {
+        
+        cgContext?.setLineWidth(10.0)
+        
+        spectrumLayer.fillColor = spectrumColor.cgColor //UIColor.clear.cgColor
+        spectrumLayer.strokeColor = spectrumColor.cgColor
+        let bezierPath = quadCurvedPathWithPoints(points: points)
+        spectrumLayer.path = bezierPath.cgPath
+        
+        cgContext?.strokePath()
+        
+        self.layer.addSublayer(spectrumLayer)
+    }
+    
+    override func draw(_ rect: CGRect) {
+        
+        if let context = UIGraphicsGetCurrentContext() {
+            cgContext = context
+        }
+    }
+    
+    func quadCurvedPathWithPoints(points: Array<CGPoint>) -> UIBezierPath {
+        
+        let path = UIBezierPath()
+        
+        var p1 = points.first ?? .zero
+        path.move(to: p1)
+        
+        for i in stride(from: 1, to: points.count - 1, by: 1) {
+            
+            let p2 = points[i]
+            let midPoint = midPointForPoints(p1: p1, p2: p2)
+            path.addQuadCurve(to: midPoint, controlPoint: controlPointForPoints(p1: midPoint, p2: p1))
+            path.addQuadCurve(to: midPoint, controlPoint: controlPointForPoints(p1: midPoint, p2: p2))
+            
+            p1 = p2
+        }
+        return path
+    }
+    
+    func midPointForPoints(p1: CGPoint, p2:CGPoint) -> CGPoint {
+        return CGPoint(x: (p1.x + p2.x) / 2.0, y: (p1.y + p2.y) / 2.0)
+    }
+    
+    func controlPointForPoints(p1: CGPoint, p2:CGPoint) -> CGPoint {
+        var controlPoint = midPointForPoints(p1: p1, p2: p2)
+        let diffY = abs(p2.y - controlPoint.y)
+        
+        if p1.y < p2.y {
+            controlPoint.y += diffY
+        } else if p1.y > p2.y {
+            controlPoint.y -= diffY
+        }
+        return controlPoint
+    }
+}
 
+class SpectrumViewController: UIViewController {
+    
+    var fftSetup : vDSP_DFT_Setup?
+    
+    let spectrumView = SpectrumView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        self.view.addSubview(spectrumView)
+        spectrumView.autoPinEdgesToSuperviewEdges()
+        
         self.view.backgroundColor = PlayerControlColor.darkGrayColor
         self.view.layer.cornerRadius = cornerRadius
         self.view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         
         fftSetup = vDSP_DFT_zop_CreateSetup(nil, 1024, vDSP_DFT_Direction.FORWARD)
         
-        frequencyDomainGraphLayers.forEach {
-            self.view.layer.addSublayer($0)
+        spectrumView.frequencyDomainGraphLayers.forEach {
+            spectrumView.layer.addSublayer($0)
         }
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        frequencyDomainGraphLayers.forEach {
+        spectrumView.frequencyDomainGraphLayers.forEach {
             $0.frame = self.view.frame.insetBy(dx: 0, dy: 0)
         }
     }
@@ -51,7 +118,7 @@ class SpectrumViewController: UIViewController {
         
         if rmsValue == -.infinity { return }
         
-        spectrumLayer.removeFromSuperlayer()
+        spectrumView.spectrumLayer.removeFromSuperlayer()
         
         
         //fft
@@ -73,45 +140,29 @@ class SpectrumViewController: UIViewController {
         
         path.move(to: CGPoint(x: 0, y: height))
         
-        var x1: CGFloat = 0
-        var y1: CGFloat = height
-        var x2: CGFloat = 0
-        var y2: CGFloat = height
+        var points = Array<CGPoint>()
         
-        for (index, element) in fftMagnitudes.enumerated() {
-            //print("Item \(index): \(element)")
+        for i in stride(from: 0, to: fftMagnitudes.count - 1, by: 1) {
             
-            x2 = x1
-            y2 = y1
+            let xUnit = width / log10(CGFloat(fftMagnitudes.count))
             
-            //            if index == fftMagnitudes.count / 4 {
-            //                break
-            //            }
+            let x = i == 0 ? 0 : CGFloat(log10f(Float(i))) * xUnit
+            let y = i == 0 ? height : height - CGFloat(rmsValue / 80) * CGFloat(fftMagnitudes[i]) * height / CGFloat(maxFFT)
             
-            let xUnit = width / log10(1000)
-            
-            x1 = CGFloat(log10f(Float(index + 1))) * xUnit //CGFloat(4 * index) * width / CGFloat(fftMagnitudes.count)
-            y1 = height - CGFloat(rmsValue / 80) * CGFloat(element.magnitude) * height / CGFloat(maxFFT)
-            
-            if y1 < 0 {
-                y1 = 0
+            if i < fftMagnitudes.count - 50 {
+                points.append(CGPoint(x: x, y: y))
+            } else {
+                points.append(CGPoint(x: x, y: height))
             }
-            
-            //path.addLine(to: CGPoint(x: x, y: y))
-            
-            if x1 > width {
-                break
-            }
-            
-            path.addQuadCurve(to: CGPoint(x: x1, y: y1), controlPoint: CGPoint(x: x2, y: y2))
         }
         
-        path.addLine(to: CGPoint(x: width, y: height))
-        
-        path.close()
-        
-        spectrumLayer.path = path.cgPath
-        spectrumLayer.fillColor = UIColor.green.cgColor
-        self.view.layer.addSublayer(spectrumLayer)
+        spectrumView.drawBezier(points: points)
     }
+    
+    func clearGraph() {
+        DispatchQueue.main.async {
+            self.spectrumView.spectrumLayer.removeFromSuperlayer()
+        }
+    }
+    
 }

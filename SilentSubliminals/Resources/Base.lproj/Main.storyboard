@@ -83,10 +83,16 @@
                             <view alpha="0.75" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yvy-h8-CaA" userLabel="Player View" customClass="ShadowView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                 <rect key="frame" x="20" y="135.5" width="378" height="179"/>
                                 <subviews>
+                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gKp-y1-suW">
+                                        <rect key="frame" x="0.0" y="0.0" width="378" height="89.5"/>
+                                        <connections>
+                                            <segue destination="Bf0-ef-9YZ" kind="embed" identifier="spectrumSegue" id="QTW-cV-1zg"/>
+                                        </connections>
+                                    </containerView>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mdr-3Q-yuN">
                                         <rect key="frame" x="0.0" y="89.5" width="378" height="89.5"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2kD-4u-X7j" customClass="ShadowButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2kD-4u-X7j" customClass="PlayButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                 <rect key="frame" x="306" y="21" width="48" height="48"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="2kD-4u-X7j" secondAttribute="height" multiplier="1:1" id="h0W-f1-WMi"/>
@@ -116,7 +122,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                 </variation>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a0U-wz-QjM">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a0U-wz-QjM" customClass="RecordButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                 <rect key="frame" x="239" y="21.5" width="47" height="47"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="a0U-wz-QjM" secondAttribute="height" multiplier="1:1" id="VBR-Qw-ZPS"/>
@@ -165,21 +171,17 @@
                                             </mask>
                                         </variation>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X4C-zh-GbL">
-                                        <rect key="frame" x="0.0" y="0.0" width="378" height="89.5"/>
-                                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="X4C-zh-GbL" firstAttribute="top" secondItem="Yvy-h8-CaA" secondAttribute="top" id="4RV-3R-Z5R"/>
-                                    <constraint firstItem="mdr-3Q-yuN" firstAttribute="top" secondItem="X4C-zh-GbL" secondAttribute="bottom" id="7Jr-70-6mL"/>
+                                    <constraint firstItem="mdr-3Q-yuN" firstAttribute="top" secondItem="gKp-y1-suW" secondAttribute="bottom" id="Bt0-vI-tec"/>
+                                    <constraint firstItem="gKp-y1-suW" firstAttribute="leading" secondItem="Yvy-h8-CaA" secondAttribute="leading" id="E5A-Dd-Wx8"/>
+                                    <constraint firstAttribute="trailing" secondItem="gKp-y1-suW" secondAttribute="trailing" id="HVD-tl-uW3"/>
                                     <constraint firstAttribute="bottom" secondItem="mdr-3Q-yuN" secondAttribute="bottom" id="Kwe-vb-SoR"/>
                                     <constraint firstItem="mdr-3Q-yuN" firstAttribute="leading" secondItem="Yvy-h8-CaA" secondAttribute="leading" id="T30-02-ebx"/>
-                                    <constraint firstItem="X4C-zh-GbL" firstAttribute="leading" secondItem="Yvy-h8-CaA" secondAttribute="leading" id="Wcw-a3-rpa"/>
-                                    <constraint firstAttribute="trailing" secondItem="X4C-zh-GbL" secondAttribute="trailing" id="bSS-4u-4ZS"/>
                                     <constraint firstAttribute="trailing" secondItem="mdr-3Q-yuN" secondAttribute="trailing" id="fHI-yx-Vjh"/>
                                     <constraint firstItem="mdr-3Q-yuN" firstAttribute="height" secondItem="Yvy-h8-CaA" secondAttribute="height" multiplier="0.5" id="ozU-1z-hMh"/>
+                                    <constraint firstItem="gKp-y1-suW" firstAttribute="top" secondItem="Yvy-h8-CaA" secondAttribute="top" id="pZ0-oc-8iG"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create your script" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="z8r-ZA-9nh">
@@ -245,7 +247,6 @@
                     <connections>
                         <outlet property="containerView" destination="KHd-hc-lYm" id="9Ib-2F-cxU"/>
                         <outlet property="controlView" destination="mdr-3Q-yuN" id="jl5-Ku-Q80"/>
-                        <outlet property="graphView" destination="X4C-zh-GbL" id="ReL-ZX-cDw"/>
                         <outlet property="playButton" destination="2kD-4u-X7j" id="0hF-8L-9q0"/>
                         <outlet property="playerView" destination="Yvy-h8-CaA" id="CE7-7Q-MOb"/>
                         <outlet property="recordButton" destination="a0U-wz-QjM" id="9xc-mp-dki"/>
@@ -253,7 +254,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1957.0093457943924" y="85.529157667386613"/>
+            <point key="canvasLocation" x="1956.521739130435" y="85.044642857142847"/>
         </scene>
         <!--Script View Controller-->
         <scene sceneID="TWN-q5-UWo">
@@ -369,7 +370,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
             <objects>
                 <viewController id="Bf0-ef-9YZ" customClass="SpectrumViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Nie-sQ-mcI">
-                        <rect key="frame" x="0.0" y="0.0" width="373" height="111.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="378" height="89"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="HBa-Po-3jv"/>
                     </view>
@@ -468,6 +469,10 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pulseSymbol" translatesAutoresizingMaskIntoConstraints="NO" id="XVj-v3-nvd">
+                                                                <rect key="frame" x="139" y="70" width="44" height="44"/>
+                                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            </imageView>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1lW-ea-hYl" customClass="ToggleButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="139" y="70" width="44" height="44"/>
                                                                 <color key="backgroundColor" red="0.63859834640000002" green="0.64797228200000001" blue="0.67609408879999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -486,6 +491,10 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                     <action selector="leadInChairTouched:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="kMZ-DJ-ZCG"/>
                                                                 </connections>
                                                             </button>
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pulseSymbol" translatesAutoresizingMaskIntoConstraints="NO" id="IZd-0S-Jl0">
+                                                                <rect key="frame" x="213" y="70" width="44" height="44"/>
+                                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            </imageView>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nss-hv-Sk9" customClass="ToggleButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="213" y="70" width="44" height="44"/>
                                                                 <color key="backgroundColor" red="0.63859834640000002" green="0.64797228200000001" blue="0.67609408879999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -522,6 +531,10 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                     <action selector="leadInNoneTouched:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="yrx-Xt-0HN"/>
                                                                 </connections>
                                                             </button>
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pulseSymbol" translatesAutoresizingMaskIntoConstraints="NO" id="8K9-c1-Qeq">
+                                                                <rect key="frame" x="139" y="220.5" width="44" height="44"/>
+                                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            </imageView>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d8R-wR-p82" customClass="ToggleButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="139" y="220.5" width="44" height="44"/>
                                                                 <color key="backgroundColor" red="0.638598346410438" green="0.64797228199628032" blue="0.67609408875380717" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -540,6 +553,10 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                     <action selector="leadOutDayTouched:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="06l-bd-yc6"/>
                                                                 </connections>
                                                             </button>
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pulseSymbol" translatesAutoresizingMaskIntoConstraints="NO" id="o31-l6-2Kv">
+                                                                <rect key="frame" x="213" y="220.5" width="44" height="44"/>
+                                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            </imageView>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6XP-Xy-aRO" customClass="ToggleButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="213" y="220.5" width="44" height="44"/>
                                                                 <color key="backgroundColor" red="0.638598346410438" green="0.64797228199628032" blue="0.67609408875380717" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -580,22 +597,38 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstItem="2Vo-TK-6Ii" firstAttribute="top" secondItem="CsQ-FE-C27" secondAttribute="bottom" constant="44" id="1tx-g4-Y9x"/>
+                                                            <constraint firstItem="8K9-c1-Qeq" firstAttribute="trailing" secondItem="d8R-wR-p82" secondAttribute="trailing" id="3k3-qG-lmV"/>
                                                             <constraint firstItem="q6l-Tj-038" firstAttribute="centerY" secondItem="Nss-hv-Sk9" secondAttribute="centerY" id="5Wr-af-mTY"/>
+                                                            <constraint firstItem="XVj-v3-nvd" firstAttribute="leading" secondItem="1lW-ea-hYl" secondAttribute="leading" id="6Lm-uX-oHY"/>
+                                                            <constraint firstItem="XVj-v3-nvd" firstAttribute="trailing" secondItem="1lW-ea-hYl" secondAttribute="trailing" id="6Oh-Hm-t7t"/>
+                                                            <constraint firstItem="XVj-v3-nvd" firstAttribute="top" secondItem="1lW-ea-hYl" secondAttribute="top" id="7YZ-0m-h53"/>
                                                             <constraint firstItem="hKZ-yX-a0r" firstAttribute="leading" secondItem="CsQ-FE-C27" secondAttribute="leading" id="D9U-AT-3hL"/>
+                                                            <constraint firstItem="o31-l6-2Kv" firstAttribute="top" secondItem="6XP-Xy-aRO" secondAttribute="top" id="EJ7-tl-DQ5"/>
+                                                            <constraint firstItem="IZd-0S-Jl0" firstAttribute="top" secondItem="Nss-hv-Sk9" secondAttribute="top" id="Gik-XQ-zfb"/>
                                                             <constraint firstItem="d8R-wR-p82" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="hKZ-yX-a0r" secondAttribute="trailing" constant="8" symbolic="YES" id="IQt-85-HYZ"/>
+                                                            <constraint firstItem="8K9-c1-Qeq" firstAttribute="leading" secondItem="d8R-wR-p82" secondAttribute="leading" id="IvK-2Z-bXq"/>
+                                                            <constraint firstItem="o31-l6-2Kv" firstAttribute="trailing" secondItem="6XP-Xy-aRO" secondAttribute="trailing" id="Kz9-Gs-LgE"/>
+                                                            <constraint firstItem="IZd-0S-Jl0" firstAttribute="trailing" secondItem="Nss-hv-Sk9" secondAttribute="trailing" id="M8u-6h-51F"/>
                                                             <constraint firstItem="WTQ-46-HQ2" firstAttribute="centerY" secondItem="CsQ-FE-C27" secondAttribute="centerY" id="QM9-4d-yq2"/>
                                                             <constraint firstItem="CsQ-FE-C27" firstAttribute="leading" secondItem="jd3-Ih-3A7" secondAttribute="leading" constant="12" id="RIl-Zk-UT6"/>
+                                                            <constraint firstItem="8K9-c1-Qeq" firstAttribute="bottom" secondItem="d8R-wR-p82" secondAttribute="bottom" id="S8N-It-cPP"/>
+                                                            <constraint firstItem="o31-l6-2Kv" firstAttribute="leading" secondItem="6XP-Xy-aRO" secondAttribute="leading" id="UN6-x9-VRz"/>
                                                             <constraint firstItem="1lW-ea-hYl" firstAttribute="leading" secondItem="2Vo-TK-6Ii" secondAttribute="trailing" constant="54.333333333333329" id="UgG-37-soV"/>
                                                             <constraint firstItem="d8R-wR-p82" firstAttribute="centerX" secondItem="1lW-ea-hYl" secondAttribute="centerX" id="Zt1-2f-ys5"/>
                                                             <constraint firstItem="I2n-2P-ia1" firstAttribute="centerY" secondItem="6XP-Xy-aRO" secondAttribute="centerY" id="akl-kY-ovE"/>
                                                             <constraint firstItem="d8R-wR-p82" firstAttribute="centerY" secondItem="hKZ-yX-a0r" secondAttribute="centerY" id="bde-pB-gMh"/>
                                                             <constraint firstAttribute="bottom" secondItem="hKZ-yX-a0r" secondAttribute="bottom" constant="20" id="f4d-e1-ozs"/>
+                                                            <constraint firstItem="o31-l6-2Kv" firstAttribute="bottom" secondItem="6XP-Xy-aRO" secondAttribute="bottom" id="f5y-3t-Vog"/>
                                                             <constraint firstItem="hKZ-yX-a0r" firstAttribute="top" secondItem="2Vo-TK-6Ii" secondAttribute="bottom" constant="30" id="fwu-KW-6Mu"/>
                                                             <constraint firstItem="CsQ-FE-C27" firstAttribute="top" secondItem="jd3-Ih-3A7" secondAttribute="top" constant="12" id="hPw-GO-Nsa"/>
+                                                            <constraint firstItem="IZd-0S-Jl0" firstAttribute="bottom" secondItem="Nss-hv-Sk9" secondAttribute="bottom" id="lxn-EU-Af3"/>
                                                             <constraint firstItem="2Vo-TK-6Ii" firstAttribute="leading" secondItem="CsQ-FE-C27" secondAttribute="leading" id="nNQ-Pt-BaK"/>
                                                             <constraint firstItem="6XP-Xy-aRO" firstAttribute="centerX" secondItem="Nss-hv-Sk9" secondAttribute="centerX" id="pKv-AD-cYq"/>
+                                                            <constraint firstItem="XVj-v3-nvd" firstAttribute="bottom" secondItem="1lW-ea-hYl" secondAttribute="bottom" id="piG-un-RvB"/>
+                                                            <constraint firstItem="IZd-0S-Jl0" firstAttribute="leading" secondItem="Nss-hv-Sk9" secondAttribute="leading" id="pyt-dS-dKH"/>
                                                             <constraint firstItem="I2n-2P-ia1" firstAttribute="centerX" secondItem="q6l-Tj-038" secondAttribute="centerX" id="rcm-kq-UWQ"/>
                                                             <constraint firstItem="1lW-ea-hYl" firstAttribute="centerY" secondItem="2Vo-TK-6Ii" secondAttribute="centerY" id="sxn-ZZ-NhQ"/>
+                                                            <constraint firstItem="8K9-c1-Qeq" firstAttribute="top" secondItem="d8R-wR-p82" secondAttribute="top" id="tbL-AP-ofC"/>
                                                             <constraint firstItem="Nss-hv-Sk9" firstAttribute="centerY" secondItem="1lW-ea-hYl" secondAttribute="centerY" id="uxy-0F-z0M"/>
                                                             <constraint firstItem="WTQ-46-HQ2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="CsQ-FE-C27" secondAttribute="trailing" constant="8" symbolic="YES" id="wp5-FL-crb"/>
                                                             <constraint firstItem="Nss-hv-Sk9" firstAttribute="leading" secondItem="1lW-ea-hYl" secondAttribute="trailing" constant="30" id="wyj-Nd-WPp"/>
@@ -847,11 +880,15 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                         <outlet property="introductionLabel" destination="CsQ-FE-C27" id="15j-L1-MFA"/>
                         <outlet property="introductionSwitch" destination="WTQ-46-HQ2" id="VYC-5c-29u"/>
                         <outlet property="leadInBedButton" destination="Nss-hv-Sk9" id="fwE-JN-EeA"/>
+                        <outlet property="leadInBedPulseImageView" destination="IZd-0S-Jl0" id="lVE-tv-LC3"/>
                         <outlet property="leadInChairButton" destination="1lW-ea-hYl" id="BUL-7a-xEV"/>
+                        <outlet property="leadInChairPulseImageView" destination="XVj-v3-nvd" id="NaT-Lg-ziI"/>
                         <outlet property="leadInLabel" destination="2Vo-TK-6Ii" id="Nrm-aZ-bJh"/>
                         <outlet property="leadOutDayButton" destination="d8R-wR-p82" id="wcY-vi-T55"/>
+                        <outlet property="leadOutDayPulseImageView" destination="8K9-c1-Qeq" id="Zxo-mG-nTT"/>
                         <outlet property="leadOutLabel" destination="hKZ-yX-a0r" id="Kuk-Ie-2J1"/>
                         <outlet property="leadOutNightButton" destination="6XP-Xy-aRO" id="3gm-iy-fJT"/>
+                        <outlet property="leadOutNightPulseImageView" destination="o31-l6-2Kv" id="fyO-eQ-CzQ"/>
                         <outlet property="loudspeakerHighSymbol" destination="nSG-D6-S8T" id="L1V-jg-f10"/>
                         <outlet property="loudspeakerLowSymbol" destination="nxf-ce-GFG" id="L10-5H-xEc"/>
                         <outlet property="noLeadInButton" destination="q6l-Tj-038" id="ppx-WL-RRD"/>
@@ -1137,6 +1174,9 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
             <point key="canvasLocation" x="1048" y="788"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="QTW-cV-1zg"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="bedIcon" width="417" height="417"/>
         <image name="cancelIcon" width="417" height="417"/>
@@ -1148,6 +1188,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
         <image name="moonIcon.svg" width="128" height="128"/>
         <image name="playIcon" width="417" height="417"/>
         <image name="plusButton.png" width="35" height="33"/>
+        <image name="pulseSymbol" width="44" height="44"/>
         <image name="rewindIcon" width="320" height="313"/>
         <image name="startRecordingButton.png" width="50" height="50"/>
         <image name="subliminalMakerTeaser.png" width="364" height="304"/>

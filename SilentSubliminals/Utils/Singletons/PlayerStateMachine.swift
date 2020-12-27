@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol StateMachineDelegate : AnyObject {
+protocol PlayerStateMachineDelegate : AnyObject {
     
     func performAction()
     func updateIntroButtons()
@@ -16,22 +16,34 @@ protocol StateMachineDelegate : AnyObject {
     func toggleSilentMode()
     func pauseSound()
     func continueSound()
+    func terminateSound()
 }
+
+//extension PlayerStateMachineDelegate {
+//
+//    func updateIntroButtons() { }
+//    func updateOutroButtons() { }
+//    func toggleSilentMode() { }
+//    func pauseSound() { }
+//    func continueSound() { }
+//    func terminateSound() { }
+//}
 
 enum Induction {
     case Intro
     case Outro
 }
 
-class StateMachine {
+class PlayerStateMachine {
     
-    weak var delegate : StateMachineDelegate?
+    weak var delegate : PlayerStateMachineDelegate?
     
-    static let shared = StateMachine()
-
+    static let shared = PlayerStateMachine()
+    
     private init() {
-
+        
     }
+    
     
     enum PlayerState {
         
@@ -66,32 +78,35 @@ class StateMachine {
             }
         }
     }
-
+    
     enum PauseState {
         case play
         case pause
         var nextState : PauseState {
             switch self {
             case .play:
+                if shared.playerState == .ready {
+                    return .play
+                }
                 return .pause
             case .pause:
                 return .play
             }
         }
     }
-
+    
     enum IntroState {
         case chair
         case bed
         case none
     }
-
+    
     enum OutroState {
         case day
         case night
         case none
     }
-
+    
     enum FrequencyState {
         case loud
         case silent
@@ -104,8 +119,7 @@ class StateMachine {
             }
         }
     }
-
-    // MARK: State Handling
+    
     var playerState : PlayerState = .ready {
         didSet {
             delegate?.performAction()
@@ -115,37 +129,36 @@ class StateMachine {
     }
     var pauseState : PauseState = .pause {
         didSet {
-            //delegate?.performAction()
             if pauseState == .pause {
                 delegate?.pauseSound()
             } else {
                 delegate?.continueSound()
             }
-            
         }
     }
-
+    
     var introState : IntroState = .none {
         didSet {
             delegate?.updateIntroButtons()
         }
     }
-
+    
     var outroState : OutroState = .none {
         didSet {
             delegate?.updateOutroButtons()
         }
     }
-
+    
     var frequencyState : FrequencyState = .loud {
         didSet {
             delegate?.toggleSilentMode()
         }
     }
-
+    
     func doNextPlayerState() {
         playerState = self.playerState.nextState
     }
+    
     
     func startPlayer() {
         if playerState == .ready {
@@ -166,7 +179,7 @@ class StateMachine {
     func setSilentMode() {
         frequencyState = .silent
     }
-
+    
     func togglePlayPauseState() {
         pauseState = pauseState.nextState
     }

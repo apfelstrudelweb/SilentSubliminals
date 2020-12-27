@@ -40,6 +40,12 @@ struct PlayerControlColor {
 //    static var darkGrayColor: UIColor = .green
 }
 
+enum SoundInstance {
+    case player
+    case maker
+}
+
+let spectrumColor: UIColor = UIColor(red: 0, green: 0.8863, blue: 0.5333, alpha: 1.0)
 
 let modulationFrequency: Float = 20000
 let bandwidth: Float = 1000

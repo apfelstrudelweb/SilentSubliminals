@@ -23,16 +23,7 @@ class AudioSessionManager {
     static let shared = AudioSessionManager()
     
     private init() {
-        do {
-            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
-            //try AVAudioSession.sharedInstance().setCategory(.ambient, options: .allowBluetooth)
-            try AVAudioSession.sharedInstance().setCategory(.playback)
-            try AVAudioSession.sharedInstance().setActive(true, options: [])
-            let ioBufferDuration = 128.0 / 44100.0
-            try AVAudioSession.sharedInstance().setPreferredIOBufferDuration(ioBufferDuration)
-        } catch {
-            assertionFailure("AVAudioSession setup error: \(error)")
-        }
+
 
         //        do {
         //            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
@@ -44,6 +35,19 @@ class AudioSessionManager {
         //            assertionFailure("AVAudioSession setup error: \(error)")
         //        }
     }
+    
+//    func initAudioSession() {
+//        do {
+//            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
+//            //try AVAudioSession.sharedInstance().setCategory(.ambient, options: .allowBluetooth)
+//            try AVAudioSession.sharedInstance().setCategory(.playback)
+//            try AVAudioSession.sharedInstance().setActive(true, options: [])
+//            let ioBufferDuration = 128.0 / 44100.0
+//            try AVAudioSession.sharedInstance().setPreferredIOBufferDuration(ioBufferDuration)
+//        } catch {
+//            assertionFailure("AVAudioSession setup error: \(error)")
+//        }
+//    }
     
     func checkForPermission() {
         

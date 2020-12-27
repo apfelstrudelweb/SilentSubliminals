@@ -1,14 +1,14 @@
 //
-//  PlayButton.swift
+//  RecordButton.swift
 //  FREE UR SPIRIT
 //
-//  Created by Ullrich Vormbrock on 26.12.20.
+//  Created by Ullrich Vormbrock on 27.12.20.
 //  Copyright © 2020 Ullrich Vormbrock. All rights reserved.
 //
 
 import Foundation
 
-class PlayButton: ShadowButton {
+class RecordButton: ShadowButton {
     
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -19,7 +19,7 @@ class PlayButton: ShadowButton {
     func setState(active: Bool) {
         
         DispatchQueue.main.async {
-            let image = active ? Button.playOffImg : Button.playOnImg
+            let image = active ? Button.micOffImg : Button.micOnImg
             self.setImage(image, for: .normal)
         }
     }

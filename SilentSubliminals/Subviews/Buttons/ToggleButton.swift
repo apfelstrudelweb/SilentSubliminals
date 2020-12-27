@@ -12,6 +12,11 @@ class ToggleButton: UIButton {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        
+        self.layer.shadowColor = UIColor.darkGray.cgColor
+        self.layer.shadowOffset = CGSize(width: 1, height: 1)
+        self.layer.shadowRadius = 2
+        self.layer.shadowOpacity = 0.3
     }
     
     func setState(active: Bool) {
