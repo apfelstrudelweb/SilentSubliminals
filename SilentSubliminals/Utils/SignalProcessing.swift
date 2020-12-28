@@ -38,13 +38,13 @@ class SignalProcessing {
     
     static func fft(data: UnsafeMutablePointer<Float>, setup: OpaquePointer) -> [Float] {
         //output setup
-        var realIn = [Float](repeating: 0, count: 1024)
-        var imagIn = [Float](repeating: 0, count: 1024)
-        var realOut = [Float](repeating: 0, count: 1024)
-        var imagOut = [Float](repeating: 0, count: 1024)
+        var realIn = [Float](repeating: 0, count: 2048)
+        var imagIn = [Float](repeating: 0, count: 2048)
+        var realOut = [Float](repeating: 0, count: 2048)
+        var imagOut = [Float](repeating: 0, count: 2048)
         
         //fill in real input part with audio samples
-        for i in 0...1023 {
+        for i in 0...2047 {
             realIn[i] = data[i]
         }
     
@@ -57,15 +57,15 @@ class SignalProcessing {
         var complex = DSPSplitComplex(realp: &realOut, imagp: &imagOut)
         
         //setup magnitude output
-        var magnitudes = [Float](repeating: 0, count: 512)
+        var magnitudes = [Float](repeating: 0, count: 1024)
         
         //calculate magnitude results
-        vDSP_zvabs(&complex, 1, &magnitudes, 1, 512)
+        vDSP_zvabs(&complex, 1, &magnitudes, 1, 1024)
         
         //normalize
-        var normalizedMagnitudes = [Float](repeating: 0.0, count: 512)
-        var scalingFactor = Float(25.0/512)
-        vDSP_vsmul(&magnitudes, 1, &scalingFactor, &normalizedMagnitudes, 1, 512)
+        var normalizedMagnitudes = [Float](repeating: 0.0, count: 1024)
+        var scalingFactor = Float(25.0/1024)
+        vDSP_vsmul(&magnitudes, 1, &scalingFactor, &normalizedMagnitudes, 1, 1024)
         
         return normalizedMagnitudes
     }

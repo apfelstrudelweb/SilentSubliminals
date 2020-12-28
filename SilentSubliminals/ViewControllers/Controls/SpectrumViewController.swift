@@ -94,7 +94,7 @@ class SpectrumViewController: UIViewController {
         self.view.layer.cornerRadius = cornerRadius
         self.view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         
-        fftSetup = vDSP_DFT_zop_CreateSetup(nil, 1024, vDSP_DFT_Direction.FORWARD)
+        fftSetup = vDSP_DFT_zop_CreateSetup(nil, 2048, vDSP_DFT_Direction.FORWARD)
         
         spectrumView.frequencyDomainGraphLayers.forEach {
             spectrumView.layer.addSublayer($0)

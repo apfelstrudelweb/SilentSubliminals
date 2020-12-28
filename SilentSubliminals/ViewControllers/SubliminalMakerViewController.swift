@@ -26,7 +26,7 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
     @IBOutlet weak var playButton: PlayButton!
     
     private var spectrumViewController: SpectrumViewController?
-    private var audioHelper = AudioHelper()
+    private var audioHelper = AudioHelper.shared
     
 
     override func viewDidLoad() {
@@ -34,6 +34,8 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         
         audioHelper.delegate = self
         MakerStateMachine.shared.delegate = self
+        MakerStateMachine.shared.playerState = .playStopped
+        MakerStateMachine.shared.recorderState = .recordStopped
         
         let backButton = BackButton(type: .custom)
         backButton.delegate = self
@@ -57,7 +59,6 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         print(getDocumentsDirectory())
  
         audioHelper.checkForPermission()
-        //audioHelper.initializeAudioEngine(recording: false)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

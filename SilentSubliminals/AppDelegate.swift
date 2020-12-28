@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try audioSession.setActive(false, options: .notifyOthersOnDeactivation)
             try audioSession.overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
             //try audioSession.setCategory(recording ? .playAndRecord : .playback)
-            try audioSession.setCategory(.playAndRecord, options: .defaultToSpeaker)
+            try audioSession.setCategory(.playAndRecord, options: .allowBluetooth)
             try audioSession.setPreferredIOBufferDuration(128.0 / 44100.0)
             try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
         } catch {

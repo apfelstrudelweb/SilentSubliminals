@@ -81,7 +81,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     private var spectrumViewController: SpectrumViewController?
     private var volumeViewController: VolumeViewController?
     
-    private var audioHelper = AudioHelper()
+    private var audioHelper = AudioHelper.shared
 
     var introDuration: TimeInterval = 0
     var outroDuration: TimeInterval = 0
@@ -103,6 +103,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         audioHelper.delegate = self
         PlayerStateMachine.shared.delegate = self
         
+        PlayerStateMachine.shared.playerState = .ready
         PlayerStateMachine.shared.introState = .chair
         PlayerStateMachine.shared.outroState = .day
         PlayerStateMachine.shared.frequencyState = .loud
@@ -124,8 +125,6 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
             }))
             self.present(alert, animated: true)
         }
-        
-        //audioHelper.initializeAudioEngine(recording: false)
     }
 
     override func viewWillDisappear(_ animated: Bool) {

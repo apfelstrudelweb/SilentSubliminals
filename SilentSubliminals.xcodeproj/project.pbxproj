@@ -196,7 +196,6 @@
 				6563E03A257691CE000E261B /* Constants.swift */,
 				6563E03625763C6C000E261B /* SignalProcessing.swift */,
 				657AA0C5258F544200320465 /* Misc.swift */,
-				65D561D02597517D00FC039C /* AudioHelper.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -281,6 +280,7 @@
 		657AA0C7258F54C700320465 /* Singletons */ = {
 			isa = PBXGroup;
 			children = (
+				65D561D02597517D00FC039C /* AudioHelper.swift */,
 				6568E647258F50F8009390D5 /* TimerManager.swift */,
 				65D561C82595F94E00FC039C /* AudioSessionManager.swift */,
 				656046A52594EA1000D1E9D2 /* VolumeManager.swift */,

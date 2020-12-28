@@ -66,6 +66,7 @@ class PlayerStateMachine {
             case .intro:
                 return .affirmation
             case .affirmation:
+                //return .affirmation
                 shared.setSilentMode()
                 return .affirmationLoop
             case .affirmationLoop:
