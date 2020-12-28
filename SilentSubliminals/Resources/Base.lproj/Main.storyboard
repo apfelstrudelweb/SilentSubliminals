@@ -370,7 +370,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
             <objects>
                 <viewController id="Bf0-ef-9YZ" customClass="SpectrumViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Nie-sQ-mcI">
-                        <rect key="frame" x="0.0" y="0.0" width="378" height="89"/>
+                        <rect key="frame" x="0.0" y="0.0" width="373" height="111.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="HBa-Po-3jv"/>
                     </view>
@@ -739,7 +739,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                     <segue destination="hDO-On-2rK" kind="presentation" identifier="timerSegue" id="EdD-cE-P7d"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CsD-QE-lCH" customClass="ShadowButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CsD-QE-lCH" customClass="RewindButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="72" y="127.5" width="48" height="32"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="32" id="krR-ql-QuK"/>
@@ -1175,7 +1175,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="QTW-cV-1zg"/>
+        <segue reference="MRg-E8-hf8"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="bedIcon" width="417" height="417"/>

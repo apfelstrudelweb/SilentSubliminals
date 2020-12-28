@@ -12,8 +12,12 @@ import UIKit
 let cornerRadius: CGFloat = 15
 
 // from main bundle
-let spokenIntro = "intro.aiff"
-let spokenOutro = "outro.aiff"
+let spokenIntroChair = "intro.aiff"
+let spokenIntroBed = "intro.aiff"
+let spokenOutroDay = "outro.aiff"
+let spokenOutroNight = "outro.aiff"
+let introOutroBell = "bell.aiff"
+
 
 // from documents dir
 let spokenAffirmation: String = "spokenAffirmation.caf"
@@ -53,4 +57,5 @@ let bandwidth: Float = 1000
 let defaultSliderVolume: Float = 0.5
 
 let criticalLoopDurationInHours: Int = 6
+let defaultAffirmationTime: TimeInterval = 5 * 60
 

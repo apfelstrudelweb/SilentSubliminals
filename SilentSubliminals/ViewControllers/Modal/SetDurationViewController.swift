@@ -11,7 +11,6 @@ import UIKit
 protocol TimerDelegate : AnyObject {
     
     func timeIntervalChanged(time: TimeInterval)
-    func stopTimeChanged(date: Date)
 }
 
 class SetDurationViewController: UIViewController {
@@ -41,7 +40,6 @@ class SetDurationViewController: UIViewController {
     @IBAction func timePickerValueChanged(_ sender: Any) {
         
         print(timerPicker.countDownDuration)
-        TimerManager.shared.countdownSet = true
         TimerManager.shared.remainingTime = timerPicker.countDownDuration
         delegate?.timeIntervalChanged(time: timerPicker.countDownDuration)
     }

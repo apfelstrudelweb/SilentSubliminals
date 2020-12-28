@@ -27,7 +27,7 @@ struct AudioFileTypes {
 
 var audioFiles: Array<AudioFileTypes> = [AudioFileTypes(filename: spokenAffirmation, isSilent: false), AudioFileTypes(filename: spokenAffirmationSilent, isSilent: true)]
 
-var affirmationLoopDuration = TimerManager.shared.remainingTime
+//var affirmationLoopDuration = TimerManager.shared.remainingTime
 
 
 
@@ -35,6 +35,7 @@ class AudioHelper: VolumeManagerDelegate {
     
     static let shared = AudioHelper()
     
+    var singleAffirmationDuration: TimeInterval = 0
     
     
     var playingNodes: Set<AVAudioPlayerNode> = Set<AVAudioPlayerNode>()
@@ -69,7 +70,21 @@ class AudioHelper: VolumeManagerDelegate {
             
             self.audioEngine.stop()
             
-            let filename = type == .Intro ? spokenIntro : spokenOutro
+            var filename: String = introOutroBell
+            
+            switch type {
+            
+            case .IntroChair:
+                filename = spokenIntroChair
+            case .IntroBed:
+                filename = spokenIntroBed
+            case .OutroDay:
+                filename = spokenOutroDay
+            case .OutroNight:
+                filename = spokenOutroNight
+            case .Bell:
+                filename = introOutroBell
+            }
             
             let avAudioFile = try! AVAudioFile(forReading: getFileFromMainBundle(filename: filename)!)
             let format =  AVAudioFormat(standardFormatWithSampleRate: avAudioFile.fileFormat.sampleRate, channels: avAudioFile.fileFormat.channelCount)
@@ -95,7 +110,9 @@ class AudioHelper: VolumeManagerDelegate {
                 self.audioEngine.stop()
                 self.playingNodes.remove(playerNode)
                 
-                PlayerStateMachine.shared.doNextPlayerState()
+                if PlayerStateMachine.shared.playerState != .ready {
+                    PlayerStateMachine.shared.doNextPlayerState()
+                }
             })
             
             playerNode.scheduleFile(avAudioFile, at: nil, completionHandler: nil)
@@ -106,22 +123,19 @@ class AudioHelper: VolumeManagerDelegate {
     }
     
     func playSingleAffirmation(instance: SoundInstance) {
-        
-        //initializeAudioEngine(recording: false)
-        
+
         audioQueue.async {
             do {
                 
                 self.audioEngine.stop()
                 let playerNode = self.getLoudPlayerNode()
                 self.audioEngine.attach(playerNode)
-             
                 self.audioEngine.attach(self.mixer)
-                
-                
 
-                let avAudioFile = try AVAudioFile(forReading: getFileFromSandbox(filename: spokenAffirmation))
-                let format =  AVAudioFormat(standardFormatWithSampleRate: avAudioFile.fileFormat.sampleRate, channels: avAudioFile.fileFormat.channelCount)
+                let audioFile = try AVAudioFile(forReading: getFileFromSandbox(filename: spokenAffirmation))
+                self.singleAffirmationDuration = audioFile.duration
+                
+                let format =  AVAudioFormat(standardFormatWithSampleRate: audioFile.fileFormat.sampleRate, channels: audioFile.fileFormat.channelCount)
                 
                 playerNode.removeTap(onBus: 0)
                 
@@ -138,8 +152,8 @@ class AudioHelper: VolumeManagerDelegate {
                     }
                 }
                 
-                let audioFileBuffer = AVAudioPCMBuffer(pcmFormat: avAudioFile.processingFormat, frameCapacity: AVAudioFrameCount(avAudioFile.length))!
-                try avAudioFile.read(into: audioFileBuffer)
+                let audioFileBuffer = AVAudioPCMBuffer(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(audioFile.length))!
+                try audioFile.read(into: audioFileBuffer)
                 
                 playerNode.scheduleBuffer(audioFileBuffer, completionHandler: {
                     
@@ -147,10 +161,12 @@ class AudioHelper: VolumeManagerDelegate {
                     self.playingNodes.remove(playerNode)
 
                     if instance == .player {
-                        PlayerStateMachine.shared.doNextPlayerState()
+                        if PlayerStateMachine.shared.playerState != .ready {
+                            PlayerStateMachine.shared.doNextPlayerState()
+                        }
                     } else {
                         MakerStateMachine.shared.stopPlayer()
-                        PlayerStateMachine.shared.playerState = .ready
+                        //PlayerStateMachine.shared.playerState = .ready
                     }
                 })
                 
@@ -177,10 +193,14 @@ class AudioHelper: VolumeManagerDelegate {
     }
     
     func stop() {
-        let inputNode = self.audioEngine.inputNode
-        let bus = 0
-        inputNode.removeTap(onBus: bus)
+        
+        PlayerStateMachine.shared.playerState = .ready
         self.audioEngine.stop()
+//        for playerNode in self.playingNodes {
+//            playerNode.stop()
+//        }
+        
+        self.playingNodes = Set<AVAudioPlayerNode>()
     }
     
     func playAffirmationLoop() {
@@ -225,7 +245,9 @@ class AudioHelper: VolumeManagerDelegate {
                         
                         DispatchQueue.main.async {
                             
-                            if audioFile.isSilent && playerNode.current >= 10 {
+                            let availableTimeForLoop = (TimerManager.shared.remainingTime ?? defaultAffirmationTime) - self.singleAffirmationDuration
+                            
+                            if audioFile.isSilent && playerNode.current >= availableTimeForLoop {
                                 playerNode.stop()
                                 self.audioEngine.stop()
                                 self.playingNodes = Set<AVAudioPlayerNode>()
@@ -434,43 +456,6 @@ class AudioHelper: VolumeManagerDelegate {
         }
     }
     
-//    func initializeAudioEngine(recording: Bool) {
-//
-//        //self.audioEngine.inputNode.removeTap(onBus: 0)
-//        self.audioEngine.stop()
-//        self.audioEngine.reset()
-//
-//        let audioSession = AVAudioSession.sharedInstance()
-//        do {
-//            try audioSession.setActive(false, options: .notifyOthersOnDeactivation)
-//            try audioSession.overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
-//            //try audioSession.setCategory(recording ? .playAndRecord : .playback)
-//            try audioSession.setCategory(.playAndRecord, options: .defaultToSpeaker)
-//            try audioSession.setPreferredIOBufferDuration(128.0 / 44100.0)
-//            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
-//        } catch {
-//            print("Failed to set audio session category.")
-//        }
-//
-//
-//
-//
-//
-//
-//        //        do {
-//        //            //try AVAudioSession.sharedInstance().setActive(false, options: [])
-//        //            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
-//        //            //try AVAudioSession.sharedInstance().setCategory(.ambient, options: .allowBluetooth)
-//        //            try AVAudioSession.sharedInstance().setCategory(recording ? .playAndRecord : .playback)
-//        //            try AVAudioSession.sharedInstance().setActive(true, options: [])
-//        //            let ioBufferDuration = 128.0 / 44100.0
-//        //            try AVAudioSession.sharedInstance().setPreferredIOBufferDuration(ioBufferDuration)
-//        //            //try AVAudioSession.sharedInstance().setActive(true, options: [])
-//        //        } catch {
-//        //            assertionFailure("AVAudioSession setup error: \(error)")
-//        //        }
-//    }
-    
     func checkForPermission() {
         Manager.recordingSession = AVAudioSession.sharedInstance()
         do {
@@ -493,5 +478,42 @@ class AudioHelper: VolumeManagerDelegate {
             print("Failed to set Category", error.localizedDescription)
         }
     }
+    
+    //    func initializeAudioEngine(recording: Bool) {
+    //
+    //        //self.audioEngine.inputNode.removeTap(onBus: 0)
+    //        self.audioEngine.stop()
+    //        self.audioEngine.reset()
+    //
+    //        let audioSession = AVAudioSession.sharedInstance()
+    //        do {
+    //            try audioSession.setActive(false, options: .notifyOthersOnDeactivation)
+    //            try audioSession.overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
+    //            //try audioSession.setCategory(recording ? .playAndRecord : .playback)
+    //            try audioSession.setCategory(.playAndRecord, options: .defaultToSpeaker)
+    //            try audioSession.setPreferredIOBufferDuration(128.0 / 44100.0)
+    //            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+    //        } catch {
+    //            print("Failed to set audio session category.")
+    //        }
+    //
+    //
+    //
+    //
+    //
+    //
+    //        //        do {
+    //        //            //try AVAudioSession.sharedInstance().setActive(false, options: [])
+    //        //            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
+    //        //            //try AVAudioSession.sharedInstance().setCategory(.ambient, options: .allowBluetooth)
+    //        //            try AVAudioSession.sharedInstance().setCategory(recording ? .playAndRecord : .playback)
+    //        //            try AVAudioSession.sharedInstance().setActive(true, options: [])
+    //        //            let ioBufferDuration = 128.0 / 44100.0
+    //        //            try AVAudioSession.sharedInstance().setPreferredIOBufferDuration(ioBufferDuration)
+    //        //            //try AVAudioSession.sharedInstance().setActive(true, options: [])
+    //        //        } catch {
+    //        //            assertionFailure("AVAudioSession setup error: \(error)")
+    //        //        }
+    //    }
     
 }

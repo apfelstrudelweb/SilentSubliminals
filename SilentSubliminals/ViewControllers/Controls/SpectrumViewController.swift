@@ -93,6 +93,7 @@ class SpectrumViewController: UIViewController {
         self.view.backgroundColor = PlayerControlColor.darkGrayColor
         self.view.layer.cornerRadius = cornerRadius
         self.view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        self.view.clipsToBounds = true
         
         fftSetup = vDSP_DFT_zop_CreateSetup(nil, 2048, vDSP_DFT_Direction.FORWARD)
         
@@ -120,6 +121,12 @@ class SpectrumViewController: UIViewController {
         
         spectrumView.spectrumLayer.removeFromSuperlayer()
         
+        var floatChannelData: [Float] = []
+        
+        for i in 0..<Int(buffer.frameLength) {
+            floatChannelData.append((buffer.floatChannelData?[0][i])!)
+        }
+        
         
         //fft
         let fftMagnitudes: [Float] =  SignalProcessing.fft(data: channelData, setup: fftSetup!)
@@ -136,24 +143,23 @@ class SpectrumViewController: UIViewController {
             }
         }
         
-        if maxFFT == 0 { return }
+        if maxFFT == 0 {
+            maxFFT = 1
+            
+        }
         
         path.move(to: CGPoint(x: 0, y: height))
         
         var points = Array<CGPoint>()
         
+        let xUnit = width / log10(CGFloat(fftMagnitudes.count))
+        
         for i in stride(from: 0, to: fftMagnitudes.count - 1, by: 1) {
-            
-            let xUnit = width / log10(CGFloat(fftMagnitudes.count))
-            
+
             let x = i == 0 ? 0 : CGFloat(log10f(Float(i))) * xUnit
-            let y = i == 0 ? height : height - CGFloat(rmsValue / 80) * CGFloat(fftMagnitudes[i]) * height / CGFloat(maxFFT)
+            let y = (i == 0 || i > fftMagnitudes.count - 10) ? height : height - CGFloat(rmsValue / 80) * CGFloat(fftMagnitudes[i]) * height / CGFloat(maxFFT)
             
-            if i < fftMagnitudes.count - 50 {
-                points.append(CGPoint(x: x, y: y))
-            } else {
-                points.append(CGPoint(x: x, y: height))
-            }
+            points.append(CGPoint(x: x, y: abs(y)))
         }
         
         spectrumView.drawBezier(points: points)

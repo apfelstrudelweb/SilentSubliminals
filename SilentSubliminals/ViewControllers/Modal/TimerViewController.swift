@@ -74,18 +74,6 @@ class TimerViewController: UIViewController, TimerDelegate {
     func timeIntervalChanged(time: TimeInterval) {
         self.durationLabel.text = time.stringFromTimeInterval()
     }
-    
-    func stopTimeChanged(date: Date) {
-        
-        var timeInterval = date.timeIntervalSinceNow
-        
-        if timeInterval < 0 {
-            timeInterval += 26 * 60 * 60
-        }
-        
-        self.durationLabel.text = timeInterval.stringFromTimeInterval()
-    }
-    
 }
 
 

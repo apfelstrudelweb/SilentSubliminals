@@ -69,22 +69,5 @@ class SignalProcessing {
         
         return normalizedMagnitudes
     }
-    
-    static func interpolate(current: Float, previous: Float) -> [Float]{
-        var vals = [Float](repeating: 0, count: 11)
-        vals[10] = current
-        vals[5] = (current + previous)/2
-        vals[2] = (vals[5] + previous)/2
-        vals[1] = (vals[2] + previous)/2
-        vals[8] = (vals[5] + current)/2
-        vals[9] = (vals[10] + current)/2
-        vals[7] = (vals[5] + vals[9])/2
-        vals[6] = (vals[5] + vals[7])/2
-        vals[3] = (vals[1] + vals[5])/2
-        vals[4] = (vals[3] + vals[5])/2
-        vals[0] = (previous + vals[1])/2
-        
-        return vals
-    }
 }
 

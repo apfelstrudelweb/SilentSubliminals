@@ -30,8 +30,11 @@ protocol PlayerStateMachineDelegate : AnyObject {
 //}
 
 enum Induction {
-    case Intro
-    case Outro
+    case IntroChair
+    case IntroBed
+    case OutroDay
+    case OutroNight
+    case Bell
 }
 
 class PlayerStateMachine {
@@ -59,9 +62,6 @@ class PlayerStateMachine {
             
             switch self {
             case .ready:
-                if shared.introState == .none {
-                    return .affirmation
-                }
                 return .intro
             case .intro:
                 return .affirmation
@@ -70,9 +70,6 @@ class PlayerStateMachine {
                 shared.setSilentMode()
                 return .affirmationLoop
             case .affirmationLoop:
-                if shared.outroState == .none {
-                    return .ready
-                }
                 return .outro
             case .outro:
                 return .ready
@@ -123,9 +120,9 @@ class PlayerStateMachine {
     
     var playerState : PlayerState = .ready {
         didSet {
-            delegate?.performAction()
-            delegate?.updateIntroButtons()
-            delegate?.updateOutroButtons()
+                delegate?.performAction()
+                delegate?.updateIntroButtons()
+                delegate?.updateOutroButtons()
         }
     }
     var pauseState : PauseState = .pause {
@@ -159,7 +156,6 @@ class PlayerStateMachine {
     func doNextPlayerState() {
         playerState = self.playerState.nextState
     }
-    
     
     func startPlayer() {
         if playerState == .ready {

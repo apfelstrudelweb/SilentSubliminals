@@ -33,8 +33,12 @@ class SetEndtimeViewController: UIViewController {
     
     @IBAction func timePickerValueChanged(_ sender: Any) {
         print(timerPicker.date)
-        TimerManager.shared.countdownSet = false
-        TimerManager.shared.stopTime = timerPicker.date
-        delegate?.stopTimeChanged(date: timerPicker.date)
+
+        var duration = timerPicker.date.timeIntervalSinceNow
+        if duration < 0 {
+            duration += 86400
+        }
+        TimerManager.shared.remainingTime = duration
+        delegate?.timeIntervalChanged(time: duration)
     }
 }
