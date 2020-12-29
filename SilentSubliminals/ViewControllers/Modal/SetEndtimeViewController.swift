@@ -29,6 +29,14 @@ class SetEndtimeViewController: UIViewController {
         super.viewDidAppear(animated)
         // we need it, otherwise datepicker's valuechanged does not update the first spin
         self.timerPicker.date = Date()
+        
+        guard let singleAffirmationDuration = TimerManager.shared.singleAffirmationDuration else { return }
+        
+        if 2 * singleAffirmationDuration > timerPicker.date.timeIntervalSinceNow {
+            var duration = timerPicker.date.timeIntervalSinceNow
+            duration += 2 * singleAffirmationDuration
+            self.timerPicker.date += duration
+        }
     }
     
     @IBAction func timePickerValueChanged(_ sender: Any) {
@@ -36,8 +44,22 @@ class SetEndtimeViewController: UIViewController {
 
         var duration = timerPicker.date.timeIntervalSinceNow
         if duration < 0 {
-            duration += 86400
+            duration += dayInSeconds
         }
+        
+        guard let singleAffirmationDuration = TimerManager.shared.singleAffirmationDuration else { return }
+        if timerPicker.date.timeIntervalSinceNow < 2 * singleAffirmationDuration {
+            
+            let minutes: Int = Int(singleAffirmationDuration) / minuteInSeconds
+            
+            let alert = UIAlertController(title: "Error", message: "Your affirmation is about \(minutes) minutes long. You need at least set the double time of the affirmation in order to play the Silent Subliminal as well.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { _ in
+                self.timerPicker.date = Date()
+                self.timerPicker.date += 2 * singleAffirmationDuration
+            }))
+            self.present(alert, animated: true)
+        }
+        
         TimerManager.shared.remainingTime = duration
         delegate?.timeIntervalChanged(time: duration)
     }

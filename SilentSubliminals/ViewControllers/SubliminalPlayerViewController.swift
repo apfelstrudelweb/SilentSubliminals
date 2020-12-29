@@ -192,7 +192,16 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     }
     
     @IBAction func playButtonTouchUpInside(_ sender: Any) {
-        startPlaying()
+        
+        if PlayerStateMachine.shared.playerState == .ready {
+            askUserForConfirmation(completionHandler: {(result) in
+                if result {
+                    self.startPlaying()
+                }
+            })
+        } else {
+            self.startPlaying()
+        }
     }
     
     @IBAction func resetButtonTouched(_ sender: Any) {
@@ -362,13 +371,36 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         switch PlayerStateMachine.shared.pauseState {
         
         case .play:
-            playButton.setState(active: true)
+            self.playButton.setState(active: true)
             PlayerStateMachine.shared.startPlayer()
         case .pause:
             playButton.setState(active: false)
         }
     }
     
+    func askUserForConfirmation(completionHandler: @escaping (Bool) -> Void) {
+        
+        guard let playTimeInSeconds = TimerManager.shared.remainingTime else {
+            completionHandler(true)
+            return
+        }
+        
+        if playTimeInSeconds < criticalLoopDurationInSeconds {
+            completionHandler(true)
+            return
+        }
+        
+        let hours: Int = Int(playTimeInSeconds) / hourInSeconds
+        
+        let alert = UIAlertController(title: "Information", message: "You've set a very long time interval of about \(hours) hours. Are you sure that you want to listen to the silent subliminals for so long?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "YES", style: .default, handler: {_ in
+            completionHandler(true)
+        }))
+        alert.addAction(UIAlertAction(title: "NO", style: .cancel, handler: { _ in
+            completionHandler(false)
+        }))
+        self.present(alert, animated: true)
+    }
     
     func pausePlaying() {
 
@@ -420,3 +452,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     }
 
 }
+
+//let hours: Int = Int(self.affirmationLoopDuration! / 3600)
+
+//        if hours >= criticalLoopDurationInHours {
+

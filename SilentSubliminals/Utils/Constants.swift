@@ -58,8 +58,10 @@ let spectrumColor: UIColor = UIColor(red: 0, green: 0.8863, blue: 0.5333, alpha:
 let modulationFrequency: Float = 20000
 let bandwidth: Float = 1000
 
-let defaultSliderVolume: Float = 0.5
 
-let criticalLoopDurationInHours: Int = 6
+let criticalLoopDurationInSeconds: TimeInterval = 6 * 60 * 60
 let defaultAffirmationTime: TimeInterval = 5 * 60
+let dayInSeconds: Double = 24 * 60 * 60
+let hourInSeconds: Int = 60 * 60
+let minuteInSeconds: Int = 60
 

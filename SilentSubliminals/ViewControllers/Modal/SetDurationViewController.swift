@@ -34,12 +34,30 @@ class SetDurationViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // we need it, otherwise datepicker's valuechanged does not update the first spin
-        self.timerPicker.countDownDuration = 5 * 60
+        self.timerPicker.countDownDuration = defaultAffirmationTime
+        
+        guard let singleAffirmationDuration = TimerManager.shared.singleAffirmationDuration else { return }
+        if 2 * singleAffirmationDuration > defaultAffirmationTime {
+            self.timerPicker.countDownDuration = 2 * singleAffirmationDuration
+        }
     }
 
     @IBAction func timePickerValueChanged(_ sender: Any) {
         
         print(timerPicker.countDownDuration)
+        
+        guard let singleAffirmationDuration = TimerManager.shared.singleAffirmationDuration else { return }
+        if timerPicker.countDownDuration < 2 * singleAffirmationDuration {
+            
+            let minutes: Int = Int(singleAffirmationDuration) / minuteInSeconds
+            
+            let alert = UIAlertController(title: "Error", message: "Your affirmation is about \(minutes) minutes long. You need at least set the double time of the affirmation in order to play the Silent Subliminal as well.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { _ in
+                self.timerPicker.countDownDuration = 2 * singleAffirmationDuration
+            }))
+            self.present(alert, animated: true)
+        }
+        
         TimerManager.shared.remainingTime = timerPicker.countDownDuration
         delegate?.timeIntervalChanged(time: timerPicker.countDownDuration)
     }

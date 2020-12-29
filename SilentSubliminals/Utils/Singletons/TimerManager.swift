@@ -7,15 +7,24 @@
 //
 
 import Foundation
-
+import AVFoundation
 
 class TimerManager {
     
     static let shared = TimerManager()
     
     var remainingTime: TimeInterval?
+    var singleAffirmationDuration: TimeInterval?
   
     private init() {
-        remainingTime = 5 * 60
+        
+        remainingTime = defaultAffirmationTime
+        
+        do {
+            let audioFile = try AVAudioFile(forReading: getFileFromSandbox(filename: spokenAffirmation))
+            singleAffirmationDuration = audioFile.duration
+        } catch {
+            print("File read error", error)
+        }
     } 
 }
