@@ -13,11 +13,11 @@ import UIKit
 let cornerRadius: CGFloat = 15
 
 // from main bundle
-let introductionSoundFile = "intro.aiff"
-let leadInChairSoundFile = "intro.aiff"
-let leadInBedSoundFile = "intro.aiff"
-let leadOutDaySoundFile = "outro.aiff"
-let leadOutNightSoundFile = "outro.aiff"
+let introductionSoundFile = "introduction.aiff"
+let leadInChairSoundFile = "leadInChair.aiff"
+let leadInBedSoundFile = "leadInBed.aiff"
+let leadOutDaySoundFile = "leadOutDay.aiff"
+let leadOutNightSoundFile = "leadOutNight.aiff"
 let bellSoundFile = "bell.aiff"
 
 let bufferSize: AVAudioFrameCount = 1024

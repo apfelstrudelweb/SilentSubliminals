@@ -11,8 +11,6 @@
 		653BA53A258E2DFF004A0BA7 /* TimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653BA539258E2DFF004A0BA7 /* TimerViewController.swift */; };
 		653BA542258E69EB004A0BA7 /* SetDurationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653BA541258E69EB004A0BA7 /* SetDurationViewController.swift */; };
 		653BA545258E69FC004A0BA7 /* SetEndtimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653BA544258E69FC004A0BA7 /* SetEndtimeViewController.swift */; };
-		654F42CF258623C10065D490 /* intro.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 654F42CD258623C10065D490 /* intro.aiff */; };
-		654F42D0258623C10065D490 /* outro.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 654F42CE258623C10065D490 /* outro.aiff */; };
 		6558D30924684934004E8660 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558D30824684934004E8660 /* AppDelegate.swift */; };
 		6558D30B24684934004E8660 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558D30A24684934004E8660 /* SceneDelegate.swift */; };
 		6558D30D24684934004E8660 /* SubliminalMakerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558D30C24684934004E8660 /* SubliminalMakerViewController.swift */; };
@@ -21,6 +19,11 @@
 		6558D31524684935004E8660 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6558D31324684935004E8660 /* LaunchScreen.storyboard */; };
 		6563E03725763C6C000E261B /* SignalProcessing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6563E03625763C6C000E261B /* SignalProcessing.swift */; };
 		6563E03B257691CE000E261B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6563E03A257691CE000E261B /* Constants.swift */; };
+		65654BFB259BA7BC0066E4D2 /* leadInChair.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 65654BF7259BA7BC0066E4D2 /* leadInChair.aiff */; };
+		65654BFC259BA7BC0066E4D2 /* leadOutDay.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 65654BF8259BA7BC0066E4D2 /* leadOutDay.aiff */; };
+		65654BFD259BA7BC0066E4D2 /* leadInBed.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 65654BF9259BA7BC0066E4D2 /* leadInBed.aiff */; };
+		65654BFE259BA7BC0066E4D2 /* introduction.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 65654BFA259BA7BC0066E4D2 /* introduction.aiff */; };
+		65654C02259BAEC80066E4D2 /* leadOutNight.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 65654C01259BAEC80066E4D2 /* leadOutNight.aiff */; };
 		656654AE2595F36700DB03DC /* CommandCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656654AD2595F36700DB03DC /* CommandCenter.swift */; };
 		65678FCC258932B60075518C /* ShadowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65678FCB258932B60075518C /* ShadowButton.swift */; };
 		656807392593733500D09CBE /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656807382593733500D09CBE /* ToggleButton.swift */; };
@@ -68,8 +71,6 @@
 		653BA539258E2DFF004A0BA7 /* TimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewController.swift; sourceTree = "<group>"; };
 		653BA541258E69EB004A0BA7 /* SetDurationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetDurationViewController.swift; sourceTree = "<group>"; };
 		653BA544258E69FC004A0BA7 /* SetEndtimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetEndtimeViewController.swift; sourceTree = "<group>"; };
-		654F42CD258623C10065D490 /* intro.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = intro.aiff; sourceTree = "<group>"; };
-		654F42CE258623C10065D490 /* outro.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = outro.aiff; sourceTree = "<group>"; };
 		6558D30524684934004E8660 /* FREE UR SPIRIT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FREE UR SPIRIT.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6558D30824684934004E8660 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6558D30A24684934004E8660 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -80,6 +81,11 @@
 		6558D31624684935004E8660 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6563E03625763C6C000E261B /* SignalProcessing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignalProcessing.swift; sourceTree = "<group>"; };
 		6563E03A257691CE000E261B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		65654BF7259BA7BC0066E4D2 /* leadInChair.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = leadInChair.aiff; sourceTree = "<group>"; };
+		65654BF8259BA7BC0066E4D2 /* leadOutDay.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = leadOutDay.aiff; sourceTree = "<group>"; };
+		65654BF9259BA7BC0066E4D2 /* leadInBed.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = leadInBed.aiff; sourceTree = "<group>"; };
+		65654BFA259BA7BC0066E4D2 /* introduction.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = introduction.aiff; sourceTree = "<group>"; };
+		65654C01259BAEC80066E4D2 /* leadOutNight.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = leadOutNight.aiff; sourceTree = "<group>"; };
 		656654AD2595F36700DB03DC /* CommandCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandCenter.swift; sourceTree = "<group>"; };
 		65678FCB258932B60075518C /* ShadowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowButton.swift; sourceTree = "<group>"; };
 		656807382593733500D09CBE /* ToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleButton.swift; sourceTree = "<group>"; };
@@ -297,9 +303,12 @@
 		65A003CC257CFB8200EADAB8 /* Soundfiles */ = {
 			isa = PBXGroup;
 			children = (
+				65654BFA259BA7BC0066E4D2 /* introduction.aiff */,
+				65654BF9259BA7BC0066E4D2 /* leadInBed.aiff */,
+				65654BF7259BA7BC0066E4D2 /* leadInChair.aiff */,
+				65654BF8259BA7BC0066E4D2 /* leadOutDay.aiff */,
+				65654C01259BAEC80066E4D2 /* leadOutNight.aiff */,
 				65C6E647259A2F630046E739 /* bell.aiff */,
-				654F42CD258623C10065D490 /* intro.aiff */,
-				654F42CE258623C10065D490 /* outro.aiff */,
 			);
 			path = Soundfiles;
 			sourceTree = "<group>";
@@ -421,13 +430,16 @@
 				65F072832544615D004C8BA3 /* stopRecordingButton.png in Resources */,
 				65699FFE253C392B000E7F95 /* help-circle.png in Resources */,
 				65F072812544615D004C8BA3 /* startRecordingButton.png in Resources */,
+				65654BFC259BA7BC0066E4D2 /* leadOutDay.aiff in Resources */,
+				65654BFB259BA7BC0066E4D2 /* leadInChair.aiff in Resources */,
 				65699FFC253C3706000E7F95 /* subliminalMakerBackground.png in Resources */,
 				65A8406525616CEF0072531F /* subliminalPlayerBackground.png in Resources */,
+				65654C02259BAEC80066E4D2 /* leadOutNight.aiff in Resources */,
+				65654BFE259BA7BC0066E4D2 /* introduction.aiff in Resources */,
+				65654BFD259BA7BC0066E4D2 /* leadInBed.aiff in Resources */,
 				6569A008253C43A7000E7F95 /* plusButton.png in Resources */,
-				654F42D0258623C10065D490 /* outro.aiff in Resources */,
 				6558D31524684935004E8660 /* LaunchScreen.storyboard in Resources */,
 				6558D31224684935004E8660 /* Assets.xcassets in Resources */,
-				654F42CF258623C10065D490 /* intro.aiff in Resources */,
 				65C6E648259A2F630046E739 /* bell.aiff in Resources */,
 				65A8405725611EA50072531F /* subliminalMakerTeaser.png in Resources */,
 				65A8405825611EA50072531F /* subliminalPlayerTeaser.png in Resources */,

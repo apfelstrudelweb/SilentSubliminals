@@ -33,17 +33,19 @@ class CommandCenter {
         
         commandCenter.pauseCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
             print("PAUSE")
-            self.delegate?.pausePlaying()
+            self.delegate?.startPlaying()
             return .success
         }
-        commandCenter.playCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
+        commandCenter.playCommand.addTarget { [self] (_) -> MPRemoteCommandHandlerStatus in
             print("PLAY")
             self.delegate?.startPlaying()
+            self.commandCenter.previousTrackCommand.isEnabled = true
             return .success
         }
         commandCenter.previousTrackCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
             print("BEGIN")
             self.delegate?.stopPlaying()
+            self.commandCenter.previousTrackCommand.isEnabled = false
             return .success
         }
         commandCenter.skipForwardCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
@@ -53,7 +55,7 @@ class CommandCenter {
         }
         commandCenter.playCommand.isEnabled = true
         commandCenter.pauseCommand.isEnabled = true
-        commandCenter.previousTrackCommand.isEnabled = true
+        commandCenter.previousTrackCommand.isEnabled = false
         commandCenter.skipForwardCommand.isEnabled = false
     }
 

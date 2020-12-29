@@ -269,10 +269,11 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
                 print("ready")
                 playButton.setState(active: false)
                 rewindButton.setEnabled(flag: false)
+                timerButton.setEnabled(flag: true)
                 break
             case .introduction:
                 print("introduction")
-                audioHelper.playInduction(type: Induction.Bell)
+                audioHelper.playInduction(type: Induction.Introduction)
                 break
             case .leadIn:
                 switch PlayerStateMachine.shared.introState {
@@ -361,8 +362,10 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         playButton.setState(active: false)
     }
     
+    // MARK: CommandCenterDelegate
     func startPlaying() {
         
+        CommandCenter.shared.updateLockScreenInfo()
         PlayerStateMachine.shared.togglePlayPauseState()
         rewindButton.setEnabled(flag: true)
         introductionSwitch.setEnabled(flag: false)
@@ -376,6 +379,24 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         case .pause:
             playButton.setState(active: false)
         }
+    }
+    
+    func pausePlaying() {
+
+        CommandCenter.shared.updateLockScreenInfo()
+    }
+    
+    func stopPlaying() {
+        
+        AudioHelper.shared.stop()
+        playButton.setState(active: false)
+        rewindButton.setEnabled(flag: false)
+        introductionSwitch.setEnabled(flag: true)
+        timerButton.setEnabled(flag: true)
+        stopButtonAnimations()
+        
+        CommandCenter.shared.updateLockScreenInfo()
+        
     }
     
     func askUserForConfirmation(completionHandler: @escaping (Bool) -> Void) {
@@ -402,28 +423,6 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         self.present(alert, animated: true)
     }
     
-    func pausePlaying() {
-
-        CommandCenter.shared.updateLockScreenInfo()
-        
-//        for playerNode in activePlayerNodesSet {
-//            playerNode.pause()
-//        }
-    }
-    
-    func stopPlaying() {
-        
-        AudioHelper.shared.stop()
-        playButton.setState(active: false)
-        rewindButton.setEnabled(flag: false)
-        introductionSwitch.setEnabled(flag: true)
-        timerButton.setEnabled(flag: true)
-        stopButtonAnimations()
-        
-        //updateLockScreenInfo()
-        //removeCommandCenter()
-        
-    }
     
     // MARK: Notification
     @objc func volumeChanged(notification:NSNotification) {
@@ -452,8 +451,3 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     }
 
 }
-
-//let hours: Int = Int(self.affirmationLoopDuration! / 3600)
-
-//        if hours >= criticalLoopDurationInHours {
-
