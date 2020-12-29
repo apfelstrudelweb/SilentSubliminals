@@ -57,15 +57,15 @@ class SignalProcessing {
         var complex = DSPSplitComplex(realp: &realOut, imagp: &imagOut)
         
         //setup magnitude output
-        var magnitudes = [Float](repeating: 0, count: 1024)
+        var magnitudes = [Float](repeating: 0, count: Int(bufferSize))
         
         //calculate magnitude results
-        vDSP_zvabs(&complex, 1, &magnitudes, 1, 1024)
+        vDSP_zvabs(&complex, 1, &magnitudes, 1, vDSP_Length(bufferSize))
         
         //normalize
-        var normalizedMagnitudes = [Float](repeating: 0.0, count: 1024)
-        var scalingFactor = Float(25.0/1024)
-        vDSP_vsmul(&magnitudes, 1, &scalingFactor, &normalizedMagnitudes, 1, 1024)
+        var normalizedMagnitudes = [Float](repeating: 0.0, count: Int(bufferSize))
+        var scalingFactor = Float(25.0/Double(bufferSize))
+        vDSP_vsmul(&magnitudes, 1, &scalingFactor, &normalizedMagnitudes, 1, vDSP_Length(bufferSize))
         
         return normalizedMagnitudes
     }

@@ -18,5 +18,12 @@ class Switch: UISwitch {
         self.backgroundColor = PlayerControlColor.lightGrayColor
         self.layer.cornerRadius = frame.height / 2.0
     }
+    
+    func setEnabled(flag: Bool) {
+        
+        DispatchQueue.main.async {
+            self.isEnabled = flag
+        }
+    }
 
 }

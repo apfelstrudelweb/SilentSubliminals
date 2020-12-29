@@ -30,10 +30,11 @@ protocol PlayerStateMachineDelegate : AnyObject {
 //}
 
 enum Induction {
-    case IntroChair
-    case IntroBed
-    case OutroDay
-    case OutroNight
+    case Introduction
+    case LeadInChair
+    case LeadInBed
+    case LeadOutDay
+    case LeadOutNight
     case Bell
 }
 
@@ -51,10 +52,11 @@ class PlayerStateMachine {
     enum PlayerState {
         
         case ready
-        case intro
+        case introduction
+        case leadIn
         case affirmation
         case affirmationLoop
-        case outro
+        case leadOut
         
         var nextState : PlayerState {
             
@@ -62,16 +64,17 @@ class PlayerStateMachine {
             
             switch self {
             case .ready:
-                return .intro
-            case .intro:
+                return shared.introductionState == .some ? .introduction : .leadIn
+            case .introduction:
+                return .leadIn
+            case .leadIn:
                 return .affirmation
             case .affirmation:
-                //return .affirmation
                 shared.setSilentMode()
                 return .affirmationLoop
             case .affirmationLoop:
-                return .outro
-            case .outro:
+                return .leadOut
+            case .leadOut:
                 return .ready
             }
         }
@@ -91,6 +94,11 @@ class PlayerStateMachine {
                 return .play
             }
         }
+    }
+    
+    enum IntroductionState {
+        case none
+        case some
     }
     
     enum IntroState {
@@ -135,6 +143,8 @@ class PlayerStateMachine {
         }
     }
     
+    var introductionState : IntroductionState = .none
+    
     var introState : IntroState = .none {
         didSet {
             delegate?.updateIntroButtons()
@@ -161,6 +171,10 @@ class PlayerStateMachine {
         if playerState == .ready {
             doNextPlayerState()
         }
+    }
+    
+    func setIntroductionState(isOn: Bool) {
+        introductionState = isOn ? .some : .none
     }
     
     func toggleFrequencyState() {

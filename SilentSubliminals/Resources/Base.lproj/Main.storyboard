@@ -456,6 +456,9 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WTQ-46-HQ2" customClass="Switch" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="210.5" y="8.5" width="51" height="31"/>
                                                                 <color key="onTintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <connections>
+                                                                    <action selector="introductionSwitchTouched:" destination="Wlk-fN-YWe" eventType="valueChanged" id="Buh-VN-5Qf"/>
+                                                                </connections>
                                                             </switch>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="751" text="LEAD IN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Vo-TK-6Ii" customClass="ShadowLabel" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="12" y="80" width="72.5" height="24"/>
@@ -727,7 +730,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                     <action selector="silentButtonTouched:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="d7m-Pu-OjA"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DEe-tW-fzs" customClass="SymbolButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DEe-tW-fzs" customClass="TimerButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="317" y="161.5" width="44" height="44"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="44" id="aMm-OK-g6N"/>

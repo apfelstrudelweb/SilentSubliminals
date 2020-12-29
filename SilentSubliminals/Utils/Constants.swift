@@ -7,16 +7,20 @@
 //
 
 import Foundation
+import AVFoundation
 import UIKit
 
 let cornerRadius: CGFloat = 15
 
 // from main bundle
-let spokenIntroChair = "intro.aiff"
-let spokenIntroBed = "intro.aiff"
-let spokenOutroDay = "outro.aiff"
-let spokenOutroNight = "outro.aiff"
-let introOutroBell = "bell.aiff"
+let introductionSoundFile = "intro.aiff"
+let leadInChairSoundFile = "intro.aiff"
+let leadInBedSoundFile = "intro.aiff"
+let leadOutDaySoundFile = "outro.aiff"
+let leadOutNightSoundFile = "outro.aiff"
+let bellSoundFile = "bell.aiff"
+
+let bufferSize: AVAudioFrameCount = 1024
 
 
 // from documents dir

@@ -27,30 +27,13 @@ struct AudioFileTypes {
 
 var audioFiles: Array<AudioFileTypes> = [AudioFileTypes(filename: spokenAffirmation, isSilent: false), AudioFileTypes(filename: spokenAffirmationSilent, isSilent: true)]
 
-//var affirmationLoopDuration = TimerManager.shared.remainingTime
 
-
-
-class AudioHelper: VolumeManagerDelegate {
+class AudioHelper {
     
     static let shared = AudioHelper()
     
     var singleAffirmationDuration: TimeInterval = 0
-    
-    
     var playingNodes: Set<AVAudioPlayerNode> = Set<AVAudioPlayerNode>()
-    
-    weak var delegate : AudioHelperDelegate?
-    
-    func getSilentPlayerNode() -> AVAudioPlayerNode {
-        
-        return audioFiles.filter() { $0.isSilent == true }.first!.audioPlayer
-    }
-    
-    func getLoudPlayerNode() -> AVAudioPlayerNode {
-        
-        return audioFiles.filter() { $0.isSilent == false }.first!.audioPlayer
-    }
     
     let audioQueue: DispatchQueue = DispatchQueue(label: "PlayerQueue", attributes: [])
     
@@ -59,42 +42,53 @@ class AudioHelper: VolumeManagerDelegate {
     private var mixer: AVAudioMixerNode = AVAudioMixerNode()
     private var equalizerHighPass: AVAudioUnitEQ = AVAudioUnitEQ(numberOfBands: 1)
     
+    weak var delegate : AudioHelperDelegate?
+    
+    
+    func getSilentPlayerNode() -> AVAudioPlayerNode {
+        return audioFiles.filter() { $0.isSilent == true }.first!.audioPlayer
+    }
+    
+    func getLoudPlayerNode() -> AVAudioPlayerNode {
+        return audioFiles.filter() { $0.isSilent == false }.first!.audioPlayer
+    }
+
     func playInduction(type: Induction) {
         
         audioQueue.async {
             
+            self.audioEngine.pause()
             let playerNode = AVAudioPlayerNode()
             
-            self.audioEngine.attach(self.mixer)
             self.audioEngine.attach(playerNode)
-            
-            self.audioEngine.stop()
-            
-            var filename: String = introOutroBell
+
+            var filename: String = bellSoundFile
             
             switch type {
-            
-            case .IntroChair:
-                filename = spokenIntroChair
-            case .IntroBed:
-                filename = spokenIntroBed
-            case .OutroDay:
-                filename = spokenOutroDay
-            case .OutroNight:
-                filename = spokenOutroNight
+            case .Introduction:
+                filename = introductionSoundFile
+            case .LeadInChair:
+                filename = leadInChairSoundFile
+            case .LeadInBed:
+                filename = leadInBedSoundFile
+            case .LeadOutDay:
+                filename = leadOutDaySoundFile
+            case .LeadOutNight:
+                filename = leadOutNightSoundFile
             case .Bell:
-                filename = introOutroBell
+                filename = bellSoundFile
             }
             
-            let avAudioFile = try! AVAudioFile(forReading: getFileFromMainBundle(filename: filename)!)
-            let format =  AVAudioFormat(standardFormatWithSampleRate: avAudioFile.fileFormat.sampleRate, channels: avAudioFile.fileFormat.channelCount)
+            let audioFile = try! AVAudioFile(forReading: getFileFromMainBundle(filename: filename)!)
+            let format =  AVAudioFormat(standardFormatWithSampleRate: audioFile.fileFormat.sampleRate, channels: audioFile.fileFormat.channelCount)
             
-            self.audioEngine.connect(playerNode, to: self.mixer, format: format)
-            self.audioEngine.connect(self.mixer, to: self.audioEngine.outputNode, format: format)
+            playerNode.removeTap(onBus: 0)
+            
+            self.audioEngine.connect(playerNode, to: self.audioEngine.outputNode, format: format)
             
             try! self.audioEngine.start()
             
-            playerNode.installTap(onBus: 0, bufferSize: 1024, format: format) {
+            playerNode.installTap(onBus: 0, bufferSize: bufferSize, format: format) {
                 (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
                 
                 DispatchQueue.main.async {
@@ -102,23 +96,21 @@ class AudioHelper: VolumeManagerDelegate {
                 }
             }
             
-            let audioFileBuffer = AVAudioPCMBuffer(pcmFormat: avAudioFile.processingFormat, frameCapacity: AVAudioFrameCount(avAudioFile.length))!
-            try! avAudioFile.read(into: audioFileBuffer)
+            let audioFileBuffer = AVAudioPCMBuffer(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(audioFile.length))!
+            try! audioFile.read(into: audioFileBuffer)
             
             playerNode.scheduleBuffer(audioFileBuffer, completionHandler: {
     
-                self.audioEngine.stop()
+                self.audioEngine.pause()
                 self.playingNodes.remove(playerNode)
                 
                 if PlayerStateMachine.shared.playerState != .ready {
                     PlayerStateMachine.shared.doNextPlayerState()
                 }
             })
-            
-            playerNode.scheduleFile(avAudioFile, at: nil, completionHandler: nil)
-            playerNode.play()
-            
+
             self.playingNodes.insert(playerNode)
+            playerNode.play()
         }
     }
     
@@ -127,7 +119,7 @@ class AudioHelper: VolumeManagerDelegate {
         audioQueue.async {
             do {
                 
-                self.audioEngine.stop()
+                self.audioEngine.pause()
                 let playerNode = self.getLoudPlayerNode()
                 self.audioEngine.attach(playerNode)
                 self.audioEngine.attach(self.mixer)
@@ -144,7 +136,7 @@ class AudioHelper: VolumeManagerDelegate {
                 self.audioEngine.connect(self.mixer, to: self.audioEngine.outputNode, format: format)
                 try self.audioEngine.start()
                 
-                playerNode.installTap(onBus: 0, bufferSize: 1024, format: format) {
+                playerNode.installTap(onBus: 0, bufferSize: bufferSize, format: format) {
                     (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
                     
                     DispatchQueue.main.async {
@@ -157,7 +149,7 @@ class AudioHelper: VolumeManagerDelegate {
                 
                 playerNode.scheduleBuffer(audioFileBuffer, completionHandler: {
                     
-                    self.audioEngine.stop()
+                    self.audioEngine.pause()
                     self.playingNodes.remove(playerNode)
 
                     if instance == .player {
@@ -217,7 +209,7 @@ class AudioHelper: VolumeManagerDelegate {
                 self.audioEngine.attach(self.equalizerHighPass)
                 self.audioEngine.attach(self.mixer)
                 
-                self.audioEngine.stop()
+                self.audioEngine.pause()
                 
                 for audioFile in audioFiles {
                     
@@ -240,7 +232,7 @@ class AudioHelper: VolumeManagerDelegate {
                     self.audioEngine.connect(self.mixer, to: self.audioEngine.outputNode, format: format)
                     try self.audioEngine.start()
                     
-                    playerNode.installTap(onBus: 0, bufferSize: 1024, format: format) {
+                    playerNode.installTap(onBus: 0, bufferSize: bufferSize, format: format) {
                         (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
                         
                         DispatchQueue.main.async {
@@ -249,7 +241,7 @@ class AudioHelper: VolumeManagerDelegate {
                             
                             if audioFile.isSilent && playerNode.current >= availableTimeForLoop {
                                 playerNode.stop()
-                                self.audioEngine.stop()
+                                self.audioEngine.pause()
                                 self.playingNodes = Set<AVAudioPlayerNode>()
                                 if PlayerStateMachine.shared.playerState == .affirmationLoop {
                                     PlayerStateMachine.shared.doNextPlayerState()
@@ -412,7 +404,7 @@ class AudioHelper: VolumeManagerDelegate {
         
         let inputNode = self.audioEngine.inputNode
         let bus = 0
-        inputNode.installTap(onBus: bus, bufferSize: 1024, format: inputNode.inputFormat(forBus: bus)) {
+        inputNode.installTap(onBus: bus, bufferSize: bufferSize, format: inputNode.inputFormat(forBus: bus)) {
             (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
             
             DispatchQueue.main.async {
@@ -478,42 +470,5 @@ class AudioHelper: VolumeManagerDelegate {
             print("Failed to set Category", error.localizedDescription)
         }
     }
-    
-    //    func initializeAudioEngine(recording: Bool) {
-    //
-    //        //self.audioEngine.inputNode.removeTap(onBus: 0)
-    //        self.audioEngine.stop()
-    //        self.audioEngine.reset()
-    //
-    //        let audioSession = AVAudioSession.sharedInstance()
-    //        do {
-    //            try audioSession.setActive(false, options: .notifyOthersOnDeactivation)
-    //            try audioSession.overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
-    //            //try audioSession.setCategory(recording ? .playAndRecord : .playback)
-    //            try audioSession.setCategory(.playAndRecord, options: .defaultToSpeaker)
-    //            try audioSession.setPreferredIOBufferDuration(128.0 / 44100.0)
-    //            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
-    //        } catch {
-    //            print("Failed to set audio session category.")
-    //        }
-    //
-    //
-    //
-    //
-    //
-    //
-    //        //        do {
-    //        //            //try AVAudioSession.sharedInstance().setActive(false, options: [])
-    //        //            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
-    //        //            //try AVAudioSession.sharedInstance().setCategory(.ambient, options: .allowBluetooth)
-    //        //            try AVAudioSession.sharedInstance().setCategory(recording ? .playAndRecord : .playback)
-    //        //            try AVAudioSession.sharedInstance().setActive(true, options: [])
-    //        //            let ioBufferDuration = 128.0 / 44100.0
-    //        //            try AVAudioSession.sharedInstance().setPreferredIOBufferDuration(ioBufferDuration)
-    //        //            //try AVAudioSession.sharedInstance().setActive(true, options: [])
-    //        //        } catch {
-    //        //            assertionFailure("AVAudioSession setup error: \(error)")
-    //        //        }
-    //    }
-    
+ 
 }

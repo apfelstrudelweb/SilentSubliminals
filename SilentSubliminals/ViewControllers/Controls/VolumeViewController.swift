@@ -12,7 +12,7 @@ import AVFoundation
 import Accelerate
 
 class VolumeViewController: UIViewController {
-
+    
     let maskView = UIView()
     var deviceVolume: Float?
     
@@ -20,14 +20,14 @@ class VolumeViewController: UIViewController {
         super.viewDidLoad()
         
         self.view.backgroundColor = .red
-
+        
         let colors = [UIColor.blue, UIColor.green, UIColor.yellow, UIColor.red]
         self.maskView.backgroundColor = .white
         self.view.showGradientColors(colors)
         self.view.addSubview(self.maskView)
         self.view.mask = self.maskView
         self.maskView.frame = .zero//self.view.frame
-
+        
         do {
             try AVAudioSession.sharedInstance().setActive(true)
             deviceVolume = AVAudioSession.sharedInstance().outputVolume
@@ -38,7 +38,7 @@ class VolumeViewController: UIViewController {
     
     func processAudioData(buffer: AVAudioPCMBuffer) {
         
-        let volume = self.getVolume(from: buffer, bufferSize: 1024) * (deviceVolume ?? defaultSliderVolume) * (VolumeManager.shared.sliderVolume ?? defaultSliderVolume)
+        let volume = self.getVolume(from: buffer) * AVAudioSession.sharedInstance().outputVolume
         
         let w = Double(self.view.frame.size.width)
         let h = Double(self.view.bounds.size.height)
@@ -48,39 +48,42 @@ class VolumeViewController: UIViewController {
         }
     }
     
-    private func getVolume(from buffer: AVAudioPCMBuffer, bufferSize: Int) -> Float {
-        guard let channelData = buffer.floatChannelData?[0] else {
+    private func getVolume(from buffer: AVAudioPCMBuffer) -> Float {
+        
+        guard let _ = buffer.floatChannelData?[0] else {
             return 0
         }
         
-        let channelDataArray = Array(UnsafeBufferPointer(start:channelData, count: bufferSize))
+        var volume: Float = 0
         
-        var outEnvelope = [Float]()
-        var envelopeState:Float = 0
-        let envConstantAtk:Float = 0.16
-        let envConstantDec:Float = 0.003
+        let arraySize = Int(buffer.frameLength)
+        var channelSamples: [[DSPComplex]] = []
+        let channelCount = Int(buffer.format.channelCount)
         
-        for sample in channelDataArray {
-            let rectified = abs(sample)
+        for i in 0..<channelCount {
             
-            if envelopeState < rectified {
-                envelopeState += envConstantAtk * (rectified - envelopeState)
-            } else {
-                envelopeState += envConstantDec * (rectified - envelopeState)
+            channelSamples.append([])
+            let firstSample = buffer.format.isInterleaved ? i : i*arraySize
+            
+            for j in stride(from: firstSample, to: arraySize, by: buffer.stride*2) {
+                
+                let channels = UnsafeBufferPointer(start: buffer.floatChannelData, count: Int(buffer.format.channelCount))
+                let floats = UnsafeBufferPointer(start: channels[0], count: Int(buffer.frameLength))
+                channelSamples[i].append(DSPComplex(real: floats[j], imag: floats[j+buffer.stride]))
             }
-            outEnvelope.append(envelopeState)
         }
         
-        // 0.007 is the low pass filter to prevent
-        // getting the noise entering from the microphone
-        if let maxVolume = outEnvelope.max(),
-           maxVolume > Float(0.015) {
-            return maxVolume
-        } else {
-            return 0.0
+        for i in 0..<arraySize/2 {
+            
+            let imag = channelSamples[0][i].imag
+            let real = channelSamples[0][i].real
+            let magnitude = sqrt(pow(real,2)+pow(imag,2))
+            
+            volume += magnitude
         }
+        return volume / Float(bufferSize)
     }
-
+    
 }
 
 

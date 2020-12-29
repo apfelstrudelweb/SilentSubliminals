@@ -8,6 +8,7 @@
 
 import CoreAudio
 import AVFoundation
+import MediaPlayer
 
 extension AVMutableCompositionTrack {
     
@@ -47,5 +48,19 @@ extension AVPlayer {
     
     var isPlaying2: Bool {
         return ((rate != 0) && (error == nil))
+    }
+}
+
+
+extension MPVolumeView {
+    static func setVolume(_ volume: Float) {
+        // Need to use the MPVolumeView in order to change volume, but don't care about UI set so frame to .zero
+        let volumeView = MPVolumeView(frame: .zero)
+        // Search for the slider
+        let slider = volumeView.subviews.first(where: { $0 is UISlider }) as? UISlider
+        // Update the slider value with the desired volume.
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.01) {
+            slider?.value = volume
+        }
     }
 }

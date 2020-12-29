@@ -9,12 +9,12 @@
 import UIKit
 import AVFoundation
 import PureLayout
-
+import MediaPlayer
 
 class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, PlayerStateMachineDelegate, CommandCenterDelegate, BackButtonDelegate, AudioHelperDelegate {
 
     // 1. section
-    @IBOutlet weak var introductionSwitch: UISwitch!
+    @IBOutlet weak var introductionSwitch: Switch!
     @IBOutlet weak var leadInChairButton: ToggleButton!
     @IBOutlet weak var leadInChairPulseImageView: UIImageView! {
         didSet {
@@ -59,10 +59,14 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     @IBOutlet weak var forwardButton: ShadowButton!
     @IBOutlet weak var silentButton: SymbolButton!
     @IBOutlet weak var affirmationTitleLabel: UILabel!
-    @IBOutlet weak var timerButton: SymbolButton!
+    @IBOutlet weak var timerButton: TimerButton!
     @IBOutlet weak var loudspeakerLowSymbol: UIImageView!
     @IBOutlet weak var loudspeakerHighSymbol: UIImageView!
-    @IBOutlet weak var volumeSlider: UISlider!
+    @IBOutlet weak var volumeSlider: UISlider! {
+        didSet {
+            volumeSlider.value = AVAudioSession.sharedInstance().outputVolume
+        }
+    }
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var graphView: UIView!
@@ -104,6 +108,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         PlayerStateMachine.shared.delegate = self
         
         PlayerStateMachine.shared.playerState = .ready
+        PlayerStateMachine.shared.introductionState = .some
         PlayerStateMachine.shared.introState = .chair
         PlayerStateMachine.shared.outroState = .day
         PlayerStateMachine.shared.frequencyState = .loud
@@ -125,8 +130,10 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
             }))
             self.present(alert, animated: true)
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(volumeChanged(notification:)), name: NSNotification.Name(rawValue: "AVSystemController_SystemVolumeDidChangeNotification"), object: nil)
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         //stopPlaying()
@@ -151,6 +158,11 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     }
     
     // MARK: user interactions
+    @IBAction func introductionSwitchTouched(_ sender: UISwitch) {
+        let isOn = self.introductionSwitch.isOn
+        PlayerStateMachine.shared.setIntroductionState(isOn: isOn)
+    }
+    
     @IBAction func leadInChairTouched(_ sender: Any) {
         PlayerStateMachine.shared.introState = .chair
     }
@@ -188,8 +200,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     }
     
     @IBAction func volumeSliderChanged(_ sender: Any) {
-        
-        VolumeManager.shared.sliderVolume = Float(volumeSlider.value)
+        MPVolumeView.setVolume(volumeSlider.value)
     }
 
     func updateIntroButtons() {
@@ -223,10 +234,10 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
             case .loud:
                 self.silentButton.setImage(Button.silentOffImg, for: .normal)
                 silentNode.volume = 0
-                loudNode.volume = VolumeManager.shared.sliderVolume
+                loudNode.volume = 1
             case .silent:
                 self.silentButton.setImage(Button.silentOnImg, for: .normal)
-                silentNode.volume = VolumeManager.shared.sliderVolume
+                silentNode.volume = 1
                 loudNode.volume = 0
             }
         }
@@ -250,15 +261,19 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
                 playButton.setState(active: false)
                 rewindButton.setEnabled(flag: false)
                 break
-            case .intro:
+            case .introduction:
+                print("introduction")
+                audioHelper.playInduction(type: Induction.Bell)
+                break
+            case .leadIn:
                 switch PlayerStateMachine.shared.introState {
                 case .chair:
                     print("intro chair")
-                    audioHelper.playInduction(type: Induction.IntroChair)
+                    audioHelper.playInduction(type: Induction.LeadInChair)
                     animateIntroButton()
                 case .bed:
                     print("intro bed")
-                    audioHelper.playInduction(type: Induction.IntroBed)
+                    audioHelper.playInduction(type: Induction.LeadInBed)
                     animateIntroButton()
                 case .none:
                     audioHelper.playInduction(type: Induction.Bell)
@@ -274,15 +289,15 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
                 print("affirmation loop")
                 audioHelper.playAffirmationLoop()
                 break
-            case .outro:
+            case .leadOut:
                 switch PlayerStateMachine.shared.outroState {
                 case .day:
                     print("outro day")
-                    audioHelper.playInduction(type: Induction.OutroDay)
+                    audioHelper.playInduction(type: Induction.LeadOutDay)
                     animateOutroButton()
                 case .night:
                     print("outro night")
-                    audioHelper.playInduction(type: Induction.OutroNight)
+                    audioHelper.playInduction(type: Induction.LeadOutNight)
                     animateOutroButton()
                 case .none:
                     audioHelper.playInduction(type: Induction.Bell)
@@ -292,24 +307,24 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         }
     }
     
+    // TODO: put logic into image view
     func animateIntroButton() {
         DispatchQueue.main.async {
-        if PlayerStateMachine.shared.introState == .chair {
-            self.leadInChairPulseImageView.layer.add(getLayerAnimation(), forKey: "growingAnimation")
-        } else if PlayerStateMachine.shared.introState == .bed {
-            self.leadInBedPulseImageView.layer.add(getLayerAnimation(), forKey: "growingAnimation")
-        }
+            if PlayerStateMachine.shared.introState == .chair {
+                self.leadInChairPulseImageView.layer.add(getLayerAnimation(), forKey: "growingAnimation")
+            } else if PlayerStateMachine.shared.introState == .bed {
+                self.leadInBedPulseImageView.layer.add(getLayerAnimation(), forKey: "growingAnimation")
+            }
         }
     }
     
     func animateOutroButton() {
         DispatchQueue.main.async {
-        if PlayerStateMachine.shared.outroState == .day {
-            self.leadOutDayPulseImageView.layer.add(getLayerAnimation(), forKey: "growingAnimation")
-            
-        } else if PlayerStateMachine.shared.outroState == .night {
-            self.leadOutNightPulseImageView.layer.add(getLayerAnimation(), forKey: "growingAnimation")
-        }
+            if PlayerStateMachine.shared.outroState == .day {
+                self.leadOutDayPulseImageView.layer.add(getLayerAnimation(), forKey: "growingAnimation")
+            } else if PlayerStateMachine.shared.outroState == .night {
+                self.leadOutNightPulseImageView.layer.add(getLayerAnimation(), forKey: "growingAnimation")
+            }
         }
     }
     
@@ -341,6 +356,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         
         PlayerStateMachine.shared.togglePlayPauseState()
         rewindButton.setEnabled(flag: true)
+        introductionSwitch.setEnabled(flag: false)
+        timerButton.setEnabled(flag: false)
         
         switch PlayerStateMachine.shared.pauseState {
         
@@ -367,11 +384,27 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         AudioHelper.shared.stop()
         playButton.setState(active: false)
         rewindButton.setEnabled(flag: false)
+        introductionSwitch.setEnabled(flag: true)
+        timerButton.setEnabled(flag: true)
         stopButtonAnimations()
         
         //updateLockScreenInfo()
         //removeCommandCenter()
         
+    }
+    
+    // MARK: Notification
+    @objc func volumeChanged(notification:NSNotification) {
+        let volume = notification.userInfo!["AVSystemController_AudioVolumeNotificationParameter"]
+        let category = notification.userInfo!["AVSystemController_AudioCategoryNotificationParameter"]
+        let reason = notification.userInfo!["AVSystemController_AudioVolumeChangeReasonNotificationParameter"]
+        
+        self.volumeSlider.value = volume as! Float
+
+        print("volume:      \(volume!)")
+        print("category:    \(category!)")
+        print("reason:      \(reason!)")
+        print("\n")
     }
     
     // MARK: AudioHelperDelegate
