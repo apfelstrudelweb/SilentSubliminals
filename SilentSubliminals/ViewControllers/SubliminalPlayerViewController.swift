@@ -107,8 +107,9 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         audioHelper.delegate = self
         PlayerStateMachine.shared.delegate = self
         
+        PlayerStateMachine.shared.setIntroductionState(isOn: !UserDefaults.standard.bool(forKey: userDefaults_introductionPlayed))
+        
         PlayerStateMachine.shared.playerState = .ready
-        PlayerStateMachine.shared.introductionState = .some
         PlayerStateMachine.shared.introState = .chair
         PlayerStateMachine.shared.outroState = .day
         PlayerStateMachine.shared.frequencyState = .loud
@@ -191,6 +192,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     }
     
     @IBAction func playButtonTouchUpInside(_ sender: Any) {
+        
+        PlayerStateMachine.shared.setIntroductionState(isOn: introductionSwitch.isOn)
         
         if PlayerStateMachine.shared.playerState == .ready {
             askUserForConfirmation(completionHandler: {(result) in

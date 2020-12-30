@@ -21,10 +21,8 @@ class CommandCenter {
     weak var delegate : CommandCenterDelegate?
     
     static let shared = CommandCenter()
-    
     let commandCenter = MPRemoteCommandCenter.shared()
 
-  
     private init() {
 
     }
@@ -76,15 +74,28 @@ class CommandCenter {
             return image
         }
         
-        print("updateLockScreenInfo")
-        
         MPNowPlayingInfoCenter.default().nowPlayingInfo = [
             MPMediaItemPropertyTitle: "FREE UR SPIRIT",
             MPMediaItemPropertyAlbumTitle: "Jaw Relaxation",
             MPMediaItemPropertyArtist: "Maren",
-            //MPMediaItemPropertyPlaybackDuration: totalDuration,
-            //MPNowPlayingInfoPropertyElapsedPlaybackTime: self.elapsedTime,
             MPMediaItemPropertyArtwork: mediaArtwork
+        ]
+    }
+    
+    func updateTime(elapsedTime: TimeInterval, totalDuration: TimeInterval) {
+        
+        let image = UIImage(named: "schmettering_1024")!
+        let mediaArtwork = MPMediaItemArtwork(boundsSize: image.size) { (size: CGSize) -> UIImage in
+            return image
+        }
+
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = [
+            MPMediaItemPropertyTitle: "FREE UR SPIRIT",
+            MPMediaItemPropertyAlbumTitle: "Jaw Relaxation",
+            MPMediaItemPropertyArtist: "Maren",
+            MPMediaItemPropertyArtwork: mediaArtwork,
+            MPMediaItemPropertyPlaybackDuration: totalDuration,
+            MPNowPlayingInfoPropertyElapsedPlaybackTime: elapsedTime
         ]
     }
 }

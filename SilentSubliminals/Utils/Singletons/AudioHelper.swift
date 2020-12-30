@@ -93,6 +93,7 @@ class AudioHelper {
                 
                 DispatchQueue.main.async {
                     self.delegate?.processAudioData(buffer: buffer)
+                    CommandCenter.shared.updateTime(elapsedTime: playerNode.currentTime, totalDuration: audioFile.duration)
                 }
             }
             
@@ -145,6 +146,7 @@ class AudioHelper {
                     
                     DispatchQueue.main.async {
                         self.delegate?.processAudioData(buffer: buffer)
+                        CommandCenter.shared.updateTime(elapsedTime: playerNode.currentTime, totalDuration: audioFile.duration)
                     }
                 }
                 
@@ -240,10 +242,12 @@ class AudioHelper {
                         (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
                         
                         DispatchQueue.main.async {
-                            
+
                             let availableTimeForLoop = (TimerManager.shared.remainingTime ?? defaultAffirmationTime) - self.singleAffirmationDuration
                             
-                            if audioFile.isSilent && playerNode.current >= availableTimeForLoop {
+                            CommandCenter.shared.updateTime(elapsedTime: playerNode.currentTime, totalDuration: availableTimeForLoop)
+                            
+                            if audioFile.isSilent && playerNode.currentTime >= availableTimeForLoop {
                                 playerNode.stop()
                                 self.audioEngine.pause()
                                 self.playingNodes = Set<AVAudioPlayerNode>()
