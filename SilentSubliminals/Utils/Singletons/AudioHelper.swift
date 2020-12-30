@@ -104,6 +104,10 @@ class AudioHelper {
                 self.audioEngine.pause()
                 self.playingNodes.remove(playerNode)
                 
+                if type == .Introduction {
+                    UserDefaults.standard.set(true, forKey: userDefaults_introductionPlayed)
+                }
+                
                 if PlayerStateMachine.shared.playerState != .ready {
                     PlayerStateMachine.shared.doNextPlayerState()
                 }
@@ -355,26 +359,18 @@ class AudioHelper {
                 
                 let result = try engine.renderOffline(readBuffer.frameLength, to: renderBuffer)
                 
-//                guard let leftSourceData = readBuffer.floatChannelData?[0] else {
-//                    break
-//                }
-//                guard let rightSourceData = readBuffer.floatChannelData?[1] else {
-//                    break
-//                }
-//                guard let leftTargetData = renderBuffer.floatChannelData?[0] else {
-//                    break
-//                }
-//                guard let rightTargetData = renderBuffer.floatChannelData?[1] else {
-//                    break
-//                }
+                guard let leftSourceData = readBuffer.floatChannelData?[0], let rightSourceData = readBuffer.floatChannelData?[1] else {
+                    break
+                }
+                guard let leftTargetData = renderBuffer.floatChannelData?[0], let rightTargetData = renderBuffer.floatChannelData?[1] else {
+                    break
+                }
 
-                
                 // Process the audio in 'renderBuffer' here
-                
                 for i in 0..<Int(readBuffer.frameLength) {
-                    let val: Double =  sin(Double(2 * modulationFrequency) * Double(index) * Double.pi / Double(renderBuffer.format.sampleRate))
-                    renderBuffer.floatChannelData?[0][i] = Float(val) * (readBuffer.floatChannelData?[0][i])!
-                    renderBuffer.floatChannelData?[1][i] = Float(val) * (readBuffer.floatChannelData?[1][i])!
+                    let val: Double = sin(Double(2 * modulationFrequency) * Double(index) * Double.pi / Double(renderBuffer.format.sampleRate))
+                    leftTargetData[i] = Float(val) * leftSourceData[i]
+                    rightTargetData[i] = Float(val) * rightSourceData[i]
                     index += 1
                 }
                 
@@ -400,11 +396,26 @@ class AudioHelper {
     
     func startRecording() {
         
-        //initializeAudioEngine(recording: true)
+        let settings = [
+            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+            AVSampleRateKey: 44100, //48000,
+            AVNumberOfChannelsKey: 2,
+            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+        ] as [String : Any]
         
         let inputNode = self.audioEngine.inputNode
-        let bus = 0
-        inputNode.installTap(onBus: bus, bufferSize: bufferSize, format: inputNode.inputFormat(forBus: bus)) {
+        let audioFile = getFileFromSandbox(filename: spokenAffirmation)
+        do {
+            audioRecorder = try AVAudioRecorder(url: audioFile, settings: settings)
+        } catch {
+            print(error)
+        }
+        
+        let format =  AVAudioFormat(standardFormatWithSampleRate: AVAudioSession.sharedInstance().sampleRate, channels: 2)
+        
+        inputNode.removeTap(onBus: 0)
+        
+        inputNode.installTap(onBus: 0, bufferSize: bufferSize, format: format) {
             (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
             
             DispatchQueue.main.async {
@@ -414,30 +425,14 @@ class AudioHelper {
         
         self.audioEngine.prepare()
         try! self.audioEngine.start()
-        let audioFilename = getFileFromSandbox(filename: spokenAffirmation)
         
-        let settings = [
-            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-            AVSampleRateKey: 44100, //48000,
-            AVNumberOfChannelsKey: 2,
-            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
-        ] as [String : Any]
-        
-        do {
-            audioRecorder = try AVAudioRecorder(url: audioFilename, settings: settings)
-            //audioRecorder?.delegate = self
-            audioRecorder.record()
-        } catch {
-            print(error)
-            stopRecording()
-        }
+        audioRecorder.record()
     }
     
     func stopRecording() {
         
         audioRecorder.stop()
-        //audioRecorder = nil
-        
+
         let inputNode = self.audioEngine.inputNode
         inputNode.removeTap(onBus: 0)
         self.audioEngine.stop()
@@ -470,5 +465,4 @@ class AudioHelper {
             print("Failed to set Category", error.localizedDescription)
         }
     }
- 
 }

@@ -29,7 +29,10 @@ class SetDurationViewController: UIViewController {
         timerPicker.setValue(PlayerControlColor.lightColor, forKeyPath: "textColor")
         timerPicker.setValue(true, forKey: "highlightsToday")
         activeTimeView.backgroundColor = PlayerControlColor.darkGrayColor.withAlphaComponent(0.75)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: Notification.Name(notification_durationViewControllerCalled), object: nil)
     }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -39,7 +42,20 @@ class SetDurationViewController: UIViewController {
         guard let singleAffirmationDuration = TimerManager.shared.singleAffirmationDuration else { return }
         if 2 * singleAffirmationDuration > defaultAffirmationTime {
             self.timerPicker.countDownDuration = 2 * singleAffirmationDuration
+        } else {
+            self.timerPicker.countDownDuration = TimerManager.shared.remainingTime ?? defaultAffirmationTime
         }
+        
+        //update()
+    }
+    
+    @objc func onDidReceiveData(_ notification:Notification) {
+        update()
+    }
+    
+    func update() {
+        timerPicker.countDownDuration = TimerManager.shared.remainingTime ?? defaultAffirmationTime
+        delegate?.timeIntervalChanged(time: TimerManager.shared.remainingTime ?? defaultAffirmationTime)
     }
 
     @IBAction func timePickerValueChanged(_ sender: Any) {
@@ -60,6 +76,11 @@ class SetDurationViewController: UIViewController {
         
         TimerManager.shared.remainingTime = timerPicker.countDownDuration
         delegate?.timeIntervalChanged(time: timerPicker.countDownDuration)
+    }
+    
+    deinit {
+        print("Remove NotificationCenter Deinit")
+        NotificationCenter.default.removeObserver(self)
     }
     
 }

@@ -17,6 +17,10 @@ class Switch: UISwitch {
         //self.onTintColor = PlayerControlColor.lightColor
         self.backgroundColor = PlayerControlColor.lightGrayColor
         self.layer.cornerRadius = frame.height / 2.0
+        
+        DispatchQueue.main.async {
+            self.isOn = !UserDefaults.standard.bool(forKey: userDefaults_introductionPlayed)
+        }
     }
     
     func setEnabled(flag: Bool) {

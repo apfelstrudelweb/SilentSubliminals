@@ -65,3 +65,10 @@ let dayInSeconds: Double = 24 * 60 * 60
 let hourInSeconds: Int = 60 * 60
 let minuteInSeconds: Int = 60
 
+// User defaults
+let userDefaults_introductionPlayed = "introductionPlayed"
+
+
+// Notification
+let notification_durationViewControllerCalled = "durationViewControllerCalled"
+let notification_endtimeViewControllerCalled = "endtimeViewControllerCalled"

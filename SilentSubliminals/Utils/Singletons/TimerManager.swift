@@ -15,9 +15,8 @@ class TimerManager {
     
     var remainingTime: TimeInterval?
     var singleAffirmationDuration: TimeInterval?
-  
-    private init() {
-        
+    
+    func reset() {
         remainingTime = defaultAffirmationTime
         
         do {
@@ -26,5 +25,9 @@ class TimerManager {
         } catch {
             print("File read error", error)
         }
+    }
+
+    private init() {
+        reset()
     } 
 }

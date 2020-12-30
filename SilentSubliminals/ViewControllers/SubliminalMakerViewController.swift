@@ -102,8 +102,9 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
     }
     
     func stopPlaying() {
-        MakerStateMachine.shared.doNextPlayerState()
-        audioHelper.stopPlayingSingleAffirmation()
+        //MakerStateMachine.shared.doNextPlayerState()
+        AudioHelper.shared.stop()
+        //audioHelper.stopPlayingSingleAffirmation()
     }
     
     func startRecording() {

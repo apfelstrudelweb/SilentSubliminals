@@ -13,6 +13,7 @@ class TimerViewController: UIViewController, TimerDelegate {
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var endtimeContainerView: UIView!
     @IBOutlet weak var durationContainerView: UIView!
+ 
     
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var durationLabel: UILabel!
@@ -37,9 +38,11 @@ class TimerViewController: UIViewController, TimerDelegate {
     fileprivate func setActiveView() {
         switch segmentedControl.selectedSegmentIndex {
         case 0:
+            NotificationCenter.default.post(name: Notification.Name(notification_durationViewControllerCalled), object: nil)
             endtimeContainerView.isHidden = false
             durationContainerView.isHidden = true
         case 1:
+            NotificationCenter.default.post(name: Notification.Name(notification_endtimeViewControllerCalled), object: nil)
             endtimeContainerView.isHidden = true
             durationContainerView.isHidden = false
         default:
@@ -72,7 +75,8 @@ class TimerViewController: UIViewController, TimerDelegate {
     }
     
     func timeIntervalChanged(time: TimeInterval) {
-        self.durationLabel.text = time.stringFromTimeInterval()
+        //self.durationLabel.text = time.stringFromTimeInterval()
+        self.durationLabel.text = TimerManager.shared.remainingTime?.stringFromTimeInterval()
     }
 }
 

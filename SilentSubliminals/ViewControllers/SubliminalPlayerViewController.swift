@@ -121,9 +121,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         forwardButton.isEnabled = false
 
         let affirmationFile = getFileFromSandbox(filename: spokenAffirmation)
-        if affirmationFile.checkFileExist() {
-            //self.singleAffirmationDuration = try! AVAudioFile(forReading: affirmationFile).duration
-        } else {
+        if !affirmationFile.checkFileExist() {
+
             let alert = UIAlertController(title: "Warning", message: "You first need to record an affirmation. You're redirected to the previous screen - there please choose the 'Affirmation Maker'.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: {_ in
                 self.close()
@@ -256,6 +255,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     func performAction() {
         
         self.spectrumViewController?.clearGraph()
+        //introductionSwitch.isOn = !UserDefaults.standard.bool(forKey: userDefaults_introductionPlayed)
 
         switch PlayerStateMachine.shared.pauseState {
         case .pause:
@@ -394,6 +394,9 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         introductionSwitch.setEnabled(flag: true)
         timerButton.setEnabled(flag: true)
         stopButtonAnimations()
+        
+        introductionSwitch.layoutSubviews()
+        TimerManager.shared.reset()
         
         CommandCenter.shared.updateLockScreenInfo()
         
