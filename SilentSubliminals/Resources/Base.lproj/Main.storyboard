@@ -453,7 +453,15 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WTQ-46-HQ2" customClass="Switch" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="pulseSymbolOval" translatesAutoresizingMaskIntoConstraints="NO" id="1tk-Ks-GEn" customClass="PulseImageView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                                <rect key="frame" x="210.5" y="8.5" width="49" height="31"/>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="number" keyPath="symbolAlias">
+                                                                        <integer key="value" value="0"/>
+                                                                    </userDefinedRuntimeAttribute>
+                                                                </userDefinedRuntimeAttributes>
+                                                            </imageView>
+                                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WTQ-46-HQ2" customClass="Switch" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="210.5" y="8.5" width="51" height="31"/>
                                                                 <color key="onTintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <connections>
@@ -472,9 +480,14 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pulseSymbol" translatesAutoresizingMaskIntoConstraints="NO" id="XVj-v3-nvd">
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pulseSymbol" translatesAutoresizingMaskIntoConstraints="NO" id="XVj-v3-nvd" customClass="PulseImageView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="139" y="70" width="44" height="44"/>
                                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="number" keyPath="symbolAlias">
+                                                                        <integer key="value" value="1"/>
+                                                                    </userDefinedRuntimeAttribute>
+                                                                </userDefinedRuntimeAttributes>
                                                             </imageView>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1lW-ea-hYl" customClass="ToggleButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="139" y="70" width="44" height="44"/>
@@ -494,9 +507,17 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                     <action selector="leadInChairTouched:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="kMZ-DJ-ZCG"/>
                                                                 </connections>
                                                             </button>
-                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pulseSymbol" translatesAutoresizingMaskIntoConstraints="NO" id="IZd-0S-Jl0">
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pulseSymbol" translatesAutoresizingMaskIntoConstraints="NO" id="IZd-0S-Jl0" customClass="PulseImageView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="213" y="70" width="44" height="44"/>
                                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="number" keyPath="testAttr">
+                                                                        <real key="value" value="0.0"/>
+                                                                    </userDefinedRuntimeAttribute>
+                                                                    <userDefinedRuntimeAttribute type="number" keyPath="symbolAlias">
+                                                                        <integer key="value" value="2"/>
+                                                                    </userDefinedRuntimeAttribute>
+                                                                </userDefinedRuntimeAttributes>
                                                             </imageView>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nss-hv-Sk9" customClass="ToggleButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="213" y="70" width="44" height="44"/>
@@ -534,9 +555,14 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                     <action selector="leadInNoneTouched:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="yrx-Xt-0HN"/>
                                                                 </connections>
                                                             </button>
-                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pulseSymbol" translatesAutoresizingMaskIntoConstraints="NO" id="8K9-c1-Qeq">
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pulseSymbol" translatesAutoresizingMaskIntoConstraints="NO" id="8K9-c1-Qeq" customClass="PulseImageView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="139" y="220.5" width="44" height="44"/>
                                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="number" keyPath="symbolAlias">
+                                                                        <integer key="value" value="3"/>
+                                                                    </userDefinedRuntimeAttribute>
+                                                                </userDefinedRuntimeAttributes>
                                                             </imageView>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d8R-wR-p82" customClass="ToggleButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="139" y="220.5" width="44" height="44"/>
@@ -556,9 +582,14 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                     <action selector="leadOutDayTouched:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="06l-bd-yc6"/>
                                                                 </connections>
                                                             </button>
-                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pulseSymbol" translatesAutoresizingMaskIntoConstraints="NO" id="o31-l6-2Kv">
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pulseSymbol" translatesAutoresizingMaskIntoConstraints="NO" id="o31-l6-2Kv" customClass="PulseImageView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="213" y="220.5" width="44" height="44"/>
                                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="number" keyPath="symbolAlias">
+                                                                        <integer key="value" value="4"/>
+                                                                    </userDefinedRuntimeAttribute>
+                                                                </userDefinedRuntimeAttributes>
                                                             </imageView>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6XP-Xy-aRO" customClass="ToggleButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="213" y="220.5" width="44" height="44"/>
@@ -600,6 +631,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstItem="2Vo-TK-6Ii" firstAttribute="top" secondItem="CsQ-FE-C27" secondAttribute="bottom" constant="44" id="1tx-g4-Y9x"/>
+                                                            <constraint firstItem="1tk-Ks-GEn" firstAttribute="trailing" secondItem="WTQ-46-HQ2" secondAttribute="trailing" id="20r-VR-7WC"/>
                                                             <constraint firstItem="8K9-c1-Qeq" firstAttribute="trailing" secondItem="d8R-wR-p82" secondAttribute="trailing" id="3k3-qG-lmV"/>
                                                             <constraint firstItem="q6l-Tj-038" firstAttribute="centerY" secondItem="Nss-hv-Sk9" secondAttribute="centerY" id="5Wr-af-mTY"/>
                                                             <constraint firstItem="XVj-v3-nvd" firstAttribute="leading" secondItem="1lW-ea-hYl" secondAttribute="leading" id="6Lm-uX-oHY"/>
@@ -611,7 +643,9 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                             <constraint firstItem="d8R-wR-p82" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="hKZ-yX-a0r" secondAttribute="trailing" constant="8" symbolic="YES" id="IQt-85-HYZ"/>
                                                             <constraint firstItem="8K9-c1-Qeq" firstAttribute="leading" secondItem="d8R-wR-p82" secondAttribute="leading" id="IvK-2Z-bXq"/>
                                                             <constraint firstItem="o31-l6-2Kv" firstAttribute="trailing" secondItem="6XP-Xy-aRO" secondAttribute="trailing" id="Kz9-Gs-LgE"/>
+                                                            <constraint firstItem="1tk-Ks-GEn" firstAttribute="leading" secondItem="WTQ-46-HQ2" secondAttribute="leading" id="L83-ch-B0l"/>
                                                             <constraint firstItem="IZd-0S-Jl0" firstAttribute="trailing" secondItem="Nss-hv-Sk9" secondAttribute="trailing" id="M8u-6h-51F"/>
+                                                            <constraint firstItem="1tk-Ks-GEn" firstAttribute="bottom" secondItem="WTQ-46-HQ2" secondAttribute="bottom" id="NV7-eD-N5U"/>
                                                             <constraint firstItem="WTQ-46-HQ2" firstAttribute="centerY" secondItem="CsQ-FE-C27" secondAttribute="centerY" id="QM9-4d-yq2"/>
                                                             <constraint firstItem="CsQ-FE-C27" firstAttribute="leading" secondItem="jd3-Ih-3A7" secondAttribute="leading" constant="12" id="RIl-Zk-UT6"/>
                                                             <constraint firstItem="8K9-c1-Qeq" firstAttribute="bottom" secondItem="d8R-wR-p82" secondAttribute="bottom" id="S8N-It-cPP"/>
@@ -632,6 +666,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                             <constraint firstItem="I2n-2P-ia1" firstAttribute="centerX" secondItem="q6l-Tj-038" secondAttribute="centerX" id="rcm-kq-UWQ"/>
                                                             <constraint firstItem="1lW-ea-hYl" firstAttribute="centerY" secondItem="2Vo-TK-6Ii" secondAttribute="centerY" id="sxn-ZZ-NhQ"/>
                                                             <constraint firstItem="8K9-c1-Qeq" firstAttribute="top" secondItem="d8R-wR-p82" secondAttribute="top" id="tbL-AP-ofC"/>
+                                                            <constraint firstItem="1tk-Ks-GEn" firstAttribute="top" secondItem="WTQ-46-HQ2" secondAttribute="top" id="u8T-GN-lC4"/>
                                                             <constraint firstItem="Nss-hv-Sk9" firstAttribute="centerY" secondItem="1lW-ea-hYl" secondAttribute="centerY" id="uxy-0F-z0M"/>
                                                             <constraint firstItem="WTQ-46-HQ2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="CsQ-FE-C27" secondAttribute="trailing" constant="8" symbolic="YES" id="wp5-FL-crb"/>
                                                             <constraint firstItem="Nss-hv-Sk9" firstAttribute="leading" secondItem="1lW-ea-hYl" secondAttribute="trailing" constant="30" id="wyj-Nd-WPp"/>
@@ -742,7 +777,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                     <segue destination="hDO-On-2rK" kind="presentation" identifier="timerSegue" id="EdD-cE-P7d"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CsD-QE-lCH" customClass="RewindButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CsD-QE-lCH" customClass="SkipButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="72" y="127.5" width="48" height="32"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="32" id="krR-ql-QuK"/>
@@ -754,10 +789,10 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                     <color key="titleColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 </state>
                                                                 <connections>
-                                                                    <action selector="resetButtonTouched:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="RyS-jS-iGF"/>
+                                                                    <action selector="backwardButtonTouched:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="vs1-r4-dwX"/>
                                                                 </connections>
                                                             </button>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qPP-wD-Fyb" customClass="ShadowButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qPP-wD-Fyb" customClass="SkipButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="240.5" y="127.5" width="48" height="32"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="32" id="8OU-0M-CGA"/>
@@ -768,6 +803,9 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                 <state key="normal" image="forwardIcon">
                                                                     <color key="titleColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 </state>
+                                                                <connections>
+                                                                    <action selector="forwardButtonTouched:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="CNN-Op-syj"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -877,10 +915,12 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="affirmationTitleLabel" destination="eI0-MH-Rsd" id="SGr-2e-Gun"/>
+                        <outlet property="backButton" destination="CsD-QE-lCH" id="w7L-At-r7E"/>
                         <outlet property="backgroundImageView" destination="KIc-QH-czb" id="Yh7-UH-0bm"/>
                         <outlet property="forwardButton" destination="qPP-wD-Fyb" id="kru-YK-jOT"/>
                         <outlet property="graphView" destination="o5j-AJ-IcV" id="td8-3C-e4d"/>
                         <outlet property="introductionLabel" destination="CsQ-FE-C27" id="15j-L1-MFA"/>
+                        <outlet property="introductionPulseImageView" destination="1tk-Ks-GEn" id="PUv-wl-8Ea"/>
                         <outlet property="introductionSwitch" destination="WTQ-46-HQ2" id="VYC-5c-29u"/>
                         <outlet property="leadInBedButton" destination="Nss-hv-Sk9" id="fwE-JN-EeA"/>
                         <outlet property="leadInBedPulseImageView" destination="IZd-0S-Jl0" id="lVE-tv-LC3"/>
@@ -898,7 +938,6 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                         <outlet property="noLeadOutButton" destination="I2n-2P-ia1" id="42O-1r-ppd"/>
                         <outlet property="playButton" destination="SKF-7G-fNA" id="NYA-ku-FJY"/>
                         <outlet property="playerView" destination="wux-KS-pjg" id="uDz-IZ-zX1"/>
-                        <outlet property="rewindButton" destination="CsD-QE-lCH" id="Em4-ye-TOX"/>
                         <outlet property="scrollView" destination="iUg-V1-pPz" id="Kcl-f9-OIM"/>
                         <outlet property="silentButton" destination="rc5-V6-YXt" id="Whp-4d-4SH"/>
                         <outlet property="soundView" destination="tg5-ND-tqn" id="mkP-QH-NS4"/>
@@ -1177,6 +1216,23 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
             <point key="canvasLocation" x="1048" y="788"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="1tk-Ks-GEn">
+            <size key="intrinsicContentSize" width="105" height="65"/>
+        </designable>
+        <designable name="8K9-c1-Qeq">
+            <size key="intrinsicContentSize" width="44" height="44"/>
+        </designable>
+        <designable name="IZd-0S-Jl0">
+            <size key="intrinsicContentSize" width="44" height="44"/>
+        </designable>
+        <designable name="XVj-v3-nvd">
+            <size key="intrinsicContentSize" width="44" height="44"/>
+        </designable>
+        <designable name="o31-l6-2Kv">
+            <size key="intrinsicContentSize" width="44" height="44"/>
+        </designable>
+    </designables>
     <inferredMetricsTieBreakers>
         <segue reference="MRg-E8-hf8"/>
     </inferredMetricsTieBreakers>
@@ -1192,6 +1248,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
         <image name="playIcon" width="417" height="417"/>
         <image name="plusButton.png" width="35" height="33"/>
         <image name="pulseSymbol" width="44" height="44"/>
+        <image name="pulseSymbolOval" width="105" height="65"/>
         <image name="rewindIcon" width="320" height="313"/>
         <image name="startRecordingButton.png" width="50" height="50"/>
         <image name="subliminalMakerTeaser.png" width="364" height="304"/>

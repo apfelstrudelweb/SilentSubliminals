@@ -15,35 +15,20 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
 
     // 1. section
     @IBOutlet weak var introductionSwitch: Switch!
+    @IBOutlet weak var introductionPulseImageView: PulseImageView!
     @IBOutlet weak var leadInChairButton: ToggleButton!
-    @IBOutlet weak var leadInChairPulseImageView: UIImageView! {
-        didSet {
-            leadInChairPulseImageView.tintColor = PlayerControlColor.lightColor
-        }
-    }
+    @IBOutlet weak var leadInChairPulseImageView: PulseImageView!
     @IBOutlet weak var leadInBedButton: ToggleButton!
-    @IBOutlet weak var leadInBedPulseImageView: UIImageView!{
-        didSet {
-            leadInBedPulseImageView.tintColor = PlayerControlColor.lightColor
-        }
-    }
+    @IBOutlet weak var leadInBedPulseImageView: PulseImageView!
     @IBOutlet weak var noLeadInButton: ToggleButton! {
         didSet {
             introButtons = [leadInChairButton : .chair, leadInBedButton : .bed, noLeadInButton : .none]
         }
     }
     @IBOutlet weak var leadOutDayButton: ToggleButton!
-    @IBOutlet weak var leadOutDayPulseImageView: UIImageView! {
-        didSet {
-            leadOutDayPulseImageView.tintColor = PlayerControlColor.lightColor
-        }
-    }
+    @IBOutlet weak var leadOutDayPulseImageView: PulseImageView!
     @IBOutlet weak var leadOutNightButton: ToggleButton!
-    @IBOutlet weak var leadOutNightPulseImageView: UIImageView! {
-        didSet {
-            leadOutNightPulseImageView.tintColor = PlayerControlColor.lightColor
-        }
-    }
+    @IBOutlet weak var leadOutNightPulseImageView: PulseImageView!
     @IBOutlet weak var noLeadOutButton: ToggleButton! {
         didSet {
             outroButtons = [leadOutDayButton : .day, leadOutNightButton : .night, noLeadOutButton : .none]
@@ -54,9 +39,9 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     @IBOutlet weak var leadOutLabel: ShadowLabel!
     
     // 2. section
-    @IBOutlet weak var rewindButton: RewindButton!
+    @IBOutlet weak var backButton: SkipButton!
     @IBOutlet weak var playButton: PlayButton!
-    @IBOutlet weak var forwardButton: ShadowButton!
+    @IBOutlet weak var forwardButton: SkipButton!
     @IBOutlet weak var silentButton: SymbolButton!
     @IBOutlet weak var affirmationTitleLabel: UILabel!
     @IBOutlet weak var timerButton: TimerButton!
@@ -87,11 +72,6 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     
     private var audioHelper = AudioHelper.shared
 
-//    var introDuration: TimeInterval = 0
-//    var outroDuration: TimeInterval = 0
-//    var singleAffirmationDuration: TimeInterval = 0
-//    var totalLength: TimeInterval = 0
-//    var elapsedTime: TimeInterval = 0
     
     var introButtons:[ToggleButton : PlayerStateMachine.IntroState]?
     var outroButtons:[ToggleButton : PlayerStateMachine.OutroState]?
@@ -118,20 +98,15 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         backButton.delegate = self
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
         
-        rewindButton.isEnabled = false
+        backButton.isEnabled = false
         forwardButton.isEnabled = false
 
         let affirmationFile = getFileFromSandbox(filename: spokenAffirmation)
         if !affirmationFile.checkFileExist() {
-
-            let alert = UIAlertController(title: "Warning", message: "You first need to record an affirmation. You're redirected to the previous screen - there please choose the 'Affirmation Maker'.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: {_ in
-                self.close()
-            }))
-            self.present(alert, animated: true)
+            AlertController().showWarningMissingAffirmationFile(vc: self)
         }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(volumeChanged(notification:)), name: NSNotification.Name(rawValue: "AVSystemController_SystemVolumeDidChangeNotification"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(volumeChanged(notification:)), name: NSNotification.Name(rawValue: notification_systemVolumeDidChange), object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -196,18 +171,23 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         PlayerStateMachine.shared.setIntroductionState(isOn: introductionSwitch.isOn)
         
         if PlayerStateMachine.shared.playerState == .ready {
-            askUserForConfirmation(completionHandler: {(result) in
+            AlertController().showInfoLongAffirmationLoop(vc: self) { result in
                 if result {
                     self.startPlaying()
                 }
-            })
+            }
         } else {
             self.startPlaying()
         }
     }
     
-    @IBAction func resetButtonTouched(_ sender: Any) {
+
+    @IBAction func backwardButtonTouched(_ sender: Any) {
         stopPlaying()
+    }
+    
+    @IBAction func forwardButtonTouched(_ sender: Any) {
+        stepForward()
     }
     
     @IBAction func volumeSliderChanged(_ sender: Any) {
@@ -259,6 +239,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         
         self.spectrumViewController?.clearGraph()
         //introductionSwitch.isOn = !UserDefaults.standard.bool(forKey: userDefaults_introductionPlayed)
+        self.introductionPulseImageView.stopAnimation()
 
         switch PlayerStateMachine.shared.pauseState {
         case .pause:
@@ -271,23 +252,26 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
                 stopButtonAnimations()
                 print("ready")
                 playButton.setState(active: false)
-                rewindButton.setEnabled(flag: false)
+                backButton.setEnabled(flag: false)
+                forwardButton.setEnabled(flag: false)
                 timerButton.setEnabled(flag: true)
+                introductionSwitch.setEnabled(flag: true)
                 break
             case .introduction:
                 print("introduction")
                 audioHelper.playInduction(type: Induction.Introduction)
+                introductionPulseImageView.animate()
                 break
             case .leadIn:
                 switch PlayerStateMachine.shared.introState {
                 case .chair:
                     print("intro chair")
                     audioHelper.playInduction(type: Induction.LeadInChair)
-                    animateIntroButton()
+                    leadInChairPulseImageView.animate()
                 case .bed:
                     print("intro bed")
                     audioHelper.playInduction(type: Induction.LeadInBed)
-                    animateIntroButton()
+                    leadInBedPulseImageView.animate()
                 case .none:
                     audioHelper.playInduction(type: Induction.Bell)
                     print("bell")
@@ -307,11 +291,11 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
                 case .day:
                     print("outro day")
                     audioHelper.playInduction(type: Induction.LeadOutDay)
-                    animateOutroButton()
+                    leadOutDayPulseImageView.animate()
                 case .night:
                     print("outro night")
                     audioHelper.playInduction(type: Induction.LeadOutNight)
-                    animateOutroButton()
+                    leadOutNightPulseImageView.animate()
                 case .none:
                     audioHelper.playInduction(type: Induction.Bell)
                     print("bell")
@@ -320,29 +304,10 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         }
     }
     
-    // TODO: put logic into image view
-    func animateIntroButton() {
-        DispatchQueue.main.async {
-            if PlayerStateMachine.shared.introState == .chair {
-                self.leadInChairPulseImageView.layer.add(getLayerAnimation(), forKey: "growingAnimation")
-            } else if PlayerStateMachine.shared.introState == .bed {
-                self.leadInBedPulseImageView.layer.add(getLayerAnimation(), forKey: "growingAnimation")
-            }
-        }
-    }
-    
-    func animateOutroButton() {
-        DispatchQueue.main.async {
-            if PlayerStateMachine.shared.outroState == .day {
-                self.leadOutDayPulseImageView.layer.add(getLayerAnimation(), forKey: "growingAnimation")
-            } else if PlayerStateMachine.shared.outroState == .night {
-                self.leadOutNightPulseImageView.layer.add(getLayerAnimation(), forKey: "growingAnimation")
-            }
-        }
-    }
-    
+
     func stopButtonAnimations() {
         DispatchQueue.main.async {
+            self.introductionPulseImageView.layer.removeAllAnimations()
             self.leadInChairPulseImageView.layer.removeAllAnimations()
             self.leadInBedPulseImageView.layer.removeAllAnimations()
             self.leadOutDayPulseImageView.layer.removeAllAnimations()
@@ -370,7 +335,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         
         CommandCenter.shared.updateLockScreenInfo()
         PlayerStateMachine.shared.togglePlayPauseState()
-        rewindButton.setEnabled(flag: true)
+        backButton.setEnabled(flag: true)
+        forwardButton.setEnabled(flag: true)
         introductionSwitch.setEnabled(flag: false)
         timerButton.setEnabled(flag: false)
         
@@ -393,7 +359,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         
         AudioHelper.shared.stop()
         playButton.setState(active: false)
-        rewindButton.setEnabled(flag: false)
+        backButton.setEnabled(flag: false)
+        forwardButton.setEnabled(flag: false)
         introductionSwitch.setEnabled(flag: true)
         timerButton.setEnabled(flag: true)
         stopButtonAnimations()
@@ -405,28 +372,10 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         
     }
     
-    func askUserForConfirmation(completionHandler: @escaping (Bool) -> Void) {
+    func stepForward() {
+        AudioHelper.shared.skip()
         
-        guard let playTimeInSeconds = TimerManager.shared.remainingTime else {
-            completionHandler(true)
-            return
-        }
-        
-        if playTimeInSeconds < criticalLoopDurationInSeconds {
-            completionHandler(true)
-            return
-        }
-        
-        let hours: Int = Int(playTimeInSeconds) / hourInSeconds
-        
-        let alert = UIAlertController(title: "Information", message: "You've set a very long time interval of about \(hours) hours. Are you sure that you want to listen to the silent subliminals for so long?", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "YES", style: .default, handler: {_ in
-            completionHandler(true)
-        }))
-        alert.addAction(UIAlertAction(title: "NO", style: .cancel, handler: { _ in
-            completionHandler(false)
-        }))
-        self.present(alert, animated: true)
+        //PlayerStateMachine.shared.doNextPlayerState()
     }
     
     
@@ -455,5 +404,4 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         playerView.layoutSubviews()
         soundView.layoutSubviews()
     }
-
 }

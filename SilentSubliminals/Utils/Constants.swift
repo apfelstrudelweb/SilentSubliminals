@@ -53,6 +53,14 @@ enum SoundInstance {
     case maker
 }
 
+enum LeadInLeadOutSymbols : Int {
+    case introduction = 0
+    case chair = 1
+    case bed = 2
+    case day = 3
+    case night = 4
+}
+
 let spectrumColor: UIColor = UIColor(red: 0, green: 0.8863, blue: 0.5333, alpha: 1.0)
 
 let modulationFrequency: Float = 20000
@@ -72,3 +80,7 @@ let userDefaults_introductionPlayed = "introductionPlayed"
 // Notification
 let notification_durationViewControllerCalled = "durationViewControllerCalled"
 let notification_endtimeViewControllerCalled = "endtimeViewControllerCalled"
+let notification_systemVolumeDidChange = "AVSystemController_SystemVolumeDidChangeNotification"
+
+let singeltonQueue = DispatchQueue(label: "com.freeurspirit.singeltonQueue",
+                                   attributes: .concurrent)

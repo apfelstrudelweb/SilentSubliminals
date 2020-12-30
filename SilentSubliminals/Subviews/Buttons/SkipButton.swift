@@ -9,7 +9,7 @@
 import Foundation
 
 
-class RewindButton: ShadowButton {
+class SkipButton: ShadowButton {
     
     override func layoutSubviews() {
         super.layoutSubviews()

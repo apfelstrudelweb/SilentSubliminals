@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 protocol PlayerStateMachineDelegate : AnyObject {
     
@@ -40,14 +41,36 @@ enum Induction {
 
 class PlayerStateMachine {
     
+    
+    
+    //private let serialQueue = DispatchQueue(label: "serialQueue", attributes: .concurrent)
+    
     weak var delegate : PlayerStateMachineDelegate?
     
-    static let shared = PlayerStateMachine()
+    //static let shared = PlayerStateMachine()
+    
+    private static var _shared : PlayerStateMachine?
     
     private init() {
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: Notification.Name("doNextPlayerState"), object: nil)
+    }   //cannot initialise from outer class
+    
+    @objc func onDidReceiveData(_ notification:Notification) {
+        doNextPlayerState()
     }
     
+    public static var shared : PlayerStateMachine {
+        get {
+            if _shared == nil {
+                DispatchQueue.global().sync(flags: .barrier) {
+                    if _shared == nil {
+                        _shared = PlayerStateMachine()
+                    }
+                }
+            }
+            return _shared!
+        }
+    }
     
     enum PlayerState {
         
@@ -128,9 +151,11 @@ class PlayerStateMachine {
     
     var playerState : PlayerState = .ready {
         didSet {
+            //serialQueue.sync {
                 delegate?.performAction()
                 delegate?.updateIntroButtons()
                 delegate?.updateOutroButtons()
+            //}
         }
     }
     var pauseState : PauseState = .pause {
@@ -164,7 +189,9 @@ class PlayerStateMachine {
     }
     
     func doNextPlayerState() {
-        playerState = self.playerState.nextState
+        //serialQueue.sync {
+            playerState = self.playerState.nextState
+        //}
     }
     
     func startPlayer() {

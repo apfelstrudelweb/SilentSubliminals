@@ -19,9 +19,8 @@ class VolumeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = .red
-        
-        let colors = [UIColor.blue, UIColor.green, UIColor.yellow, UIColor.red]
+
+        let colors = [UIColor.green, UIColor.yellow, UIColor.red]
         self.maskView.backgroundColor = .white
         self.view.showGradientColors(colors)
         self.view.addSubview(self.maskView)
@@ -106,7 +105,7 @@ extension UIView {
             gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.0)
         }
         
-        gradientLayer.locations = [0.0, 0.2, 0.4, 0.6]
+        gradientLayer.locations = [0.0, 0.4, 0.6, 0.8]
         
         gradientLayer.bounds = self.bounds
         gradientLayer.anchorPoint = CGPoint.zero

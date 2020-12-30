@@ -102,7 +102,7 @@ class AudioHelper {
             
             playerNode.scheduleBuffer(audioFileBuffer, completionHandler: {
     
-                self.audioEngine.pause()
+                self.audioEngine.stop()
                 self.playingNodes.remove(playerNode)
                 
                 if type == .Introduction {
@@ -110,7 +110,10 @@ class AudioHelper {
                 }
                 
                 if PlayerStateMachine.shared.playerState != .ready {
-                    PlayerStateMachine.shared.doNextPlayerState()
+                    //PlayerStateMachine.shared.doNextPlayerState()
+                    DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: Notification.Name("doNextPlayerState"), object: nil)
+                    }
                 }
             })
 
@@ -118,6 +121,7 @@ class AudioHelper {
             playerNode.play()
         }
     }
+    
     
     func playSingleAffirmation(instance: SoundInstance) {
 
@@ -157,15 +161,18 @@ class AudioHelper {
                     
                     self.audioEngine.pause()
                     self.playingNodes.remove(playerNode)
-
-                    if instance == .player {
-                        if PlayerStateMachine.shared.playerState != .ready {
-                            PlayerStateMachine.shared.doNextPlayerState()
+                    
+                    DispatchQueue.main.async {
+                        if instance == .player {
+                            if PlayerStateMachine.shared.playerState != .ready {
+                                NotificationCenter.default.post(name: Notification.Name("doNextPlayerState"), object: nil)
+                            }
+                        } else {
+                            MakerStateMachine.shared.stopPlayer()
+                            //PlayerStateMachine.shared.playerState = .ready
                         }
-                    } else {
-                        MakerStateMachine.shared.stopPlayer()
-                        //PlayerStateMachine.shared.playerState = .ready
                     }
+                   
                 })
                 
                 playerNode.play()
@@ -194,11 +201,22 @@ class AudioHelper {
         
         PlayerStateMachine.shared.playerState = .ready
         self.audioEngine.stop()
+        for playerNode in self.playingNodes {
+            playerNode.stop()
+        }
+        
+        self.playingNodes = Set<AVAudioPlayerNode>()
+    }
+    
+    func skip() {
+
+        self.audioEngine.stop()
 //        for playerNode in self.playingNodes {
 //            playerNode.stop()
 //        }
         
         self.playingNodes = Set<AVAudioPlayerNode>()
+        //PlayerStateMachine.shared.doNextPlayerState()
     }
     
     func playAffirmationLoop() {
@@ -238,13 +256,13 @@ class AudioHelper {
                     self.audioEngine.connect(self.mixer, to: self.audioEngine.outputNode, format: format)
                     try self.audioEngine.start()
                     
+                    let availableTimeForLoop = (TimerManager.shared.remainingTime ?? defaultAffirmationTime) - self.singleAffirmationDuration
+                    
                     playerNode.installTap(onBus: 0, bufferSize: bufferSize, format: format) {
                         (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
                         
                         DispatchQueue.main.async {
 
-                            let availableTimeForLoop = (TimerManager.shared.remainingTime ?? defaultAffirmationTime) - self.singleAffirmationDuration
-                            
                             CommandCenter.shared.updateTime(elapsedTime: playerNode.currentTime, totalDuration: availableTimeForLoop)
                             
                             if audioFile.isSilent && playerNode.currentTime >= availableTimeForLoop {
@@ -269,7 +287,11 @@ class AudioHelper {
                     let audioFileBuffer = AVAudioPCMBuffer(pcmFormat: avAudioFile.processingFormat, frameCapacity: AVAudioFrameCount(avAudioFile.length))!
                     try avAudioFile.read(into: audioFileBuffer)
                     
-                    playerNode.scheduleBuffer(audioFileBuffer, at: nil, options:.loops, completionHandler: nil)
+                    playerNode.scheduleBuffer(audioFileBuffer, at: nil, options:.loops, completionHandler: {
+                        if audioFile.isSilent && playerNode.currentTime < availableTimeForLoop {
+                            NotificationCenter.default.post(name: Notification.Name("doNextPlayerState"), object: nil)
+                        }
+                    })
                     playerNode.play()
                     self.playingNodes.insert(playerNode)
                 }
