@@ -82,5 +82,7 @@ let notification_durationViewControllerCalled = "durationViewControllerCalled"
 let notification_endtimeViewControllerCalled = "endtimeViewControllerCalled"
 let notification_systemVolumeDidChange = "AVSystemController_SystemVolumeDidChangeNotification"
 
-let singeltonQueue = DispatchQueue(label: "com.freeurspirit.singeltonQueue",
-                                   attributes: .concurrent)
+let notification_player_nextState = "player_nextState"
+//let notification_maker_stopRecordingState = "maker_stopRecordingState"
+let notification_maker_stopPlayingState = "maker_stopPlayingState"
+

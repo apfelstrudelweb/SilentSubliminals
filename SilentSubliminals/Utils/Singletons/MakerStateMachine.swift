@@ -21,7 +21,14 @@ class MakerStateMachine {
     static let shared = MakerStateMachine()
     
     private init() {
-        
+        // background thread in AudioHelper
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: Notification.Name(notification_maker_stopPlayingState), object: nil)
+    }
+    
+    @objc func onDidReceiveData(_ notification:Notification) {
+        if notification.name.rawValue == notification_maker_stopPlayingState {
+            stopPlayer()
+        }
     }
     
     enum PlayerState {

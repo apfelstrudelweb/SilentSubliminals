@@ -94,9 +94,9 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         PlayerStateMachine.shared.outroState = .day
         PlayerStateMachine.shared.frequencyState = .loud
 
-        let backButton = BackButton(type: .custom)
-        backButton.delegate = self
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
+        let navigationButton = BackButton(type: .custom)
+        navigationButton.delegate = self
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: navigationButton)
         
         backButton.isEnabled = false
         forwardButton.isEnabled = false
@@ -111,8 +111,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        //stopPlaying()
-        audioHelper.stop()
+        audioHelper.reset()
     }
     
     // MARK: Segues
@@ -357,7 +356,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     
     func stopPlaying() {
         
-        AudioHelper.shared.stop()
+        AudioHelper.shared.reset()
         playButton.setState(active: false)
         backButton.setEnabled(flag: false)
         forwardButton.setEnabled(flag: false)
@@ -369,13 +368,10 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         TimerManager.shared.reset()
         
         CommandCenter.shared.updateLockScreenInfo()
-        
     }
     
     func stepForward() {
         AudioHelper.shared.skip()
-        
-        //PlayerStateMachine.shared.doNextPlayerState()
     }
     
     

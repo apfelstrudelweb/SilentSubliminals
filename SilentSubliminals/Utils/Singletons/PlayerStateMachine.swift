@@ -40,37 +40,22 @@ enum Induction {
 }
 
 class PlayerStateMachine {
-    
-    
-    
-    //private let serialQueue = DispatchQueue(label: "serialQueue", attributes: .concurrent)
-    
+
     weak var delegate : PlayerStateMachineDelegate?
     
-    //static let shared = PlayerStateMachine()
-    
-    private static var _shared : PlayerStateMachine?
+    static let shared = PlayerStateMachine()
     
     private init() {
-        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: Notification.Name("doNextPlayerState"), object: nil)
-    }   //cannot initialise from outer class
+        // background thread in AudioHelper
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: Notification.Name(notification_player_nextState), object: nil)
+    }
     
     @objc func onDidReceiveData(_ notification:Notification) {
-        doNextPlayerState()
-    }
-    
-    public static var shared : PlayerStateMachine {
-        get {
-            if _shared == nil {
-                DispatchQueue.global().sync(flags: .barrier) {
-                    if _shared == nil {
-                        _shared = PlayerStateMachine()
-                    }
-                }
-            }
-            return _shared!
+        if notification.name.rawValue == notification_player_nextState {
+            doNextPlayerState()
         }
     }
+    
     
     enum PlayerState {
         

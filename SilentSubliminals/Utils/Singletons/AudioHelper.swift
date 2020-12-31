@@ -110,9 +110,8 @@ class AudioHelper {
                 }
                 
                 if PlayerStateMachine.shared.playerState != .ready {
-                    //PlayerStateMachine.shared.doNextPlayerState()
                     DispatchQueue.main.async {
-                        NotificationCenter.default.post(name: Notification.Name("doNextPlayerState"), object: nil)
+                        NotificationCenter.default.post(name: Notification.Name(notification_player_nextState), object: nil)
                     }
                 }
             })
@@ -165,14 +164,12 @@ class AudioHelper {
                     DispatchQueue.main.async {
                         if instance == .player {
                             if PlayerStateMachine.shared.playerState != .ready {
-                                NotificationCenter.default.post(name: Notification.Name("doNextPlayerState"), object: nil)
+                                NotificationCenter.default.post(name: Notification.Name(notification_player_nextState), object: nil)
                             }
                         } else {
-                            MakerStateMachine.shared.stopPlayer()
-                            //PlayerStateMachine.shared.playerState = .ready
+                            NotificationCenter.default.post(name: Notification.Name(notification_maker_stopPlayingState), object: nil)
                         }
                     }
-                   
                 })
                 
                 playerNode.play()
@@ -197,27 +194,19 @@ class AudioHelper {
         self.audioEngine.stop()
     }
     
-    func stop() {
+    func reset() {
         
         PlayerStateMachine.shared.playerState = .ready
         self.audioEngine.stop()
-        for playerNode in self.playingNodes {
-            playerNode.stop()
-        }
-        
         self.playingNodes = Set<AVAudioPlayerNode>()
     }
     
     func skip() {
 
         self.audioEngine.stop()
-//        for playerNode in self.playingNodes {
-//            playerNode.stop()
-//        }
-        
         self.playingNodes = Set<AVAudioPlayerNode>()
-        //PlayerStateMachine.shared.doNextPlayerState()
     }
+    
     
     func playAffirmationLoop() {
         
@@ -270,7 +259,7 @@ class AudioHelper {
                                 self.audioEngine.pause()
                                 self.playingNodes = Set<AVAudioPlayerNode>()
                                 if PlayerStateMachine.shared.playerState == .affirmationLoop {
-                                    PlayerStateMachine.shared.doNextPlayerState()
+                                    NotificationCenter.default.post(name: Notification.Name(notification_player_nextState), object: nil)
                                 }
                             }
                             
@@ -289,7 +278,7 @@ class AudioHelper {
                     
                     playerNode.scheduleBuffer(audioFileBuffer, at: nil, options:.loops, completionHandler: {
                         if audioFile.isSilent && playerNode.currentTime < availableTimeForLoop {
-                            NotificationCenter.default.post(name: Notification.Name("doNextPlayerState"), object: nil)
+                            NotificationCenter.default.post(name: Notification.Name(notification_player_nextState), object: nil)
                         }
                     })
                     playerNode.play()

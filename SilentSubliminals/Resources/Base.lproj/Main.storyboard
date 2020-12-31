@@ -453,7 +453,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="pulseSymbolOval" translatesAutoresizingMaskIntoConstraints="NO" id="1tk-Ks-GEn" customClass="PulseImageView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" image="pulseSymbolOval" translatesAutoresizingMaskIntoConstraints="NO" id="1tk-Ks-GEn" customClass="PulseImageView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="210.5" y="8.5" width="49" height="31"/>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="number" keyPath="symbolAlias">
@@ -461,7 +461,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                     </userDefinedRuntimeAttribute>
                                                                 </userDefinedRuntimeAttributes>
                                                             </imageView>
-                                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WTQ-46-HQ2" customClass="Switch" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WTQ-46-HQ2" customClass="Switch" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="210.5" y="8.5" width="51" height="31"/>
                                                                 <color key="onTintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <connections>
@@ -511,9 +511,6 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                                 <rect key="frame" x="213" y="70" width="44" height="44"/>
                                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <userDefinedRuntimeAttributes>
-                                                                    <userDefinedRuntimeAttribute type="number" keyPath="testAttr">
-                                                                        <real key="value" value="0.0"/>
-                                                                    </userDefinedRuntimeAttribute>
                                                                     <userDefinedRuntimeAttribute type="number" keyPath="symbolAlias">
                                                                         <integer key="value" value="2"/>
                                                                     </userDefinedRuntimeAttribute>
