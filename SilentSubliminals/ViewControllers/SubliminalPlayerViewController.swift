@@ -77,6 +77,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     var introButtons:[ToggleButton : PlayerStateMachine.IntroState]?
     var outroButtons:[ToggleButton : PlayerStateMachine.OutroState]?
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -96,6 +97,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         PlayerStateMachine.shared.frequencyState = .loud
 
         let navigationButton = BackButton(type: .custom)
+        //navigationButton.tintColor = .red
         navigationButton.delegate = self
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: navigationButton)
         
@@ -257,6 +259,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
                 forwardButton.setEnabled(flag: false)
                 timerButton.setEnabled(flag: true)
                 introductionSwitch.setEnabled(flag: true)
+                CommandCenter.shared.enableSkipButtons(flag: false)
                 break
             case .introduction:
                 print("introduction")
@@ -319,6 +322,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     func pauseSound() {
         print("Sound paused")
         audioHelper.pauseSound()
+        //CommandCenter.shared.displayElapsedTime()
     }
     
     func continueSound() {
@@ -341,12 +345,15 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         introductionSwitch.setEnabled(flag: false)
         timerButton.setEnabled(flag: false)
         
+        CommandCenter.shared.enableSkipButtons(flag: true)
+        
         switch PlayerStateMachine.shared.pauseState {
         
         case .play:
             self.playButton.setState(active: true)
             PlayerStateMachine.shared.startPlayer()
         case .pause:
+            forwardButton.setEnabled(flag: false)
             playButton.setState(active: false)
         }
     }
@@ -366,10 +373,16 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         timerButton.setEnabled(flag: true)
         stopButtonAnimations()
         
+        CommandCenter.shared.enableSkipButtons(flag: false)
+        
         introductionSwitch.layoutSubviews()
         TimerManager.shared.reset()
         
         CommandCenter.shared.updateLockScreenInfo()
+    }
+    
+    func skip() {
+        AudioHelper.shared.skip()
     }
     
     func stepForward() {

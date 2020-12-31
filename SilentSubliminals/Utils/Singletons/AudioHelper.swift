@@ -49,6 +49,53 @@ class AudioHelper {
     
     weak var delegate : AudioHelperDelegate?
     
+    init() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleInterruption(notification:)), name: AVAudioSession.interruptionNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleRouteChange(notification:)), name: AVAudioSession.routeChangeNotification, object: nil)
+        
+        
+        
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setActive(false, options: .notifyOthersOnDeactivation)
+            try audioSession.overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
+            try audioSession.setCategory(.playAndRecord, options: [.defaultToSpeaker, .allowAirPlay, .allowBluetooth, .allowBluetoothA2DP])
+            try audioSession.setPreferredIOBufferDuration(128.0 / 44100.0)
+            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+        } catch {
+            print("Failed to set audio session category.")
+        }
+    }
+    
+    @objc func handleRouteChange(notification: Notification) {
+        print(notification.name)
+        //pauseSound()
+    }
+
+    @objc func handleInterruption(notification: Notification) {
+        guard let userInfo = notification.userInfo, let typeInt = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt, let type = AVAudioSession.InterruptionType(rawValue: typeInt) else {
+                return
+        }
+
+        switch type {
+        case .began:
+            // Pause your player
+            print(type)
+            break;
+
+        case .ended:
+            if let optionInt = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt {
+                let options = AVAudioSession.InterruptionOptions(rawValue: optionInt)
+                if options.contains(.shouldResume) {
+                    try! self.audioEngine.start()
+                }
+            }
+        @unknown default:
+            print("handleInterruption error")
+        }
+    }
+    
     
     func getSilentPlayerNode() -> AVAudioPlayerNode {
         return audioFiles.filter() { $0.isSilent == true }.first!.audioPlayer
@@ -59,7 +106,7 @@ class AudioHelper {
     }
 
     func playInduction(type: Induction) {
-        
+
         audioQueue.async {
             
             self.audioEngine.pause()
@@ -250,7 +297,10 @@ class AudioHelper {
                     self.audioEngine.connect(self.mixer, to: self.audioEngine.outputNode, format: format)
                     try self.audioEngine.start()
                     
-                    let availableTimeForLoop = (TimerManager.shared.remainingTime ?? defaultAffirmationTime) - self.singleAffirmationDuration
+                    let availableTimeForLoop: TimeInterval = (TimerManager.shared.remainingTime ?? defaultAffirmationTime) - self.singleAffirmationDuration
+                    
+                    var numExceeds = 0
+                    var notificationPosted: Bool = false
                     
                     playerNode.installTap(onBus: 0, bufferSize: bufferSize, format: format) {
                         (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
@@ -261,15 +311,26 @@ class AudioHelper {
                             
                             if audioFile.isSilent {
                                 let exceed = SignalProcessing.checkForVolumeExceed(from: buffer)
-                                self.delegate?.alertSilentsTooLoud(flag: exceed)
+                                if exceed {
+                                    numExceeds += 1
+                                }
+                                if numExceeds > 5 {
+                                    self.delegate?.alertSilentsTooLoud(flag: true)
+                                    numExceeds = 0
+                                } else {
+                                    self.delegate?.alertSilentsTooLoud(flag: false)
+                                }
+                                
                             }
                             
-                            if audioFile.isSilent && playerNode.currentTime >= availableTimeForLoop {
-                                playerNode.stop()
+                            if audioFile.isSilent && playerNode.currentTime > availableTimeForLoop {
+                                //playerNode.stop()
                                 self.audioEngine.pause()
                                 self.playingNodes = Set<AVAudioPlayerNode>()
-                                if PlayerStateMachine.shared.playerState == .affirmationLoop {
+                                if PlayerStateMachine.shared.playerState == .affirmationLoop && !notificationPosted {
                                     NotificationCenter.default.post(name: Notification.Name(notification_player_nextState), object: nil)
+                                    notificationPosted = true
+                                    //PlayerStateMachine.shared.doNextPlayerState()
                                 }
                             }
                             
@@ -287,8 +348,9 @@ class AudioHelper {
                     try avAudioFile.read(into: audioFileBuffer)
                     
                     playerNode.scheduleBuffer(audioFileBuffer, at: nil, options:.loops, completionHandler: {
-                        if audioFile.isSilent && playerNode.currentTime < availableTimeForLoop {
+                        if audioFile.isSilent && playerNode.currentTime < availableTimeForLoop && !notificationPosted {
                             NotificationCenter.default.post(name: Notification.Name(notification_player_nextState), object: nil)
+                            notificationPosted = true
                         }
                     })
                     playerNode.play()

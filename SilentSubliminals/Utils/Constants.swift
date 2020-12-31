@@ -41,6 +41,7 @@ struct PlayerControlColor {
     static var lightColor: UIColor = UIColor(red: 239/255, green: 239/255, blue: 239/255, alpha: 1.0)
     static var lightGrayColor: UIColor = UIColor(red: 178/255, green: 178/255, blue: 178/255, alpha: 1.0)
     static var darkGrayColor: UIColor = UIColor(red: 119/255, green: 119/255, blue: 119/255, alpha: 1.0)
+    static var warningColor: UIColor = UIColor(red: 196/255, green: 0/255, blue: 0/255, alpha: 1.0)
     
 //    // for test purposes
 //    static var lightColor: UIColor = .red

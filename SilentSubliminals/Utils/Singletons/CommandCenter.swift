@@ -14,6 +14,7 @@ protocol CommandCenterDelegate : AnyObject {
     func pausePlaying()
     func startPlaying()
     func stopPlaying()
+    func skip()
 }
 
 class CommandCenter {
@@ -22,6 +23,9 @@ class CommandCenter {
     
     static let shared = CommandCenter()
     let commandCenter = MPRemoteCommandCenter.shared()
+    
+    var elapsedTime: TimeInterval = 0
+    var totalDuration: TimeInterval = 0
 
     private init() {
 
@@ -31,13 +35,14 @@ class CommandCenter {
         
         commandCenter.pauseCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
             print("PAUSE")
+            //self.updateTime(elapsedTime: self.elapsedTime, totalDuration: self.totalDuration)
             self.delegate?.startPlaying()
             return .success
         }
         commandCenter.playCommand.addTarget { [self] (_) -> MPRemoteCommandHandlerStatus in
             print("PLAY")
+            //self.updateTime(elapsedTime: self.elapsedTime, totalDuration: self.totalDuration)
             self.delegate?.startPlaying()
-            self.commandCenter.previousTrackCommand.isEnabled = true
             return .success
         }
         commandCenter.previousTrackCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
@@ -46,15 +51,29 @@ class CommandCenter {
             self.commandCenter.previousTrackCommand.isEnabled = false
             return .success
         }
-        commandCenter.skipForwardCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
+        commandCenter.nextTrackCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
             print("NEXT")
-            // TODO: next affirmation
+            self.delegate?.skip()
             return .success
         }
         commandCenter.playCommand.isEnabled = true
         commandCenter.pauseCommand.isEnabled = true
         commandCenter.previousTrackCommand.isEnabled = false
-        commandCenter.skipForwardCommand.isEnabled = false
+        commandCenter.nextTrackCommand.isEnabled = false
+    }
+    
+    func displayElapsedTime() {
+        //MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = 20
+        //updateTime(elapsedTime: 30, totalDuration: 40)
+    }
+    
+    func enableSkipButtons(flag: Bool) {
+        self.commandCenter.previousTrackCommand.isEnabled = flag
+        self.commandCenter.nextTrackCommand.isEnabled = flag
+        
+        if !flag {
+            updateTime(elapsedTime: 0, totalDuration: 0)
+        }
     }
 
     func removeCommandCenter() {
@@ -83,6 +102,9 @@ class CommandCenter {
     }
     
     func updateTime(elapsedTime: TimeInterval, totalDuration: TimeInterval) {
+        
+        self.elapsedTime = elapsedTime
+        self.totalDuration = totalDuration
         
         let image = UIImage(named: "schmettering_1024")!
         let mediaArtwork = MPMediaItemArtwork(boundsSize: image.size) { (size: CGSize) -> UIImage in

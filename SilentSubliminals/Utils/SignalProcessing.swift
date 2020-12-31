@@ -110,9 +110,8 @@ class SignalProcessing {
     }
     
     static func checkForVolumeExceed(from buffer: AVAudioPCMBuffer) -> Bool {
-        //print(getVolume(from: buffer))
-        
-        return getVolume(from: buffer) > 0.35
+
+        return getVolume(from: buffer) > 0.18
     }
 }
 

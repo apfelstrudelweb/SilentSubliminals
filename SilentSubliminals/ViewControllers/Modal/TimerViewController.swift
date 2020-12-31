@@ -52,7 +52,6 @@ class TimerViewController: UIViewController, TimerDelegate {
     
     
     @IBAction func segmentedControlValueChanged(_ sender: Any) {
-        
         setActiveView()
     }
     

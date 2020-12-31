@@ -24,7 +24,7 @@ class LoudspeakerSymbolView: SymbolImageView {
     }
     
     @objc func runTimedCode() {
-        self.tintColor = index % 2 == 0 ? .red : .clear
+        self.tintColor = index % 2 == 0 ? PlayerControlColor.warningColor : .clear
         index += 1
         if index == UInt8.max {
             index = 0

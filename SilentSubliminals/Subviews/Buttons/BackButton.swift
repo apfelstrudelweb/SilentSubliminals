@@ -21,7 +21,7 @@ class BackButton: UIButton {
         super.layoutSubviews()
 
         self.setImage(UIImage(named: "backButton.png"), for: [.normal])
-        self.tintColor = PlayerControlColor.lightColor
+        self.tintColor = .white//PlayerControlColor.lightColor
         self.addTarget(self, action: #selector(self.close(_:)), for: .touchUpInside)
     }
     

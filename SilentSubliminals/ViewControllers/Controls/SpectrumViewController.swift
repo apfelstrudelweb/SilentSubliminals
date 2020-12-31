@@ -10,7 +10,7 @@ import UIKit
 import CoreAudio
 import AVFoundation
 import Accelerate
-import PureLayout
+//import PureLayout
 
 class SpectrumView : UIView {
     
