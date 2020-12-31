@@ -12,6 +12,11 @@ import AVFoundation
 protocol AudioHelperDelegate : AnyObject {
     
     func processAudioData(buffer: AVAudioPCMBuffer)
+    func alertSilentsTooLoud(flag: Bool)
+}
+
+extension AudioHelperDelegate {
+    func alertSilentsTooLoud(flag: Bool) {}
 }
 
 struct Manager {
@@ -253,6 +258,11 @@ class AudioHelper {
                         DispatchQueue.main.async {
 
                             CommandCenter.shared.updateTime(elapsedTime: playerNode.currentTime, totalDuration: availableTimeForLoop)
+                            
+                            if audioFile.isSilent {
+                                let exceed = SignalProcessing.checkForVolumeExceed(from: buffer)
+                                self.delegate?.alertSilentsTooLoud(flag: exceed)
+                            }
                             
                             if audioFile.isSilent && playerNode.currentTime >= availableTimeForLoop {
                                 playerNode.stop()

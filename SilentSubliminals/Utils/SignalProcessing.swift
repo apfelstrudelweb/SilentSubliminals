@@ -7,8 +7,11 @@
 //
 
 import Accelerate
+import AVFoundation
 
 class SignalProcessing {
+    
+    static var index: Int = 0
     
     static func rms(data: UnsafeMutablePointer<Float>, frameLength: UInt) -> Float {
         var val : Float = 0
@@ -68,6 +71,48 @@ class SignalProcessing {
         vDSP_vsmul(&magnitudes, 1, &scalingFactor, &normalizedMagnitudes, 1, vDSP_Length(bufferSize))
         
         return normalizedMagnitudes
+    }
+    
+    static func getVolume(from buffer: AVAudioPCMBuffer) -> Float {
+        
+        guard let _ = buffer.floatChannelData?[0] else {
+            return 0
+        }
+        
+        var volume: Float = 0
+        
+        let arraySize = Int(buffer.frameLength)
+        var channelSamples: [[DSPComplex]] = []
+        let channelCount = Int(buffer.format.channelCount)
+        
+        for i in 0..<channelCount {
+            
+            channelSamples.append([])
+            let firstSample = buffer.format.isInterleaved ? i : i*arraySize
+            
+            for j in stride(from: firstSample, to: arraySize, by: buffer.stride*2) {
+                
+                let channels = UnsafeBufferPointer(start: buffer.floatChannelData, count: Int(buffer.format.channelCount))
+                let floats = UnsafeBufferPointer(start: channels[0], count: Int(buffer.frameLength))
+                channelSamples[i].append(DSPComplex(real: floats[j], imag: floats[j+buffer.stride]))
+            }
+        }
+        
+        for i in 0..<arraySize/2 {
+            
+            let imag = channelSamples[0][i].imag
+            let real = channelSamples[0][i].real
+            let magnitude = sqrt(pow(real,2)+pow(imag,2))
+            
+            volume += magnitude
+        }
+        return volume  * AVAudioSession.sharedInstance().outputVolume / Float(bufferSize)
+    }
+    
+    static func checkForVolumeExceed(from buffer: AVAudioPCMBuffer) -> Bool {
+        //print(getVolume(from: buffer))
+        
+        return getVolume(from: buffer) > 0.35
     }
 }
 

@@ -13,6 +13,7 @@ import MediaPlayer
 
 class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, PlayerStateMachineDelegate, CommandCenterDelegate, BackButtonDelegate, AudioHelperDelegate {
 
+
     // 1. section
     @IBOutlet weak var introductionSwitch: Switch!
     @IBOutlet weak var introductionPulseImageView: PulseImageView!
@@ -46,7 +47,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     @IBOutlet weak var affirmationTitleLabel: UILabel!
     @IBOutlet weak var timerButton: TimerButton!
     @IBOutlet weak var loudspeakerLowSymbol: UIImageView!
-    @IBOutlet weak var loudspeakerHighSymbol: UIImageView!
+    @IBOutlet weak var loudspeakerHighSymbol: LoudspeakerSymbolView!
     @IBOutlet weak var volumeSlider: UISlider! {
         didSet {
             volumeSlider.value = AVAudioSession.sharedInstance().outputVolume
@@ -239,6 +240,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         self.spectrumViewController?.clearGraph()
         //introductionSwitch.isOn = !UserDefaults.standard.bool(forKey: userDefaults_introductionPlayed)
         self.introductionPulseImageView.stopAnimation()
+        self.loudspeakerHighSymbol.showExceedWarning(flag: false)
 
         switch PlayerStateMachine.shared.pauseState {
         case .pause:
@@ -393,6 +395,14 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     func processAudioData(buffer: AVAudioPCMBuffer) {
         self.volumeViewController?.processAudioData(buffer: buffer)
         self.spectrumViewController?.processAudioData(buffer: buffer)
+    }
+    
+    func alertSilentsTooLoud(flag: Bool) {
+        if PlayerStateMachine.shared.frequencyState == .silent {
+            self.loudspeakerHighSymbol.showExceedWarning(flag: flag)
+        } else {
+            self.loudspeakerHighSymbol.showExceedWarning(flag: false)
+        }
     }
     
     // MARK: UIScrollViewDelegate

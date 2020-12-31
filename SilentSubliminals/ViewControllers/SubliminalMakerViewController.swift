@@ -17,6 +17,7 @@ let alpha: CGFloat = 0.85
 
 
 class SubliminalMakerViewController: UIViewController, BackButtonDelegate, MakerStateMachineDelegate, AudioHelperDelegate {
+    
  
     @IBOutlet weak var controlView: UIView!
     @IBOutlet weak var playerView: UIView!
