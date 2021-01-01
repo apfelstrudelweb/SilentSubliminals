@@ -47,6 +47,8 @@ class AudioHelper {
     private var mixer: AVAudioMixerNode = AVAudioMixerNode()
     private var equalizerHighPass: AVAudioUnitEQ = AVAudioUnitEQ(numberOfBands: 1)
     
+    var routeIsChanging: Bool = false
+    
     weak var delegate : AudioHelperDelegate?
     
     init() {
@@ -70,7 +72,10 @@ class AudioHelper {
     
     @objc func handleRouteChange(notification: Notification) {
         print(notification.name)
-        //pauseSound()
+        routeIsChanging = true
+        //try! self.audioEngine.start()
+        //sleep(1)
+        //continueSound()
     }
 
     @objc func handleInterruption(notification: Notification) {
@@ -161,12 +166,14 @@ class AudioHelper {
                     UserDefaults.standard.set(true, forKey: userDefaults_introductionPlayed)
                 }
                 
-                if PlayerStateMachine.shared.playerState != .ready {
+                if PlayerStateMachine.shared.playerState != .ready { //&& !self.routeIsChanging {
                     DispatchQueue.main.async {
                         NotificationCenter.default.post(name: Notification.Name(notification_player_nextState), object: nil)
                     }
                 }
             })
+            
+            //self.routeIsChanging = false
 
             self.playingNodes.insert(playerNode)
             playerNode.play()

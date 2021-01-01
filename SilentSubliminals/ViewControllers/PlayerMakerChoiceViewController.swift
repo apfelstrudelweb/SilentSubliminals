@@ -21,6 +21,11 @@ class PlayerMakerChoiceViewController: UIViewController, AudioSessionManagerDele
         //self.navigationItem.title = "Choice"
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+   
+    }
+    
     // MARK: AudioSessionManagerDelegate
     func showWarning() {
         

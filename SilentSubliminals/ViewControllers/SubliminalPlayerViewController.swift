@@ -95,11 +95,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         PlayerStateMachine.shared.introState = .chair
         PlayerStateMachine.shared.outroState = .day
         PlayerStateMachine.shared.frequencyState = .loud
-
-        let navigationButton = BackButton(type: .custom)
-        //navigationButton.tintColor = .red
-        navigationButton.delegate = self
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: navigationButton)
+        
+        self.navigationController?.navigationBar.tintColor = .white
         
         backButton.isEnabled = false
         forwardButton.isEnabled = false

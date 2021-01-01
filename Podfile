@@ -10,4 +10,5 @@ target 'FREE UR SPIRIT' do
 
   # Pods for SilentSubliminals
   pod 'PureLayout'
+  pod 'ScrollingPageControl'
 end

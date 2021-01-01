@@ -38,11 +38,9 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         MakerStateMachine.shared.playerState = .playStopped
         MakerStateMachine.shared.recorderState = .recordStopped
         
-        let backButton = BackButton(type: .custom)
-        backButton.delegate = self
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
-        
         view.layer.contents = #imageLiteral(resourceName: "subliminalMakerBackground.png").cgImage
+        
+        self.navigationController?.navigationBar.tintColor = .white
         
         playerView.layer.cornerRadius = cornerRadius
         controlView.layer.cornerRadius = playerView.layer.cornerRadius
