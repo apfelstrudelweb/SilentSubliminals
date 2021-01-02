@@ -16,9 +16,8 @@ import PureLayout
 let alpha: CGFloat = 0.85
 
 
-class SubliminalMakerViewController: UIViewController, BackButtonDelegate, MakerStateMachineDelegate, AudioHelperDelegate {
-    
- 
+class SubliminalMakerViewController: UIViewController, BackButtonDelegate, MakerStateMachineDelegate, AudioHelperDelegate, SelectAffirmationDelegate {
+
     @IBOutlet weak var controlView: UIView!
     @IBOutlet weak var playerView: UIView!
     @IBOutlet weak var containerView: UIView!
@@ -27,7 +26,13 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
     @IBOutlet weak var playButton: PlayButton!
     
     private var spectrumViewController: SpectrumViewController?
+    private var scriptViewController: ScriptViewController?
+    private var makerAddNewViewController: MakerAddNewViewController?
+    
     private var audioHelper = AudioHelper.shared
+    
+    var usedAffirmation: String?
+    var usedImage: UIImage?
     
 
     override func viewDidLoad() {
@@ -46,14 +51,10 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         controlView.layer.cornerRadius = playerView.layer.cornerRadius
         controlView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         
-        controlView.alpha = alpha
-        containerView.alpha = alpha
-        
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.autoPinEdge(.top, to: .bottom, of: self.view)
-        
-//        recordButton.alpha = 0.1
-//        recordButton.isEnabled = false
+        let offset = 0.1 * view.frame.size.height
+        containerView.autoPinEdge(.bottom, to: .bottom, of: view, withOffset: -offset)
+        self.view.layoutIfNeeded()
+
         
         print(getDocumentsDirectory())
  
@@ -70,12 +71,7 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
     // MARK: user actions
     @IBAction func scriptCreationButtonTouched(_ sender: Any) {
         
-        let offset = 0.1 * view.frame.size.height
-        containerView.autoPinEdge(.bottom, to: .bottom, of: view, withOffset: -offset)
-        
-        UIView.animate(withDuration: 0.45) { [weak self] in
-            self?.view.layoutIfNeeded()
-        }
+
     }
     
     @IBAction func playButtonTouched(_ sender: Any) {
@@ -158,6 +154,13 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         if let vc = segue.destination as? SpectrumViewController {
             spectrumViewController = vc
         }
+        if let vc = segue.destination as? ScriptViewController {
+            scriptViewController = vc
+        }
+        if let vc = segue.destination as? MakerAddNewViewController {
+            makerAddNewViewController = vc
+            makerAddNewViewController?.delegate = self
+        }
     }
     
     
@@ -166,4 +169,9 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
+    // MARK: SelectAffirmationDelegate
+    func affirmationSelected(affirmation: Affirmation) {
+        scriptViewController?.affirmation = affirmation
+    }
+
 }

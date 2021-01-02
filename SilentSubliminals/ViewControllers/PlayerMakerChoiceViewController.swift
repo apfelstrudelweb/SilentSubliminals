@@ -18,6 +18,7 @@ class PlayerMakerChoiceViewController: UIViewController, AudioSessionManagerDele
         audioSessionManager.delegate = self
         audioSessionManager.checkForPermission()
 
+        self.navigationController?.navigationBar.tintColor = .lightGray
         //self.navigationItem.title = "Choice"
     }
     

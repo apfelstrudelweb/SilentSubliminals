@@ -9,7 +9,18 @@
 import UIKit
 
 class ScriptViewController: UIViewController {
+    
 
+    var affirmation: Affirmation? {
+        didSet {
+            titleLabel.text = affirmation?.title
+            imageView.image = affirmation?.image
+            textView.text = affirmation?.text
+        }
+    }
+
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var buttonView: UIView!
     
@@ -18,6 +29,9 @@ class ScriptViewController: UIViewController {
 
         textView.layer.cornerRadius = cornerRadius
         buttonView.layer.cornerRadius = cornerRadius
+        
+        imageView.layer.cornerRadius = cornerRadius
+        imageView.clipsToBounds = true
         
         if UIDevice.current.userInterfaceIdiom == .phone {
            textView.textContainerInset = UIEdgeInsets(top: 20, left: 10, bottom: 20, right: 10)
@@ -30,4 +44,10 @@ class ScriptViewController: UIViewController {
         buttonView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
     }
 
+}
+
+class Affirmation {
+    var title: String?
+    var text: String?
+    var image: UIImage?
 }

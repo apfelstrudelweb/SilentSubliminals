@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="yEI-Zt-PYa">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -203,6 +202,7 @@
                                 <state key="normal" backgroundImage="plusButton.png"/>
                                 <connections>
                                     <action selector="scriptCreationButtonTouched:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8go-yo-fvk"/>
+                                    <segue destination="P6a-z8-KIu" kind="show" identifier="showMaker2Segue" id="drL-95-0Nf"/>
                                 </connections>
                             </button>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KHd-hc-lYm">
@@ -256,6 +256,133 @@
             </objects>
             <point key="canvasLocation" x="2866.666666666667" y="85.044642857142847"/>
         </scene>
+        <!--Maker Add New View Controller-->
+        <scene sceneID="bwY-ug-ENO">
+            <objects>
+                <viewController id="P6a-z8-KIu" customClass="MakerAddNewViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="crZ-Y5-2wk">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Affirmation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IH3-pR-fxG">
+                                <rect key="frame" x="44" y="64" width="117.5" height="28"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="23"/>
+                                <color key="textColor" systemColor="systemGrayColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cover" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Zd-mp-Wi4">
+                                <rect key="frame" x="44" y="146" width="49" height="22"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
+                                <color key="textColor" systemColor="systemGrayColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9q4-5b-e3d">
+                                <rect key="frame" x="123" y="112" width="90" height="90"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="90" id="RYP-zG-46p"/>
+                                    <constraint firstAttribute="width" secondItem="9q4-5b-e3d" secondAttribute="height" id="TJ1-j2-UhP"/>
+                                </constraints>
+                                <state key="normal" title="Button" image="plusSymbolGreen"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="coverImageButtonTouched:" destination="P6a-z8-KIu" eventType="touchUpInside" id="sgA-Jt-rAv"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yKb-ng-YSw">
+                                <rect key="frame" x="44" y="242" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="yKb-ng-YSw" secondAttribute="height" id="TNC-Ph-lOX"/>
+                                    <constraint firstAttribute="width" constant="40" id="fUE-yN-7yc"/>
+                                </constraints>
+                                <state key="normal" title="Button" image="plusSymbolGreen"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="addAffirmationButtonTouched:" destination="P6a-z8-KIu" eventType="touchUpInside" id="zGA-v9-pDx"/>
+                                </connections>
+                            </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Kbl-Nj-6vk">
+                                <rect key="frame" x="0.0" y="312" width="414" height="584"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="affirmationCell" rowHeight="101" id="Bej-LQ-5e0" customClass="AffirmationTableViewCell" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="101"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Bej-LQ-5e0" id="E3P-hw-dGg">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="101"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LyW-DD-kjL">
+                                                    <rect key="frame" x="44" y="10" width="348" height="81"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" red="0.90662674492385786" green="0.90662674492385786" blue="0.90662674492385786" alpha="0.84705882352941175" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="LyW-DD-kjL" secondAttribute="bottom" constant="10" id="UZV-So-uKZ"/>
+                                                <constraint firstAttribute="trailing" secondItem="LyW-DD-kjL" secondAttribute="trailing" constant="22" id="fqf-Lt-p1p"/>
+                                                <constraint firstItem="LyW-DD-kjL" firstAttribute="leading" secondItem="E3P-hw-dGg" secondAttribute="leading" constant="44" id="j14-hr-WCc"/>
+                                                <constraint firstItem="LyW-DD-kjL" firstAttribute="top" secondItem="E3P-hw-dGg" secondAttribute="top" constant="10" id="kHP-pK-ff8"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="affirmationLabel" destination="LyW-DD-kjL" id="2ag-tV-iek"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="P6a-z8-KIu" id="cYx-Kc-DPz"/>
+                                    <outlet property="delegate" destination="P6a-z8-KIu" id="0y6-xb-8Q2"/>
+                                </connections>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Affirmation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="huv-By-Zr0">
+                                <rect key="frame" x="123" y="251" width="130" height="22"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
+                                <color key="textColor" systemColor="systemGrayColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="jHO-Nv-1XP"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="huv-By-Zr0" firstAttribute="leading" secondItem="9q4-5b-e3d" secondAttribute="leading" id="0sh-xX-4lT"/>
+                            <constraint firstItem="9q4-5b-e3d" firstAttribute="leading" secondItem="8Zd-mp-Wi4" secondAttribute="trailing" constant="30" id="4HA-0s-RHQ"/>
+                            <constraint firstItem="9q4-5b-e3d" firstAttribute="centerY" secondItem="8Zd-mp-Wi4" secondAttribute="centerY" id="Fyo-Yp-ccA"/>
+                            <constraint firstItem="Kbl-Nj-6vk" firstAttribute="top" secondItem="yKb-ng-YSw" secondAttribute="bottom" constant="30" id="Ncu-Xd-wa0"/>
+                            <constraint firstItem="Kbl-Nj-6vk" firstAttribute="leading" secondItem="jHO-Nv-1XP" secondAttribute="leading" id="R0g-MO-8pb"/>
+                            <constraint firstItem="IH3-pR-fxG" firstAttribute="top" secondItem="jHO-Nv-1XP" secondAttribute="top" constant="20" id="Z41-Y5-6ZZ"/>
+                            <constraint firstItem="huv-By-Zr0" firstAttribute="centerY" secondItem="yKb-ng-YSw" secondAttribute="centerY" id="a6b-ee-68G"/>
+                            <constraint firstItem="Kbl-Nj-6vk" firstAttribute="trailing" secondItem="jHO-Nv-1XP" secondAttribute="trailing" id="b1W-CU-G9o"/>
+                            <constraint firstItem="yKb-ng-YSw" firstAttribute="top" secondItem="9q4-5b-e3d" secondAttribute="bottom" constant="40" id="cNf-h4-0R9"/>
+                            <constraint firstAttribute="bottom" secondItem="Kbl-Nj-6vk" secondAttribute="bottom" id="cOM-gw-nmn"/>
+                            <constraint firstItem="IH3-pR-fxG" firstAttribute="leading" secondItem="jHO-Nv-1XP" secondAttribute="leading" constant="44" id="dSa-yQ-HA8"/>
+                            <constraint firstItem="9q4-5b-e3d" firstAttribute="top" secondItem="IH3-pR-fxG" secondAttribute="bottom" constant="20" id="f2P-qa-Qzr"/>
+                            <constraint firstItem="yKb-ng-YSw" firstAttribute="leading" secondItem="8Zd-mp-Wi4" secondAttribute="leading" id="oab-Q9-5hp"/>
+                            <constraint firstItem="8Zd-mp-Wi4" firstAttribute="leading" secondItem="IH3-pR-fxG" secondAttribute="leading" id="qr1-oD-P8x"/>
+                            <constraint firstItem="yKb-ng-YSw" firstAttribute="width" secondItem="yKb-ng-YSw" secondAttribute="height" id="r43-Ax-pMm"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="63T-hn-coh"/>
+                    <connections>
+                        <outlet property="addAffirmationButton" destination="yKb-ng-YSw" id="brW-1F-HCG"/>
+                        <outlet property="affirmationTitleLabel" destination="IH3-pR-fxG" id="5uA-11-pBe"/>
+                        <outlet property="coverImageButton" destination="9q4-5b-e3d" id="8IR-VP-PsG"/>
+                        <outlet property="tableView" destination="Kbl-Nj-6vk" id="y6b-ni-gyL"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="d5Q-39-hvC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4507.2463768115949" y="84.375"/>
+        </scene>
         <!--Script View Controller-->
         <scene sceneID="TWN-q5-UWo">
             <objects>
@@ -265,10 +392,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GEd-oc-aDl" customClass="ShadowView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="31.5" width="378" height="282"/>
+                                <rect key="frame" x="0.0" y="47" width="378" height="266.5"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Iz0-AX-dXj">
-                                        <rect key="frame" x="0.0" y="0.0" width="378" height="225.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="378" height="213"/>
                                         <color key="backgroundColor" red="0.61338037249999999" green="0.64416187999999996" blue="0.68199056390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <string key="text">I’m releasing all my fears and worries. I’m living my full potential.
 
@@ -289,7 +416,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jaw Relaxation" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L9L-jU-5pK">
-                                <rect key="frame" x="0.0" y="0.0" width="378" height="31.5"/>
+                                <rect key="frame" x="0.0" y="0.0" width="378" height="47"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="24"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -298,10 +425,10 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                 </variation>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JOn-ae-Wv5">
-                                <rect key="frame" x="0.0" y="257" width="378" height="56.5"/>
+                                <rect key="frame" x="0.0" y="260" width="378" height="53.5"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="50C-8g-wow">
-                                        <rect key="frame" x="0.0" y="-3.5" width="181.5" height="45"/>
+                                        <rect key="frame" x="0.0" y="-4" width="181.5" height="42.5"/>
                                         <color key="backgroundColor" red="0.28600493069999999" green="0.26861456039999998" blue="0.26840257639999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                         <state key="normal" title="Save">
@@ -312,7 +439,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                         </variation>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J1l-Ma-ooR">
-                                        <rect key="frame" x="196.5" y="-3.5" width="181.5" height="45"/>
+                                        <rect key="frame" x="196.5" y="-4" width="181.5" height="42.5"/>
                                         <color key="backgroundColor" red="0.28600493069999999" green="0.26861456039999998" blue="0.26840257639999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                         <state key="normal" title="Export">
@@ -337,6 +464,12 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                     <constraint firstAttribute="trailing" secondItem="J1l-Ma-ooR" secondAttribute="trailing" id="tIK-XR-nqD"/>
                                 </constraints>
                             </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="meditation_03.png" translatesAutoresizingMaskIntoConstraints="NO" id="nXL-m6-RKZ">
+                                <rect key="frame" x="8" y="-40" width="79" height="79"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="nXL-m6-RKZ" secondAttribute="height" id="2tN-2I-Ye1"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="T7Q-4p-MWN"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -344,33 +477,38 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                             <constraint firstAttribute="trailing" secondItem="GEd-oc-aDl" secondAttribute="trailing" id="1c0-nV-XJM"/>
                             <constraint firstItem="JOn-ae-Wv5" firstAttribute="top" secondItem="Iz0-AX-dXj" secondAttribute="bottom" id="AQ5-Dl-qq3"/>
                             <constraint firstAttribute="bottom" secondItem="JOn-ae-Wv5" secondAttribute="bottom" id="Aj9-Ol-VTh"/>
+                            <constraint firstItem="nXL-m6-RKZ" firstAttribute="bottom" secondItem="L9L-jU-5pK" secondAttribute="bottom" constant="-8" id="FMe-Kz-hXu"/>
                             <constraint firstItem="JOn-ae-Wv5" firstAttribute="trailing" secondItem="T7Q-4p-MWN" secondAttribute="trailing" id="GrW-7z-3Mk"/>
                             <constraint firstItem="GEd-oc-aDl" firstAttribute="top" secondItem="L9L-jU-5pK" secondAttribute="bottom" id="J7v-yk-6OI"/>
-                            <constraint firstItem="L9L-jU-5pK" firstAttribute="height" secondItem="avG-j5-3Gc" secondAttribute="height" multiplier="0.1" id="JIX-on-0Ww"/>
+                            <constraint firstItem="L9L-jU-5pK" firstAttribute="height" secondItem="avG-j5-3Gc" secondAttribute="height" multiplier="0.15" id="JIX-on-0Ww"/>
                             <constraint firstItem="GEd-oc-aDl" firstAttribute="leading" secondItem="avG-j5-3Gc" secondAttribute="leading" id="Vz2-c6-qTn"/>
                             <constraint firstAttribute="bottom" secondItem="GEd-oc-aDl" secondAttribute="bottom" id="Xtn-fY-7df"/>
                             <constraint firstAttribute="trailing" secondItem="L9L-jU-5pK" secondAttribute="trailing" id="YKb-f6-MIo"/>
                             <constraint firstItem="JOn-ae-Wv5" firstAttribute="height" secondItem="Iz0-AX-dXj" secondAttribute="height" multiplier="0.25" id="fbh-Lo-GJ8"/>
                             <constraint firstItem="L9L-jU-5pK" firstAttribute="leading" secondItem="avG-j5-3Gc" secondAttribute="leading" id="hhV-nF-o8k"/>
+                            <constraint firstItem="nXL-m6-RKZ" firstAttribute="top" secondItem="avG-j5-3Gc" secondAttribute="top" constant="-40" id="ifu-P9-2dW"/>
+                            <constraint firstItem="nXL-m6-RKZ" firstAttribute="leading" secondItem="avG-j5-3Gc" secondAttribute="leading" constant="8" id="qdM-5W-eqq"/>
                             <constraint firstItem="L9L-jU-5pK" firstAttribute="top" secondItem="avG-j5-3Gc" secondAttribute="top" id="t3I-CS-r7K"/>
                             <constraint firstItem="JOn-ae-Wv5" firstAttribute="leading" secondItem="T7Q-4p-MWN" secondAttribute="leading" id="v6Y-lC-jEo"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="buttonView" destination="JOn-ae-Wv5" id="eSp-55-edi"/>
+                        <outlet property="imageView" destination="nXL-m6-RKZ" id="5KL-an-HkP"/>
                         <outlet property="textView" destination="Iz0-AX-dXj" id="f4A-HB-xrs"/>
+                        <outlet property="titleLabel" destination="L9L-jU-5pK" id="vRQ-Be-via"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z6n-nn-WJH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3652.1739130434785" y="42.857142857142854"/>
+            <point key="canvasLocation" x="3747.826086956522" y="122.54464285714285"/>
         </scene>
         <!--Spectrum View Controller-->
         <scene sceneID="UjX-C0-fCE">
             <objects>
                 <viewController id="Bf0-ef-9YZ" customClass="SpectrumViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Nie-sQ-mcI">
-                        <rect key="frame" x="0.0" y="0.0" width="373" height="111.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="378" height="89.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="HBa-Po-3jv"/>
                     </view>
@@ -453,7 +591,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="6mm-6N-k8e" customClass="RecentSubliminalsCollectionView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="6mm-6N-k8e" customClass="RecentSubliminalsCollectionView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                         <rect key="frame" x="8" y="64" width="365" height="136"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="8x8-D2-z4i">
@@ -525,7 +663,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="0Ld-06-JSl" customClass="PlaylistCollectionView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="0Ld-06-JSl" customClass="PlaylistCollectionView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                         <rect key="frame" x="8" y="64" width="365" height="136"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="pSj-or-0fG">
@@ -597,7 +735,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="PdM-Yf-6Wn" customClass="PurchasesCollectionView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="PdM-Yf-6Wn" customClass="PurchasesCollectionView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                         <rect key="frame" x="8" y="64" width="365" height="136"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="M72-7x-clW">
@@ -669,7 +807,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="uld-Gr-nMA" customClass="CreationsCollectionView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="uld-Gr-nMA" customClass="CreationsCollectionView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                         <rect key="frame" x="8" y="64" width="365" height="136"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Qgp-Qa-Aqg">
@@ -1604,6 +1742,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                 </constraints>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="Dp3-cM-Mz3"/>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="fiH-2f-A8B" firstAttribute="width" secondItem="LmZ-B5-P7p" secondAttribute="width" multiplier="0.775362" id="1Dh-62-KZB"/>
@@ -1642,7 +1781,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="MRg-E8-hf8"/>
+        <segue reference="QTW-cV-1zg"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="bedIcon" width="417" height="417"/>
@@ -1652,9 +1791,11 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
         <image name="forwardIcon" width="320" height="313"/>
         <image name="loudspeakerSymbolHigh" width="100" height="79"/>
         <image name="loudspeakerSymbolLow" width="80" height="80"/>
+        <image name="meditation_03.png" width="174" height="172"/>
         <image name="moonIcon.svg" width="128" height="128"/>
         <image name="playIcon" width="417" height="417"/>
         <image name="plusButton.png" width="35" height="33"/>
+        <image name="plusSymbolGreen" width="100" height="100"/>
         <image name="pulseSymbol" width="44" height="44"/>
         <image name="pulseSymbolOval" width="105" height="65"/>
         <image name="rewindIcon" width="320" height="313"/>
@@ -1670,6 +1811,9 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGrayColor">
+            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
