@@ -51,6 +51,21 @@
 		65A052CB259F4B0100F3C6BD /* DisclaimerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A052CA259F4B0100F3C6BD /* DisclaimerDetailView.swift */; };
 		65A052CE259F552300F3C6BD /* ScrollingPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A052CD259F552300F3C6BD /* ScrollingPageControl.swift */; };
 		65A052DB259F558700F3C6BD /* CircularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A052DA259F558700F3C6BD /* CircularView.swift */; };
+		65A052E525A0724800F3C6BD /* MediathekViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A052E425A0724800F3C6BD /* MediathekViewController.swift */; };
+		65A052EA25A086E900F3C6BD /* MediathekCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A052E925A086E900F3C6BD /* MediathekCollectionViewCell.swift */; };
+		65A052F325A0899600F3C6BD /* meditation_03.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A052EE25A0899500F3C6BD /* meditation_03.png */; };
+		65A052F425A0899600F3C6BD /* meditation_04.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A052EF25A0899500F3C6BD /* meditation_04.png */; };
+		65A052F525A0899600F3C6BD /* meditation_02.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A052F025A0899600F3C6BD /* meditation_02.png */; };
+		65A052F625A0899600F3C6BD /* meditation_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A052F125A0899600F3C6BD /* meditation_01.png */; };
+		65A052F725A0899600F3C6BD /* meditation_05.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A052F225A0899600F3C6BD /* meditation_05.png */; };
+		65A052FB25A093A100F3C6BD /* PlaylistCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A052FA25A093A100F3C6BD /* PlaylistCollectionView.swift */; };
+		65A052FE25A093BC00F3C6BD /* RecentSubliminalsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A052FD25A093BC00F3C6BD /* RecentSubliminalsCollectionView.swift */; };
+		65A0530125A093D800F3C6BD /* PurchasesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A0530025A093D800F3C6BD /* PurchasesCollectionView.swift */; };
+		65A0530425A093F000F3C6BD /* CreationsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A0530325A093F000F3C6BD /* CreationsCollectionView.swift */; };
+		65A0530B25A094F300F3C6BD /* meditation_08.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A0530725A094F300F3C6BD /* meditation_08.png */; };
+		65A0530C25A094F300F3C6BD /* meditation_06.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A0530825A094F300F3C6BD /* meditation_06.png */; };
+		65A0530D25A094F300F3C6BD /* meditation_07.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A0530925A094F300F3C6BD /* meditation_07.png */; };
+		65A0530E25A094F300F3C6BD /* meditation_09.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A0530A25A094F300F3C6BD /* meditation_09.png */; };
 		65A169C2257C1693005D179A /* RoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A169C0257C1693005D179A /* RoundedView.swift */; };
 		65A8405725611EA50072531F /* subliminalMakerTeaser.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8405525611EA50072531F /* subliminalMakerTeaser.png */; };
 		65A8405825611EA50072531F /* subliminalPlayerTeaser.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8405625611EA50072531F /* subliminalPlayerTeaser.png */; };
@@ -121,6 +136,21 @@
 		65A052CA259F4B0100F3C6BD /* DisclaimerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimerDetailView.swift; sourceTree = "<group>"; };
 		65A052CD259F552300F3C6BD /* ScrollingPageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollingPageControl.swift; sourceTree = "<group>"; };
 		65A052DA259F558700F3C6BD /* CircularView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularView.swift; sourceTree = "<group>"; };
+		65A052E425A0724800F3C6BD /* MediathekViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediathekViewController.swift; sourceTree = "<group>"; };
+		65A052E925A086E900F3C6BD /* MediathekCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediathekCollectionViewCell.swift; sourceTree = "<group>"; };
+		65A052EE25A0899500F3C6BD /* meditation_03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = meditation_03.png; path = SilentSubliminals/images/test/meditation_03.png; sourceTree = SOURCE_ROOT; };
+		65A052EF25A0899500F3C6BD /* meditation_04.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = meditation_04.png; path = SilentSubliminals/images/test/meditation_04.png; sourceTree = SOURCE_ROOT; };
+		65A052F025A0899600F3C6BD /* meditation_02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = meditation_02.png; path = SilentSubliminals/images/test/meditation_02.png; sourceTree = SOURCE_ROOT; };
+		65A052F125A0899600F3C6BD /* meditation_01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = meditation_01.png; path = SilentSubliminals/images/test/meditation_01.png; sourceTree = SOURCE_ROOT; };
+		65A052F225A0899600F3C6BD /* meditation_05.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = meditation_05.png; path = SilentSubliminals/images/test/meditation_05.png; sourceTree = SOURCE_ROOT; };
+		65A052FA25A093A100F3C6BD /* PlaylistCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistCollectionView.swift; sourceTree = "<group>"; };
+		65A052FD25A093BC00F3C6BD /* RecentSubliminalsCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSubliminalsCollectionView.swift; sourceTree = "<group>"; };
+		65A0530025A093D800F3C6BD /* PurchasesCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchasesCollectionView.swift; sourceTree = "<group>"; };
+		65A0530325A093F000F3C6BD /* CreationsCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreationsCollectionView.swift; sourceTree = "<group>"; };
+		65A0530725A094F300F3C6BD /* meditation_08.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = meditation_08.png; path = SilentSubliminals/images/test/meditation_08.png; sourceTree = SOURCE_ROOT; };
+		65A0530825A094F300F3C6BD /* meditation_06.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = meditation_06.png; path = SilentSubliminals/images/test/meditation_06.png; sourceTree = SOURCE_ROOT; };
+		65A0530925A094F300F3C6BD /* meditation_07.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = meditation_07.png; path = SilentSubliminals/images/test/meditation_07.png; sourceTree = SOURCE_ROOT; };
+		65A0530A25A094F300F3C6BD /* meditation_09.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = meditation_09.png; path = SilentSubliminals/images/test/meditation_09.png; sourceTree = SOURCE_ROOT; };
 		65A169C0257C1693005D179A /* RoundedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedView.swift; sourceTree = "<group>"; };
 		65A8405525611EA50072531F /* subliminalMakerTeaser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = subliminalMakerTeaser.png; sourceTree = "<group>"; };
 		65A8405625611EA50072531F /* subliminalPlayerTeaser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = subliminalPlayerTeaser.png; sourceTree = "<group>"; };
@@ -202,6 +232,7 @@
 			isa = PBXGroup;
 			children = (
 				6568E64D258F5268009390D5 /* Resources */,
+				65A052F925A0937400F3C6BD /* CollectionViews */,
 				6568E64C258F5230009390D5 /* ViewControllers */,
 				6568E64B258F51F3009390D5 /* Subviews */,
 				6568E64A258F51E2009390D5 /* Utils */,
@@ -231,6 +262,7 @@
 		6568E64B258F51F3009390D5 /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
+				65A052E825A086BB00F3C6BD /* Cells */,
 				65A052C5259F494300F3C6BD /* Modal */,
 				65D561D32597618100FC039C /* Buttons */,
 				65D561D6259761C800FC039C /* Controls */,
@@ -247,6 +279,7 @@
 				656D43262594E3800067A4D8 /* Controls */,
 				65A8405A25612D1B0072531F /* PlayerMakerChoiceViewController.swift */,
 				6558D30C24684934004E8660 /* SubliminalMakerViewController.swift */,
+				65A052E425A0724800F3C6BD /* MediathekViewController.swift */,
 				65A8405D2561325E0072531F /* SubliminalPlayerViewController.swift */,
 				6569A009253C4834000E7F95 /* ScriptViewController.swift */,
 			);
@@ -256,6 +289,7 @@
 		6568E64D258F5268009390D5 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				65A052ED25A0898000F3C6BD /* Test-Images */,
 				6558D30E24684934004E8660 /* Main.storyboard */,
 				6558D31124684935004E8660 /* Assets.xcassets */,
 				6558D31324684935004E8660 /* LaunchScreen.storyboard */,
@@ -348,6 +382,41 @@
 				65A052DA259F558700F3C6BD /* CircularView.swift */,
 			);
 			path = "Page Control";
+			sourceTree = "<group>";
+		};
+		65A052E825A086BB00F3C6BD /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				65A052E925A086E900F3C6BD /* MediathekCollectionViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		65A052ED25A0898000F3C6BD /* Test-Images */ = {
+			isa = PBXGroup;
+			children = (
+				65A052F125A0899600F3C6BD /* meditation_01.png */,
+				65A052F025A0899600F3C6BD /* meditation_02.png */,
+				65A052EE25A0899500F3C6BD /* meditation_03.png */,
+				65A052EF25A0899500F3C6BD /* meditation_04.png */,
+				65A052F225A0899600F3C6BD /* meditation_05.png */,
+				65A0530825A094F300F3C6BD /* meditation_06.png */,
+				65A0530925A094F300F3C6BD /* meditation_07.png */,
+				65A0530725A094F300F3C6BD /* meditation_08.png */,
+				65A0530A25A094F300F3C6BD /* meditation_09.png */,
+			);
+			path = "Test-Images";
+			sourceTree = "<group>";
+		};
+		65A052F925A0937400F3C6BD /* CollectionViews */ = {
+			isa = PBXGroup;
+			children = (
+				65A052FA25A093A100F3C6BD /* PlaylistCollectionView.swift */,
+				65A052FD25A093BC00F3C6BD /* RecentSubliminalsCollectionView.swift */,
+				65A0530025A093D800F3C6BD /* PurchasesCollectionView.swift */,
+				65A0530325A093F000F3C6BD /* CreationsCollectionView.swift */,
+			);
+			path = CollectionViews;
 			sourceTree = "<group>";
 		};
 		65D561D32597618100FC039C /* Buttons */ = {
@@ -468,21 +537,30 @@
 			buildActionMask = 2147483647;
 			files = (
 				65F072832544615D004C8BA3 /* stopRecordingButton.png in Resources */,
+				65A052F425A0899600F3C6BD /* meditation_04.png in Resources */,
+				65A0530D25A094F300F3C6BD /* meditation_07.png in Resources */,
+				65A052F725A0899600F3C6BD /* meditation_05.png in Resources */,
 				65699FFE253C392B000E7F95 /* help-circle.png in Resources */,
 				65F072812544615D004C8BA3 /* startRecordingButton.png in Resources */,
+				65A052F625A0899600F3C6BD /* meditation_01.png in Resources */,
 				65654BFC259BA7BC0066E4D2 /* leadOutDay.aiff in Resources */,
 				65654BFB259BA7BC0066E4D2 /* leadInChair.aiff in Resources */,
 				65699FFC253C3706000E7F95 /* subliminalMakerBackground.png in Resources */,
+				65A0530B25A094F300F3C6BD /* meditation_08.png in Resources */,
+				65A052F325A0899600F3C6BD /* meditation_03.png in Resources */,
 				65A8406525616CEF0072531F /* subliminalPlayerBackground.png in Resources */,
+				65A0530C25A094F300F3C6BD /* meditation_06.png in Resources */,
 				65A052C0259F43A700F3C6BD /* DisclaimerView.xib in Resources */,
 				65654C02259BAEC80066E4D2 /* leadOutNight.aiff in Resources */,
 				65654BFE259BA7BC0066E4D2 /* introduction.aiff in Resources */,
 				65654BFD259BA7BC0066E4D2 /* leadInBed.aiff in Resources */,
 				6569A008253C43A7000E7F95 /* plusButton.png in Resources */,
 				6558D31524684935004E8660 /* LaunchScreen.storyboard in Resources */,
+				65A052F525A0899600F3C6BD /* meditation_02.png in Resources */,
 				6558D31224684935004E8660 /* Assets.xcassets in Resources */,
 				65C6E648259A2F630046E739 /* bell.aiff in Resources */,
 				65A8405725611EA50072531F /* subliminalMakerTeaser.png in Resources */,
+				65A0530E25A094F300F3C6BD /* meditation_09.png in Resources */,
 				65A8405825611EA50072531F /* subliminalPlayerTeaser.png in Resources */,
 				6558D31024684934004E8660 /* Main.storyboard in Resources */,
 			);
@@ -542,7 +620,10 @@
 				65651D78259DD763006BA4DD /* LoudspeakerSymbolView.swift in Sources */,
 				656D43242594E3790067A4D8 /* SpectrumViewController.swift in Sources */,
 				656807392593733500D09CBE /* ToggleButton.swift in Sources */,
+				65A0530425A093F000F3C6BD /* CreationsCollectionView.swift in Sources */,
+				65A052FB25A093A100F3C6BD /* PlaylistCollectionView.swift in Sources */,
 				6568E648258F50F8009390D5 /* TimerManager.swift in Sources */,
+				65A052EA25A086E900F3C6BD /* MediathekCollectionViewCell.swift in Sources */,
 				65D561D9259761FE00FC039C /* PlayButton.swift in Sources */,
 				656D430D2594B5F30067A4D8 /* VolumeSlider.swift in Sources */,
 				656D431E2594CF450067A4D8 /* AudioExtensions.swift in Sources */,
@@ -564,6 +645,7 @@
 				65C6E64F259B4C460046E739 /* TimerButton.swift in Sources */,
 				65D561C92595F94E00FC039C /* AudioSessionManager.swift in Sources */,
 				65D561E22598D53C00FC039C /* MakerStateMachine.swift in Sources */,
+				65A052E525A0724800F3C6BD /* MediathekViewController.swift in Sources */,
 				656D430A2594B5840067A4D8 /* SymbolImageView.swift in Sources */,
 				65D561E52598D7D000FC039C /* RecordButton.swift in Sources */,
 				6598C2F0259106FC0042A7E1 /* PlayerStateMachine.swift in Sources */,
@@ -573,11 +655,13 @@
 				6558D30B24684934004E8660 /* SceneDelegate.swift in Sources */,
 				6569A00A253C4834000E7F95 /* ScriptViewController.swift in Sources */,
 				65654C06259CF1560066E4D2 /* AlertController.swift in Sources */,
+				65A052FE25A093BC00F3C6BD /* RecentSubliminalsCollectionView.swift in Sources */,
 				65A052CE259F552300F3C6BD /* ScrollingPageControl.swift in Sources */,
 				65A8405E2561325E0072531F /* SubliminalPlayerViewController.swift in Sources */,
 				65A052DB259F558700F3C6BD /* CircularView.swift in Sources */,
 				656D43072594B50D0067A4D8 /* SymbolButton.swift in Sources */,
 				65D561D12597517D00FC039C /* AudioHelper.swift in Sources */,
+				65A0530125A093D800F3C6BD /* PurchasesCollectionView.swift in Sources */,
 				65C6E64B259A77CC0046E739 /* SkipButton.swift in Sources */,
 				656654AE2595F36700DB03DC /* CommandCenter.swift in Sources */,
 			);
