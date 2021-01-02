@@ -1227,44 +1227,37 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fiH-2f-A8B">
                                 <rect key="frame" x="46.5" y="96" width="321" height="704"/>
                                 <subviews>
-                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" directionalLockEnabled="YES" bounces="NO" pagingEnabled="YES" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lqW-NS-0Et">
-                                        <rect key="frame" x="0.0" y="0.0" width="321" height="704"/>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" bounces="NO" pagingEnabled="YES" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lqW-NS-0Et">
+                                        <rect key="frame" x="0.0" y="0.0" width="321" height="660"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xvy-BH-jvL">
-                                                <rect key="frame" x="8" y="0.0" width="313" height="686"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="313" placeholderIntrinsicHeight="643" translatesAutoresizingMaskIntoConstraints="NO" id="Xvy-BH-jvL">
+                                                <rect key="frame" x="0.0" y="0.0" width="313" height="643"/>
                                             </stackView>
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="Xvy-BH-jvL" firstAttribute="top" secondItem="XMr-Gf-Pj4" secondAttribute="top" id="Cb9-o3-m0C"/>
                                             <constraint firstItem="Xvy-BH-jvL" firstAttribute="trailing" secondItem="XMr-Gf-Pj4" secondAttribute="trailing" id="JAd-Vx-ZSQ"/>
-                                            <constraint firstItem="Xvy-BH-jvL" firstAttribute="height" secondItem="1FK-gK-VeX" secondAttribute="height" multiplier="0.974068" id="N70-t5-vq0"/>
                                             <constraint firstItem="Xvy-BH-jvL" firstAttribute="bottom" secondItem="XMr-Gf-Pj4" secondAttribute="bottom" id="sEq-4o-fS8"/>
                                             <constraint firstItem="Xvy-BH-jvL" firstAttribute="leading" secondItem="XMr-Gf-Pj4" secondAttribute="leading" id="zop-hl-BPt"/>
                                         </constraints>
                                         <viewLayoutGuide key="contentLayoutGuide" id="XMr-Gf-Pj4"/>
                                         <viewLayoutGuide key="frameLayoutGuide" id="1FK-gK-VeX"/>
                                     </scrollView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tq8-dP-sAA" customClass="ScrollingPageControl" customModule="ScrollingPageControl">
-                                        <rect key="frame" x="0.0" y="676" width="321" height="28"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tq8-dP-sAA" customClass="ScrollingPageControl" customModule="FREE_UR_SPIRIT">
+                                        <rect key="frame" x="0.0" y="660" width="321" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="xJu-aU-L5M"/>
+                                        </constraints>
                                     </view>
-                                    <pageControl hidden="YES" opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="yUv-dX-0Q5" customClass="ScrollingPageControll" customModule="ScrollingPageControl">
-                                        <rect key="frame" x="0.0" y="676" width="321" height="28"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </pageControl>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="lqW-NS-0Et" firstAttribute="leading" secondItem="fiH-2f-A8B" secondAttribute="leading" id="1zi-eO-LeX"/>
-                                    <constraint firstItem="tq8-dP-sAA" firstAttribute="leading" secondItem="yUv-dX-0Q5" secondAttribute="leading" id="7xT-Zv-Sd4"/>
-                                    <constraint firstAttribute="trailing" secondItem="yUv-dX-0Q5" secondAttribute="trailing" id="D8o-3Y-rg0"/>
-                                    <constraint firstAttribute="bottom" secondItem="lqW-NS-0Et" secondAttribute="bottom" id="K3Z-8P-LaD"/>
+                                    <constraint firstAttribute="trailing" secondItem="lqW-NS-0Et" secondAttribute="trailing" id="2nQ-J9-HJd"/>
                                     <constraint firstItem="lqW-NS-0Et" firstAttribute="top" secondItem="fiH-2f-A8B" secondAttribute="top" id="MqD-Hc-Ncn"/>
-                                    <constraint firstItem="yUv-dX-0Q5" firstAttribute="leading" secondItem="fiH-2f-A8B" secondAttribute="leading" id="cKD-YI-WBU"/>
-                                    <constraint firstItem="tq8-dP-sAA" firstAttribute="top" secondItem="yUv-dX-0Q5" secondAttribute="top" id="g8O-yO-oN2"/>
-                                    <constraint firstAttribute="bottom" secondItem="yUv-dX-0Q5" secondAttribute="bottom" id="hvh-I7-dvH"/>
-                                    <constraint firstItem="tq8-dP-sAA" firstAttribute="bottom" secondItem="yUv-dX-0Q5" secondAttribute="bottom" id="j0I-o2-39k"/>
-                                    <constraint firstItem="tq8-dP-sAA" firstAttribute="trailing" secondItem="yUv-dX-0Q5" secondAttribute="trailing" id="kDU-Dp-2bH"/>
-                                    <constraint firstItem="lqW-NS-0Et" firstAttribute="width" secondItem="fiH-2f-A8B" secondAttribute="width" id="tGS-Jd-70H"/>
-                                    <constraint firstItem="lqW-NS-0Et" firstAttribute="centerX" secondItem="fiH-2f-A8B" secondAttribute="centerX" id="xPJ-c8-pne"/>
+                                    <constraint firstAttribute="trailing" secondItem="tq8-dP-sAA" secondAttribute="trailing" id="Yjz-Dc-e4m"/>
+                                    <constraint firstItem="tq8-dP-sAA" firstAttribute="leading" secondItem="fiH-2f-A8B" secondAttribute="leading" id="oEW-2V-tgH"/>
+                                    <constraint firstAttribute="bottom" secondItem="lqW-NS-0Et" secondAttribute="bottom" constant="44" id="of3-TF-Y3B"/>
+                                    <constraint firstAttribute="bottom" secondItem="tq8-dP-sAA" secondAttribute="bottom" id="qj5-8c-ML7"/>
                                 </constraints>
                             </view>
                         </subviews>

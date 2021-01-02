@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import ScrollingPageControl
+
 
 class DisclaimerViewController: UIViewController, DisclaimerDelegate  {
     
@@ -17,7 +17,7 @@ class DisclaimerViewController: UIViewController, DisclaimerDelegate  {
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var containerView: UIView!
     
-    let pages: Int = 3
+    let numberOfPages: Int = 3
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,10 +28,12 @@ class DisclaimerViewController: UIViewController, DisclaimerDelegate  {
         scrollView.delegate = self
         scrollView.clipsToBounds = true
         //pageControl.delegate = self
-        pageControl.pages = pages
+        
+        pageControl.numberOfPages = numberOfPages
         pageControl.dotColor = UIColor(red: 193/255, green: 193/255, blue: 193/255, alpha: 1.0)
         pageControl.selectedColor = .white
-        pageControl.dotSize = 10
+        pageControl.dotSize = 12
+        
         pageControl.clipsToBounds = true
         
         scrollView.clipsToBounds = true
@@ -39,7 +41,7 @@ class DisclaimerViewController: UIViewController, DisclaimerDelegate  {
         scrollView.layer.cornerRadius = cornerRadius
 
         
-        for index in 0..<pages {
+        for index in 0..<numberOfPages {
             let item = DisclaimerDetailView()
             item.translatesAutoresizingMaskIntoConstraints = false
             stackView.addArrangedSubview(item)
@@ -48,7 +50,7 @@ class DisclaimerViewController: UIViewController, DisclaimerDelegate  {
             item.agreeLabel.isHidden = true
             item.closeButton.isHidden = true
             
-            if index == pages - 1 {
+            if index == numberOfPages - 1 {
                 item.agreeButton.isHidden = false
                 item.agreeLabel.isHidden = false
                 item.closeButton.isHidden = false

@@ -49,6 +49,8 @@
 		65A052B8259F2DDF00F3C6BD /* DisclaimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A052B7259F2DDF00F3C6BD /* DisclaimerViewController.swift */; };
 		65A052C0259F43A700F3C6BD /* DisclaimerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 65A052BF259F43A700F3C6BD /* DisclaimerView.xib */; };
 		65A052CB259F4B0100F3C6BD /* DisclaimerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A052CA259F4B0100F3C6BD /* DisclaimerDetailView.swift */; };
+		65A052CE259F552300F3C6BD /* ScrollingPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A052CD259F552300F3C6BD /* ScrollingPageControl.swift */; };
+		65A052DB259F558700F3C6BD /* CircularView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A052DA259F558700F3C6BD /* CircularView.swift */; };
 		65A169C2257C1693005D179A /* RoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A169C0257C1693005D179A /* RoundedView.swift */; };
 		65A8405725611EA50072531F /* subliminalMakerTeaser.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8405525611EA50072531F /* subliminalMakerTeaser.png */; };
 		65A8405825611EA50072531F /* subliminalPlayerTeaser.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A8405625611EA50072531F /* subliminalPlayerTeaser.png */; };
@@ -117,6 +119,8 @@
 		65A052B7259F2DDF00F3C6BD /* DisclaimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimerViewController.swift; sourceTree = "<group>"; };
 		65A052BF259F43A700F3C6BD /* DisclaimerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DisclaimerView.xib; sourceTree = "<group>"; };
 		65A052CA259F4B0100F3C6BD /* DisclaimerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimerDetailView.swift; sourceTree = "<group>"; };
+		65A052CD259F552300F3C6BD /* ScrollingPageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollingPageControl.swift; sourceTree = "<group>"; };
+		65A052DA259F558700F3C6BD /* CircularView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularView.swift; sourceTree = "<group>"; };
 		65A169C0257C1693005D179A /* RoundedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedView.swift; sourceTree = "<group>"; };
 		65A8405525611EA50072531F /* subliminalMakerTeaser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = subliminalMakerTeaser.png; sourceTree = "<group>"; };
 		65A8405625611EA50072531F /* subliminalPlayerTeaser.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = subliminalPlayerTeaser.png; sourceTree = "<group>"; };
@@ -213,6 +217,7 @@
 		6568E64A258F51E2009390D5 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				65A052E0259F558D00F3C6BD /* Page Control */,
 				656D431C2594CF290067A4D8 /* Extensions */,
 				657AA0C7258F54C700320465 /* Singletons */,
 				6563E03A257691CE000E261B /* Constants.swift */,
@@ -334,6 +339,15 @@
 				65A052CA259F4B0100F3C6BD /* DisclaimerDetailView.swift */,
 			);
 			path = Modal;
+			sourceTree = "<group>";
+		};
+		65A052E0259F558D00F3C6BD /* Page Control */ = {
+			isa = PBXGroup;
+			children = (
+				65A052CD259F552300F3C6BD /* ScrollingPageControl.swift */,
+				65A052DA259F558700F3C6BD /* CircularView.swift */,
+			);
+			path = "Page Control";
 			sourceTree = "<group>";
 		};
 		65D561D32597618100FC039C /* Buttons */ = {
@@ -559,7 +573,9 @@
 				6558D30B24684934004E8660 /* SceneDelegate.swift in Sources */,
 				6569A00A253C4834000E7F95 /* ScriptViewController.swift in Sources */,
 				65654C06259CF1560066E4D2 /* AlertController.swift in Sources */,
+				65A052CE259F552300F3C6BD /* ScrollingPageControl.swift in Sources */,
 				65A8405E2561325E0072531F /* SubliminalPlayerViewController.swift in Sources */,
+				65A052DB259F558700F3C6BD /* CircularView.swift in Sources */,
 				656D43072594B50D0067A4D8 /* SymbolButton.swift in Sources */,
 				65D561D12597517D00FC039C /* AudioHelper.swift in Sources */,
 				65C6E64B259A77CC0046E739 /* SkipButton.swift in Sources */,

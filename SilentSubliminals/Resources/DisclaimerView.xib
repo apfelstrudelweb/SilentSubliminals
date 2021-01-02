@@ -37,10 +37,10 @@
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fMt-bs-Dp9">
-                    <rect key="frame" x="345" y="832" width="38" height="38"/>
+                    <rect key="frame" x="349" y="836" width="34" height="34"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="38" id="Fc9-If-lWj"/>
-                        <constraint firstAttribute="height" constant="38" id="vn3-x6-k6q"/>
+                        <constraint firstAttribute="width" constant="34" id="Fc9-If-lWj"/>
+                        <constraint firstAttribute="width" secondItem="fMt-bs-Dp9" secondAttribute="height" id="hNY-gY-PcX"/>
                     </constraints>
                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <state key="normal" title="Button" image="checkboxOff"/>
@@ -49,7 +49,7 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I agree" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w5C-1F-5Oe">
-                    <rect key="frame" x="257.5" y="838" width="67.5" height="26"/>
+                    <rect key="frame" x="261.5" y="840" width="67.5" height="26"/>
                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="22"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
