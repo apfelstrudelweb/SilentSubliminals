@@ -10,13 +10,14 @@ import UIKit
 import CoreAudio
 import AVFoundation
 import Accelerate
+import CoreData
 import PureLayout
 
 
 let alpha: CGFloat = 0.85
 
 
-class SubliminalMakerViewController: UIViewController, BackButtonDelegate, MakerStateMachineDelegate, AudioHelperDelegate, SelectAffirmationDelegate {
+class SubliminalMakerViewController: UIViewController, BackButtonDelegate, MakerStateMachineDelegate, AudioHelperDelegate, NSFetchedResultsControllerDelegate {
 
     @IBOutlet weak var controlView: UIView!
     @IBOutlet weak var playerView: UIView!
@@ -34,10 +35,11 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
     var usedAffirmation: String?
     var usedImage: UIImage?
     
+    var fetchedResultsController: NSFetchedResultsController<Affirmation>!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+  
         audioHelper.delegate = self
         MakerStateMachine.shared.delegate = self
         MakerStateMachine.shared.playerState = .playStopped
@@ -59,6 +61,32 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         print(getDocumentsDirectory())
  
         audioHelper.checkForPermission()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let fetchRequest = NSFetchRequest<Affirmation> (entityName: "Affirmation")
+        let predicate = NSPredicate(format: "isActive = true")
+        fetchRequest.predicate = predicate
+        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
+        self.fetchedResultsController = NSFetchedResultsController<Affirmation> (
+            fetchRequest: fetchRequest,
+            managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil)
+        self.fetchedResultsController.delegate = self
+        
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            print("An error occurred")
+        }
+        
+        if let affirmation = fetchedResultsController.fetchedObjects?.first, let fileName = affirmation.soundfile {
+            spokenAffirmation = "\(fileName).caf"
+            spokenAffirmationSilent = "\(fileName)Silent.caf"
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -159,7 +187,6 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         }
         if let vc = segue.destination as? MakerAddNewViewController {
             makerAddNewViewController = vc
-            makerAddNewViewController?.delegate = self
         }
     }
     
@@ -167,11 +194,6 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
     // MARK: BackButtonDelegate
     func close() {
         self.navigationController?.dismiss(animated: true, completion: nil)
-    }
-    
-    // MARK: SelectAffirmationDelegate
-    func affirmationSelected(affirmation: Affirmation) {
-        scriptViewController?.affirmation = affirmation
     }
 
 }

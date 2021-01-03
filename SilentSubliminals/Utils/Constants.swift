@@ -23,9 +23,7 @@ let bellSoundFile = "bell.aiff"
 let bufferSize: AVAudioFrameCount = 1024
 
 
-// from documents dir
-let spokenAffirmation: String = "spokenAffirmation.caf"
-let spokenAffirmationSilent: String = "spokenAffirmationSilent.caf"
+
 
 struct Button {
     static var playOnImg = UIImage(named: "playIcon.svg")

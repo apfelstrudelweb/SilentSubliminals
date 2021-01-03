@@ -7,11 +7,8 @@
 //
 
 import UIKit
+import CoreData
 
-protocol SelectAffirmationDelegate : AnyObject {
-
-    func affirmationSelected(affirmation: Affirmation)
-}
 
 class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddAffirmationTextDelegate {
 
@@ -19,35 +16,46 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var coverImageButton: UIButton!
     @IBOutlet weak var addAffirmationButton: UIButton!
     @IBOutlet weak var editButton: UIButton!
+    @IBOutlet weak var submitButton: UIButton!
     
     @IBOutlet weak var tableView: UITableView!
     
     private var addAffirmationViewController: AddAffirmationViewController?
-    weak var delegate : SelectAffirmationDelegate?
     
     var imagePicker: ImagePicker!
     
     var alphaOff: CGFloat = 0.5
     
-    var existingAffirmations = ["I am surrounded by peace, harmony and good energy.",
-                                "The world deserves nothing less than my authentic happiness. I am happy and I know so I show it. My inner peace helps me get through anything.",
-                                "When I recognize all of the blessings in my life I find that I am naturally happy.",
-                                "I am healthy, energetic, and optimistic. My body vibrates with energy and health. My body systems function perfectly.",
-                                "I pay attention to what my body needs for health and vitality.  I stay up to date about my health issues."]
-    
-
-    var usedAffirmation = Affirmation()
+    //var existingAffirmations: [Affirmation]?
+    var usedAffirmation = SimpleAffirmation()
     
     var usedText: String? {
         didSet {
             usedAffirmation.text = usedText
-            delegate?.affirmationSelected(affirmation: usedAffirmation)
         }
     }
+    
+    var fetchedResultsController: NSFetchedResultsController<Affirmation>!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let fetchRequest = NSFetchRequest<Affirmation> (entityName: "Affirmation")
+        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
+        self.fetchedResultsController = NSFetchedResultsController<Affirmation> (
+            fetchRequest: fetchRequest,
+            managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil)
+        self.fetchedResultsController.delegate = self
+        
+        do {
+            try fetchedResultsController.performFetch()
+            //existingAffirmations = fetchedResultsController.fetchedObjects!
+        } catch {
+            print("An error occurred")
+        }
         
         self.navigationController?.navigationBar.tintColor = .lightGray
         coverImageButton.layer.cornerRadius = 10
@@ -74,6 +82,7 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
                                     self.usedAffirmation.title = input?.capitalized
                                 })
         }
+        
     }
     
     @IBAction func coverImageButtonTouched(_ sender: UIButton) {
@@ -83,6 +92,10 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     @IBAction func editButtonTouched(_ sender: Any) {
         tableView.isEditing = !tableView.isEditing
         editButton.alpha = tableView.isEditing ? 1 : alphaOff
+    }
+    
+    @IBAction func submitButtonTouched(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func addAffirmationButtonTouched(_ sender: Any) {
@@ -104,27 +117,36 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return existingAffirmations.count
+        return fetchedResultsController.fetchedObjects?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "affirmationCell", for: indexPath as IndexPath) as! AffirmationTableViewCell
-        cell.affirmationLabel?.text = existingAffirmations[indexPath.row]
+        cell.affirmationLabel?.text = fetchedResultsController.fetchedObjects?[indexPath.row].text
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        usedText = existingAffirmations[indexPath.row]
+        
+        if let affirmations = fetchedResultsController.fetchedObjects {
+            for affirmation in affirmations {
+                affirmation.isActive = false
+            }
+        }
+
+        let affirmation = fetchedResultsController.object(at: indexPath)
+        affirmation.isActive = true
+        affirmation.soundfile = affirmation.title
+        CoreDataManager.sharedInstance.save()
     }
     
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == .delete) {
-            tableView.beginUpdates()
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            self.existingAffirmations.remove(at: indexPath.row)
-            tableView.endUpdates()
+
+            let affirmation = fetchedResultsController.object(at: indexPath)
+            CoreDataManager.sharedInstance.removeAffirmation(affirmation: affirmation)
         }
     }
     
@@ -138,9 +160,9 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     
     
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        let movedObject = self.existingAffirmations[sourceIndexPath.row]
-        existingAffirmations.remove(at: sourceIndexPath.row)
-        existingAffirmations.insert(movedObject, at: destinationIndexPath.row)
+        let movedObject = fetchedResultsController.fetchedObjects?[sourceIndexPath.row]
+//        existingAffirmations.remove(at: sourceIndexPath.row)
+//        existingAffirmations.insert(movedObject, at: destinationIndexPath.row)
     }
     
     private func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -160,12 +182,43 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     // AddAffirmationTextDelegate
     func addAffirmation(text: String) {
 
-        existingAffirmations.insert(text, at: 0)
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
+        CoreDataManager.sharedInstance.insertAffirmation(id: 4711, title: usedAffirmation.title ?? "My affirmation", text: text, icon: usedAffirmation.image ?? UIImage())
+        CoreDataManager.sharedInstance.save()
     }
     
+}
+
+extension MakerAddNewViewController: NSFetchedResultsControllerDelegate {
+
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        self.tableView.beginUpdates()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch (type) {
+        case .insert:
+            if let indexPath = newIndexPath {
+                tableView.insertRows(at: [indexPath], with: .fade)
+            }
+            break;
+        case .delete:
+            if let indexPath = indexPath {
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
+            break;
+        case .move:
+            self.tableView.deleteRows(at: [indexPath! as IndexPath], with: .fade)
+            self.tableView.insertRows(at: [indexPath! as IndexPath], with: .fade)
+        default:
+            print("...")
+        }
+    }
+
+
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        self.tableView.endUpdates()
+    }
+
 }
 
 extension MakerAddNewViewController: ImagePickerDelegate {

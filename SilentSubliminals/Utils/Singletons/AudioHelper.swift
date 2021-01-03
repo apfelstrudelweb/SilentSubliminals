@@ -30,6 +30,11 @@ struct AudioFileTypes {
     var audioPlayer = AVAudioPlayerNode()
 }
 
+// from documents dir
+var spokenAffirmation: String = "spokenAffirmation.caf"
+var spokenAffirmationSilent: String = "spokenAffirmationSilent.caf"
+
+
 var audioFiles: Array<AudioFileTypes> = [AudioFileTypes(filename: spokenAffirmation, isSilent: false), AudioFileTypes(filename: spokenAffirmationSilent, isSilent: true)]
 
 

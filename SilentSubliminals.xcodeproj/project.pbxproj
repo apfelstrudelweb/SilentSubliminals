@@ -9,6 +9,14 @@
 /* Begin PBXBuildFile section */
 		652D5C5A2546B6170083165B /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 652D5C592546B6170083165B /* Accelerate.framework */; };
 		653353D625A1D3180067A4A6 /* AddAffirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653353D525A1D3180067A4A6 /* AddAffirmationViewController.swift */; };
+		653353E725A1ECB00067A4A6 /* Affirmation.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 653353E525A1ECB00067A4A6 /* Affirmation.xcdatamodeld */; };
+		653353EA25A1ECC40067A4A6 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653353E925A1ECC40067A4A6 /* CoreDataManager.swift */; };
+		6533540825A1F39B0067A4A6 /* Playlist+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6533540425A1F39A0067A4A6 /* Playlist+CoreDataProperties.swift */; };
+		6533540925A1F39B0067A4A6 /* Affirmation+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6533540525A1F39A0067A4A6 /* Affirmation+CoreDataClass.swift */; };
+		6533540A25A1F39B0067A4A6 /* Playlist+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6533540625A1F39B0067A4A6 /* Playlist+CoreDataClass.swift */; };
+		6533540F25A1F9BD0067A4A6 /* jeanstyp.png in Resources */ = {isa = PBXBuildFile; fileRef = 6533540E25A1F9BD0067A4A6 /* jeanstyp.png */; };
+		6533541225A1FE890067A4A6 /* gemeinschaft.png in Resources */ = {isa = PBXBuildFile; fileRef = 6533541125A1FE890067A4A6 /* gemeinschaft.png */; };
+		6533541525A1FE920067A4A6 /* schwimmen.png in Resources */ = {isa = PBXBuildFile; fileRef = 6533541425A1FE920067A4A6 /* schwimmen.png */; };
 		653BA53A258E2DFF004A0BA7 /* TimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653BA539258E2DFF004A0BA7 /* TimerViewController.swift */; };
 		653BA542258E69EB004A0BA7 /* SetDurationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653BA541258E69EB004A0BA7 /* SetDurationViewController.swift */; };
 		653BA545258E69FC004A0BA7 /* SetEndtimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653BA544258E69FC004A0BA7 /* SetEndtimeViewController.swift */; };
@@ -45,6 +53,7 @@
 		656D431E2594CF450067A4D8 /* AudioExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D431D2594CF450067A4D8 /* AudioExtensions.swift */; };
 		656D43212594E0900067A4D8 /* Switch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D43202594E0900067A4D8 /* Switch.swift */; };
 		656D43242594E3790067A4D8 /* SpectrumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D43232594E3790067A4D8 /* SpectrumViewController.swift */; };
+		657A0F5125A2194A00A4CCF2 /* Affirmation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657A0F5025A2194A00A4CCF2 /* Affirmation+CoreDataProperties.swift */; };
 		657AA0C6258F544200320465 /* Misc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657AA0C5258F544200320465 /* Misc.swift */; };
 		6598C2F0259106FC0042A7E1 /* PlayerStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6598C2EF259106FC0042A7E1 /* PlayerStateMachine.swift */; };
 		65A052B8259F2DDF00F3C6BD /* DisclaimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A052B7259F2DDF00F3C6BD /* DisclaimerViewController.swift */; };
@@ -96,6 +105,14 @@
 		207B55E454D0CD6B1EE09CE1 /* Pods-FREE UR SPIRIT.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FREE UR SPIRIT.debug.xcconfig"; path = "Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT.debug.xcconfig"; sourceTree = "<group>"; };
 		652D5C592546B6170083165B /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		653353D525A1D3180067A4A6 /* AddAffirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAffirmationViewController.swift; sourceTree = "<group>"; };
+		653353E625A1ECB00067A4A6 /* Affirmation.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Affirmation.xcdatamodel; sourceTree = "<group>"; };
+		653353E925A1ECC40067A4A6 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		6533540425A1F39A0067A4A6 /* Playlist+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Playlist+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		6533540525A1F39A0067A4A6 /* Affirmation+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Affirmation+CoreDataClass.swift"; sourceTree = "<group>"; };
+		6533540625A1F39B0067A4A6 /* Playlist+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Playlist+CoreDataClass.swift"; sourceTree = "<group>"; };
+		6533540E25A1F9BD0067A4A6 /* jeanstyp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = jeanstyp.png; path = SilentSubliminals/images/test/jeanstyp.png; sourceTree = SOURCE_ROOT; };
+		6533541125A1FE890067A4A6 /* gemeinschaft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = gemeinschaft.png; path = SilentSubliminals/images/test/gemeinschaft.png; sourceTree = SOURCE_ROOT; };
+		6533541425A1FE920067A4A6 /* schwimmen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = schwimmen.png; path = SilentSubliminals/images/test/schwimmen.png; sourceTree = SOURCE_ROOT; };
 		653BA539258E2DFF004A0BA7 /* TimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewController.swift; sourceTree = "<group>"; };
 		653BA541258E69EB004A0BA7 /* SetDurationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetDurationViewController.swift; sourceTree = "<group>"; };
 		653BA544258E69FC004A0BA7 /* SetEndtimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetEndtimeViewController.swift; sourceTree = "<group>"; };
@@ -134,6 +151,7 @@
 		656D431D2594CF450067A4D8 /* AudioExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioExtensions.swift; sourceTree = "<group>"; };
 		656D43202594E0900067A4D8 /* Switch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Switch.swift; sourceTree = "<group>"; };
 		656D43232594E3790067A4D8 /* SpectrumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumViewController.swift; sourceTree = "<group>"; };
+		657A0F5025A2194A00A4CCF2 /* Affirmation+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Affirmation+CoreDataProperties.swift"; path = "/Users/rookie/Library/Mobile Documents/com~apple~CloudDocs/Documents/Development/SilentSubliminals/SilentSubliminals/CoreData/Entity/Affirmation+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
 		657AA0C5258F544200320465 /* Misc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Misc.swift; sourceTree = "<group>"; };
 		6598C2EF259106FC0042A7E1 /* PlayerStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerStateMachine.swift; sourceTree = "<group>"; };
 		65A052B7259F2DDF00F3C6BD /* DisclaimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimerViewController.swift; sourceTree = "<group>"; };
@@ -165,8 +183,6 @@
 		65A8405A25612D1B0072531F /* PlayerMakerChoiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerMakerChoiceViewController.swift; sourceTree = "<group>"; };
 		65A8405D2561325E0072531F /* SubliminalPlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubliminalPlayerViewController.swift; sourceTree = "<group>"; };
 		65A8406425616CEF0072531F /* subliminalPlayerBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = subliminalPlayerBackground.png; sourceTree = "<group>"; };
-		65A8406A25618DBA0072531F /* moonIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = moonIcon.png; sourceTree = "<group>"; };
-		65A8406C25618DBB0072531F /* noneIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noneIcon.png; sourceTree = "<group>"; };
 		65C6E647259A2F630046E739 /* bell.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = bell.aiff; sourceTree = "<group>"; };
 		65C6E64A259A77CC0046E739 /* SkipButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkipButton.swift; sourceTree = "<group>"; };
 		65C6E64E259B4C460046E739 /* TimerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerButton.swift; sourceTree = "<group>"; };
@@ -218,6 +234,27 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		653353E425A1EC820067A4A6 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				653353FA25A1F2F90067A4A6 /* Entity */,
+				653353E525A1ECB00067A4A6 /* Affirmation.xcdatamodeld */,
+				653353E925A1ECC40067A4A6 /* CoreDataManager.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		653353FA25A1F2F90067A4A6 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				657A0F5025A2194A00A4CCF2 /* Affirmation+CoreDataProperties.swift */,
+				6533540525A1F39A0067A4A6 /* Affirmation+CoreDataClass.swift */,
+				6533540625A1F39B0067A4A6 /* Playlist+CoreDataClass.swift */,
+				6533540425A1F39A0067A4A6 /* Playlist+CoreDataProperties.swift */,
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
 		6556455125A1CC5500F0FF76 /* Maker */ = {
 			isa = PBXGroup;
 			children = (
@@ -259,6 +296,7 @@
 		6558D30724684934004E8660 /* SilentSubliminals */ = {
 			isa = PBXGroup;
 			children = (
+				653353E425A1EC820067A4A6 /* CoreData */,
 				6568E64D258F5268009390D5 /* Resources */,
 				65A052F925A0937400F3C6BD /* CollectionViews */,
 				6568E64C258F5230009390D5 /* ViewControllers */,
@@ -328,8 +366,6 @@
 		65699FF9253C36C5000E7F95 /* images */ = {
 			isa = PBXGroup;
 			children = (
-				65A8406A25618DBA0072531F /* moonIcon.png */,
-				65A8406C25618DBB0072531F /* noneIcon.png */,
 				6569A007253C43A7000E7F95 /* plusButton.png */,
 				65F0727E2544615D004C8BA3 /* startRecordingButton.png */,
 				65F0727F2544615D004C8BA3 /* stopButton.png */,
@@ -423,6 +459,9 @@
 		65A052ED25A0898000F3C6BD /* Test-Images */ = {
 			isa = PBXGroup;
 			children = (
+				6533540E25A1F9BD0067A4A6 /* jeanstyp.png */,
+				6533541125A1FE890067A4A6 /* gemeinschaft.png */,
+				6533541425A1FE920067A4A6 /* schwimmen.png */,
 				65A052F125A0899600F3C6BD /* meditation_01.png */,
 				65A052F025A0899600F3C6BD /* meditation_02.png */,
 				65A052EE25A0899500F3C6BD /* meditation_03.png */,
@@ -569,12 +608,15 @@
 				65A0530D25A094F300F3C6BD /* meditation_07.png in Resources */,
 				65A052F725A0899600F3C6BD /* meditation_05.png in Resources */,
 				65699FFE253C392B000E7F95 /* help-circle.png in Resources */,
+				6533540F25A1F9BD0067A4A6 /* jeanstyp.png in Resources */,
 				65F072812544615D004C8BA3 /* startRecordingButton.png in Resources */,
 				65A052F625A0899600F3C6BD /* meditation_01.png in Resources */,
 				65654BFC259BA7BC0066E4D2 /* leadOutDay.aiff in Resources */,
 				65654BFB259BA7BC0066E4D2 /* leadInChair.aiff in Resources */,
 				65699FFC253C3706000E7F95 /* subliminalMakerBackground.png in Resources */,
 				65A0530B25A094F300F3C6BD /* meditation_08.png in Resources */,
+				6533541225A1FE890067A4A6 /* gemeinschaft.png in Resources */,
+				6533541525A1FE920067A4A6 /* schwimmen.png in Resources */,
 				65A052F325A0899600F3C6BD /* meditation_03.png in Resources */,
 				65A8406525616CEF0072531F /* subliminalPlayerBackground.png in Resources */,
 				65A0530C25A094F300F3C6BD /* meditation_06.png in Resources */,
@@ -643,9 +685,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				653353E725A1ECB00067A4A6 /* Affirmation.xcdatamodeld in Sources */,
 				653BA545258E69FC004A0BA7 /* SetEndtimeViewController.swift in Sources */,
 				657AA0C6258F544200320465 /* Misc.swift in Sources */,
 				65651D78259DD763006BA4DD /* LoudspeakerSymbolView.swift in Sources */,
+				6533540925A1F39B0067A4A6 /* Affirmation+CoreDataClass.swift in Sources */,
 				65A0531425A0E50900F3C6BD /* ImagePicker.swift in Sources */,
 				65A0531725A0ED9800F3C6BD /* AffirmationTableViewCell.swift in Sources */,
 				656D43242594E3790067A4D8 /* SpectrumViewController.swift in Sources */,
@@ -685,15 +729,19 @@
 				656D43212594E0900067A4D8 /* Switch.swift in Sources */,
 				6558D30B24684934004E8660 /* SceneDelegate.swift in Sources */,
 				6569A00A253C4834000E7F95 /* ScriptViewController.swift in Sources */,
+				653353EA25A1ECC40067A4A6 /* CoreDataManager.swift in Sources */,
 				65654C06259CF1560066E4D2 /* AlertController.swift in Sources */,
 				65A052FE25A093BC00F3C6BD /* RecentSubliminalsCollectionView.swift in Sources */,
+				657A0F5125A2194A00A4CCF2 /* Affirmation+CoreDataProperties.swift in Sources */,
 				65A052CE259F552300F3C6BD /* ScrollingPageControl.swift in Sources */,
 				65A8405E2561325E0072531F /* SubliminalPlayerViewController.swift in Sources */,
 				65A052DB259F558700F3C6BD /* CircularView.swift in Sources */,
 				656D43072594B50D0067A4D8 /* SymbolButton.swift in Sources */,
 				653353D625A1D3180067A4A6 /* AddAffirmationViewController.swift in Sources */,
+				6533540825A1F39B0067A4A6 /* Playlist+CoreDataProperties.swift in Sources */,
 				65D561D12597517D00FC039C /* AudioHelper.swift in Sources */,
 				65A0530125A093D800F3C6BD /* PurchasesCollectionView.swift in Sources */,
+				6533540A25A1F39B0067A4A6 /* Playlist+CoreDataClass.swift in Sources */,
 				65C6E64B259A77CC0046E739 /* SkipButton.swift in Sources */,
 				656654AE2595F36700DB03DC /* CommandCenter.swift in Sources */,
 			);
@@ -908,6 +956,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		653353E525A1ECB00067A4A6 /* Affirmation.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				653353E625A1ECB00067A4A6 /* Affirmation.xcdatamodel */,
+			);
+			currentVersion = 653353E625A1ECB00067A4A6 /* Affirmation.xcdatamodel */;
+			path = Affirmation.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 6558D2FD24684934004E8660 /* Project object */;
 }

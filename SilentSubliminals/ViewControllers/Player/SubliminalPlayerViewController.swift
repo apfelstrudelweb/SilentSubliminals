@@ -10,10 +10,13 @@ import UIKit
 import AVFoundation
 import PureLayout
 import MediaPlayer
+import CoreData
 
-class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, PlayerStateMachineDelegate, CommandCenterDelegate, BackButtonDelegate, AudioHelperDelegate {
+class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, PlayerStateMachineDelegate, CommandCenterDelegate, BackButtonDelegate, AudioHelperDelegate, NSFetchedResultsControllerDelegate {
 
 
+    var fetchedResultsController: NSFetchedResultsController<Affirmation>!
+    
     // 1. section
     @IBOutlet weak var introductionSwitch: Switch!
     @IBOutlet weak var introductionPulseImageView: PulseImageView!
@@ -54,6 +57,18 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         }
     }
     
+    @IBOutlet weak var iconImageView: UIImageView! {
+        didSet {
+            iconImageView.layer.cornerRadius = cornerRadius
+            iconImageView.clipsToBounds = true
+        }
+    }
+    @IBOutlet weak var iconShadowView: ShadowView! {
+        didSet {
+            iconShadowView.opacity = 0.4
+            iconShadowView.size = 1
+        }
+    }
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var graphView: UIView!
     @IBOutlet weak var backgroundImageView: UIImageView!
@@ -76,6 +91,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     
     var introButtons:[ToggleButton : PlayerStateMachine.IntroState]?
     var outroButtons:[ToggleButton : PlayerStateMachine.OutroState]?
+    
+    var affirmation: Affirmation?
     
     
     override func viewDidLoad() {
@@ -106,7 +123,36 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
             AlertController().showWarningMissingAffirmationFile(vc: self)
         }
         
+        affirmationTitleLabel.text = affirmation?.title
+        iconImageView.image = UIImage(data: affirmation?.icon ?? Data())
+        
         NotificationCenter.default.addObserver(self, selector: #selector(volumeChanged(notification:)), name: NSNotification.Name(rawValue: notification_systemVolumeDidChange), object: nil)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let fetchRequest = NSFetchRequest<Affirmation> (entityName: "Affirmation")
+        let predicate = NSPredicate(format: "isActive = true")
+        fetchRequest.predicate = predicate
+        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
+        self.fetchedResultsController = NSFetchedResultsController<Affirmation> (
+            fetchRequest: fetchRequest,
+            managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil)
+        self.fetchedResultsController.delegate = self
+        
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            print("An error occurred")
+        }
+        
+        if let affirmation = fetchedResultsController.fetchedObjects?.first {
+            affirmationTitleLabel.text = affirmation.title
+            iconImageView.image = UIImage(data: affirmation.icon ?? Data())
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

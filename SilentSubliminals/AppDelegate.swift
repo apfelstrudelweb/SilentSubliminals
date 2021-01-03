@@ -8,10 +8,12 @@
 
 import UIKit
 import AVFoundation
+import CoreData
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
+    var db = CoreDataManager.sharedInstance
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
@@ -38,7 +40,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch {
             print("Failed to set audio session category.")
         }
-
+        
+        db.managedObjectContext.automaticallyMergesChangesFromParent = true
+        
+        //CoreDataManager.sharedInstance.clearDB()
+        //CoreDataManager.sharedInstance.insertAffirmations()
+        
         return true
     }
     
