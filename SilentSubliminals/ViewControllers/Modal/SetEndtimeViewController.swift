@@ -20,6 +20,7 @@ class SetEndtimeViewController: UIViewController {
         super.viewDidLoad()
 
         titleLabel.textColor = PlayerControlColor.lightColor
+        timerPicker.preferredDatePickerStyle = .wheels
         timerPicker.setValue(PlayerControlColor.lightColor, forKeyPath: "textColor")
         timerPicker.setValue(true, forKey: "highlightsToday")
         activeTimeView.backgroundColor = PlayerControlColor.darkGrayColor.withAlphaComponent(0.75)

@@ -71,7 +71,7 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
     // MARK: user actions
     @IBAction func scriptCreationButtonTouched(_ sender: Any) {
         
-
+        self.performSegue(withIdentifier: "showMakerAddNewSegue", sender: sender)
     }
     
     @IBAction func playButtonTouched(_ sender: Any) {

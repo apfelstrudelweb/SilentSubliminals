@@ -202,7 +202,6 @@
                                 <state key="normal" backgroundImage="plusButton.png"/>
                                 <connections>
                                     <action selector="scriptCreationButtonTouched:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8go-yo-fvk"/>
-                                    <segue destination="P6a-z8-KIu" kind="show" identifier="showMaker2Segue" id="drL-95-0Nf"/>
                                 </connections>
                             </button>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KHd-hc-lYm">
@@ -250,6 +249,7 @@
                         <outlet property="playButton" destination="2kD-4u-X7j" id="0hF-8L-9q0"/>
                         <outlet property="playerView" destination="Yvy-h8-CaA" id="CE7-7Q-MOb"/>
                         <outlet property="recordButton" destination="a0U-wz-QjM" id="9xc-mp-dki"/>
+                        <segue destination="P6a-z8-KIu" kind="show" identifier="showMakerAddNewSegue" id="RTw-Dc-bPn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -350,6 +350,19 @@
                                 <color key="textColor" systemColor="systemGrayColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="55e-iL-U3v">
+                                <rect key="frame" x="356" y="237" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="55e-iL-U3v" secondAttribute="height" id="4VU-Pl-cwp"/>
+                                    <constraint firstAttribute="height" constant="50" id="Ony-5F-AUw"/>
+                                    <constraint firstAttribute="width" constant="50" id="yHO-FC-fIq"/>
+                                </constraints>
+                                <color key="tintColor" red="0.27380970119999998" green="0.68577355149999997" blue="0.68408918379999994" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Button" image="editButton"/>
+                                <connections>
+                                    <action selector="editButtonTouched:" destination="P6a-z8-KIu" eventType="touchUpInside" id="oS0-XG-Cjp"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="jHO-Nv-1XP"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -357,6 +370,7 @@
                             <constraint firstItem="huv-By-Zr0" firstAttribute="leading" secondItem="9q4-5b-e3d" secondAttribute="leading" id="0sh-xX-4lT"/>
                             <constraint firstItem="9q4-5b-e3d" firstAttribute="leading" secondItem="8Zd-mp-Wi4" secondAttribute="trailing" constant="30" id="4HA-0s-RHQ"/>
                             <constraint firstItem="9q4-5b-e3d" firstAttribute="centerY" secondItem="8Zd-mp-Wi4" secondAttribute="centerY" id="Fyo-Yp-ccA"/>
+                            <constraint firstItem="55e-iL-U3v" firstAttribute="centerY" secondItem="huv-By-Zr0" secondAttribute="centerY" id="Fzp-RE-0L9"/>
                             <constraint firstItem="Kbl-Nj-6vk" firstAttribute="top" secondItem="yKb-ng-YSw" secondAttribute="bottom" constant="30" id="Ncu-Xd-wa0"/>
                             <constraint firstItem="Kbl-Nj-6vk" firstAttribute="leading" secondItem="jHO-Nv-1XP" secondAttribute="leading" id="R0g-MO-8pb"/>
                             <constraint firstItem="IH3-pR-fxG" firstAttribute="top" secondItem="jHO-Nv-1XP" secondAttribute="top" constant="20" id="Z41-Y5-6ZZ"/>
@@ -369,6 +383,7 @@
                             <constraint firstItem="yKb-ng-YSw" firstAttribute="leading" secondItem="8Zd-mp-Wi4" secondAttribute="leading" id="oab-Q9-5hp"/>
                             <constraint firstItem="8Zd-mp-Wi4" firstAttribute="leading" secondItem="IH3-pR-fxG" secondAttribute="leading" id="qr1-oD-P8x"/>
                             <constraint firstItem="yKb-ng-YSw" firstAttribute="width" secondItem="yKb-ng-YSw" secondAttribute="height" id="r43-Ax-pMm"/>
+                            <constraint firstItem="jHO-Nv-1XP" firstAttribute="trailing" secondItem="55e-iL-U3v" secondAttribute="trailing" constant="8" id="ruc-NI-wEq"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="63T-hn-coh"/>
@@ -376,12 +391,73 @@
                         <outlet property="addAffirmationButton" destination="yKb-ng-YSw" id="brW-1F-HCG"/>
                         <outlet property="affirmationTitleLabel" destination="IH3-pR-fxG" id="5uA-11-pBe"/>
                         <outlet property="coverImageButton" destination="9q4-5b-e3d" id="8IR-VP-PsG"/>
+                        <outlet property="editButton" destination="55e-iL-U3v" id="mSo-T6-bHT"/>
                         <outlet property="tableView" destination="Kbl-Nj-6vk" id="y6b-ni-gyL"/>
+                        <segue destination="h7w-2W-8rs" kind="presentation" identifier="addAffirmationSegue" id="tiH-wX-cQf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d5Q-39-hvC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4507.2463768115949" y="84.375"/>
+        </scene>
+        <!--Add Affirmation View Controller-->
+        <scene sceneID="oKo-dL-W2j">
+            <objects>
+                <viewController id="h7w-2W-8rs" customClass="AddAffirmationViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Lhq-KT-vGO">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="gnG-kd-2g3">
+                                <rect key="frame" x="40" y="112" width="334" height="476"/>
+                                <color key="backgroundColor" systemColor="systemGray2Color"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8ic-AM-mIo">
+                                <rect key="frame" x="314" y="12" width="60" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="5Sa-WF-WXv"/>
+                                    <constraint firstAttribute="width" constant="60" id="Ad2-qA-hR8"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                <state key="normal" title="DONE"/>
+                                <connections>
+                                    <action selector="doneButtonTouched:" destination="h7w-2W-8rs" eventType="touchUpInside" id="FHM-hM-xUE"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type your Affirmation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F8d-2j-uiJ">
+                                <rect key="frame" x="40" y="50" width="334" height="28"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="23"/>
+                                <color key="textColor" systemColor="systemGrayColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="317-nN-DQm"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="gnG-kd-2g3" firstAttribute="trailing" secondItem="F8d-2j-uiJ" secondAttribute="trailing" id="0GM-Jc-R5b"/>
+                            <constraint firstItem="8ic-AM-mIo" firstAttribute="trailing" secondItem="F8d-2j-uiJ" secondAttribute="trailing" id="3O9-kQ-Sf5"/>
+                            <constraint firstItem="F8d-2j-uiJ" firstAttribute="top" secondItem="317-nN-DQm" secondAttribute="top" constant="50" id="5e6-lU-XEU"/>
+                            <constraint firstItem="gnG-kd-2g3" firstAttribute="leading" secondItem="F8d-2j-uiJ" secondAttribute="leading" id="M91-Aa-FRk"/>
+                            <constraint firstItem="8ic-AM-mIo" firstAttribute="top" secondItem="317-nN-DQm" secondAttribute="top" constant="12" id="NyX-S4-6OE"/>
+                            <constraint firstItem="317-nN-DQm" firstAttribute="bottom" secondItem="gnG-kd-2g3" secondAttribute="bottom" priority="999" constant="220" id="gdh-AO-eyz"/>
+                            <constraint firstItem="gnG-kd-2g3" firstAttribute="top" secondItem="F8d-2j-uiJ" secondAttribute="bottom" constant="34" id="iSg-4d-xAk"/>
+                            <constraint firstItem="317-nN-DQm" firstAttribute="trailing" secondItem="F8d-2j-uiJ" secondAttribute="trailing" constant="40" id="s2c-35-8V2"/>
+                            <constraint firstItem="F8d-2j-uiJ" firstAttribute="leading" secondItem="317-nN-DQm" secondAttribute="leading" constant="40" id="saP-4g-Rqj"/>
+                        </constraints>
+                    </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="400" height="200"/>
+                    <connections>
+                        <outlet property="doneButton" destination="8ic-AM-mIo" id="OrR-uI-0MJ"/>
+                        <outlet property="textView" destination="gnG-kd-2g3" id="dOd-rw-gOR"/>
+                        <outlet property="textviewBottomSpace" destination="gdh-AO-eyz" id="Aaq-Bg-xUb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9Z6-R1-zX0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5285.507246376812" y="84.375"/>
         </scene>
         <!--Script View Controller-->
         <scene sceneID="TWN-q5-UWo">
@@ -394,12 +470,9 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GEd-oc-aDl" customClass="ShadowView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="47" width="378" height="266.5"/>
                                 <subviews>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Iz0-AX-dXj">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" editable="NO" text="your affirmation comes here ..." textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iz0-AX-dXj">
                                         <rect key="frame" x="0.0" y="0.0" width="378" height="213"/>
                                         <color key="backgroundColor" red="0.61338037249999999" green="0.64416187999999996" blue="0.68199056390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <string key="text">I’m releasing all my fears and worries. I’m living my full potential.
-
-I attract the perfect partner. I welcome a bright future full of love.</string>
                                         <color key="textColor" systemColor="labelColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -1649,7 +1722,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="countDownTimer" countDownDuration="300" minuteInterval="1" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6fq-uc-apD">
+                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="countDownTimer" countDownDuration="300" minuteInterval="1" style="wheels" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6fq-uc-apD">
                                 <rect key="frame" x="0.0" y="124" width="300" height="162"/>
                                 <connections>
                                     <action selector="timePickerValueChanged:" destination="09b-ZI-7Cp" eventType="valueChanged" id="pQq-jl-g4g"/>
@@ -1788,6 +1861,7 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
         <image name="cancelIcon" width="417" height="417"/>
         <image name="chairIcon" width="417" height="417"/>
         <image name="earLoudIcon" width="1314" height="2115"/>
+        <image name="editButton" width="44" height="44"/>
         <image name="forwardIcon" width="320" height="313"/>
         <image name="loudspeakerSymbolHigh" width="100" height="79"/>
         <image name="loudspeakerSymbolLow" width="80" height="80"/>
@@ -1811,6 +1885,9 @@ I attract the perfect partner. I welcome a bright future full of love.</string>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray2Color">
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGrayColor">
             <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

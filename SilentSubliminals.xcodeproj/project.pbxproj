@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		652D5C5A2546B6170083165B /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 652D5C592546B6170083165B /* Accelerate.framework */; };
+		653353D625A1D3180067A4A6 /* AddAffirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653353D525A1D3180067A4A6 /* AddAffirmationViewController.swift */; };
 		653BA53A258E2DFF004A0BA7 /* TimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653BA539258E2DFF004A0BA7 /* TimerViewController.swift */; };
 		653BA542258E69EB004A0BA7 /* SetDurationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653BA541258E69EB004A0BA7 /* SetDurationViewController.swift */; };
 		653BA545258E69FC004A0BA7 /* SetEndtimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653BA544258E69FC004A0BA7 /* SetEndtimeViewController.swift */; };
@@ -88,12 +89,13 @@
 		65F0727C25445673004C8BA3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F0727B25445673004C8BA3 /* AVFoundation.framework */; };
 		65F072812544615D004C8BA3 /* startRecordingButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 65F0727E2544615D004C8BA3 /* startRecordingButton.png */; };
 		65F072832544615D004C8BA3 /* stopRecordingButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 65F072802544615D004C8BA3 /* stopRecordingButton.png */; };
-		C7C65CA02A2B84CC0770A04A /* Pods_FREE_UR_SPIRIT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002E2D85AD7AB8996BF07F63 /* Pods_FREE_UR_SPIRIT.framework */; };
+		AD83545AEC9D9F6A21E562C9 /* Pods_FREE_UR_SPIRIT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB82CA3693914B0F783D9BCE /* Pods_FREE_UR_SPIRIT.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		002E2D85AD7AB8996BF07F63 /* Pods_FREE_UR_SPIRIT.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FREE_UR_SPIRIT.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		207B55E454D0CD6B1EE09CE1 /* Pods-FREE UR SPIRIT.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FREE UR SPIRIT.debug.xcconfig"; path = "Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT.debug.xcconfig"; sourceTree = "<group>"; };
 		652D5C592546B6170083165B /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		653353D525A1D3180067A4A6 /* AddAffirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAffirmationViewController.swift; sourceTree = "<group>"; };
 		653BA539258E2DFF004A0BA7 /* TimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewController.swift; sourceTree = "<group>"; };
 		653BA541258E69EB004A0BA7 /* SetDurationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetDurationViewController.swift; sourceTree = "<group>"; };
 		653BA544258E69FC004A0BA7 /* SetEndtimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetEndtimeViewController.swift; sourceTree = "<group>"; };
@@ -179,8 +181,8 @@
 		65F0727E2544615D004C8BA3 /* startRecordingButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = startRecordingButton.png; sourceTree = "<group>"; };
 		65F0727F2544615D004C8BA3 /* stopButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stopButton.png; sourceTree = "<group>"; };
 		65F072802544615D004C8BA3 /* stopRecordingButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stopRecordingButton.png; sourceTree = "<group>"; };
-		DD77D72680F24B02A266C2FA /* Pods-FREE UR SPIRIT.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FREE UR SPIRIT.debug.xcconfig"; path = "Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT.debug.xcconfig"; sourceTree = "<group>"; };
-		E8B2CBA5EBDFE99AFDD75922 /* Pods-FREE UR SPIRIT.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FREE UR SPIRIT.release.xcconfig"; path = "Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT.release.xcconfig"; sourceTree = "<group>"; };
+		AB82CA3693914B0F783D9BCE /* Pods_FREE_UR_SPIRIT.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FREE_UR_SPIRIT.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E08A461BB8BA60E4DE6AA0FC /* Pods-FREE UR SPIRIT.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FREE UR SPIRIT.release.xcconfig"; path = "Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,7 +192,7 @@
 			files = (
 				652D5C5A2546B6170083165B /* Accelerate.framework in Frameworks */,
 				65F0727C25445673004C8BA3 /* AVFoundation.framework in Frameworks */,
-				C7C65CA02A2B84CC0770A04A /* Pods_FREE_UR_SPIRIT.framework in Frameworks */,
+				AD83545AEC9D9F6A21E562C9 /* Pods_FREE_UR_SPIRIT.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,8 +202,8 @@
 		2AA53B5A417622581E635D17 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				DD77D72680F24B02A266C2FA /* Pods-FREE UR SPIRIT.debug.xcconfig */,
-				E8B2CBA5EBDFE99AFDD75922 /* Pods-FREE UR SPIRIT.release.xcconfig */,
+				207B55E454D0CD6B1EE09CE1 /* Pods-FREE UR SPIRIT.debug.xcconfig */,
+				E08A461BB8BA60E4DE6AA0FC /* Pods-FREE UR SPIRIT.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -211,9 +213,29 @@
 			children = (
 				652D5C592546B6170083165B /* Accelerate.framework */,
 				65F0727B25445673004C8BA3 /* AVFoundation.framework */,
-				002E2D85AD7AB8996BF07F63 /* Pods_FREE_UR_SPIRIT.framework */,
+				AB82CA3693914B0F783D9BCE /* Pods_FREE_UR_SPIRIT.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6556455125A1CC5500F0FF76 /* Maker */ = {
+			isa = PBXGroup;
+			children = (
+				6558D30C24684934004E8660 /* SubliminalMakerViewController.swift */,
+				65A0531025A0D9C700F3C6BD /* MakerAddNewViewController.swift */,
+				6569A009253C4834000E7F95 /* ScriptViewController.swift */,
+				653353D525A1D3180067A4A6 /* AddAffirmationViewController.swift */,
+			);
+			path = Maker;
+			sourceTree = "<group>";
+		};
+		6556455225A1CC5B00F0FF76 /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				65A8405D2561325E0072531F /* SubliminalPlayerViewController.swift */,
+				65A052E425A0724800F3C6BD /* MediathekViewController.swift */,
+			);
+			path = Player;
 			sourceTree = "<group>";
 		};
 		6558D2FC24684934004E8660 = {
@@ -282,14 +304,11 @@
 		6568E64C258F5230009390D5 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				6556455225A1CC5B00F0FF76 /* Player */,
+				6556455125A1CC5500F0FF76 /* Maker */,
 				65D561DB259762A700FC039C /* Modal */,
 				656D43262594E3800067A4D8 /* Controls */,
 				65A8405A25612D1B0072531F /* PlayerMakerChoiceViewController.swift */,
-				6558D30C24684934004E8660 /* SubliminalMakerViewController.swift */,
-				65A052E425A0724800F3C6BD /* MediathekViewController.swift */,
-				65A8405D2561325E0072531F /* SubliminalPlayerViewController.swift */,
-				6569A009253C4834000E7F95 /* ScriptViewController.swift */,
-				65A0531025A0D9C700F3C6BD /* MakerAddNewViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -491,11 +510,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6558D31924684935004E8660 /* Build configuration list for PBXNativeTarget "FREE UR SPIRIT" */;
 			buildPhases = (
-				BD75F11B69F44B0DB57C75B3 /* [CP] Check Pods Manifest.lock */,
+				F44A103133876AD223D952DA /* [CP] Check Pods Manifest.lock */,
 				6558D30124684934004E8660 /* Sources */,
 				6558D30224684934004E8660 /* Frameworks */,
 				6558D30324684934004E8660 /* Resources */,
-				FEDFA08982EF7A489DB1AD90 /* [CP] Embed Pods Frameworks */,
+				FBB96A3808E8507975A41FBF /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -578,7 +597,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		BD75F11B69F44B0DB57C75B3 /* [CP] Check Pods Manifest.lock */ = {
+		F44A103133876AD223D952DA /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -600,7 +619,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		FEDFA08982EF7A489DB1AD90 /* [CP] Embed Pods Frameworks */ = {
+		FBB96A3808E8507975A41FBF /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -672,6 +691,7 @@
 				65A8405E2561325E0072531F /* SubliminalPlayerViewController.swift in Sources */,
 				65A052DB259F558700F3C6BD /* CircularView.swift in Sources */,
 				656D43072594B50D0067A4D8 /* SymbolButton.swift in Sources */,
+				653353D625A1D3180067A4A6 /* AddAffirmationViewController.swift in Sources */,
 				65D561D12597517D00FC039C /* AudioHelper.swift in Sources */,
 				65A0530125A093D800F3C6BD /* PurchasesCollectionView.swift in Sources */,
 				65C6E64B259A77CC0046E739 /* SkipButton.swift in Sources */,
@@ -819,7 +839,7 @@
 		};
 		6558D31A24684935004E8660 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DD77D72680F24B02A266C2FA /* Pods-FREE UR SPIRIT.debug.xcconfig */;
+			baseConfigurationReference = 207B55E454D0CD6B1EE09CE1 /* Pods-FREE UR SPIRIT.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -844,7 +864,7 @@
 		};
 		6558D31B24684935004E8660 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E8B2CBA5EBDFE99AFDD75922 /* Pods-FREE UR SPIRIT.release.xcconfig */;
+			baseConfigurationReference = E08A461BB8BA60E4DE6AA0FC /* Pods-FREE UR SPIRIT.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

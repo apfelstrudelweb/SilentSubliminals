@@ -9,23 +9,25 @@
 import UIKit
 
 protocol SelectAffirmationDelegate : AnyObject {
-    
-    //    func textSelected(text: String)
-    //    func imageSelected(image: UIImage)
+
     func affirmationSelected(affirmation: Affirmation)
 }
 
-class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
+class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddAffirmationTextDelegate {
+
     @IBOutlet weak var affirmationTitleLabel: UILabel!
     @IBOutlet weak var coverImageButton: UIButton!
     @IBOutlet weak var addAffirmationButton: UIButton!
+    @IBOutlet weak var editButton: UIButton!
     
     @IBOutlet weak var tableView: UITableView!
     
+    private var addAffirmationViewController: AddAffirmationViewController?
     weak var delegate : SelectAffirmationDelegate?
     
     var imagePicker: ImagePicker!
+    
+    var alphaOff: CGFloat = 0.5
     
     var existingAffirmations = ["I am surrounded by peace, harmony and good energy.",
                                 "The world deserves nothing less than my authentic happiness. I am happy and I know so I show it. My inner peace helps me get through anything.",
@@ -33,13 +35,7 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
                                 "I am healthy, energetic, and optimistic. My body vibrates with energy and health. My body systems function perfectly.",
                                 "I pay attention to what my body needs for health and vitality.  I stay up to date about my health issues."]
     
-    //var usedAffirmations: Set<String> = []
-    //    var usedAffirmation: String? {
-    //        didSet {
-    //            delegate?.textSelected(text: usedAffirmation ?? "Affirmation")
-    //        }
-    //    }
-    
+
     var usedAffirmation = Affirmation()
     
     var usedText: String? {
@@ -59,30 +55,52 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
         addAffirmationButton.layer.cornerRadius = 0.5 * addAffirmationButton.frame.size.width
         addAffirmationButton.clipsToBounds = true
         
+        tableView.isEditing = false
         tableView.tableFooterView = UIView()
-
+        editButton.alpha = alphaOff
+        
         self.imagePicker = ImagePicker(presentationController: self, delegate: self)
         
-        showInputDialog(title: "Action required",
-                        subtitle: "Please enter a name for your affirmation",
-                        actionTitle: "Add",
-                        cancelTitle: "Cancel",
-                        inputPlaceholder: "your affirmation",
-                        inputKeyboardType: .default, actionHandler:
-                            { (input:String?) in
-                                //print("The new number is \(input ?? "")")
-                                self.affirmationTitleLabel.text = input?.capitalized
-                                self.usedAffirmation.title = input?.capitalized
-                            })
-        
+        if false {
+            showInputDialog(title: "Action required",
+                            subtitle: "Please enter a name for your affirmation",
+                            actionTitle: "Add",
+                            cancelTitle: "Cancel",
+                            inputPlaceholder: "your affirmation title",
+                            inputKeyboardType: .default, actionHandler:
+                                { (input:String?) in
+                                    //print("The new number is \(input ?? "")")
+                                    self.affirmationTitleLabel.text = input?.capitalized
+                                    self.usedAffirmation.title = input?.capitalized
+                                })
+        }
     }
     
     @IBAction func coverImageButtonTouched(_ sender: UIButton) {
         self.imagePicker.present(from: sender)
     }
     
+    @IBAction func editButtonTouched(_ sender: Any) {
+        tableView.isEditing = !tableView.isEditing
+        editButton.alpha = tableView.isEditing ? 1 : alphaOff
+    }
+    
     @IBAction func addAffirmationButtonTouched(_ sender: Any) {
         
+        let optionMenu = UIAlertController(title: nil, message: "Here you can configure your subliminals", preferredStyle: .actionSheet)
+        
+        
+        let selectFromLibraryAction = UIAlertAction(title: "Select from Library", style: .default)
+        let typeOwnAction = UIAlertAction(title: "Type your own", style: .default, handler: { (action:UIAlertAction) in
+            self.performSegue(withIdentifier: "addAffirmationSegue", sender: sender)
+            
+        })
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        
+        optionMenu.addAction(selectFromLibraryAction)
+        optionMenu.addAction(typeOwnAction)
+        optionMenu.addAction(cancelAction)
+        self.present(optionMenu, animated: true, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -100,7 +118,53 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
         usedText = existingAffirmations[indexPath.row]
     }
     
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == .delete) {
+            tableView.beginUpdates()
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            self.existingAffirmations.remove(at: indexPath.row)
+            tableView.endUpdates()
+        }
+    }
     
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
+
+    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let movedObject = self.existingAffirmations[sourceIndexPath.row]
+        existingAffirmations.remove(at: sourceIndexPath.row)
+        existingAffirmations.insert(movedObject, at: destinationIndexPath.row)
+    }
+    
+    private func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    // MARK: segue
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        
+        if let vc = segue.destination as? AddAffirmationViewController {
+            addAffirmationViewController = vc
+            addAffirmationViewController?.delegate = self
+        }
+    }
+    
+    // AddAffirmationTextDelegate
+    func addAffirmation(text: String) {
+
+        existingAffirmations.insert(text, at: 0)
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
     
 }
 
