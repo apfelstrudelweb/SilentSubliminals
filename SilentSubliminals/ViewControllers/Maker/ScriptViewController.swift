@@ -66,7 +66,7 @@ class ScriptViewController: UIViewController, NSFetchedResultsControllerDelegate
             
             if let title = libraryItem.title {
                 let fetchRequest2 = NSFetchRequest<Subliminal> (entityName: "Subliminal")
-                fetchRequest2.sortDescriptors = [NSSortDescriptor (key: "order", ascending: false)]
+                fetchRequest2.sortDescriptors = [NSSortDescriptor (key: "order", ascending: true)]
                 let predicate2 = NSPredicate(format: "libraryItem.title = %@", title as String)
                 fetchRequest2.predicate = predicate2
                 self.fetchedResultsController2 = NSFetchedResultsController<Subliminal> (
@@ -84,7 +84,7 @@ class ScriptViewController: UIViewController, NSFetchedResultsControllerDelegate
                         for subliminal in subliminals {
                             if let text = subliminal.text {
                                 textViewText.append(text)
-                                textViewText.append("\n")
+                                textViewText.append("\n\n")
                             }
                         }
                         textView.text = textViewText

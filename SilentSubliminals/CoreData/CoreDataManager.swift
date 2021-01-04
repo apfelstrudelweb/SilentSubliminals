@@ -155,136 +155,133 @@ class CoreDataManager: NSObject {
         }
     }
     
-    func createSubliminals() {
+    func updateLibraryItem(item: LibraryItem, icon : UIImage) {
+        item.icon = icon.pngData()
+        save()
+    }
+    
+    func createSubliminals() { // TODO: to library item
+        createSubliminal(text: "I am a magnet for money. Prosperity is drawn to me")
+        createSubliminal(text: "I welcome an unlimited source of income and wealth in my life")
+        createSubliminal(text: "I constantly attract opportunities that create more money")
+        createSubliminal(text: "My finances improve beyond my dreams")
+        createSubliminal(text: "Money is the root of joy and comfort")
+        createSubliminal(text: "Money and spirituality can co-exist in harmony")
+//        createSubliminal(text: "0")
+//        createSubliminal(text: "1")
+//        createSubliminal(text: "2")
+//        createSubliminal(text: "3")
+//        createSubliminal(text: "4")
+//        createSubliminal(text: "5")
+    }
+    
+    func createSubliminal(text: String) {
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "LibraryItem")
         fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)] // TODO
         
         do {
             let libraryItems = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest) as! [LibraryItem]
-            let libraryItem = libraryItems.first // TODO
+            guard let libraryItem = libraryItems.first else { return } // TODO
             
-            let subliminal1 = NSEntityDescription.insertNewObject(forEntityName: "Subliminal", into: self.managedObjectContext) as! Subliminal
-            subliminal1.order = 0
-            subliminal1.text = "I am a magnet for money. Prosperity is drawn to me"
+            let fetchRequest2 = NSFetchRequest<Subliminal> (entityName: "Subliminal")
+            fetchRequest2.sortDescriptors = [NSSortDescriptor (key: "order", ascending: false)]
+            guard let title = libraryItem.title else { return }
+            let predicate2 = NSPredicate(format: "libraryItem.title = %@", title as String)
+            fetchRequest2.predicate = predicate2
+
+            let subliminals = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest2)
+            let subliminal = NSEntityDescription.insertNewObject(forEntityName: "Subliminal", into: self.managedObjectContext) as! Subliminal
+            if let lastOrder = subliminals.first?.order {
+                subliminal.order = lastOrder + 1
+            } else {
+                subliminal.order = 0
+            }
+            subliminal.text = text
+            libraryItem.addToSubliminals(subliminal)
             
-            let subliminal2 = NSEntityDescription.insertNewObject(forEntityName: "Subliminal", into: self.managedObjectContext) as! Subliminal
-            subliminal2.order = 1
-            subliminal2.text = "I welcome an unlimited source of income and wealth in my life"
-            
-            libraryItem?.addToSubliminals(subliminal1)
-            libraryItem?.addToSubliminals(subliminal2)
             try self.managedObjectContext.save()
             
         } catch {
             print(error)
         }
-        
     }
     
-    
-    
+    func addSubliminal(text: String, libraryItem: LibraryItem) {
+        
+        do {
+            let fetchRequest = NSFetchRequest<Subliminal> (entityName: "Subliminal")
+            fetchRequest.sortDescriptors = [NSSortDescriptor (key: "order", ascending: false)]
+            guard let title = libraryItem.title else { return }
+            let predicate = NSPredicate(format: "libraryItem.title = %@", title as String)
+            fetchRequest.predicate = predicate
+
+            let subliminals = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest)
+            let subliminal = NSEntityDescription.insertNewObject(forEntityName: "Subliminal", into: self.managedObjectContext) as! Subliminal
+            if let lastOrder = subliminals.first?.order {
+                subliminal.order = lastOrder + 1
+            } else {
+                subliminal.order = 0
+            }
+            subliminal.text = text
+            libraryItem.addToSubliminals(subliminal)
+            
+            try self.managedObjectContext.save()
+            
+        } catch {
+            print(error)
+        }
+    }
+     
     func removeLibraryItem(item: LibraryItem) {
         
         CoreDataManager.sharedInstance.managedObjectContext.delete(item)
         save()
     }
     
+    func removeSubliminal(item: Subliminal) {
+        
+        CoreDataManager.sharedInstance.managedObjectContext.delete(item)
+        save()
+    }
     
-    //    func removeFromTrainingsplan(workout:Workout) {
-    //
-    //        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Trainingsplan")
-    //        let predicate = NSPredicate(format: "id = %d", workout.id)
-    //        fetchRequest.predicate = predicate
-    //
-    //        do {
-    //            let plan = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest).first as! Trainingsplan
-    //            CoreDataManager.sharedInstance.managedObjectContext.delete(plan)
-    //
-    //        } catch {
-    //            fatalError("Failed to delete object: \(error)")
-    //        }
-    //
-    //        do {
-    //            try self.managedObjectContext.save()
-    //        } catch let error {
-    //            print("Failure to save context: \(error.localizedDescription)")
-    //        }
-    //
-    //
-    //        // now avoid gaps in position indexes
-    //        let fetchRequest2 = NSFetchRequest<NSFetchRequestResult>(entityName: "Trainingsplan")
-    //        fetchRequest2.sortDescriptors = [NSSortDescriptor (key: "position", ascending: true)]
-    //
-    //        do {
-    //            let plans = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest2) as! [Trainingsplan]
-    //
-    //            for (index, plan) in plans.enumerated() {
-    //                plan.position = Int16(index)
-    //            }
-    //
-    //        } catch let error {
-    //            print("Failure to save context: \(error.localizedDescription)")
-    //        }
-    //
-    //        do {
-    //            try self.managedObjectContext.save()
-    //        } catch let error {
-    //            print("Failure to save context: \(error.localizedDescription)")
-    //        }
-    //
-    //    }
-    //
-    //    func syncIndicesInTrainingsplan() {
-    //        let fetchRequest2 = NSFetchRequest<NSFetchRequestResult>(entityName: "Trainingsplan")
-    //        fetchRequest2.sortDescriptors = [NSSortDescriptor (key: "position", ascending: true)]
-    //
-    //        do {
-    //            let plans = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest2) as! [Trainingsplan]
-    //
-    //            for (index, plan) in plans.enumerated() {
-    //                plan.position = Int16(index)
-    //            }
-    //
-    //        } catch let error {
-    //            print("Failure to save context: \(error.localizedDescription)")
-    //        }
-    //
-    //        do {
-    //            try self.managedObjectContext.save()
-    //        } catch let error {
-    //            print("Failure to save context: \(error.localizedDescription)")
-    //        }
-    //    }
-    //
-    //    func updateWorkouts(serverWorkoutsData:[WorkoutData]?, completionHandler: CompletionHander?) {
-    //        if let workouts = serverWorkoutsData {
-    //
-    //            // delete old data
-    //            let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Workout")
-    //            let request = NSBatchDeleteRequest(fetchRequest: fetch)
-    //            do {
-    //                try managedObjectContext.execute(request)
-    //                //try self.managedObjectContext.save()
-    //            } catch let error {
-    //                NSLog("Failure to delete context: \(error.localizedDescription)")
-    //            }
-    //
-    //            for workout in workouts {
-    //
-    //                let _ = CoreDataManager.sharedInstance.insertWorkout(id: Int16(workout.id!), imgName: workout.imageName, isLive: workout.isLive==1, isPremium: workout.isPremium==1, alias: workout.alias, videoUrl: workout.videoUrl!, isDumbbell: workout.isDumbbell==1, isMat: workout.isMat==1, isBall: workout.isBall==1, isTheraband: workout.isTheraband==1, isMachine: workout.isMachine==1, intensity: Int16(workout.intensity!), musclegroupIds: workout.musclegroups!, titles: workout.title, instructions: workout.instructions, remarks: workout.remarks)
-    //            }
-    //
-    //            do {
-    //                try self.managedObjectContext.save()
-    //            } catch let error {
-    //                NSLog("Failure to save context: \(error.localizedDescription)")
-    //            }
-    //        }
-    //
-    //        completionHandler?()
-    //    }
+    func moveSubliminal(item: Subliminal, fromOrder: Int, toOrder: Int) {
+        
+        item.order = Int16(toOrder)
+
+        do {
+            let fetchRequest = NSFetchRequest<Subliminal> (entityName: "Subliminal")
+            fetchRequest.sortDescriptors = [NSSortDescriptor (key: "order", ascending: true)]
+            let fetchedResultsController = NSFetchedResultsController<Subliminal> (
+                fetchRequest: fetchRequest,
+                managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
+                sectionNameKeyPath: nil,
+                cacheName: nil)
+            try fetchedResultsController.performFetch()
+            
+            var array: [Subliminal]  = Array()
+            
+            if let subliminals = fetchedResultsController.fetchedObjects {
+
+                for subliminal in subliminals {
+                    array.append(subliminal)
+                }
+
+                array.move(item, to: toOrder)
+
+                for (index, subliminal) in array.enumerated() {
+                    subliminal.order = Int16(index)
+                }
+                
+            }
+        } catch {
+            print("An error occurred")
+        }
+        
+        save()
+    }
     
+
     func position(set: Set<Favorite>, id: Int16) -> Int16 {
         
         for item in set {
@@ -306,4 +303,27 @@ class Favorite: NSObject {
         self.position = position
     }
     
+}
+
+
+extension Array where Element: Equatable {
+    mutating func move(_ item: Element, to newIndex: Index) {
+        if let index = firstIndex(of: item) {
+            move(at: index, to: newIndex)
+        }
+    }
+
+    mutating func bringToFront(item: Element) {
+        move(item, to: 0)
+    }
+
+    mutating func sendToBack(item: Element) {
+        move(item, to: endIndex-1)
+    }
+}
+
+extension Array {
+    mutating func move(at index: Index, to newIndex: Index) {
+        insert(remove(at: index), at: newIndex)
+    }
 }

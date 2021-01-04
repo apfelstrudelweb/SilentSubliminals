@@ -35,7 +35,9 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     var fetchedResultsController: NSFetchedResultsController<LibraryItem>!
+    var fetchedResultsController2: NSFetchedResultsController<Subliminal>!
     
+    var libraryItem: LibraryItem?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,11 +49,22 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
             managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
             sectionNameKeyPath: nil,
             cacheName: nil)
-        self.fetchedResultsController.delegate = self
+        // TODO: Predicate
+        //self.fetchedResultsController.delegate = self
+        
+        let fetchRequest2 = NSFetchRequest<Subliminal> (entityName: "Subliminal")
+        fetchRequest2.sortDescriptors = [NSSortDescriptor (key: "order", ascending: true)]
+        self.fetchedResultsController2 = NSFetchedResultsController<Subliminal> (
+            fetchRequest: fetchRequest2,
+            managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil)
+        self.fetchedResultsController2.delegate = self
         
         do {
             try fetchedResultsController.performFetch()
-            //existingAffirmations = fetchedResultsController.fetchedObjects!
+            try fetchedResultsController2.performFetch()
+            libraryItem = fetchedResultsController.fetchedObjects?.first // TODO
         } catch {
             print("An error occurred")
         }
@@ -61,6 +74,11 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
         coverImageButton.clipsToBounds = true
         addAffirmationButton.layer.cornerRadius = 0.5 * addAffirmationButton.frame.size.width
         addAffirmationButton.clipsToBounds = true
+        
+        if let libraryItem = fetchedResultsController.fetchedObjects?.first, let imageData = libraryItem.icon {
+            let icon = UIImage(data: imageData)
+            coverImageButton.setImage(icon, for: .normal)
+        }
         
         tableView.isEditing = false
         tableView.tableFooterView = UIView()
@@ -73,6 +91,7 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
                             subtitle: "Please enter a name for your library",
                             actionTitle: "Add",
                             cancelTitle: "Cancel",
+                            inputText: fetchedResultsController.fetchedObjects?.first?.title,
                             inputPlaceholder: "your library title",
                             inputKeyboardType: .default, actionHandler:
                                 { (input:String?) in
@@ -94,6 +113,10 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     @IBAction func submitButtonTouched(_ sender: Any) {
+        if let item = libraryItem, let icon = coverImageButton.image(for: .normal) {
+            CoreDataManager.sharedInstance.updateLibraryItem(item: item, icon: icon)
+        }
+        
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -116,36 +139,21 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fetchedResultsController.fetchedObjects?.count ?? 0
+        return fetchedResultsController2.fetchedObjects?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "affirmationCell", for: indexPath as IndexPath) as! AffirmationTableViewCell
-        cell.affirmationLabel?.text = fetchedResultsController.fetchedObjects?[indexPath.row].title
+        cell.affirmationLabel?.text = fetchedResultsController2.fetchedObjects?[indexPath.row].text
         
         return cell
     }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        if let affirmations = fetchedResultsController.fetchedObjects {
-            for affirmation in affirmations {
-                affirmation.isActive = false
-            }
-        }
-
-        let libraryItem = fetchedResultsController.object(at: indexPath)
-        libraryItem.isActive = true
-        //libraryItem.soundFileName = affirmation.title
-        CoreDataManager.sharedInstance.save()
-    }
-    
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == .delete) {
 
-            let item = fetchedResultsController.object(at: indexPath)
-            CoreDataManager.sharedInstance.removeLibraryItem(item: item)
+            let item = fetchedResultsController2.object(at: indexPath)
+            CoreDataManager.sharedInstance.removeSubliminal(item: item)
         }
     }
     
@@ -159,9 +167,11 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     
     
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        let movedObject = fetchedResultsController.fetchedObjects?[sourceIndexPath.row]
-//        existingAffirmations.remove(at: sourceIndexPath.row)
-//        existingAffirmations.insert(movedObject, at: destinationIndexPath.row)
+        
+        guard let movedSubliminal = fetchedResultsController2.fetchedObjects?[sourceIndexPath.row] else { return }
+        CoreDataManager.sharedInstance.moveSubliminal(item: movedSubliminal, fromOrder: sourceIndexPath.row, toOrder: destinationIndexPath.row)
+        
+        self.tableView.reloadData()
     }
     
     private func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -179,10 +189,11 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     // AddAffirmationTextDelegate
-    func addAffirmation(text: String) {
+    func addSubliminal(text: String) {
 
-//        CoreDataManager.sharedInstance.insertAffirmation(id: 4711, title: usedAffirmation.title ?? "My affirmation", text: text, icon: usedAffirmation.image ?? UIImage())
-//        CoreDataManager.sharedInstance.save()
+        if let item = libraryItem {
+            CoreDataManager.sharedInstance.addSubliminal(text: text, libraryItem: item)
+        }
     }
     
 }
@@ -205,11 +216,11 @@ extension MakerAddNewViewController: NSFetchedResultsControllerDelegate {
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
             break;
-        case .move:
-            self.tableView.deleteRows(at: [indexPath! as IndexPath], with: .fade)
-            self.tableView.insertRows(at: [indexPath! as IndexPath], with: .fade)
+        case .move, .update:
+            self.tableView.moveRow(at: indexPath!, to: newIndexPath!)
+            fallthrough
         default:
-            print("...")
+            print(type)
         }
     }
 
@@ -236,6 +247,7 @@ extension UIViewController {
                          subtitle:String? = nil,
                          actionTitle:String? = "Add",
                          cancelTitle:String? = "Cancel",
+                         inputText: String? = nil,
                          inputPlaceholder:String? = nil,
                          inputKeyboardType:UIKeyboardType = UIKeyboardType.default,
                          cancelHandler: ((UIAlertAction) -> Swift.Void)? = nil,
@@ -243,6 +255,7 @@ extension UIViewController {
         
         let alert = UIAlertController(title: title, message: subtitle, preferredStyle: .alert)
         alert.addTextField { (textField:UITextField) in
+            textField.text = inputText
             textField.placeholder = inputPlaceholder
             textField.keyboardType = inputKeyboardType
             textField.addTarget(alert, action: #selector(alert.textDidChangeInNameAlert), for: .editingChanged)
@@ -256,7 +269,7 @@ extension UIViewController {
             actionHandler?(textField.text)
         })
         alert.addAction(nameAction)
-        nameAction.isEnabled = false
+        alert.textDidChangeInNameAlert()
         
         let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel, handler: { (action:UIAlertAction) in
             self.navigationController?.popViewController(animated: true)

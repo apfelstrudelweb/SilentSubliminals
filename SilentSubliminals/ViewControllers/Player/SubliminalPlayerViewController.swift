@@ -123,10 +123,6 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
             AlertController().showWarningMissingAffirmationFile(vc: self) { (flag) in
                 
                 self.performSegue(withIdentifier: "makerPlayerSegue", sender: self)
-                
-                //self.navigationController?.popToViewController(of: PlayerMakerChoiceViewController.self, animated: true)
-//                self.navigationController?.backToViewController(vc: PlayerMakerChoiceViewController.self)
-//                self.navigationController?.backToViewController(vc: SubliminalMakerViewController.self)
             }
         }
         

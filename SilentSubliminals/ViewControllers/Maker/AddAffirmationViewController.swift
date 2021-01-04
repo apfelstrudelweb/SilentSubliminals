@@ -10,7 +10,7 @@ import UIKit
 
 protocol AddAffirmationTextDelegate : AnyObject {
 
-    func addAffirmation(text: String)
+    func addSubliminal(text: String)
 }
 
 class AddAffirmationViewController: UIViewController {
@@ -28,7 +28,7 @@ class AddAffirmationViewController: UIViewController {
         textView.layer.cornerRadius = cornerRadius
         textView.clipsToBounds = true
         textView.contentInset = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
-        textView.placeholder = "Your affirmation goes here ..."
+        textView.placeholder = "Your subliminal goes here ..."
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(handle(keyboardShowNotification:)),
@@ -38,7 +38,7 @@ class AddAffirmationViewController: UIViewController {
     
     
     @IBAction func doneButtonTouched(_ sender: Any) {
-        delegate?.addAffirmation(text: textView.text)
+        delegate?.addSubliminal(text: textView.text)
         self.dismiss(animated: true, completion: nil)
     }
     
