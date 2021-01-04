@@ -11,13 +11,13 @@ import UIKit
 import CoreData
 
 class CoreDataManager: NSObject {
-
+    
     static let sharedInstance = CoreDataManager()
     
     typealias CompletionHander = () -> ()
     
     fileprivate override init() {
-    
+        
     }
     
     // MARK: - Core Data stack
@@ -29,7 +29,7 @@ class CoreDataManager: NSObject {
     
     lazy var managedObjectModel: NSManagedObjectModel = {
         // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
-        let modelURL = Bundle.main.url(forResource: "Affirmation", withExtension: "momd")!
+        let modelURL = Bundle.main.url(forResource: "Subliminal", withExtension: "momd")!
         return NSManagedObjectModel(contentsOf: modelURL)!
     }()
     
@@ -37,16 +37,16 @@ class CoreDataManager: NSObject {
         // The persistent store coordinator for the application. This implementation creates and returns a coordinator, having added the store for the application to it. This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.
         // Create the coordinator and store
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
-        //        let url = self.applicationDocumentsDirectory.appendingPathComponent("Affirmation.sqlite")
+        //        let url = self.applicationDocumentsDirectory.appendingPathComponent("Subliminal.sqlite")
         let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last
-        let storeURL = url?.appendingPathComponent("Affirmation.sqlite")
+        let storeURL = url?.appendingPathComponent("Subliminal.sqlite")
         
         print("SQLite in \(String(describing: storeURL))")
         
         var failureReason = "There was an error creating or loading the application's saved data."
         do {
             let options = [NSInferMappingModelAutomaticallyOption:true,
-                            NSMigratePersistentStoresAutomaticallyOption:true]
+                           NSMigratePersistentStoresAutomaticallyOption:true]
             try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: storeURL, options: options)
         } catch {
             // Report any error we got.
@@ -60,13 +60,13 @@ class CoreDataManager: NSObject {
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
             NSLog("Unresolved error \(wrappedError), \(wrappedError.userInfo)")
             
-//            let alert = UIAlertController(title: "Ooops ... this should not happen!", message: "Something went wrong with the update. Please uninstall the app and install again from the AppStore!", preferredStyle: UIAlertControllerStyle.alert)
-//            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-//            let alertWindow = UIWindow(frame: UIScreen.main.bounds)
-//            alertWindow.rootViewController = UIViewController()
-//            alertWindow.windowLevel = UIWindowLevelAlert + 1;
-//            alertWindow.makeKeyAndVisible()
-//            alertWindow.rootViewController?.present(alert, animated: true, completion: nil)
+            //            let alert = UIAlertController(title: "Ooops ... this should not happen!", message: "Something went wrong with the update. Please uninstall the app and install again from the AppStore!", preferredStyle: UIAlertControllerStyle.alert)
+            //            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            //            let alertWindow = UIWindow(frame: UIScreen.main.bounds)
+            //            alertWindow.rootViewController = UIViewController()
+            //            alertWindow.windowLevel = UIWindowLevelAlert + 1;
+            //            alertWindow.makeKeyAndVisible()
+            //            alertWindow.rootViewController?.present(alert, animated: true, completion: nil)
         }
         
         return coordinator
@@ -100,7 +100,7 @@ class CoreDataManager: NSObject {
         // Override point for customization after application launch.
         
         let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last
-        let storeURL = url?.appendingPathComponent("Affirmation.sqlite")
+        let storeURL = url?.appendingPathComponent("Subliminal.sqlite")
         
         let fm = FileManager.default
         do {
@@ -111,18 +111,18 @@ class CoreDataManager: NSObject {
     }
     
     func save() {
-                do {
-                    try self.managedObjectContext.save()
-                } catch {
-                    print(error)
-                }
+        do {
+            try self.managedObjectContext.save()
+        } catch {
+            print(error)
+        }
     }
     
-    func insertAffirmations() {
-        
-        insertAffirmation(id: 1, title: "Sex Appeal", text: "Der Jeanstyp fährt voll auf mich ab und möchte mit mir schlafen.", iconName: "jeanstyp")
-        insertAffirmation(id: 2, title: "Schwimmen", text: "Ich schwimme locker 100 Meter in unter 1:30.", iconName: "schwimmen")
-        insertAffirmation(id: 3, title: "Soziale Kontakte", text: "Ich habe immer genügend nette Menschen in meiner Umgebung, wenn ich das möchte.", iconName: "gemeinschaft")
+    func createPlaylist() {
+        let playlist = NSEntityDescription.insertNewObject(forEntityName: "Playlist", into: self.managedObjectContext) as! Playlist
+        playlist.title = "My Playlist"
+        playlist.order = 0
+        playlist.icon = UIImage(named: "schmettering_transparent")?.pngData()
         
         do {
             try self.managedObjectContext.save()
@@ -131,134 +131,159 @@ class CoreDataManager: NSObject {
         }
     }
     
-    func insertAffirmation(id: Int16, title: String, text: String, iconName: String) {
+    func createLibraryItem() {
         
-        let affirmation = NSEntityDescription.insertNewObject(forEntityName: "Affirmation", into: self.managedObjectContext) as! Affirmation
-        affirmation.id = id
-        affirmation.title = title
-        affirmation.text = text
-        affirmation.creationDate = Date()
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
+        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "order", ascending: true)]
         
-        if let img = UIImage(named: iconName) {
-            if let data:Data = img.pngData() {
-                affirmation.icon = data
-            }
+        do {
+            let playlists = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest) as! [Playlist]
+            let playlist = playlists.first // TODO
+            
+            let libraryItem = NSEntityDescription.insertNewObject(forEntityName: "LibraryItem", into: self.managedObjectContext) as! LibraryItem
+            libraryItem.title = "Wealth"
+            libraryItem.creationDate = Date()
+            libraryItem.icon = UIImage(named: "meditation_06")?.pngData()
+            libraryItem.soundFileName = "wealthSubliminal"
+            libraryItem.isActive = true
+            
+            playlist?.addToLibraryItems(libraryItem)
+            try self.managedObjectContext.save()
+            
+        } catch {
+            print(error)
         }
     }
     
-    func insertAffirmation(id: Int16, title: String, text: String, icon: UIImage) {
+    func createSubliminals() {
         
-        let affirmation = NSEntityDescription.insertNewObject(forEntityName: "Affirmation", into: self.managedObjectContext) as! Affirmation
-        affirmation.id = id
-        affirmation.title = title
-        affirmation.text = text
-        affirmation.creationDate = Date()
-
-        if let data:Data = icon.pngData() {
-            affirmation.icon = data
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "LibraryItem")
+        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)] // TODO
+        
+        do {
+            let libraryItems = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest) as! [LibraryItem]
+            let libraryItem = libraryItems.first // TODO
+            
+            let subliminal1 = NSEntityDescription.insertNewObject(forEntityName: "Subliminal", into: self.managedObjectContext) as! Subliminal
+            subliminal1.order = 0
+            subliminal1.text = "I am a magnet for money. Prosperity is drawn to me"
+            
+            let subliminal2 = NSEntityDescription.insertNewObject(forEntityName: "Subliminal", into: self.managedObjectContext) as! Subliminal
+            subliminal2.order = 1
+            subliminal2.text = "I welcome an unlimited source of income and wealth in my life"
+            
+            libraryItem?.addToSubliminals(subliminal1)
+            libraryItem?.addToSubliminals(subliminal2)
+            try self.managedObjectContext.save()
+            
+        } catch {
+            print(error)
         }
+        
     }
     
-    func removeAffirmation(affirmation: Affirmation) {
+    
+    
+    func removeLibraryItem(item: LibraryItem) {
         
-        CoreDataManager.sharedInstance.managedObjectContext.delete(affirmation)
+        CoreDataManager.sharedInstance.managedObjectContext.delete(item)
         save()
     }
     
-  
-//    func removeFromTrainingsplan(workout:Workout) {
-//        
-//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Trainingsplan")
-//        let predicate = NSPredicate(format: "id = %d", workout.id)
-//        fetchRequest.predicate = predicate
-//        
-//        do {
-//            let plan = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest).first as! Trainingsplan
-//            CoreDataManager.sharedInstance.managedObjectContext.delete(plan)
-//
-//        } catch {
-//            fatalError("Failed to delete object: \(error)")
-//        }
-//        
-//        do {
-//            try self.managedObjectContext.save()
-//        } catch let error {
-//            print("Failure to save context: \(error.localizedDescription)")
-//        }
-//        
-//
-//        // now avoid gaps in position indexes
-//        let fetchRequest2 = NSFetchRequest<NSFetchRequestResult>(entityName: "Trainingsplan")
-//        fetchRequest2.sortDescriptors = [NSSortDescriptor (key: "position", ascending: true)]
-//        
-//        do {
-//            let plans = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest2) as! [Trainingsplan]
-//            
-//            for (index, plan) in plans.enumerated() {
-//                plan.position = Int16(index)
-//            }
-//            
-//        } catch let error {
-//            print("Failure to save context: \(error.localizedDescription)")
-//        }
-//        
-//        do {
-//            try self.managedObjectContext.save()
-//        } catch let error {
-//            print("Failure to save context: \(error.localizedDescription)")
-//        }
-//
-//    }
-//    
-//    func syncIndicesInTrainingsplan() {
-//        let fetchRequest2 = NSFetchRequest<NSFetchRequestResult>(entityName: "Trainingsplan")
-//        fetchRequest2.sortDescriptors = [NSSortDescriptor (key: "position", ascending: true)]
-//        
-//        do {
-//            let plans = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest2) as! [Trainingsplan]
-//            
-//            for (index, plan) in plans.enumerated() {
-//                plan.position = Int16(index)
-//            }
-//            
-//        } catch let error {
-//            print("Failure to save context: \(error.localizedDescription)")
-//        }
-//        
-//        do {
-//            try self.managedObjectContext.save()
-//        } catch let error {
-//            print("Failure to save context: \(error.localizedDescription)")
-//        }
-//    }
-//    
-//    func updateWorkouts(serverWorkoutsData:[WorkoutData]?, completionHandler: CompletionHander?) {
-//        if let workouts = serverWorkoutsData {
-//  
-//            // delete old data
-//            let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Workout")
-//            let request = NSBatchDeleteRequest(fetchRequest: fetch)
-//            do {
-//                try managedObjectContext.execute(request)
-//                //try self.managedObjectContext.save()
-//            } catch let error {
-//                NSLog("Failure to delete context: \(error.localizedDescription)")
-//            }
-//            
-//            for workout in workouts {
-//
-//                let _ = CoreDataManager.sharedInstance.insertWorkout(id: Int16(workout.id!), imgName: workout.imageName, isLive: workout.isLive==1, isPremium: workout.isPremium==1, alias: workout.alias, videoUrl: workout.videoUrl!, isDumbbell: workout.isDumbbell==1, isMat: workout.isMat==1, isBall: workout.isBall==1, isTheraband: workout.isTheraband==1, isMachine: workout.isMachine==1, intensity: Int16(workout.intensity!), musclegroupIds: workout.musclegroups!, titles: workout.title, instructions: workout.instructions, remarks: workout.remarks)
-//            }
-//            
-//            do {
-//                try self.managedObjectContext.save()
-//            } catch let error {
-//                NSLog("Failure to save context: \(error.localizedDescription)")
-//            }
-//        }
-//
-//        completionHandler?()
-//    }
+    
+    //    func removeFromTrainingsplan(workout:Workout) {
+    //
+    //        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Trainingsplan")
+    //        let predicate = NSPredicate(format: "id = %d", workout.id)
+    //        fetchRequest.predicate = predicate
+    //
+    //        do {
+    //            let plan = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest).first as! Trainingsplan
+    //            CoreDataManager.sharedInstance.managedObjectContext.delete(plan)
+    //
+    //        } catch {
+    //            fatalError("Failed to delete object: \(error)")
+    //        }
+    //
+    //        do {
+    //            try self.managedObjectContext.save()
+    //        } catch let error {
+    //            print("Failure to save context: \(error.localizedDescription)")
+    //        }
+    //
+    //
+    //        // now avoid gaps in position indexes
+    //        let fetchRequest2 = NSFetchRequest<NSFetchRequestResult>(entityName: "Trainingsplan")
+    //        fetchRequest2.sortDescriptors = [NSSortDescriptor (key: "position", ascending: true)]
+    //
+    //        do {
+    //            let plans = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest2) as! [Trainingsplan]
+    //
+    //            for (index, plan) in plans.enumerated() {
+    //                plan.position = Int16(index)
+    //            }
+    //
+    //        } catch let error {
+    //            print("Failure to save context: \(error.localizedDescription)")
+    //        }
+    //
+    //        do {
+    //            try self.managedObjectContext.save()
+    //        } catch let error {
+    //            print("Failure to save context: \(error.localizedDescription)")
+    //        }
+    //
+    //    }
+    //
+    //    func syncIndicesInTrainingsplan() {
+    //        let fetchRequest2 = NSFetchRequest<NSFetchRequestResult>(entityName: "Trainingsplan")
+    //        fetchRequest2.sortDescriptors = [NSSortDescriptor (key: "position", ascending: true)]
+    //
+    //        do {
+    //            let plans = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest2) as! [Trainingsplan]
+    //
+    //            for (index, plan) in plans.enumerated() {
+    //                plan.position = Int16(index)
+    //            }
+    //
+    //        } catch let error {
+    //            print("Failure to save context: \(error.localizedDescription)")
+    //        }
+    //
+    //        do {
+    //            try self.managedObjectContext.save()
+    //        } catch let error {
+    //            print("Failure to save context: \(error.localizedDescription)")
+    //        }
+    //    }
+    //
+    //    func updateWorkouts(serverWorkoutsData:[WorkoutData]?, completionHandler: CompletionHander?) {
+    //        if let workouts = serverWorkoutsData {
+    //
+    //            // delete old data
+    //            let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Workout")
+    //            let request = NSBatchDeleteRequest(fetchRequest: fetch)
+    //            do {
+    //                try managedObjectContext.execute(request)
+    //                //try self.managedObjectContext.save()
+    //            } catch let error {
+    //                NSLog("Failure to delete context: \(error.localizedDescription)")
+    //            }
+    //
+    //            for workout in workouts {
+    //
+    //                let _ = CoreDataManager.sharedInstance.insertWorkout(id: Int16(workout.id!), imgName: workout.imageName, isLive: workout.isLive==1, isPremium: workout.isPremium==1, alias: workout.alias, videoUrl: workout.videoUrl!, isDumbbell: workout.isDumbbell==1, isMat: workout.isMat==1, isBall: workout.isBall==1, isTheraband: workout.isTheraband==1, isMachine: workout.isMachine==1, intensity: Int16(workout.intensity!), musclegroupIds: workout.musclegroups!, titles: workout.title, instructions: workout.instructions, remarks: workout.remarks)
+    //            }
+    //
+    //            do {
+    //                try self.managedObjectContext.save()
+    //            } catch let error {
+    //                NSLog("Failure to save context: \(error.localizedDescription)")
+    //            }
+    //        }
+    //
+    //        completionHandler?()
+    //    }
     
     func position(set: Set<Favorite>, id: Int16) -> Int16 {
         
@@ -275,7 +300,7 @@ class Favorite: NSObject {
     
     var id: Int16
     var position: Int16
-
+    
     init(withId id: Int16, position: Int16) {
         self.id = id
         self.position = position

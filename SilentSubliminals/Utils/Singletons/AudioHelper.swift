@@ -30,17 +30,27 @@ struct AudioFileTypes {
     var audioPlayer = AVAudioPlayerNode()
 }
 
+var audioFiles: Array<AudioFileTypes> = [AudioFileTypes(filename: "spokenAffirmation.caf", isSilent: false), AudioFileTypes(filename: "spokenAffirmationSilent.caf", isSilent: true)]
+
 // from documents dir
-var spokenAffirmation: String = "spokenAffirmation.caf"
-var spokenAffirmationSilent: String = "spokenAffirmationSilent.caf"
+var spokenAffirmation: String = "spokenAffirmation.caf" {
+    didSet {
+        audioFiles = [AudioFileTypes(filename: spokenAffirmation, isSilent: false), AudioFileTypes(filename: spokenAffirmationSilent, isSilent: true)]
+    }
+}
+var spokenAffirmationSilent: String = "spokenAffirmationSilent.caf" {
+    didSet {
+        audioFiles = [AudioFileTypes(filename: spokenAffirmation, isSilent: false), AudioFileTypes(filename: spokenAffirmationSilent, isSilent: true)]
+    }
+}
 
-
-var audioFiles: Array<AudioFileTypes> = [AudioFileTypes(filename: spokenAffirmation, isSilent: false), AudioFileTypes(filename: spokenAffirmationSilent, isSilent: true)]
 
 
 class AudioHelper {
     
     static let shared = AudioHelper()
+    
+    var resetLoop: Bool = false
     
     var singleAffirmationDuration: TimeInterval = 0
     var playingNodes: Set<AVAudioPlayerNode> = Set<AVAudioPlayerNode>()
@@ -82,18 +92,18 @@ class AudioHelper {
         //sleep(1)
         //continueSound()
     }
-
+    
     @objc func handleInterruption(notification: Notification) {
         guard let userInfo = notification.userInfo, let typeInt = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt, let type = AVAudioSession.InterruptionType(rawValue: typeInt) else {
-                return
+            return
         }
-
+        
         switch type {
         case .began:
             // Pause your player
             print(type)
             break;
-
+            
         case .ended:
             if let optionInt = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt {
                 let options = AVAudioSession.InterruptionOptions(rawValue: optionInt)
@@ -114,16 +124,17 @@ class AudioHelper {
     func getLoudPlayerNode() -> AVAudioPlayerNode {
         return audioFiles.filter() { $0.isSilent == false }.first!.audioPlayer
     }
-
+    
     func playInduction(type: Induction) {
-
+        
         audioQueue.async {
             
+            self.resetLoop = false
             self.audioEngine.pause()
             let playerNode = AVAudioPlayerNode()
             
             self.audioEngine.attach(playerNode)
-
+            
             var filename: String = bellSoundFile
             
             switch type {
@@ -163,23 +174,25 @@ class AudioHelper {
             try! audioFile.read(into: audioFileBuffer)
             
             playerNode.scheduleBuffer(audioFileBuffer, completionHandler: {
-    
+                
                 self.audioEngine.stop()
                 self.playingNodes.remove(playerNode)
                 
-                if type == .Introduction {
-                    UserDefaults.standard.set(true, forKey: userDefaults_introductionPlayed)
-                }
-                
-                if PlayerStateMachine.shared.playerState != .ready { //&& !self.routeIsChanging {
-                    DispatchQueue.main.async {
-                        NotificationCenter.default.post(name: Notification.Name(notification_player_nextState), object: nil)
+                if !self.resetLoop {
+                    if type == .Introduction {
+                        UserDefaults.standard.set(true, forKey: userDefaults_introductionPlayed)
+                    }
+                    
+                    if PlayerStateMachine.shared.playerState != .ready { //&& !self.routeIsChanging {
+                        DispatchQueue.main.async {
+                            NotificationCenter.default.post(name: Notification.Name(notification_player_nextState), object: nil)
+                        }
                     }
                 }
             })
             
             //self.routeIsChanging = false
-
+            
             self.playingNodes.insert(playerNode)
             playerNode.play()
         }
@@ -187,15 +200,16 @@ class AudioHelper {
     
     
     func playSingleAffirmation(instance: SoundInstance) {
-
+        
         audioQueue.async {
             do {
                 
+                self.resetLoop = false
                 self.audioEngine.pause()
                 let playerNode = self.getLoudPlayerNode()
                 self.audioEngine.attach(playerNode)
                 self.audioEngine.attach(self.mixer)
-
+                
                 let audioFile = try AVAudioFile(forReading: getFileFromSandbox(filename: spokenAffirmation))
                 self.singleAffirmationDuration = audioFile.duration
                 
@@ -226,12 +240,14 @@ class AudioHelper {
                     self.playingNodes.remove(playerNode)
                     
                     DispatchQueue.main.async {
-                        if instance == .player {
-                            if PlayerStateMachine.shared.playerState != .ready {
-                                NotificationCenter.default.post(name: Notification.Name(notification_player_nextState), object: nil)
+                        if !self.resetLoop {
+                            if instance == .player {
+                                if PlayerStateMachine.shared.playerState != .ready {
+                                    NotificationCenter.default.post(name: Notification.Name(notification_player_nextState), object: nil)
+                                }
+                            } else {
+                                NotificationCenter.default.post(name: Notification.Name(notification_maker_stopPlayingState), object: nil)
                             }
-                        } else {
-                            NotificationCenter.default.post(name: Notification.Name(notification_maker_stopPlayingState), object: nil)
                         }
                     }
                 })
@@ -259,14 +275,14 @@ class AudioHelper {
     }
     
     func reset() {
-        
-        PlayerStateMachine.shared.playerState = .ready
+        resetLoop = true
         self.audioEngine.stop()
         self.playingNodes = Set<AVAudioPlayerNode>()
+        PlayerStateMachine.shared.playerState = .ready
     }
     
     func skip() {
-
+        
         self.audioEngine.stop()
         self.playingNodes = Set<AVAudioPlayerNode>()
     }
@@ -274,9 +290,10 @@ class AudioHelper {
     
     func playAffirmationLoop() {
         
-        audioQueue.async {
+        audioQueue.async { [self] in
             do {
                 
+                self.resetLoop = false
                 let highPass = self.equalizerHighPass.bands[0]
                 highPass.filterType = .highPass
                 highPass.frequency = modulationFrequency
@@ -301,7 +318,7 @@ class AudioHelper {
                     if audioFile.isSilent {
                         self.audioEngine.connect(playerNode, to: self.equalizerHighPass, format: format)
                         self.audioEngine.connect(self.equalizerHighPass, to: self.mixer, format: format)
-
+                        
                     } else {
                         self.audioEngine.connect(playerNode, to: self.mixer, format: format)
                     }
@@ -318,7 +335,7 @@ class AudioHelper {
                         (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
                         
                         DispatchQueue.main.async {
-
+                            
                             CommandCenter.shared.updateTime(elapsedTime: playerNode.currentTime, totalDuration: availableTimeForLoop)
                             
                             if audioFile.isSilent {
@@ -360,7 +377,7 @@ class AudioHelper {
                     try avAudioFile.read(into: audioFileBuffer)
                     
                     playerNode.scheduleBuffer(audioFileBuffer, at: nil, options:.loops, completionHandler: {
-                        if audioFile.isSilent && playerNode.currentTime < availableTimeForLoop && !notificationPosted {
+                        if !self.resetLoop && audioFile.isSilent && playerNode.currentTime < availableTimeForLoop && !notificationPosted {
                             NotificationCenter.default.post(name: Notification.Name(notification_player_nextState), object: nil)
                             notificationPosted = true
                         }
@@ -419,7 +436,7 @@ class AudioHelper {
         
         // Use the file's processing format as the rendering format
         let renderFormat = AVAudioFormat(commonFormat: file.processingFormat.commonFormat, sampleRate: file.processingFormat.sampleRate, channels: file.processingFormat.channelCount, interleaved: false)!
-
+        
         let renderBuffer = AVAudioPCMBuffer(pcmFormat: renderFormat, frameCapacity: renderSize)!
         
         try! engine.enableManualRenderingMode(.offline, format: renderFormat, maximumFrameCount: renderBuffer.frameCapacity)
@@ -464,7 +481,7 @@ class AudioHelper {
                 guard let leftTargetData = renderBuffer.floatChannelData?[0], let rightTargetData = renderBuffer.floatChannelData?[1] else {
                     break
                 }
-
+                
                 // Process the audio in 'renderBuffer' here
                 for i in 0..<Int(readBuffer.frameLength) {
                     let val: Double = sin(Double(2 * modulationFrequency) * Double(index) * Double.pi / Double(renderBuffer.format.sampleRate))
@@ -531,7 +548,7 @@ class AudioHelper {
     func stopRecording() {
         
         audioRecorder.stop()
-
+        
         let inputNode = self.audioEngine.inputNode
         inputNode.removeTap(onBus: 0)
         self.audioEngine.stop()

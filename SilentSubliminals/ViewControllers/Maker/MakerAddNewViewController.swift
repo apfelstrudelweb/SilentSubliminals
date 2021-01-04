@@ -26,7 +26,6 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     
     var alphaOff: CGFloat = 0.5
     
-    //var existingAffirmations: [Affirmation]?
     var usedAffirmation = SimpleAffirmation()
     
     var usedText: String? {
@@ -35,15 +34,15 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
-    var fetchedResultsController: NSFetchedResultsController<Affirmation>!
+    var fetchedResultsController: NSFetchedResultsController<LibraryItem>!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let fetchRequest = NSFetchRequest<Affirmation> (entityName: "Affirmation")
+        let fetchRequest = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
         fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
-        self.fetchedResultsController = NSFetchedResultsController<Affirmation> (
+        self.fetchedResultsController = NSFetchedResultsController<LibraryItem> (
             fetchRequest: fetchRequest,
             managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
             sectionNameKeyPath: nil,
@@ -69,12 +68,12 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
         
         self.imagePicker = ImagePicker(presentationController: self, delegate: self)
         
-        if false {
+        if true {
             showInputDialog(title: "Action required",
-                            subtitle: "Please enter a name for your affirmation",
+                            subtitle: "Please enter a name for your library",
                             actionTitle: "Add",
                             cancelTitle: "Cancel",
-                            inputPlaceholder: "your affirmation title",
+                            inputPlaceholder: "your library title",
                             inputKeyboardType: .default, actionHandler:
                                 { (input:String?) in
                                     //print("The new number is \(input ?? "")")
@@ -122,7 +121,7 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "affirmationCell", for: indexPath as IndexPath) as! AffirmationTableViewCell
-        cell.affirmationLabel?.text = fetchedResultsController.fetchedObjects?[indexPath.row].text
+        cell.affirmationLabel?.text = fetchedResultsController.fetchedObjects?[indexPath.row].title
         
         return cell
     }
@@ -135,9 +134,9 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
             }
         }
 
-        let affirmation = fetchedResultsController.object(at: indexPath)
-        affirmation.isActive = true
-        affirmation.soundfile = affirmation.title
+        let libraryItem = fetchedResultsController.object(at: indexPath)
+        libraryItem.isActive = true
+        //libraryItem.soundFileName = affirmation.title
         CoreDataManager.sharedInstance.save()
     }
     
@@ -145,8 +144,8 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == .delete) {
 
-            let affirmation = fetchedResultsController.object(at: indexPath)
-            CoreDataManager.sharedInstance.removeAffirmation(affirmation: affirmation)
+            let item = fetchedResultsController.object(at: indexPath)
+            CoreDataManager.sharedInstance.removeLibraryItem(item: item)
         }
     }
     
@@ -182,8 +181,8 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     // AddAffirmationTextDelegate
     func addAffirmation(text: String) {
 
-        CoreDataManager.sharedInstance.insertAffirmation(id: 4711, title: usedAffirmation.title ?? "My affirmation", text: text, icon: usedAffirmation.image ?? UIImage())
-        CoreDataManager.sharedInstance.save()
+//        CoreDataManager.sharedInstance.insertAffirmation(id: 4711, title: usedAffirmation.title ?? "My affirmation", text: text, icon: usedAffirmation.image ?? UIImage())
+//        CoreDataManager.sharedInstance.save()
     }
     
 }

@@ -35,7 +35,7 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
     var usedAffirmation: String?
     var usedImage: UIImage?
     
-    var fetchedResultsController: NSFetchedResultsController<Affirmation>!
+    var fetchedResultsController: NSFetchedResultsController<LibraryItem>!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,11 +66,11 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let fetchRequest = NSFetchRequest<Affirmation> (entityName: "Affirmation")
+        let fetchRequest = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
         let predicate = NSPredicate(format: "isActive = true")
         fetchRequest.predicate = predicate
         fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
-        self.fetchedResultsController = NSFetchedResultsController<Affirmation> (
+        self.fetchedResultsController = NSFetchedResultsController<LibraryItem> (
             fetchRequest: fetchRequest,
             managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
             sectionNameKeyPath: nil,
@@ -83,7 +83,7 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
             print("An error occurred")
         }
         
-        if let affirmation = fetchedResultsController.fetchedObjects?.first, let fileName = affirmation.soundfile {
+        if let libraryItem = fetchedResultsController.fetchedObjects?.first, let fileName = libraryItem.soundFileName {
             spokenAffirmation = "\(fileName).caf"
             spokenAffirmationSilent = "\(fileName)Silent.caf"
         }

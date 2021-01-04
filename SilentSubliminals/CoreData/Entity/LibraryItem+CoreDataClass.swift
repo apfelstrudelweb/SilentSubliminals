@@ -1,5 +1,5 @@
 //
-//  Playlist+CoreDataClass.swift
+//  LibraryItem+CoreDataClass.swift
 //  FREE UR SPIRIT
 //
 //  Created by Ullrich Vormbrock on 04.01.21.
@@ -10,7 +10,7 @@
 import Foundation
 import CoreData
 
-@objc(Playlist)
-public class Playlist: NSManagedObject {
+@objc(LibraryItem)
+public class LibraryItem: NSManagedObject {
 
 }

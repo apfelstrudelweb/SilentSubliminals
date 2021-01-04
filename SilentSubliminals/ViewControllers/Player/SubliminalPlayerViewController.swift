@@ -15,7 +15,7 @@ import CoreData
 class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, PlayerStateMachineDelegate, CommandCenterDelegate, BackButtonDelegate, AudioHelperDelegate, NSFetchedResultsControllerDelegate {
 
 
-    var fetchedResultsController: NSFetchedResultsController<Affirmation>!
+    var fetchedResultsController: NSFetchedResultsController<LibraryItem>!
     
     // 1. section
     @IBOutlet weak var introductionSwitch: Switch!
@@ -92,7 +92,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     var introButtons:[ToggleButton : PlayerStateMachine.IntroState]?
     var outroButtons:[ToggleButton : PlayerStateMachine.OutroState]?
     
-    var affirmation: Affirmation?
+    var affirmation: Subliminal?
     
     
     override func viewDidLoad() {
@@ -120,11 +120,18 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
 
         let affirmationFile = getFileFromSandbox(filename: spokenAffirmation)
         if !affirmationFile.checkFileExist() {
-            AlertController().showWarningMissingAffirmationFile(vc: self)
+            AlertController().showWarningMissingAffirmationFile(vc: self) { (flag) in
+                
+                self.performSegue(withIdentifier: "makerPlayerSegue", sender: self)
+                
+                //self.navigationController?.popToViewController(of: PlayerMakerChoiceViewController.self, animated: true)
+//                self.navigationController?.backToViewController(vc: PlayerMakerChoiceViewController.self)
+//                self.navigationController?.backToViewController(vc: SubliminalMakerViewController.self)
+            }
         }
         
-        affirmationTitleLabel.text = affirmation?.title
-        iconImageView.image = UIImage(data: affirmation?.icon ?? Data())
+//        affirmationTitleLabel.text = libraryItem?.title
+//        iconImageView.image = UIImage(data: libraryItem?.icon ?? Data())
         
         NotificationCenter.default.addObserver(self, selector: #selector(volumeChanged(notification:)), name: NSNotification.Name(rawValue: notification_systemVolumeDidChange), object: nil)
     }
@@ -132,11 +139,11 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let fetchRequest = NSFetchRequest<Affirmation> (entityName: "Affirmation")
+        let fetchRequest = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
         let predicate = NSPredicate(format: "isActive = true")
         fetchRequest.predicate = predicate
         fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
-        self.fetchedResultsController = NSFetchedResultsController<Affirmation> (
+        self.fetchedResultsController = NSFetchedResultsController<LibraryItem> (
             fetchRequest: fetchRequest,
             managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
             sectionNameKeyPath: nil,
@@ -149,15 +156,16 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
             print("An error occurred")
         }
         
-        if let affirmation = fetchedResultsController.fetchedObjects?.first {
-            affirmationTitleLabel.text = affirmation.title
-            iconImageView.image = UIImage(data: affirmation.icon ?? Data())
+        if let libraryItem = fetchedResultsController.fetchedObjects?.first {
+            affirmationTitleLabel.text = libraryItem.title
+            iconImageView.image = UIImage(data: libraryItem.icon ?? Data())
         }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        audioHelper.reset()
+        //audioHelper.reset()
+        stopPlaying()
     }
     
     // MARK: Segues
@@ -465,5 +473,17 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         playerView.layoutSubviews()
         soundView.layoutSubviews()
+    }
+}
+
+
+extension UINavigationController {
+    func getViewController<T: UIViewController>(of type: T.Type) -> UIViewController? {
+        return self.viewControllers.first(where: { $0 is T })
+    }
+
+    func popToViewController<T: UIViewController>(of type: T.Type, animated: Bool) {
+        guard let viewController = self.getViewController(of: type) else { return }
+        self.popToViewController(viewController, animated: animated)
     }
 }

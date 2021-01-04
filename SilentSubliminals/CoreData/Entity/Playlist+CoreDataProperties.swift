@@ -1,8 +1,9 @@
 //
 //  Playlist+CoreDataProperties.swift
-//  
+//  FREE UR SPIRIT
 //
-//  Created by Ullrich Vormbrock on 03.01.21.
+//  Created by Ullrich Vormbrock on 04.01.21.
+//  Copyright © 2021 Ullrich Vormbrock. All rights reserved.
 //
 //
 
@@ -16,41 +17,30 @@ extension Playlist {
         return NSFetchRequest<Playlist>(entityName: "Playlist")
     }
 
-    @NSManaged public var affirmations: NSOrderedSet?
+    @NSManaged public var icon: Data?
+    @NSManaged public var title: String?
+    @NSManaged public var order: Int16
+    @NSManaged public var libraryItems: NSSet?
 
 }
 
-// MARK: Generated accessors for affirmations
+// MARK: Generated accessors for libraryItems
 extension Playlist {
 
-    @objc(insertObject:inAffirmationsAtIndex:)
-    @NSManaged public func insertIntoAffirmations(_ value: Affirmation, at idx: Int)
+    @objc(addLibraryItemsObject:)
+    @NSManaged public func addToLibraryItems(_ value: LibraryItem)
 
-    @objc(removeObjectFromAffirmationsAtIndex:)
-    @NSManaged public func removeFromAffirmations(at idx: Int)
+    @objc(removeLibraryItemsObject:)
+    @NSManaged public func removeFromLibraryItems(_ value: LibraryItem)
 
-    @objc(insertAffirmations:atIndexes:)
-    @NSManaged public func insertIntoAffirmations(_ values: [Affirmation], at indexes: NSIndexSet)
+    @objc(addLibraryItems:)
+    @NSManaged public func addToLibraryItems(_ values: NSSet)
 
-    @objc(removeAffirmationsAtIndexes:)
-    @NSManaged public func removeFromAffirmations(at indexes: NSIndexSet)
+    @objc(removeLibraryItems:)
+    @NSManaged public func removeFromLibraryItems(_ values: NSSet)
 
-    @objc(replaceObjectInAffirmationsAtIndex:withObject:)
-    @NSManaged public func replaceAffirmations(at idx: Int, with value: Affirmation)
+}
 
-    @objc(replaceAffirmationsAtIndexes:withAffirmations:)
-    @NSManaged public func replaceAffirmations(at indexes: NSIndexSet, with values: [Affirmation])
-
-    @objc(addAffirmationsObject:)
-    @NSManaged public func addToAffirmations(_ value: Affirmation)
-
-    @objc(removeAffirmationsObject:)
-    @NSManaged public func removeFromAffirmations(_ value: Affirmation)
-
-    @objc(addAffirmations:)
-    @NSManaged public func addToAffirmations(_ values: NSOrderedSet)
-
-    @objc(removeAffirmations:)
-    @NSManaged public func removeFromAffirmations(_ values: NSOrderedSet)
+extension Playlist : Identifiable {
 
 }

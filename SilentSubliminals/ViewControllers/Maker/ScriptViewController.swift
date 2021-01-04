@@ -17,8 +17,8 @@ class ScriptViewController: UIViewController, NSFetchedResultsControllerDelegate
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var buttonView: UIView!
     
-    var fetchedResultsController: NSFetchedResultsController<Affirmation>!
-    
+    var fetchedResultsController1: NSFetchedResultsController<LibraryItem>!
+    var fetchedResultsController2: NSFetchedResultsController<Subliminal>!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,30 +43,58 @@ class ScriptViewController: UIViewController, NSFetchedResultsControllerDelegate
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let fetchRequest = NSFetchRequest<Affirmation> (entityName: "Affirmation")
-        let predicate = NSPredicate(format: "isActive = true")
-        fetchRequest.predicate = predicate
-        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
-        self.fetchedResultsController = NSFetchedResultsController<Affirmation> (
-            fetchRequest: fetchRequest,
+        let fetchRequest1 = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
+        let predicate1 = NSPredicate(format: "isActive = true")
+        fetchRequest1.predicate = predicate1
+        fetchRequest1.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
+        self.fetchedResultsController1 = NSFetchedResultsController<LibraryItem> (
+            fetchRequest: fetchRequest1,
             managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
             sectionNameKeyPath: nil,
             cacheName: nil)
-        self.fetchedResultsController.delegate = self
-        
+        self.fetchedResultsController1.delegate = self
+  
         do {
-            try fetchedResultsController.performFetch()
+            try fetchedResultsController1.performFetch()
         } catch {
             print("An error occurred")
         }
-        
-        if let affirmation = fetchedResultsController.fetchedObjects?.first {
-            titleLabel.text = affirmation.title
-            imageView.image = UIImage(data: affirmation.icon ?? Data())
-            textView.text = affirmation.text
+  
+        if let libraryItem = fetchedResultsController1.fetchedObjects?.first {
+            titleLabel.text = libraryItem.title
+            imageView.image = UIImage(data: libraryItem.icon ?? Data())
+            
+            if let title = libraryItem.title {
+                let fetchRequest2 = NSFetchRequest<Subliminal> (entityName: "Subliminal")
+                fetchRequest2.sortDescriptors = [NSSortDescriptor (key: "order", ascending: false)]
+                let predicate2 = NSPredicate(format: "libraryItem.title = %@", title as String)
+                fetchRequest2.predicate = predicate2
+                self.fetchedResultsController2 = NSFetchedResultsController<Subliminal> (
+                    fetchRequest: fetchRequest2,
+                    managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
+                    sectionNameKeyPath: nil,
+                    cacheName: nil)
+                self.fetchedResultsController2.delegate = self
+                
+                do {
+                    try fetchedResultsController2.performFetch()
+                    
+                    if let subliminals = fetchedResultsController2.fetchedObjects {
+                        var textViewText = String()
+                        for subliminal in subliminals {
+                            if let text = subliminal.text {
+                                textViewText.append(text)
+                                textViewText.append("\n")
+                            }
+                        }
+                        textView.text = textViewText
+                    }
+                } catch {
+                    print("An error occurred")
+                }
+            }
         }
     }
-
 }
 
 class SimpleAffirmation {

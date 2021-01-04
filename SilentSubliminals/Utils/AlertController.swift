@@ -11,10 +11,10 @@ import UIKit
 
 class AlertController {
     
-    func showWarningMissingAffirmationFile(vc: UIViewController) {
-        let alert = UIAlertController(title: "Warning", message: "You first need to record an affirmation. You're redirected to the previous screen - there please choose the 'Affirmation Maker'.", preferredStyle: .alert)
+    func showWarningMissingAffirmationFile(vc: UIViewController, completionHandler: @escaping (Bool) -> Void) {
+        let alert = UIAlertController(title: "Warning", message: "You first need to record your Subliminal for this Library. You're now redirected to the Subliminal Maker.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: {_ in
-            vc.navigationController?.dismiss(animated: true, completion: nil)
+            completionHandler(true)
         }))
         vc.present(alert, animated: true)
     }

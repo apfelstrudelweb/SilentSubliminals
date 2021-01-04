@@ -11,14 +11,14 @@ import CoreData
 
 class MediathekViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, NSFetchedResultsControllerDelegate {
     
-    var fetchedResultsController1: NSFetchedResultsController<Affirmation>!
+    var fetchedResultsController1: NSFetchedResultsController<LibraryItem>!
     
     var recentSubliminalItems = ["meditation_01", "meditation_02", "meditation_03", "meditation_04", "meditation_05"]
-    var playlistItems: [Affirmation]? //["plusSymbolGreen", "meditation_06", "meditation_07", "meditation_08", "meditation_09"]
+    var playlistItems: [LibraryItem]? //["plusSymbolGreen", "meditation_06", "meditation_07", "meditation_08", "meditation_09"]
     var purchaseItems = ["plusSymbolGreen", "meditation_03", "meditation_05", "meditation_01", "meditation_08"]
     var creationItems = ["plusSymbolGreen", "meditation_02", "meditation_01", "meditation_09", "meditation_05"]
     
-    var selectedAffirmation: Affirmation?
+    var selectedAffirmation: Subliminal?
     
 
     @IBOutlet weak var recentSubliminalsCollectionView: UICollectionView!
@@ -28,9 +28,9 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
 
         self.navigationController?.navigationBar.tintColor = .white
         
-        let fetchRequest1 = NSFetchRequest<Affirmation> (entityName: "Affirmation")
+        let fetchRequest1 = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
         fetchRequest1.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)]
-        self.fetchedResultsController1 = NSFetchedResultsController<Affirmation> (
+        self.fetchedResultsController1 = NSFetchedResultsController<LibraryItem> (
             fetchRequest: fetchRequest1,
             managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
             sectionNameKeyPath: nil,
@@ -80,21 +80,21 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
  
-        if let selectedAffirmation = playlistItems?[indexPath.row], let fileName = selectedAffirmation.soundfile {
+        if let selectedItem = playlistItems?[indexPath.row], let fileName = selectedItem.soundFileName {
             spokenAffirmation = "\(fileName).caf"
             spokenAffirmationSilent = "\(fileName)Silent.caf"
         }
         
         // TODO: refactor
-        if let affirmations = fetchedResultsController1.fetchedObjects {
-            for affirmation in affirmations {
-                affirmation.isActive = false
+        if let selectedItems = fetchedResultsController1.fetchedObjects {
+            for item in selectedItems {
+                item.isActive = false
             }
         }
 
-        let affirmation = fetchedResultsController1.object(at: indexPath)
-        affirmation.isActive = true
-        affirmation.soundfile = affirmation.title
+        let selectedItem = fetchedResultsController1.object(at: indexPath)
+        selectedItem.isActive = true
+        //selectedItem.soundFileName = affirmation.title
         CoreDataManager.sharedInstance.save()
         
         self.performSegue(withIdentifier: "showPlayerSegue", sender: nil)
