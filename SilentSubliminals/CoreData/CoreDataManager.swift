@@ -155,6 +155,50 @@ class CoreDataManager: NSObject {
         }
     }
     
+    func createLibraryItem(title: String, icon: UIImage) {
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
+        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "order", ascending: true)]
+        
+        do {
+            let playlists = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest) as! [Playlist]
+            let playlist = playlists.first // TODO
+            
+            let libraryItem = NSEntityDescription.insertNewObject(forEntityName: "LibraryItem", into: self.managedObjectContext) as! LibraryItem
+            libraryItem.title = title
+            libraryItem.creationDate = Date()
+            libraryItem.icon = icon.pngData()
+            libraryItem.soundFileName = title // TODO
+            //libraryItem.isActive = true
+            SelectionHandler().selectLibraryItem(libraryItem)
+            
+            playlist?.addToLibraryItems(libraryItem)
+            try self.managedObjectContext.save()
+            
+        } catch {
+            print(error)
+        }
+    }
+    
+    func updateLibraryItem(title: String, icon : UIImage) {
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "LibraryItem")
+        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)] // TODO
+        let predicate = NSPredicate(format: "title = %@", title as String)
+        fetchRequest.predicate = predicate
+        
+        do {
+            let libraryItems = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest) as! [LibraryItem]
+            guard let libraryItem = libraryItems.first else { return } // TODO
+            libraryItem.title = title
+            libraryItem.icon = icon.pngData()
+            try self.managedObjectContext.save()
+            
+        } catch {
+            print(error)
+        }
+    }
+    
     func updateLibraryItem(item: LibraryItem, icon : UIImage) {
         item.icon = icon.pngData()
         save()
@@ -302,8 +346,41 @@ class Favorite: NSObject {
         self.id = id
         self.position = position
     }
-    
 }
+
+class SelectionHandler {
+
+    func clearSelection(in context: NSManagedObjectContext) {
+        for item in currentSelected(in: context) {
+            item.isActive = false
+        }
+    }
+
+    func selectLibraryItem(_ item: LibraryItem) {
+        guard let context = item.managedObjectContext else {
+            assertionFailure("broken !")
+            return
+        }
+
+        clearSelection(in: context)
+        item.isActive = true
+    }
+
+    func currentSelected(in context: NSManagedObjectContext) -> [LibraryItem] {
+        let request = NSFetchRequest<LibraryItem>(entityName: LibraryItem.entity().name!)
+        let predicate = NSPredicate(format: "isActive == true")
+        request.predicate = predicate
+
+        do {
+            let result = try context.fetch(request)
+            return result
+        } catch  {
+            print("fetch error =",error)
+            return []
+        }
+    }
+}
+
 
 
 extension Array where Element: Equatable {

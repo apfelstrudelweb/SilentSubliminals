@@ -47,7 +47,7 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         
         view.layer.contents = #imageLiteral(resourceName: "subliminalMakerBackground.png").cgImage
         
-        self.navigationController?.navigationBar.tintColor = .white
+        //self.navigationController?.navigationBar.tintColor = .white
         
         playerView.layer.cornerRadius = cornerRadius
         controlView.layer.cornerRadius = playerView.layer.cornerRadius
@@ -66,6 +66,8 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.navigationController?.navigationBar.tintColor = .white
+        
         let fetchRequest = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
         let predicate = NSPredicate(format: "isActive = true")
         fetchRequest.predicate = predicate
@@ -82,6 +84,8 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         } catch {
             print("An error occurred")
         }
+        
+        scriptViewController?.view.isHidden = fetchedResultsController.fetchedObjects?.count == 0
         
         if let libraryItem = fetchedResultsController.fetchedObjects?.first, let fileName = libraryItem.soundFileName {
             spokenAffirmation = "\(fileName).caf"
@@ -187,6 +191,7 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         }
         if let vc = segue.destination as? MakerAddNewViewController {
             makerAddNewViewController = vc
+            makerAddNewViewController?.isEditingMode = false
         }
     }
     

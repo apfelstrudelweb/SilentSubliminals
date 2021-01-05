@@ -61,6 +61,12 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         didSet {
             iconImageView.layer.cornerRadius = cornerRadius
             iconImageView.clipsToBounds = true
+            
+            let overlay = UIView()
+            overlay.backgroundColor = .white
+            overlay.alpha = 0.4
+            iconImageView.addSubview(overlay)
+            overlay.autoPinEdgesToSuperviewEdges()
         }
     }
     @IBOutlet weak var iconShadowView: ShadowView! {

@@ -13,94 +13,124 @@ import CoreData
 class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddAffirmationTextDelegate {
 
     @IBOutlet weak var affirmationTitleLabel: UILabel!
-    @IBOutlet weak var coverImageButton: UIButton!
+    @IBOutlet weak var coverImageButton: ImageButton!
     @IBOutlet weak var addAffirmationButton: UIButton!
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var submitButton: UIButton!
     
     @IBOutlet weak var tableView: UITableView!
     
+    var isEditingMode: Bool = false
+    
     private var addAffirmationViewController: AddAffirmationViewController?
     
     var imagePicker: ImagePicker!
-    
-    var alphaOff: CGFloat = 0.5
-    
-    var usedAffirmation = SimpleAffirmation()
-    
-    var usedText: String? {
-        didSet {
-            usedAffirmation.text = usedText
-        }
-    }
-    
+
     var fetchedResultsController: NSFetchedResultsController<LibraryItem>!
     var fetchedResultsController2: NSFetchedResultsController<Subliminal>!
     
-    var libraryItem: LibraryItem?
+    var currentLibraryItem: LibraryItem?
+    
+    let defaultImageButtonIcon = "plusSymbolGreen"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationController?.navigationBar.tintColor = submitButton.tintColor
+        coverImageButton.layer.cornerRadius = 10
+        coverImageButton.clipsToBounds = true
+        coverImageButton.setImage(name: defaultImageButtonIcon)
+        addAffirmationButton.layer.cornerRadius = 0.5 * addAffirmationButton.frame.size.width
+        addAffirmationButton.clipsToBounds = true
+
+        tableView.isEditing = false
+        
+        
+        self.imagePicker = ImagePicker(presentationController: self, delegate: self)
+        
+        // createNewLibraryItem(title: textField.text)
+        
+        if !isEditingMode {
+            
+            showInputDialog(title: "Action required",
+                            subtitle: "Please enter a name for your library",
+                            actionTitle: "Add",
+                            cancelTitle: "Cancel",
+                            inputText: "",
+                            inputPlaceholder: "Your library title",
+                            inputKeyboardType: .default,
+                            completionHandler: { (text) in
+                                //self.createNewLibraryItem(title: text)
+                            },
+                            actionHandler: { (input:String?) in
+                                self.affirmationTitleLabel.text = input?.capitalized
+                            })
+        } else {
+            showExistingLibraryItem()
+        }
+    }
+    
+    func createNewLibraryItem() {
+        
+        var buttonImage = UIImage(named: "schmettering_transparent")
+        
+        if coverImageButton.isOverriden {
+            buttonImage = coverImageButton.image(for: .normal)
+        }
+        
+        guard let title = self.affirmationTitleLabel.text else { return }
+
+        CoreDataManager.sharedInstance.createLibraryItem(title: title, icon: buttonImage ?? UIImage())
+    }
+    
+    func showExistingLibraryItem() {
+        
         let fetchRequest = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
         fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
+        let predicate = NSPredicate(format: "isActive == true")
+        fetchRequest.predicate = predicate
         self.fetchedResultsController = NSFetchedResultsController<LibraryItem> (
             fetchRequest: fetchRequest,
             managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
             sectionNameKeyPath: nil,
             cacheName: nil)
-        // TODO: Predicate
-        //self.fetchedResultsController.delegate = self
-        
-        let fetchRequest2 = NSFetchRequest<Subliminal> (entityName: "Subliminal")
-        fetchRequest2.sortDescriptors = [NSSortDescriptor (key: "order", ascending: true)]
-        self.fetchedResultsController2 = NSFetchedResultsController<Subliminal> (
-            fetchRequest: fetchRequest2,
-            managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
-            sectionNameKeyPath: nil,
-            cacheName: nil)
-        self.fetchedResultsController2.delegate = self
-        
+
         do {
             try fetchedResultsController.performFetch()
-            try fetchedResultsController2.performFetch()
-            libraryItem = fetchedResultsController.fetchedObjects?.first // TODO
         } catch {
             print("An error occurred")
         }
         
-        self.navigationController?.navigationBar.tintColor = .lightGray
-        coverImageButton.layer.cornerRadius = 10
-        coverImageButton.clipsToBounds = true
-        addAffirmationButton.layer.cornerRadius = 0.5 * addAffirmationButton.frame.size.width
-        addAffirmationButton.clipsToBounds = true
-        
         if let libraryItem = fetchedResultsController.fetchedObjects?.first, let imageData = libraryItem.icon {
+            currentLibraryItem = libraryItem
+            
             let icon = UIImage(data: imageData)
             coverImageButton.setImage(icon, for: .normal)
+            
+            self.affirmationTitleLabel.text = libraryItem.title
+            
+            if let title = libraryItem.title {
+                let fetchRequest2 = NSFetchRequest<Subliminal> (entityName: "Subliminal")
+                fetchRequest2.sortDescriptors = [NSSortDescriptor (key: "order", ascending: true)]
+                let predicate2 = NSPredicate(format: "libraryItem.title = %@", title as String)
+                fetchRequest2.predicate = predicate2
+                self.fetchedResultsController2 = NSFetchedResultsController<Subliminal> (
+                    fetchRequest: fetchRequest2,
+                    managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
+                    sectionNameKeyPath: nil,
+                    cacheName: nil)
+                self.fetchedResultsController2.delegate = self
+                
+                do {
+                    try fetchedResultsController2.performFetch()
+                } catch {
+                    print("An error occurred")
+                }
+            }
+
         }
         
-        tableView.isEditing = false
         tableView.tableFooterView = UIView()
-        editButton.alpha = alphaOff
-        
-        self.imagePicker = ImagePicker(presentationController: self, delegate: self)
-        
-        if true {
-            showInputDialog(title: "Action required",
-                            subtitle: "Please enter a name for your library",
-                            actionTitle: "Add",
-                            cancelTitle: "Cancel",
-                            inputText: fetchedResultsController.fetchedObjects?.first?.title,
-                            inputPlaceholder: "your library title",
-                            inputKeyboardType: .default, actionHandler:
-                                { (input:String?) in
-                                    //print("The new number is \(input ?? "")")
-                                    self.affirmationTitleLabel.text = input?.capitalized
-                                    self.usedAffirmation.title = input?.capitalized
-                                })
-        }
-        
     }
     
     @IBAction func coverImageButtonTouched(_ sender: UIButton) {
@@ -108,15 +138,26 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     @IBAction func editButtonTouched(_ sender: Any) {
-        tableView.isEditing = !tableView.isEditing
-        editButton.alpha = tableView.isEditing ? 1 : alphaOff
+        
+        DispatchQueue.main.async {
+            self.tableView.isEditing = !self.tableView.isEditing
+            
+            let imageName = self.tableView.isEditing ? "editSymbolOn" : "editSymbolOff"
+            self.editButton.setImage(UIImage(named: imageName), for: .normal)
+        }
+
     }
     
     @IBAction func submitButtonTouched(_ sender: Any) {
-        if let item = libraryItem, let icon = coverImageButton.image(for: .normal) {
-            CoreDataManager.sharedInstance.updateLibraryItem(item: item, icon: icon)
-        }
         
+        if isEditingMode {
+            if let title = affirmationTitleLabel.text, let icon = coverImageButton.image(for: .normal) {
+                CoreDataManager.sharedInstance.updateLibraryItem(title: title, icon: icon)
+            }
+        } else {
+            createNewLibraryItem()
+        }
+
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -139,13 +180,12 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fetchedResultsController2.fetchedObjects?.count ?? 0
+        return isEditingMode ? fetchedResultsController2.fetchedObjects?.count ?? 0 : 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "affirmationCell", for: indexPath as IndexPath) as! AffirmationTableViewCell
         cell.affirmationLabel?.text = fetchedResultsController2.fetchedObjects?[indexPath.row].text
-        
         return cell
     }
 
@@ -191,7 +231,7 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     // AddAffirmationTextDelegate
     func addSubliminal(text: String) {
 
-        if let item = libraryItem {
+        if let item = currentLibraryItem {
             CoreDataManager.sharedInstance.addSubliminal(text: text, libraryItem: item)
         }
     }
@@ -234,11 +274,11 @@ extension MakerAddNewViewController: NSFetchedResultsControllerDelegate {
 extension MakerAddNewViewController: ImagePickerDelegate {
     
     func didSelect(image: UIImage?) {
-        self.coverImageButton.setImage(image, for: .normal)
         guard let img = image else {
             return
         }
-        usedAffirmation.image = img
+        coverImageButton.setImage(img, for: .normal)
+        coverImageButton.isOverriden = true
     }
 }
 
@@ -251,6 +291,7 @@ extension UIViewController {
                          inputPlaceholder:String? = nil,
                          inputKeyboardType:UIKeyboardType = UIKeyboardType.default,
                          cancelHandler: ((UIAlertAction) -> Swift.Void)? = nil,
+                         completionHandler: @escaping (String) -> Void,
                          actionHandler: ((_ text: String?) -> Void)? = nil) {
         
         let alert = UIAlertController(title: title, message: subtitle, preferredStyle: .alert)
@@ -267,6 +308,9 @@ extension UIViewController {
                 return
             }
             actionHandler?(textField.text)
+            if let text = textField.text {
+                completionHandler(text)
+            }
         })
         alert.addAction(nameAction)
         alert.textDidChangeInNameAlert()

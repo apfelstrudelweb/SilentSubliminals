@@ -83,20 +83,11 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         if let selectedItem = playlistItems?[indexPath.row], let fileName = selectedItem.soundFileName {
             spokenAffirmation = "\(fileName).caf"
             spokenAffirmationSilent = "\(fileName)Silent.caf"
-        }
-        
-        // TODO: refactor
-        if let selectedItems = fetchedResultsController1.fetchedObjects {
-            for item in selectedItems {
-                item.isActive = false
-            }
+            
+            SelectionHandler().selectLibraryItem(selectedItem)
+            CoreDataManager.sharedInstance.save()
         }
 
-        let selectedItem = fetchedResultsController1.object(at: indexPath)
-        selectedItem.isActive = true
-        //selectedItem.soundFileName = affirmation.title
-        CoreDataManager.sharedInstance.save()
-        
         self.performSegue(withIdentifier: "showPlayerSegue", sender: nil)
     }
     

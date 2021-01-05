@@ -56,6 +56,7 @@
 		657A0F8F25A347C400A4CCF2 /* Playlist+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657A0F8925A347C400A4CCF2 /* Playlist+CoreDataProperties.swift */; };
 		657A0F9025A347C400A4CCF2 /* Subliminal+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657A0F8A25A347C400A4CCF2 /* Subliminal+CoreDataClass.swift */; };
 		657A0F9125A347C400A4CCF2 /* Subliminal+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657A0F8B25A347C400A4CCF2 /* Subliminal+CoreDataProperties.swift */; };
+		657A0F9725A4850700A4CCF2 /* ImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657A0F9625A4850700A4CCF2 /* ImageButton.swift */; };
 		657AA0C6258F544200320465 /* Misc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657AA0C5258F544200320465 /* Misc.swift */; };
 		6598C2F0259106FC0042A7E1 /* PlayerStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6598C2EF259106FC0042A7E1 /* PlayerStateMachine.swift */; };
 		65A052B8259F2DDF00F3C6BD /* DisclaimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A052B7259F2DDF00F3C6BD /* DisclaimerViewController.swift */; };
@@ -156,6 +157,7 @@
 		657A0F8925A347C400A4CCF2 /* Playlist+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Playlist+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		657A0F8A25A347C400A4CCF2 /* Subliminal+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Subliminal+CoreDataClass.swift"; sourceTree = "<group>"; };
 		657A0F8B25A347C400A4CCF2 /* Subliminal+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Subliminal+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		657A0F9625A4850700A4CCF2 /* ImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageButton.swift; sourceTree = "<group>"; };
 		657AA0C5258F544200320465 /* Misc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Misc.swift; sourceTree = "<group>"; };
 		6598C2EF259106FC0042A7E1 /* PlayerStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerStateMachine.swift; sourceTree = "<group>"; };
 		65A052B7259F2DDF00F3C6BD /* DisclaimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimerViewController.swift; sourceTree = "<group>"; };
@@ -503,6 +505,7 @@
 				65D561E42598D7D000FC039C /* RecordButton.swift */,
 				65C6E64A259A77CC0046E739 /* SkipButton.swift */,
 				65C6E64E259B4C460046E739 /* TimerButton.swift */,
+				657A0F9625A4850700A4CCF2 /* ImageButton.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -726,6 +729,7 @@
 				6558D30924684934004E8660 /* AppDelegate.swift in Sources */,
 				65C6E64F259B4C460046E739 /* TimerButton.swift in Sources */,
 				65A0531125A0D9C700F3C6BD /* MakerAddNewViewController.swift in Sources */,
+				657A0F9725A4850700A4CCF2 /* ImageButton.swift in Sources */,
 				65D561C92595F94E00FC039C /* AudioSessionManager.swift in Sources */,
 				65D561E22598D53C00FC039C /* MakerStateMachine.swift in Sources */,
 				657A0F8D25A347C400A4CCF2 /* LibraryItem+CoreDataProperties.swift in Sources */,

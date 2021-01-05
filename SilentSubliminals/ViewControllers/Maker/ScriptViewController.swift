@@ -13,9 +13,18 @@ class ScriptViewController: UIViewController, NSFetchedResultsControllerDelegate
     
 
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var imageView: UIImageView! {
+        didSet {
+            let overlay = UIView()
+            overlay.backgroundColor = .white
+            overlay.alpha = 0.2
+            imageView.addSubview(overlay)
+            overlay.autoPinEdgesToSuperviewEdges()
+        }
+    }
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var buttonView: UIView!
+    @IBOutlet weak var editButton: UIButton!
     
     var fetchedResultsController1: NSFetchedResultsController<LibraryItem>!
     var fetchedResultsController2: NSFetchedResultsController<Subliminal>!
@@ -95,6 +104,21 @@ class ScriptViewController: UIViewController, NSFetchedResultsControllerDelegate
             }
         }
     }
+    
+    @IBAction func editButtonTouched(_ sender: Any) {
+        self.performSegue(withIdentifier: "showMakerAddNewSegue", sender: sender)
+    }
+    
+    // MARK: Segues
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        
+        if let vc = segue.destination as? MakerAddNewViewController {
+            vc.isEditingMode = true
+        }
+
+    }
+    
 }
 
 class SimpleAffirmation {
