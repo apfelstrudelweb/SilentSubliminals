@@ -119,13 +119,22 @@ class CoreDataManager: NSObject {
     }
     
     func createPlaylist() {
-        let playlist = NSEntityDescription.insertNewObject(forEntityName: "Playlist", into: self.managedObjectContext) as! Playlist
-        playlist.title = "My Playlist"
-        playlist.order = 0
-        playlist.icon = UIImage(named: "schmettering_transparent")?.pngData()
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
+        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "order", ascending: true)]
         
         do {
-            try self.managedObjectContext.save()
+            let playlists = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest) as! [Playlist]
+   
+            if playlists.count == 0 {
+                let playlist = NSEntityDescription.insertNewObject(forEntityName: "Playlist", into: self.managedObjectContext) as! Playlist
+                playlist.title = "My Playlist"
+                playlist.order = 0
+                playlist.icon = UIImage(named: "playerPlaceholder")?.pngData()
+                
+                try self.managedObjectContext.save()
+            }
+            
         } catch {
             print(error)
         }
@@ -155,32 +164,42 @@ class CoreDataManager: NSObject {
         }
     }
     
-    func createLibraryItem(title: String, icon: UIImage) {
+    func createLibraryItem(title: String, icon: UIImage, hasOwnIcon: Bool) -> LibraryItem? {
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
         fetchRequest.sortDescriptors = [NSSortDescriptor (key: "order", ascending: true)]
+        
+        let libraryItem = NSEntityDescription.insertNewObject(forEntityName: "LibraryItem", into: self.managedObjectContext) as? LibraryItem
         
         do {
             let playlists = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest) as! [Playlist]
             let playlist = playlists.first // TODO
             
-            let libraryItem = NSEntityDescription.insertNewObject(forEntityName: "LibraryItem", into: self.managedObjectContext) as! LibraryItem
-            libraryItem.title = title
-            libraryItem.creationDate = Date()
-            libraryItem.icon = icon.pngData()
-            libraryItem.soundFileName = title // TODO
-            //libraryItem.isActive = true
-            SelectionHandler().selectLibraryItem(libraryItem)
             
-            playlist?.addToLibraryItems(libraryItem)
+            libraryItem?.title = title
+            libraryItem?.creationDate = Date()
+            libraryItem?.icon = icon.pngData()
+            libraryItem?.soundFileName = title // TODO
+            libraryItem?.hasOwnIcon = hasOwnIcon
+            //libraryItem.isActive = true
+            
+            if let item = libraryItem {
+                SelectionHandler().selectLibraryItem(item)
+                playlist?.addToLibraryItems(item)
+            }
+ 
             try self.managedObjectContext.save()
+            
+            return libraryItem
             
         } catch {
             print(error)
         }
+        
+        return libraryItem
     }
     
-    func updateLibraryItem(title: String, icon : UIImage) {
+    func updateLibraryItem(title: String, icon : UIImage, hasOwnIcon: Bool) {
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "LibraryItem")
         fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)] // TODO
@@ -192,6 +211,7 @@ class CoreDataManager: NSObject {
             guard let libraryItem = libraryItems.first else { return } // TODO
             libraryItem.title = title
             libraryItem.icon = icon.pngData()
+            libraryItem.hasOwnIcon = hasOwnIcon
             try self.managedObjectContext.save()
             
         } catch {

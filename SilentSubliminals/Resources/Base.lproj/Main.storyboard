@@ -612,7 +612,7 @@
             <objects>
                 <viewController id="Bf0-ef-9YZ" customClass="SpectrumViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Nie-sQ-mcI">
-                        <rect key="frame" x="0.0" y="0.0" width="378" height="89.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="373" height="111.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="HBa-Po-3jv"/>
                     </view>
@@ -712,7 +712,7 @@
                                                                     <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                                                     <autoresizingMask key="autoresizingMask"/>
                                                                     <subviews>
-                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="schmettering_transparent" translatesAutoresizingMaskIntoConstraints="NO" id="48o-No-mVV">
+                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="playerPlaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="48o-No-mVV">
                                                                             <rect key="frame" x="4" y="4" width="120" height="120"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="width" secondItem="48o-No-mVV" secondAttribute="height" multiplier="1:1" id="yHh-Rw-83C"/>
@@ -784,7 +784,7 @@
                                                                     <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                     <subviews>
-                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="schmettering_transparent" translatesAutoresizingMaskIntoConstraints="NO" id="dUz-60-QbU">
+                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="playerPlaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="dUz-60-QbU">
                                                                             <rect key="frame" x="4" y="4" width="120" height="120"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="width" secondItem="dUz-60-QbU" secondAttribute="height" multiplier="1:1" id="6B2-l6-9cd"/>
@@ -856,7 +856,7 @@
                                                                     <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                     <subviews>
-                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="schmettering_transparent" translatesAutoresizingMaskIntoConstraints="NO" id="pro-jL-8bC">
+                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="playerPlaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="pro-jL-8bC">
                                                                             <rect key="frame" x="4" y="4" width="120" height="120"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="width" secondItem="pro-jL-8bC" secondAttribute="height" multiplier="1:1" id="Fgv-wA-5ci"/>
@@ -928,7 +928,7 @@
                                                                     <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                     <subviews>
-                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="schmettering_transparent" translatesAutoresizingMaskIntoConstraints="NO" id="NYU-eW-41S">
+                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="playerPlaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="NYU-eW-41S">
                                                                             <rect key="frame" x="4" y="4" width="120" height="120"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="width" secondItem="NYU-eW-41S" secondAttribute="height" multiplier="1:1" id="vwY-pU-pKo"/>
@@ -1914,7 +1914,7 @@
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="QTW-cV-1zg"/>
+        <segue reference="MRg-E8-hf8"/>
         <segue reference="RTw-Dc-bPn"/>
         <segue reference="VQu-IX-ctv"/>
     </inferredMetricsTieBreakers>
@@ -1931,6 +1931,7 @@
         <image name="loudspeakerSymbolLow" width="80" height="80"/>
         <image name="moonIcon.svg" width="128" height="128"/>
         <image name="playIcon" width="417" height="417"/>
+        <image name="playerPlaceholder" width="200" height="200"/>
         <image name="plusButton.png" width="35" height="33"/>
         <image name="plusSymbolGreen" width="100" height="100"/>
         <image name="pulseSymbol" width="44" height="44"/>

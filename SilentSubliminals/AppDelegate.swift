@@ -43,8 +43,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         db.managedObjectContext.automaticallyMergesChangesFromParent = true
         
-//        CoreDataManager.sharedInstance.clearDB()
-//        CoreDataManager.sharedInstance.createPlaylist()
+        //CoreDataManager.sharedInstance.clearDB()
+        CoreDataManager.sharedInstance.createPlaylist()
 //        CoreDataManager.sharedInstance.createLibraryItem()
 //        CoreDataManager.sharedInstance.createSubliminals()
         

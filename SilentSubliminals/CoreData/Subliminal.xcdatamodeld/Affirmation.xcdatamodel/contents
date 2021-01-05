@@ -2,6 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="19H2" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="LibraryItem" representedClassName="LibraryItem" syncable="YES">
         <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="hasOwnIcon" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="icon" optional="YES" attributeType="Binary"/>
         <attribute name="isActive" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="lastUsedDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -24,6 +25,6 @@
     <elements>
         <element name="Subliminal" positionX="-105.64453125" positionY="-8.234375" width="128" height="88"/>
         <element name="Playlist" positionX="-482.56640625" positionY="-252.60546875" width="128" height="103"/>
-        <element name="LibraryItem" positionX="-290.48828125" positionY="-117.375" width="128" height="163"/>
+        <element name="LibraryItem" positionX="-290.48828125" positionY="-117.375" width="128" height="178"/>
     </elements>
 </model>

@@ -108,9 +108,9 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         commandCenter.delegate = self
         commandCenter.addCommandCenter()
         
-        scrollView.delegate = self
-        audioHelper.delegate = self
-        PlayerStateMachine.shared.delegate = self
+//        scrollView.delegate = self
+//        audioHelper.delegate = self
+//        PlayerStateMachine.shared.delegate = self
         
         PlayerStateMachine.shared.setIntroductionState(isOn: !UserDefaults.standard.bool(forKey: userDefaults_introductionPlayed))
         
@@ -132,14 +132,15 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
             }
         }
         
-//        affirmationTitleLabel.text = libraryItem?.title
-//        iconImageView.image = UIImage(data: libraryItem?.icon ?? Data())
-        
         NotificationCenter.default.addObserver(self, selector: #selector(volumeChanged(notification:)), name: NSNotification.Name(rawValue: notification_systemVolumeDidChange), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        scrollView.delegate = self
+        audioHelper.delegate = self
+        PlayerStateMachine.shared.delegate = self
         
         let fetchRequest = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
         let predicate = NSPredicate(format: "isActive = true")
@@ -162,6 +163,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
             affirmationTitleLabel.text = libraryItem.title
             iconImageView.image = UIImage(data: libraryItem.icon ?? Data())
         }
+        
+        //self.performSegue(withIdentifier: "spectrumSegue", sender: self)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

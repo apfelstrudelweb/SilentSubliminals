@@ -2,7 +2,7 @@
 //  LibraryItem+CoreDataProperties.swift
 //  FREE UR SPIRIT
 //
-//  Created by Ullrich Vormbrock on 04.01.21.
+//  Created by Ullrich Vormbrock on 05.01.21.
 //  Copyright © 2021 Ullrich Vormbrock. All rights reserved.
 //
 //
@@ -23,6 +23,7 @@ extension LibraryItem {
     @NSManaged public var isActive: Bool
     @NSManaged public var creationDate: Date?
     @NSManaged public var soundFileName: String?
+    @NSManaged public var hasOwnIcon: Bool
     @NSManaged public var playlist: Playlist?
     @NSManaged public var subliminals: NSSet?
 

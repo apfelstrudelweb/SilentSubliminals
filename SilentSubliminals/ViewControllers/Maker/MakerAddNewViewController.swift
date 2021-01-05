@@ -21,6 +21,7 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var tableView: UITableView!
     
     var isEditingMode: Bool = false
+    var hasOwnIcon = false
     
     private var addAffirmationViewController: AddAffirmationViewController?
     
@@ -61,6 +62,7 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
                             inputKeyboardType: .default,
                             completionHandler: { (text) in
                                 //self.createNewLibraryItem(title: text)
+                                self.createNewLibraryItem()
                             },
                             actionHandler: { (input:String?) in
                                 self.affirmationTitleLabel.text = input?.capitalized
@@ -70,17 +72,23 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+    }
+    
     func createNewLibraryItem() {
         
-        var buttonImage = UIImage(named: "schmettering_transparent")
+        var buttonImage = UIImage(named: "playerPlaceholder")
         
         if coverImageButton.isOverriden {
             buttonImage = coverImageButton.image(for: .normal)
         }
         
         guard let title = self.affirmationTitleLabel.text else { return }
+        hasOwnIcon = coverImageButton.isOverriden
 
-        CoreDataManager.sharedInstance.createLibraryItem(title: title, icon: buttonImage ?? UIImage())
+        currentLibraryItem = CoreDataManager.sharedInstance.createLibraryItem(title: title, icon: buttonImage ?? UIImage(), hasOwnIcon: hasOwnIcon)
     }
     
     func showExistingLibraryItem() {
@@ -151,11 +159,14 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     @IBAction func submitButtonTouched(_ sender: Any) {
         
         if isEditingMode {
-            if let title = affirmationTitleLabel.text, let icon = coverImageButton.image(for: .normal) {
-                CoreDataManager.sharedInstance.updateLibraryItem(title: title, icon: icon)
+            if let title = affirmationTitleLabel.text, let icon = coverImageButton.image(for: .normal), var hasOwnIcon = currentLibraryItem?.hasOwnIcon {
+                if !hasOwnIcon {
+                    hasOwnIcon = coverImageButton.isOverriden
+                }
+                CoreDataManager.sharedInstance.updateLibraryItem(title: title, icon: icon, hasOwnIcon: hasOwnIcon)
             }
         } else {
-            createNewLibraryItem()
+            //createNewLibraryItem()
         }
 
         self.navigationController?.popViewController(animated: true)
@@ -180,7 +191,7 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return isEditingMode ? fetchedResultsController2.fetchedObjects?.count ?? 0 : 0
+        return fetchedResultsController2 == nil ? 0 : fetchedResultsController2.fetchedObjects?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -233,6 +244,28 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
 
         if let item = currentLibraryItem {
             CoreDataManager.sharedInstance.addSubliminal(text: text, libraryItem: item)
+            
+            if let title = item.title {
+                let fetchRequest2 = NSFetchRequest<Subliminal> (entityName: "Subliminal")
+                fetchRequest2.sortDescriptors = [NSSortDescriptor (key: "order", ascending: true)]
+                let predicate2 = NSPredicate(format: "libraryItem.title = %@", title as String)
+                fetchRequest2.predicate = predicate2
+                self.fetchedResultsController2 = NSFetchedResultsController<Subliminal> (
+                    fetchRequest: fetchRequest2,
+                    managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
+                    sectionNameKeyPath: nil,
+                    cacheName: nil)
+
+                do {
+                    try fetchedResultsController2.performFetch()
+                } catch {
+                    print("An error occurred")
+                }
+            }
+            
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
     

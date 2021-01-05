@@ -68,7 +68,14 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
             cell.symbolImageView.image = UIImage(named: recentSubliminalItems[indexPath.row])
         } else if collectionView.isKind(of: PlaylistCollectionView.self) {
             //cell.symbolImageView.image = UIImage(named: playlistItems[indexPath.row])
-            cell.symbolImageView.image = UIImage(data: playlistItems?[indexPath.row].icon ?? Data())
+            //cell.symbolImageView.image = UIImage(data: playlistItems?[indexPath.row].icon ?? Data())
+            guard let item = fetchedResultsController1.fetchedObjects?[indexPath.row] else { return cell }
+            cell.symbolImageView.image = UIImage(data: item.icon ?? Data())
+            if !item.hasOwnIcon {
+                cell.title = item.title
+            } else {
+                cell.title = ""
+            }
         } else if collectionView.isKind(of: PurchasesCollectionView.self) {
             cell.symbolImageView.image = UIImage(named: purchaseItems[indexPath.row])
         } else if collectionView.isKind(of: CreationsCollectionView.self) {
