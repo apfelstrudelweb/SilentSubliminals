@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import AVFoundation
 
 func getFileFromMainBundle(filename: String) -> URL? {
     
@@ -28,6 +29,80 @@ func getDocumentsDirectory() -> URL {
     let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
     let documentsDirectory = paths[0]
     return documentsDirectory
+}
+
+func copyFileToDocumentsFolder(sourceURL: URL, targetFileName: String) -> URL{
+    
+    let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+    let destURL = documentsURL!.appendingPathComponent(targetFileName)
+    
+    let fileManager = FileManager.default
+    
+    do {
+        if fileManager.fileExists(atPath: destURL.path) {
+            // Delete file
+            try fileManager.removeItem(atPath: destURL.path)
+        } else {
+            print("File does not exist")
+        }
+        try fileManager.copyItem(at: sourceURL, to: destURL)
+    } catch {
+        print("Unable to copy file")
+    }
+    
+    return destURL
+}
+
+func convertSoundFileToCaf(url: URL, completionHandler: @escaping(Bool) -> Void) {
+    
+    let fileMgr = FileManager.default
+    let dirPaths = fileMgr.urls(for: .documentDirectory,
+                                in: .userDomainMask)
+    
+    let outputUrl = dirPaths[0].appendingPathComponent(spokenAffirmation)
+    let asset = AVAsset.init(url: url)
+
+    let fileManager = FileManager.default
+    do{
+        try fileManager.removeItem(at: outputUrl)
+        
+    } catch{
+        print("can't remove item - maybe it doesn't exist")
+    }
+    
+    let exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetPassthrough)
+
+        exporter?.outputURL = outputUrl
+        exporter?.outputFileType = AVFileType.caf // error here
+        exporter?.shouldOptimizeForNetworkUse = true
+
+        exporter?.exportAsynchronously {
+
+            print("exporter status =", exporter?.status as Any)
+
+            switch exporter!.status {
+            case .unknown:
+                print("status unknown")
+                completionHandler(false)
+            case .waiting:
+                print("status waiting")
+            case .exporting:
+                print("status exporting")
+            case .completed:
+                print("status completed")
+                AudioHelper.shared.createSilentSubliminalFile()
+                completionHandler(true)
+            case .failed:
+                print("status failed")
+                completionHandler(false)
+            case .cancelled:
+                print("status cancelled")
+                completionHandler(false)
+            @unknown default:
+                print("@unknown default:")
+                completionHandler(false)
+            }
+        }
 }
 
 func getLayerAnimation() -> CAAnimationGroup {

@@ -375,25 +375,48 @@
                                     <action selector="submitButtonTouched:" destination="P6a-z8-KIu" eventType="touchUpInside" id="jzI-yS-aNt"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oyS-5p-CeN">
+                                <rect key="frame" x="362" y="135" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="44" id="Wdc-kU-Hlp"/>
+                                    <constraint firstAttribute="width" secondItem="oyS-5p-CeN" secondAttribute="height" id="bxK-7m-M6x"/>
+                                </constraints>
+                                <color key="tintColor" red="0.25551775100000002" green="0.68625348809999998" blue="0.68629354239999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <state key="normal" title="Button" image="importSymbol"/>
+                                <connections>
+                                    <action selector="importButtonTouched:" destination="P6a-z8-KIu" eventType="touchUpInside" id="ZDq-mf-WWD"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2tE-C1-2el">
+                                <rect key="frame" x="221" y="146.5" width="133" height="21.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                <color key="textColor" red="0.25551775100000002" green="0.68625348809999998" blue="0.68629354239999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="jHO-Nv-1XP"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="huv-By-Zr0" firstAttribute="leading" secondItem="9q4-5b-e3d" secondAttribute="leading" id="0sh-xX-4lT"/>
                             <constraint firstItem="9q4-5b-e3d" firstAttribute="leading" secondItem="8Zd-mp-Wi4" secondAttribute="trailing" constant="30" id="4HA-0s-RHQ"/>
+                            <constraint firstItem="2tE-C1-2el" firstAttribute="centerY" secondItem="9q4-5b-e3d" secondAttribute="centerY" id="CfE-8m-Pfb"/>
+                            <constraint firstItem="oyS-5p-CeN" firstAttribute="centerY" secondItem="9q4-5b-e3d" secondAttribute="centerY" id="Fcx-xg-Loe"/>
                             <constraint firstItem="9q4-5b-e3d" firstAttribute="centerY" secondItem="8Zd-mp-Wi4" secondAttribute="centerY" id="Fyo-Yp-ccA"/>
                             <constraint firstItem="55e-iL-U3v" firstAttribute="centerY" secondItem="huv-By-Zr0" secondAttribute="centerY" id="Fzp-RE-0L9"/>
                             <constraint firstItem="58w-Ie-Xk2" firstAttribute="trailing" secondItem="55e-iL-U3v" secondAttribute="trailing" multiplier="0.95" id="Mj3-iH-Q2C"/>
                             <constraint firstItem="Kbl-Nj-6vk" firstAttribute="top" secondItem="yKb-ng-YSw" secondAttribute="bottom" constant="30" id="Ncu-Xd-wa0"/>
                             <constraint firstItem="Kbl-Nj-6vk" firstAttribute="leading" secondItem="jHO-Nv-1XP" secondAttribute="leading" id="R0g-MO-8pb"/>
+                            <constraint firstItem="2tE-C1-2el" firstAttribute="leading" secondItem="9q4-5b-e3d" secondAttribute="trailing" constant="8" id="Rgn-lY-rQ3"/>
                             <constraint firstItem="IH3-pR-fxG" firstAttribute="top" secondItem="jHO-Nv-1XP" secondAttribute="top" constant="20" id="Z41-Y5-6ZZ"/>
                             <constraint firstItem="huv-By-Zr0" firstAttribute="centerY" secondItem="yKb-ng-YSw" secondAttribute="centerY" id="a6b-ee-68G"/>
                             <constraint firstItem="Kbl-Nj-6vk" firstAttribute="trailing" secondItem="jHO-Nv-1XP" secondAttribute="trailing" id="b1W-CU-G9o"/>
                             <constraint firstItem="yKb-ng-YSw" firstAttribute="top" secondItem="9q4-5b-e3d" secondAttribute="bottom" constant="40" id="cNf-h4-0R9"/>
                             <constraint firstAttribute="bottom" secondItem="Kbl-Nj-6vk" secondAttribute="bottom" id="cOM-gw-nmn"/>
                             <constraint firstItem="IH3-pR-fxG" firstAttribute="leading" secondItem="jHO-Nv-1XP" secondAttribute="leading" constant="44" id="dSa-yQ-HA8"/>
+                            <constraint firstItem="oyS-5p-CeN" firstAttribute="trailing" secondItem="55e-iL-U3v" secondAttribute="trailing" id="eWc-CL-Sx8"/>
                             <constraint firstItem="58w-Ie-Xk2" firstAttribute="bottom" secondItem="IH3-pR-fxG" secondAttribute="top" id="ezg-u9-gXH"/>
                             <constraint firstItem="9q4-5b-e3d" firstAttribute="top" secondItem="IH3-pR-fxG" secondAttribute="bottom" constant="20" id="f2P-qa-Qzr"/>
+                            <constraint firstItem="oyS-5p-CeN" firstAttribute="leading" secondItem="2tE-C1-2el" secondAttribute="trailing" constant="8" id="m1l-Eo-w2b"/>
                             <constraint firstItem="yKb-ng-YSw" firstAttribute="leading" secondItem="8Zd-mp-Wi4" secondAttribute="leading" id="oab-Q9-5hp"/>
                             <constraint firstItem="8Zd-mp-Wi4" firstAttribute="leading" secondItem="IH3-pR-fxG" secondAttribute="leading" id="qr1-oD-P8x"/>
                             <constraint firstItem="yKb-ng-YSw" firstAttribute="width" secondItem="yKb-ng-YSw" secondAttribute="height" id="r43-Ax-pMm"/>
@@ -406,6 +429,8 @@
                         <outlet property="affirmationTitleLabel" destination="IH3-pR-fxG" id="5uA-11-pBe"/>
                         <outlet property="coverImageButton" destination="9q4-5b-e3d" id="8IR-VP-PsG"/>
                         <outlet property="editButton" destination="55e-iL-U3v" id="mSo-T6-bHT"/>
+                        <outlet property="importButton" destination="oyS-5p-CeN" id="KNu-bR-UBD"/>
+                        <outlet property="importFeedbackLabel" destination="2tE-C1-2el" id="g5Q-8P-EuB"/>
                         <outlet property="submitButton" destination="58w-Ie-Xk2" id="iL4-0m-Ota"/>
                         <outlet property="tableView" destination="Kbl-Nj-6vk" id="y6b-ni-gyL"/>
                         <segue destination="h7w-2W-8rs" kind="presentation" identifier="addAffirmationSegue" id="tiH-wX-cQf"/>
@@ -613,7 +638,7 @@
             <objects>
                 <viewController id="Bf0-ef-9YZ" customClass="SpectrumViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Nie-sQ-mcI">
-                        <rect key="frame" x="0.0" y="0.0" width="378" height="89.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="373" height="111.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="HBa-Po-3jv"/>
                     </view>
@@ -1915,7 +1940,7 @@
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="QTW-cV-1zg"/>
+        <segue reference="MRg-E8-hf8"/>
         <segue reference="RTw-Dc-bPn"/>
         <segue reference="VQu-IX-ctv"/>
     </inferredMetricsTieBreakers>
@@ -1928,6 +1953,7 @@
         <image name="editPencilSymbol" width="1597" height="1533"/>
         <image name="editSymbolOff" width="250" height="250"/>
         <image name="forwardIcon" width="320" height="313"/>
+        <image name="importSymbol" width="400" height="400"/>
         <image name="loudspeakerSymbolHigh" width="100" height="79"/>
         <image name="loudspeakerSymbolLow" width="80" height="80"/>
         <image name="moonIcon.svg" width="128" height="128"/>

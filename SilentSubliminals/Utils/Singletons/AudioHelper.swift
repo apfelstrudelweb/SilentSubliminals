@@ -362,18 +362,22 @@ class AudioHelper {
                     
                     let avAudioFile = try AVAudioFile(forReading: getFileFromSandbox(filename: audioFile.filename))
                     let format =  AVAudioFormat(standardFormatWithSampleRate: avAudioFile.fileFormat.sampleRate, channels: avAudioFile.fileFormat.channelCount)
+
+                    self.audioEngine.connect(playerNode, to: self.mixer, format: format)
+                    
+                    //TODO: find out why "self.audioEngine.connect(playerNode, to: self.equalizerHighPass, format: format)" crashes at second play
+//                    if audioFile.isSilent {
+//                        self.audioEngine.connect(playerNode, to: self.equalizerHighPass, format: format)
+//                        self.audioEngine.connect(self.equalizerHighPass, to: self.mixer, format: format)
+//
+//                    } else {
+//                        self.audioEngine.connect(playerNode, to: self.mixer, format: format)
+//                    }
+                    
+                    self.audioEngine.connect(self.mixer, to: self.audioEngine.outputNode, format: format)
                     
                     playerNode.removeTap(onBus: 0)
                     
-                    if audioFile.isSilent {
-                        self.audioEngine.connect(playerNode, to: self.equalizerHighPass, format: format)
-                        self.audioEngine.connect(self.equalizerHighPass, to: self.mixer, format: format)
-                        
-                    } else {
-                        self.audioEngine.connect(playerNode, to: self.mixer, format: format)
-                    }
-                    
-                    self.audioEngine.connect(self.mixer, to: self.audioEngine.outputNode, format: format)
                     try self.audioEngine.start()
                     
                     let availableTimeForLoop: TimeInterval = (TimerManager.shared.remainingTime ?? defaultAffirmationTime) - self.singleAffirmationDuration
@@ -427,6 +431,7 @@ class AudioHelper {
                     try avAudioFile.read(into: audioFileBuffer)
                     
                     playerNode.scheduleBuffer(audioFileBuffer, at: nil, options:.loops, completionHandler: {
+        
                         if !self.resetLoop && audioFile.isSilent && playerNode.currentTime < availableTimeForLoop && !notificationPosted {
                             NotificationCenter.default.post(name: Notification.Name(notification_player_nextState), object: nil)
                             notificationPosted = true
@@ -525,18 +530,17 @@ class AudioHelper {
                 
                 let result = try engine.renderOffline(readBuffer.frameLength, to: renderBuffer)
                 
-                guard let leftSourceData = readBuffer.floatChannelData?[0], let rightSourceData = readBuffer.floatChannelData?[1] else {
-                    break
-                }
-                guard let leftTargetData = renderBuffer.floatChannelData?[0], let rightTargetData = renderBuffer.floatChannelData?[1] else {
-                    break
-                }
+                let leftSourceData = readBuffer.floatChannelData?[0]
+                let rightSourceData = readBuffer.floatChannelData?[1]
+                
+                let leftTargetData = renderBuffer.floatChannelData?[0]
+                let rightTargetData = renderBuffer.floatChannelData?[1]
                 
                 // Process the audio in 'renderBuffer' here
                 for i in 0..<Int(readBuffer.frameLength) {
                     let val: Double = sin(Double(2 * modulationFrequency) * Double(index) * Double.pi / Double(renderBuffer.format.sampleRate))
-                    leftTargetData[i] = Float(val) * leftSourceData[i]
-                    rightTargetData[i] = Float(val) * rightSourceData[i]
+                    leftTargetData?[i] = Float(val) * (leftSourceData?[i] ?? 0)
+                    rightTargetData?[i] = Float(val) * (rightSourceData?[i] ?? 0)
                     index += 1
                 }
                 
@@ -557,6 +561,8 @@ class AudioHelper {
         
         player.stop()
         engine.stop()
+        
+        print("Silent Subliminal file '\(spokenAffirmationSilent)' has been created")
     }
     
     

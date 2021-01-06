@@ -8,15 +8,18 @@
 
 import UIKit
 import CoreData
+import MobileCoreServices
 
 
-class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddAffirmationTextDelegate {
+class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddAffirmationTextDelegate, UIDocumentPickerDelegate {
 
     @IBOutlet weak var affirmationTitleLabel: UILabel!
     @IBOutlet weak var coverImageButton: ImageButton!
     @IBOutlet weak var addAffirmationButton: UIButton!
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var submitButton: UIButton!
+    @IBOutlet weak var importButton: UIButton!
+    @IBOutlet weak var importFeedbackLabel: UILabel!
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -75,6 +78,35 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.importFeedbackLabel.alpha = 0
+    }
+    
+    // MARK: UIDocumentPickerDelegate
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        print(urls)
+ 
+        guard let title = affirmationTitleLabel.text, let url = urls.first else { return }
+
+        // TODO: refactor - it's too hacky ...
+        spokenAffirmation = title + ".caf"
+        spokenAffirmationSilent = title + "Silent.caf"
+        
+        let ext = url.pathExtension
+        let filename = title + "." + ext
+        let newFileURL = copyFileToDocumentsFolder(sourceURL: urls.first!, targetFileName: filename)
+        convertSoundFileToCaf(url: newFileURL) { (success) in
+            
+            DispatchQueue.main.async {
+                self.importFeedbackLabel.alpha = 1
+                
+                if success {
+    
+                    self.importFeedbackLabel.text = "Your import was successful."
+                } else {
+                    self.importFeedbackLabel.text = "Your import did fail!"
+                }
+            }
+        }
     }
     
     func createNewLibraryItem() {
@@ -155,6 +187,15 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
         }
 
     }
+    
+    @IBAction func importButtonTouched(_ sender: Any) {
+        let documentPicker = UIDocumentPickerViewController(documentTypes: [String(kUTTypeAudio)], in: .import)
+        //Call Delegate
+        documentPicker.delegate = self
+        
+        self.present(documentPicker, animated: true)
+    }
+    
     
     @IBAction func submitButtonTouched(_ sender: Any) {
         
