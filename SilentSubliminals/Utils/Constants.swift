@@ -26,27 +26,26 @@ let bufferSize: AVAudioFrameCount = 1024
 
 
 
-struct Button {
-    static var playOnImg = UIImage(named: "playIcon.svg")
-    static var playOffImg = UIImage(named: "stopIcon.svg")
-    static var silentOnImg = UIImage(named: "earSilentIcon.svg")
-    static var silentOffImg = UIImage(named: "earLoudIcon.svg")
-    static var micOnImg = UIImage(named: "startRecordingButton.png")
-    static var micOffImg = UIImage(named: "stopRecordingButton.png")
-}
+let playOnImg = UIImage(named: "playIcon.svg")
+let playOffImg = UIImage(named: "stopIcon.svg")
+let silentOnImg = UIImage(named: "earSilentIcon.svg")
+let silentOffImg = UIImage(named: "earLoudIcon.svg")
+let micOnImg = UIImage(named: "startRecordingButton.png")
+let micOffImg = UIImage(named: "stopRecordingButton.png")
 
-struct PlayerControlColor {
-    // https://www.ralfebert.de/ios-examples/uikit/swift-uicolor-picker/
-    static var lightColor: UIColor = UIColor(red: 239/255, green: 239/255, blue: 239/255, alpha: 1.0)
-    static var lightGrayColor: UIColor = UIColor(red: 178/255, green: 178/255, blue: 178/255, alpha: 1.0)
-    static var darkGrayColor: UIColor = UIColor(red: 119/255, green: 119/255, blue: 119/255, alpha: 1.0)
-    static var warningColor: UIColor = UIColor(red: 196/255, green: 0/255, blue: 0/255, alpha: 1.0)
-    
-//    // for test purposes
-//    static var lightColor: UIColor = .red
-//    static var lightGrayColor: UIColor = .blue
-//    static var darkGrayColor: UIColor = .green
-}
+
+// https://www.ralfebert.de/ios-examples/uikit/swift-uicolor-picker/
+let lightColor: UIColor = UIColor(red: 239/255, green: 239/255, blue: 239/255, alpha: 1.0)
+let lightGrayColor: UIColor = UIColor(red: 178/255, green: 178/255, blue: 178/255, alpha: 1.0)
+let darkGrayColor: UIColor = UIColor(red: 119/255, green: 119/255, blue: 119/255, alpha: 1.0)
+
+//// for test purposes
+//let lightColor: UIColor = .red
+//let lightGrayColor: UIColor = .blue
+//let darkGrayColor: UIColor = .green
+
+let warningColor: UIColor = UIColor(red: 196/255, green: 0/255, blue: 0/255, alpha: 1.0)
+
 
 enum SoundInstance {
     case player

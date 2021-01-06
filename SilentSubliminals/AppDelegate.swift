@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let navFont = UIFont.systemFont(ofSize: 26, weight: .medium)
         let navBarAttributesDictionary: [NSAttributedString.Key: Any] = [
-            NSAttributedString.Key(rawValue: NSAttributedString.Key.foregroundColor.rawValue): PlayerControlColor.lightColor,
+            NSAttributedString.Key(rawValue: NSAttributedString.Key.foregroundColor.rawValue): lightColor,
             NSAttributedString.Key(rawValue: NSAttributedString.Key.font.rawValue): navFont]
         UINavigationBar.appearance().titleTextAttributes = navBarAttributesDictionary
         UINavigationBar.appearance().setTitleVerticalPositionAdjustment(CGFloat(2), for: UIBarMetrics.default)

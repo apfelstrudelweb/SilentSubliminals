@@ -13,6 +13,6 @@ class SymbolButton: UIButton {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        self.tintColor = PlayerControlColor.darkGrayColor
+        self.tintColor = darkGrayColor
     }
 }

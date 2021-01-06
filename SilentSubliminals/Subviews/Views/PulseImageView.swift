@@ -18,7 +18,7 @@ final class PulseImageView: UIImageView {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        self.tintColor = PlayerControlColor.lightColor
+        self.tintColor = lightColor
     }
     
     func animate() {

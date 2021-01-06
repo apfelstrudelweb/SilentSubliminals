@@ -108,9 +108,9 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         commandCenter.delegate = self
         commandCenter.addCommandCenter()
         
-//        scrollView.delegate = self
-//        audioHelper.delegate = self
-//        PlayerStateMachine.shared.delegate = self
+        scrollView.delegate = self
+        audioHelper.delegate = self
+        PlayerStateMachine.shared.delegate = self
         
         PlayerStateMachine.shared.setIntroductionState(isOn: !UserDefaults.standard.bool(forKey: userDefaults_introductionPlayed))
         
@@ -163,8 +163,6 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
             affirmationTitleLabel.text = libraryItem.title
             iconImageView.image = UIImage(data: libraryItem.icon ?? Data())
         }
-        
-        //self.performSegue(withIdentifier: "spectrumSegue", sender: self)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -281,11 +279,11 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         DispatchQueue.main.async {
             switch PlayerStateMachine.shared.frequencyState {
             case .loud:
-                self.silentButton.setImage(Button.silentOffImg, for: .normal)
+                self.silentButton.setImage(silentOffImg, for: .normal)
                 silentNode.volume = 0
                 loudNode.volume = 1
             case .silent:
-                self.silentButton.setImage(Button.silentOnImg, for: .normal)
+                self.silentButton.setImage(silentOnImg, for: .normal)
                 silentNode.volume = 1
                 loudNode.volume = 0
             }

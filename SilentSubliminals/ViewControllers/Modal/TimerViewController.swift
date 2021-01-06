@@ -22,13 +22,13 @@ class TimerViewController: UIViewController, TimerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        closeButton.setTitleColor(PlayerControlColor.lightColor, for: .normal)
-        durationLabel.textColor = PlayerControlColor.lightColor
+        closeButton.setTitleColor(lightColor, for: .normal)
+        durationLabel.textColor = lightColor
         
-        segmentedControl.backgroundColor = PlayerControlColor.darkGrayColor
-        segmentedControl.selectedSegmentTintColor = PlayerControlColor.lightColor
-        segmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: PlayerControlColor.darkGrayColor], for: UIControl.State.selected)
-        segmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: PlayerControlColor.lightGrayColor], for: UIControl.State.normal)
+        segmentedControl.backgroundColor = darkGrayColor
+        segmentedControl.selectedSegmentTintColor = lightColor
+        segmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: darkGrayColor], for: UIControl.State.selected)
+        segmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: lightGrayColor], for: UIControl.State.normal)
         
         setActiveView()
         

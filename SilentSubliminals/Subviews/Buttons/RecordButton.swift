@@ -19,7 +19,7 @@ class RecordButton: ShadowButton {
     func setState(active: Bool) {
         
         DispatchQueue.main.async {
-            let image = active ? Button.micOffImg : Button.micOnImg
+            let image = active ? micOffImg : micOnImg
             self.setImage(image, for: .normal)
         }
     }

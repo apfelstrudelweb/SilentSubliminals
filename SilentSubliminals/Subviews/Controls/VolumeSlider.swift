@@ -13,8 +13,8 @@ class VolumeSlider: UISlider {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        self.tintColor = PlayerControlColor.darkGrayColor
-        self.thumbTintColor = PlayerControlColor.lightColor
+        self.tintColor = darkGrayColor
+        self.thumbTintColor = lightColor
     }
 
 }

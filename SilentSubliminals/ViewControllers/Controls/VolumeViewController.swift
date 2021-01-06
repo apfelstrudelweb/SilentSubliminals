@@ -20,7 +20,7 @@ class VolumeViewController: UIViewController {
         super.viewDidLoad()
         
 
-        let colors = [UIColor.green, UIColor.yellow, PlayerControlColor.warningColor]
+        let colors = [UIColor.green, UIColor.yellow, warningColor]
         self.maskView.backgroundColor = .white
         self.view.showGradientColors(colors)
         self.view.addSubview(self.maskView)

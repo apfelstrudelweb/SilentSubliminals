@@ -60,10 +60,12 @@ func convertSoundFileToCaf(url: URL, completionHandler: @escaping(Bool) -> Void)
                                 in: .userDomainMask)
     
     let outputUrl = dirPaths[0].appendingPathComponent(spokenAffirmation)
+    let oldFileURL = url
     let asset = AVAsset.init(url: url)
 
     let fileManager = FileManager.default
-    do{
+    do {
+        //try fileManager.removeItem(at: url)
         try fileManager.removeItem(at: outputUrl)
         
     } catch{
@@ -91,6 +93,13 @@ func convertSoundFileToCaf(url: URL, completionHandler: @escaping(Bool) -> Void)
             case .completed:
                 print("status completed")
                 AudioHelper.shared.createSilentSubliminalFile()
+                do {
+                    //try fileManager.removeItem(at: url)
+                    try fileManager.removeItem(at: oldFileURL)
+                    
+                } catch{
+                    print("can't remove item - maybe it doesn't exist")
+                }
                 completionHandler(true)
             case .failed:
                 print("status failed")

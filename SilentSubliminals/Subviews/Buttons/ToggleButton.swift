@@ -20,8 +20,8 @@ class ToggleButton: UIButton {
     }
     
     func setState(active: Bool) {
-        self.backgroundColor = active ? PlayerControlColor.lightColor : PlayerControlColor.lightGrayColor
-        self.tintColor = active ? PlayerControlColor.darkGrayColor : PlayerControlColor.lightColor
+        self.backgroundColor = active ? lightColor : lightGrayColor
+        self.tintColor = active ? darkGrayColor : lightColor
     }
 
 }

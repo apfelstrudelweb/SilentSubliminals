@@ -35,7 +35,7 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     
     var currentLibraryItem: LibraryItem?
     
-    let defaultImageButtonIcon = "plusSymbolGreen"
+    let defaultImageButtonIcon = "playerPlaceholderSymbol"
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -61,7 +61,7 @@ class AudioHelper {
     private var audioRecorder: AVAudioRecorder = AVAudioRecorder()
     private var mixer: AVAudioMixerNode = AVAudioMixerNode()
     private var equalizerHighPass: AVAudioUnitEQ = AVAudioUnitEQ(numberOfBands: 1)
-    
+
     var routeIsChanging: Bool = false
     
     weak var delegate : AudioHelperDelegate?
@@ -83,6 +83,12 @@ class AudioHelper {
         } catch {
             print("Failed to set audio session category.")
         }
+        
+        let highPass = self.equalizerHighPass.bands[0]
+        highPass.filterType = .highPass
+        highPass.frequency = modulationFrequency
+        highPass.bandwidth = bandwidth
+        highPass.bypass = false
     }
     
     @objc func handleRouteChange(notification: Notification) {
@@ -201,48 +207,55 @@ class AudioHelper {
     
     func playConsolidation() {
         
-        self.resetLoop = false
-        self.audioEngine.pause()
-        let playerNode = AVAudioPlayerNode()
-        
-        self.audioEngine.attach(playerNode)
-        
-        let audioFile = try! AVAudioFile(forReading: getFileFromMainBundle(filename: consolidationSoundFile)!)
-        let format =  AVAudioFormat(standardFormatWithSampleRate: audioFile.fileFormat.sampleRate, channels: audioFile.fileFormat.channelCount)
-        
-        playerNode.removeTap(onBus: 0)
-        
-        self.audioEngine.connect(playerNode, to: self.audioEngine.outputNode, format: format)
-        
-        try! self.audioEngine.start()
-        
-        playerNode.installTap(onBus: 0, bufferSize: bufferSize, format: format) {
-            (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
-
-            DispatchQueue.main.async {
-                self.delegate?.processAudioData(buffer: buffer)
-                CommandCenter.shared.updateTime(elapsedTime: playerNode.currentTime, totalDuration: audioFile.duration)
-            }
-        }
-        
-        let audioFileBuffer = AVAudioPCMBuffer(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(audioFile.length))!
-        try! audioFile.read(into: audioFileBuffer)
-        
-        playerNode.scheduleBuffer(audioFileBuffer, completionHandler: {
+        audioQueue.async {
             
-            self.audioEngine.stop()
-            self.playingNodes.remove(playerNode)
+            self.resetLoop = false
+            self.audioEngine.pause()
+            let playerNode = AVAudioPlayerNode()
             
-            if PlayerStateMachine.shared.playerState != .ready {
+            self.audioEngine.detach(self.equalizerHighPass)
+            self.audioEngine.attach(playerNode)
+            self.audioEngine.attach(self.equalizerHighPass)
+            
+            let audioFile = try! AVAudioFile(forReading: getFileFromMainBundle(filename: consolidationSoundFile)!)
+            let format =  AVAudioFormat(standardFormatWithSampleRate: audioFile.fileFormat.sampleRate, channels: audioFile.fileFormat.channelCount)
+            
+            playerNode.removeTap(onBus: 0)
+            
+            //self.audioEngine.connect(playerNode, to: self.audioEngine.outputNode, format: format)
+            self.audioEngine.connect(playerNode, to: self.equalizerHighPass, format: format)
+            self.audioEngine.connect(self.equalizerHighPass, to: self.mixer, format: format)
+            
+            try! self.audioEngine.start()
+            
+            playerNode.installTap(onBus: 0, bufferSize: bufferSize, format: format) {
+                (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
+                
                 DispatchQueue.main.async {
-                    NotificationCenter.default.post(name: Notification.Name(notification_player_nextState), object: nil)
+                    self.delegate?.processAudioData(buffer: buffer)
+                    CommandCenter.shared.updateTime(elapsedTime: playerNode.currentTime, totalDuration: audioFile.duration)
                 }
             }
-     
-        })
-
-        self.playingNodes.insert(playerNode)
-        playerNode.play()
+            
+            let audioFileBuffer = AVAudioPCMBuffer(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(audioFile.length))!
+            try! audioFile.read(into: audioFileBuffer)
+            
+            playerNode.scheduleBuffer(audioFileBuffer, completionHandler: {
+                
+                self.audioEngine.stop()
+                self.playingNodes.remove(playerNode)
+                
+                if PlayerStateMachine.shared.playerState != .ready {
+                    DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: Notification.Name(notification_player_nextState), object: nil)
+                    }
+                }
+                
+            })
+            
+            self.playingNodes.insert(playerNode)
+            playerNode.play()
+        }
     }
 
     
@@ -344,18 +357,17 @@ class AudioHelper {
             do {
                 
                 self.resetLoop = false
-                let highPass = self.equalizerHighPass.bands[0]
-                highPass.filterType = .highPass
-                highPass.frequency = modulationFrequency
-                highPass.bandwidth = bandwidth
-                highPass.bypass = false
+                self.audioEngine.detach(self.equalizerHighPass)
                 
-                self.audioEngine.attach(self.equalizerHighPass)
                 self.audioEngine.attach(self.mixer)
                 
                 self.audioEngine.pause()
                 
                 for audioFile in audioFiles {
+                    
+                    if audioFile.isSilent {
+                        self.audioEngine.attach(self.equalizerHighPass)
+                    }
                     
                     let playerNode = audioFile.audioPlayer
                     self.audioEngine.attach(playerNode)
@@ -366,15 +378,14 @@ class AudioHelper {
                     self.audioEngine.connect(playerNode, to: self.mixer, format: format)
                     
                     //TODO: find out why "self.audioEngine.connect(playerNode, to: self.equalizerHighPass, format: format)" crashes at second play
-//                    if audioFile.isSilent {
-//                        self.audioEngine.connect(playerNode, to: self.equalizerHighPass, format: format)
-//                        self.audioEngine.connect(self.equalizerHighPass, to: self.mixer, format: format)
-//
-//                    } else {
-//                        self.audioEngine.connect(playerNode, to: self.mixer, format: format)
-//                    }
+                    if audioFile.isSilent {
+                        self.audioEngine.connect(playerNode, to: self.equalizerHighPass, format: format)
+                        self.audioEngine.connect(self.equalizerHighPass, to: self.mixer, format: format)
+
+                    } else {
+                        self.audioEngine.connect(playerNode, to: self.mixer, format: format)
+                    }
                     
-                    self.audioEngine.connect(self.mixer, to: self.audioEngine.outputNode, format: format)
                     
                     playerNode.removeTap(onBus: 0)
                     

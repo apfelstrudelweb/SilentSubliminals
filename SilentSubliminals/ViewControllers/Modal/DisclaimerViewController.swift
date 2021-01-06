@@ -37,7 +37,7 @@ class DisclaimerViewController: UIViewController, DisclaimerDelegate  {
         pageControl.clipsToBounds = true
         
         scrollView.clipsToBounds = true
-        scrollView.backgroundColor = PlayerControlColor.darkGrayColor
+        scrollView.backgroundColor = darkGrayColor
         scrollView.layer.cornerRadius = cornerRadius
 
         

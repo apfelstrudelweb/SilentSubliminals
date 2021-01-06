@@ -24,7 +24,7 @@ class LoudspeakerSymbolView: SymbolImageView {
     }
     
     @objc func runTimedCode() {
-        self.tintColor = index % 2 == 0 ? PlayerControlColor.warningColor : .clear
+        self.tintColor = index % 2 == 0 ? warningColor : .clear
         index += 1
         if index == UInt8.max {
             index = 0
@@ -41,7 +41,7 @@ class LoudspeakerSymbolView: SymbolImageView {
             if index > 4 {
                 timer = nil
                 index = 0
-                self.tintColor = PlayerControlColor.darkGrayColor
+                self.tintColor = darkGrayColor
             }
         }
     }

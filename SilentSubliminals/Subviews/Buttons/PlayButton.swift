@@ -19,8 +19,9 @@ class PlayButton: ShadowButton {
     func setState(active: Bool) {
         
         DispatchQueue.main.async {
-            let image = active ? Button.playOffImg : Button.playOnImg
+            let image = active ? playOffImg : playOnImg
             self.setImage(image, for: .normal)
+            self.tintColor = .white
         }
     }
     

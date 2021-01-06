@@ -90,7 +90,7 @@ class SpectrumViewController: UIViewController {
         self.view.addSubview(spectrumView)
         spectrumView.autoPinEdgesToSuperviewEdges()
         
-        self.view.backgroundColor = PlayerControlColor.darkGrayColor
+        self.view.backgroundColor = darkGrayColor
         self.view.layer.cornerRadius = cornerRadius
         self.view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         self.view.clipsToBounds = true

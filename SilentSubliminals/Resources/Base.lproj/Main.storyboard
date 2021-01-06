@@ -638,7 +638,7 @@
             <objects>
                 <viewController id="Bf0-ef-9YZ" customClass="SpectrumViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Nie-sQ-mcI">
-                        <rect key="frame" x="0.0" y="0.0" width="373" height="111.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="378" height="89.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="HBa-Po-3jv"/>
                     </view>
@@ -1940,7 +1940,7 @@
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="MRg-E8-hf8"/>
+        <segue reference="QTW-cV-1zg"/>
         <segue reference="RTw-Dc-bPn"/>
         <segue reference="VQu-IX-ctv"/>
     </inferredMetricsTieBreakers>

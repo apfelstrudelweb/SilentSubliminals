@@ -13,9 +13,9 @@ class Switch: UISwitch {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        self.tintColor = PlayerControlColor.darkGrayColor
+        self.tintColor = darkGrayColor
         //self.onTintColor = PlayerControlColor.lightColor
-        self.backgroundColor = PlayerControlColor.lightGrayColor
+        self.backgroundColor = lightGrayColor
         self.layer.cornerRadius = frame.height / 2.0
         
         DispatchQueue.main.async {

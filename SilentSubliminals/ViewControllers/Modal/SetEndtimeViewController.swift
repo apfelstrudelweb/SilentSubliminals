@@ -19,11 +19,11 @@ class SetEndtimeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        titleLabel.textColor = PlayerControlColor.lightColor
+        titleLabel.textColor = lightColor
         timerPicker.preferredDatePickerStyle = .wheels
-        timerPicker.setValue(PlayerControlColor.lightColor, forKeyPath: "textColor")
+        timerPicker.setValue(lightColor, forKeyPath: "textColor")
         timerPicker.setValue(true, forKey: "highlightsToday")
-        activeTimeView.backgroundColor = PlayerControlColor.darkGrayColor.withAlphaComponent(0.75)
+        activeTimeView.backgroundColor = darkGrayColor.withAlphaComponent(0.75)
         
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: NSNotification.Name(notification_endtimeViewControllerCalled), object: nil)
     }

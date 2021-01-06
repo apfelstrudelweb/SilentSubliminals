@@ -37,6 +37,7 @@ class MediathekCollectionViewCell: UICollectionViewCell {
         }
         
         symbolImageView.addSubview(label)
+//        label.autoPinEdgesToSuperviewEdges()
         label.autoPinEdge(.left, to: .left, of: symbolImageView, withOffset: 4)
         label.autoPinEdge(.right, to: .right, of: symbolImageView, withOffset: -4)
         label.autoPinEdge(.bottom, to: .bottom, of: symbolImageView, withOffset: -4)

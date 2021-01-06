@@ -13,6 +13,6 @@ class SectionLabel: UILabel {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        self.textColor = PlayerControlColor.darkGrayColor
+        self.textColor = darkGrayColor
     }
 }
