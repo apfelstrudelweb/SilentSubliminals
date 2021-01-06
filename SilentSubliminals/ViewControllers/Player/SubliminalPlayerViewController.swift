@@ -346,6 +346,10 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
                 print("affirmation loop")
                 audioHelper.playAffirmationLoop()
                 break
+            case .consolidation:
+                print("consolidation")
+                audioHelper.playConsolidation()
+                break
             case .leadOut:
                 switch PlayerStateMachine.shared.outroState {
                 case .day:
@@ -406,6 +410,9 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         switch PlayerStateMachine.shared.pauseState {
         
         case .play:
+            if let libraryItem = fetchedResultsController.fetchedObjects?.first {
+                CoreDataManager.sharedInstance.setNewTimestamp(item: libraryItem)
+            }
             self.playButton.setState(active: true)
             PlayerStateMachine.shared.startPlayer()
         case .pause:

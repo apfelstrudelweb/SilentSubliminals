@@ -19,6 +19,7 @@ let leadInBedSoundFile = "leadInBed.aiff"
 let leadOutDaySoundFile = "leadOutDay.aiff"
 let leadOutNightSoundFile = "leadOutNight.aiff"
 let bellSoundFile = "bell.aiff"
+let consolidationSoundFile = "consolidationSilent.caf"
 
 let bufferSize: AVAudioFrameCount = 1024
 

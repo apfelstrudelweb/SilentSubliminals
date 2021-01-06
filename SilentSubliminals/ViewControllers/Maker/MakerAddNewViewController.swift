@@ -158,16 +158,16 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     
     @IBAction func submitButtonTouched(_ sender: Any) {
         
-        if isEditingMode {
+        //if isEditingMode {
             if let title = affirmationTitleLabel.text, let icon = coverImageButton.image(for: .normal), var hasOwnIcon = currentLibraryItem?.hasOwnIcon {
                 if !hasOwnIcon {
                     hasOwnIcon = coverImageButton.isOverriden
                 }
                 CoreDataManager.sharedInstance.updateLibraryItem(title: title, icon: icon, hasOwnIcon: hasOwnIcon)
             }
-        } else {
-            //createNewLibraryItem()
-        }
+//        } else {
+//            //createNewLibraryItem()
+//        }
 
         self.navigationController?.popViewController(animated: true)
     }

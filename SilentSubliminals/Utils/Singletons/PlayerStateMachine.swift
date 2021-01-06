@@ -64,6 +64,7 @@ class PlayerStateMachine {
         case leadIn
         case affirmation
         case affirmationLoop
+        case consolidation
         case leadOut
         
         var nextState : PlayerState {
@@ -81,6 +82,8 @@ class PlayerStateMachine {
                 shared.setSilentMode()
                 return .affirmationLoop
             case .affirmationLoop:
+                return .consolidation
+            case .consolidation:
                 return .leadOut
             case .leadOut:
                 return .ready

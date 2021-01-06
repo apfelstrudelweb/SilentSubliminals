@@ -30,6 +30,8 @@ class AddAffirmationViewController: UIViewController {
         textView.contentInset = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
         textView.placeholder = "Your subliminal goes here ..."
         
+        textView.becomeFirstResponder()
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(handle(keyboardShowNotification:)),
                                                name: UIResponder.keyboardDidShowNotification,

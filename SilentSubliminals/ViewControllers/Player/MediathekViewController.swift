@@ -11,10 +11,12 @@ import CoreData
 
 class MediathekViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, NSFetchedResultsControllerDelegate {
     
-    var fetchedResultsController1: NSFetchedResultsController<LibraryItem>!
     
-    var recentSubliminalItems = ["meditation_01", "meditation_02", "meditation_03", "meditation_04", "meditation_05"]
-    var playlistItems: [LibraryItem]? //["plusSymbolGreen", "meditation_06", "meditation_07", "meditation_08", "meditation_09"]
+    var fetchedResultsControllerRecent: NSFetchedResultsController<LibraryItem>!
+    var fetchedResultsControllerPlaylist: NSFetchedResultsController<LibraryItem>!
+    
+    var recentItems: [LibraryItem]?
+    var playlistItems: [LibraryItem]?
     var purchaseItems = ["plusSymbolGreen", "meditation_03", "meditation_05", "meditation_01", "meditation_08"]
     var creationItems = ["plusSymbolGreen", "meditation_02", "meditation_01", "meditation_09", "meditation_05"]
     
@@ -27,19 +29,38 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         super.viewDidLoad()
 
         self.navigationController?.navigationBar.tintColor = .white
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        let fetchRequest1 = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
-        fetchRequest1.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)]
-        self.fetchedResultsController1 = NSFetchedResultsController<LibraryItem> (
-            fetchRequest: fetchRequest1,
+        let fetchRequestRecent = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
+        fetchRequestRecent.sortDescriptors = [NSSortDescriptor (key: "lastUsedDate", ascending: false)]
+        let predicateRecent = NSPredicate(format: "lastUsedDate != null")
+        fetchRequestRecent.predicate = predicateRecent
+        self.fetchedResultsControllerRecent = NSFetchedResultsController<LibraryItem> (
+            fetchRequest: fetchRequestRecent,
             managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
             sectionNameKeyPath: nil,
             cacheName: nil)
-        self.fetchedResultsController1.delegate = self
+        self.fetchedResultsControllerRecent.delegate = self
+        
+        let fetchRequestPlaylist = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
+        fetchRequestPlaylist.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)]
+        self.fetchedResultsControllerPlaylist = NSFetchedResultsController<LibraryItem> (
+            fetchRequest: fetchRequestPlaylist,
+            managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil)
+        self.fetchedResultsControllerPlaylist.delegate = self
         
         do {
-            try fetchedResultsController1.performFetch()
-            playlistItems = fetchedResultsController1.fetchedObjects!
+            try fetchedResultsControllerRecent.performFetch()
+            try fetchedResultsControllerPlaylist.performFetch()
+            recentItems = fetchedResultsControllerRecent.fetchedObjects!
+            playlistItems = fetchedResultsControllerPlaylist.fetchedObjects!
+            
+            recentSubliminalsCollectionView.reloadData()
         } catch {
             print("An error occurred")
         }
@@ -49,7 +70,7 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         if collectionView.isKind(of: RecentSubliminalsCollectionView.self) {
-            return self.recentSubliminalItems.count
+            return self.recentItems?.count ?? 0
         } else if collectionView.isKind(of: PlaylistCollectionView.self) {
             return self.playlistItems?.count ?? 0
         } else if collectionView.isKind(of: PurchasesCollectionView.self) {
@@ -65,11 +86,15 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recentSubliminalCell", for: indexPath as IndexPath) as! MediathekCollectionViewCell
         
         if collectionView.isKind(of: RecentSubliminalsCollectionView.self) {
-            cell.symbolImageView.image = UIImage(named: recentSubliminalItems[indexPath.row])
+            guard let item = fetchedResultsControllerRecent.fetchedObjects?[indexPath.row] else { return cell }
+            cell.symbolImageView.image = UIImage(data: item.icon ?? Data())
+            if !item.hasOwnIcon {
+                cell.title = item.title
+            } else {
+                cell.title = ""
+            }
         } else if collectionView.isKind(of: PlaylistCollectionView.self) {
-            //cell.symbolImageView.image = UIImage(named: playlistItems[indexPath.row])
-            //cell.symbolImageView.image = UIImage(data: playlistItems?[indexPath.row].icon ?? Data())
-            guard let item = fetchedResultsController1.fetchedObjects?[indexPath.row] else { return cell }
+            guard let item = fetchedResultsControllerPlaylist.fetchedObjects?[indexPath.row] else { return cell }
             cell.symbolImageView.image = UIImage(data: item.icon ?? Data())
             if !item.hasOwnIcon {
                 cell.title = item.title
@@ -86,8 +111,18 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        var item: LibraryItem?
+        
+        if collectionView.isKind(of: RecentSubliminalsCollectionView.self) {
+            item = recentItems?[indexPath.row]
+        }
+        
+        if collectionView.isKind(of: PlaylistCollectionView.self) {
+            item = playlistItems?[indexPath.row]
+        }
  
-        if let selectedItem = playlistItems?[indexPath.row], let fileName = selectedItem.soundFileName {
+        if let selectedItem = item, let fileName = selectedItem.soundFileName {
             spokenAffirmation = "\(fileName).caf"
             spokenAffirmationSilent = "\(fileName)Silent.caf"
             
@@ -96,6 +131,10 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         }
 
         self.performSegue(withIdentifier: "showPlayerSegue", sender: nil)
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        //recentSubliminalsCollectionView.reloadData()
     }
     
     
@@ -109,3 +148,9 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
     }
 
 }
+
+
+//extension MediathekViewController: NSFetchedResultsControllerDelegate {
+//    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+//  }
+//}

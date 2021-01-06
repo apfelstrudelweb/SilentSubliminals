@@ -437,6 +437,7 @@
                                     <constraint firstAttribute="width" constant="60" id="Ad2-qA-hR8"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                <color key="tintColor" red="0.27380970119999998" green="0.68577355149999997" blue="0.68408918379999994" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="DONE"/>
                                 <connections>
                                     <action selector="doneButtonTouched:" destination="h7w-2W-8rs" eventType="touchUpInside" id="FHM-hM-xUE"/>
@@ -612,7 +613,7 @@
             <objects>
                 <viewController id="Bf0-ef-9YZ" customClass="SpectrumViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Nie-sQ-mcI">
-                        <rect key="frame" x="0.0" y="0.0" width="373" height="111.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="378" height="89.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="HBa-Po-3jv"/>
                     </view>
@@ -1006,7 +1007,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Mediathek" id="QOa-dT-TMi"/>
                     <connections>
-                        <outlet property="recentSubliminalsCollectionView" destination="6mm-6N-k8e" id="W2g-NJ-dUf"/>
+                        <outlet property="recentSubliminalsCollectionView" destination="6mm-6N-k8e" id="Ize-Ea-bLZ"/>
                         <segue destination="Wlk-fN-YWe" kind="show" identifier="showPlayerSegue" id="3gP-B1-m44"/>
                     </connections>
                 </viewController>
@@ -1914,7 +1915,7 @@
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="MRg-E8-hf8"/>
+        <segue reference="QTW-cV-1zg"/>
         <segue reference="RTw-Dc-bPn"/>
         <segue reference="VQu-IX-ctv"/>
     </inferredMetricsTieBreakers>

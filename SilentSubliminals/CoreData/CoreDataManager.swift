@@ -219,6 +219,16 @@ class CoreDataManager: NSObject {
         }
     }
     
+    func setNewTimestamp(item: LibraryItem) {
+        
+        do {
+            item.lastUsedDate = Date()
+            try self.managedObjectContext.save()  
+        } catch {
+            print(error)
+        }
+    }
+    
     func updateLibraryItem(item: LibraryItem, icon : UIImage) {
         item.icon = icon.pngData()
         save()

@@ -57,6 +57,8 @@
 		657A0F9025A347C400A4CCF2 /* Subliminal+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657A0F8A25A347C400A4CCF2 /* Subliminal+CoreDataClass.swift */; };
 		657A0F9125A347C400A4CCF2 /* Subliminal+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657A0F8B25A347C400A4CCF2 /* Subliminal+CoreDataProperties.swift */; };
 		657A0F9725A4850700A4CCF2 /* ImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657A0F9625A4850700A4CCF2 /* ImageButton.swift */; };
+		657A0F9A25A5BF2600A4CCF2 /* consolidation.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 657A0F9925A5BF2500A4CCF2 /* consolidation.aiff */; };
+		657A0FA125A5C73E00A4CCF2 /* consolidationSilent.caf in Resources */ = {isa = PBXBuildFile; fileRef = 657A0F9F25A5C6BB00A4CCF2 /* consolidationSilent.caf */; };
 		657AA0C6258F544200320465 /* Misc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657AA0C5258F544200320465 /* Misc.swift */; };
 		6598C2F0259106FC0042A7E1 /* PlayerStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6598C2EF259106FC0042A7E1 /* PlayerStateMachine.swift */; };
 		65A052B8259F2DDF00F3C6BD /* DisclaimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A052B7259F2DDF00F3C6BD /* DisclaimerViewController.swift */; };
@@ -158,6 +160,8 @@
 		657A0F8A25A347C400A4CCF2 /* Subliminal+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Subliminal+CoreDataClass.swift"; sourceTree = "<group>"; };
 		657A0F8B25A347C400A4CCF2 /* Subliminal+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Subliminal+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		657A0F9625A4850700A4CCF2 /* ImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageButton.swift; sourceTree = "<group>"; };
+		657A0F9925A5BF2500A4CCF2 /* consolidation.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = consolidation.aiff; sourceTree = "<group>"; };
+		657A0F9F25A5C6BB00A4CCF2 /* consolidationSilent.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = consolidationSilent.caf; sourceTree = "<group>"; };
 		657AA0C5258F544200320465 /* Misc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Misc.swift; sourceTree = "<group>"; };
 		6598C2EF259106FC0042A7E1 /* PlayerStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerStateMachine.swift; sourceTree = "<group>"; };
 		65A052B7259F2DDF00F3C6BD /* DisclaimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimerViewController.swift; sourceTree = "<group>"; };
@@ -428,6 +432,8 @@
 		65A003CC257CFB8200EADAB8 /* Soundfiles */ = {
 			isa = PBXGroup;
 			children = (
+				657A0F9F25A5C6BB00A4CCF2 /* consolidationSilent.caf */,
+				657A0F9925A5BF2500A4CCF2 /* consolidation.aiff */,
 				65654BFA259BA7BC0066E4D2 /* introduction.aiff */,
 				65654BF9259BA7BC0066E4D2 /* leadInBed.aiff */,
 				65654BF7259BA7BC0066E4D2 /* leadInChair.aiff */,
@@ -632,6 +638,7 @@
 				65A052C0259F43A700F3C6BD /* DisclaimerView.xib in Resources */,
 				65654C02259BAEC80066E4D2 /* leadOutNight.aiff in Resources */,
 				65654BFE259BA7BC0066E4D2 /* introduction.aiff in Resources */,
+				657A0FA125A5C73E00A4CCF2 /* consolidationSilent.caf in Resources */,
 				65654BFD259BA7BC0066E4D2 /* leadInBed.aiff in Resources */,
 				6569A008253C43A7000E7F95 /* plusButton.png in Resources */,
 				6558D31524684935004E8660 /* LaunchScreen.storyboard in Resources */,
@@ -639,6 +646,7 @@
 				6558D31224684935004E8660 /* Assets.xcassets in Resources */,
 				65C6E648259A2F630046E739 /* bell.aiff in Resources */,
 				65A8405725611EA50072531F /* subliminalMakerTeaser.png in Resources */,
+				657A0F9A25A5BF2600A4CCF2 /* consolidation.aiff in Resources */,
 				65A0530E25A094F300F3C6BD /* meditation_09.png in Resources */,
 				65A8405825611EA50072531F /* subliminalPlayerTeaser.png in Resources */,
 				6558D31024684934004E8660 /* Main.storyboard in Resources */,

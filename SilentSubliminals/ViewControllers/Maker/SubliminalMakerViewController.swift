@@ -95,8 +95,8 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        //stopPlaying()
-        audioHelper.stopPlayingSingleAffirmation()
+        stopPlaying()
+        //audioHelper.stopPlayingSingleAffirmation()
     }
     
 

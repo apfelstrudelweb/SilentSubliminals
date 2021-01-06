@@ -107,9 +107,10 @@ class AudioHelper {
         case .ended:
             if let optionInt = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt {
                 let options = AVAudioSession.InterruptionOptions(rawValue: optionInt)
-                if options.contains(.shouldResume) {
-                    try! self.audioEngine.start()
-                }
+                //TODO: resolve side effect with subliminal dictation in AddAffirmationViewController
+//                if options.contains(.shouldResume) {
+//                    try! self.audioEngine.start()
+//                }
             }
         @unknown default:
             print("handleInterruption error")
@@ -198,6 +199,53 @@ class AudioHelper {
         }
     }
     
+    func playConsolidation() {
+        
+        self.resetLoop = false
+        self.audioEngine.pause()
+        let playerNode = AVAudioPlayerNode()
+        
+        self.audioEngine.attach(playerNode)
+        
+        let audioFile = try! AVAudioFile(forReading: getFileFromMainBundle(filename: consolidationSoundFile)!)
+        let format =  AVAudioFormat(standardFormatWithSampleRate: audioFile.fileFormat.sampleRate, channels: audioFile.fileFormat.channelCount)
+        
+        playerNode.removeTap(onBus: 0)
+        
+        self.audioEngine.connect(playerNode, to: self.audioEngine.outputNode, format: format)
+        
+        try! self.audioEngine.start()
+        
+        playerNode.installTap(onBus: 0, bufferSize: bufferSize, format: format) {
+            (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
+
+            DispatchQueue.main.async {
+                self.delegate?.processAudioData(buffer: buffer)
+                CommandCenter.shared.updateTime(elapsedTime: playerNode.currentTime, totalDuration: audioFile.duration)
+            }
+        }
+        
+        let audioFileBuffer = AVAudioPCMBuffer(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(audioFile.length))!
+        try! audioFile.read(into: audioFileBuffer)
+        
+        playerNode.scheduleBuffer(audioFileBuffer, completionHandler: {
+            
+            self.audioEngine.stop()
+            self.playingNodes.remove(playerNode)
+            
+            if PlayerStateMachine.shared.playerState != .ready {
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: Notification.Name(notification_player_nextState), object: nil)
+                }
+            }
+     
+        })
+
+        self.playingNodes.insert(playerNode)
+        playerNode.play()
+    }
+
+    
     
     func playSingleAffirmation(instance: SoundInstance) {
         
@@ -240,14 +288,15 @@ class AudioHelper {
                     self.playingNodes.remove(playerNode)
                     
                     DispatchQueue.main.async {
-                        if !self.resetLoop {
-                            if instance == .player {
+                        
+                        if instance == .player {
+                            if !self.resetLoop {
                                 if PlayerStateMachine.shared.playerState != .ready {
                                     NotificationCenter.default.post(name: Notification.Name(notification_player_nextState), object: nil)
                                 }
-                            } else {
-                                NotificationCenter.default.post(name: Notification.Name(notification_maker_stopPlayingState), object: nil)
                             }
+                        } else {
+                            NotificationCenter.default.post(name: Notification.Name(notification_maker_stopPlayingState), object: nil)
                         }
                     }
                 })
@@ -279,6 +328,7 @@ class AudioHelper {
         self.audioEngine.stop()
         self.playingNodes = Set<AVAudioPlayerNode>()
         PlayerStateMachine.shared.playerState = .ready
+        //MakerStateMachine.shared.playerState = .playStopped
     }
     
     func skip() {
