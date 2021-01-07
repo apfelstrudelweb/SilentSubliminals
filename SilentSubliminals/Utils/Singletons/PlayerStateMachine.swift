@@ -82,6 +82,7 @@ class PlayerStateMachine {
                 shared.setSilentMode()
                 return .affirmationLoop
             case .affirmationLoop:
+                //return .leadOut
                 return .consolidation
             case .consolidation:
                 return .leadOut
@@ -151,7 +152,9 @@ class PlayerStateMachine {
             if pauseState == .pause {
                 delegate?.pauseSound()
             } else {
-                delegate?.continueSound()
+                if playerState != .ready {
+                    delegate?.continueSound()
+                }
             }
         }
     }

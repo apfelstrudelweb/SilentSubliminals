@@ -1922,23 +1922,6 @@
             <point key="canvasLocation" x="642" y="-382"/>
         </scene>
     </scenes>
-    <designables>
-        <designable name="1tk-Ks-GEn">
-            <size key="intrinsicContentSize" width="105" height="65"/>
-        </designable>
-        <designable name="8K9-c1-Qeq">
-            <size key="intrinsicContentSize" width="44" height="44"/>
-        </designable>
-        <designable name="IZd-0S-Jl0">
-            <size key="intrinsicContentSize" width="44" height="44"/>
-        </designable>
-        <designable name="XVj-v3-nvd">
-            <size key="intrinsicContentSize" width="44" height="44"/>
-        </designable>
-        <designable name="o31-l6-2Kv">
-            <size key="intrinsicContentSize" width="44" height="44"/>
-        </designable>
-    </designables>
     <inferredMetricsTieBreakers>
         <segue reference="QTW-cV-1zg"/>
         <segue reference="RTw-Dc-bPn"/>

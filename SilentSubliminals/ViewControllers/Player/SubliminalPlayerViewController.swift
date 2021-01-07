@@ -282,10 +282,12 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
                 self.silentButton.setImage(silentOffImg, for: .normal)
                 silentNode.volume = 0
                 loudNode.volume = 1
+                self.audioHelper.toggleMode(isSilent: false)
             case .silent:
                 self.silentButton.setImage(silentOnImg, for: .normal)
                 silentNode.volume = 1
                 loudNode.volume = 0
+                self.audioHelper.toggleMode(isSilent: true)
             }
         }
     }
@@ -467,8 +469,10 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     
     // MARK: AudioHelperDelegate
     func processAudioData(buffer: AVAudioPCMBuffer) {
-        self.volumeViewController?.processAudioData(buffer: buffer)
-        self.spectrumViewController?.processAudioData(buffer: buffer)
+        DispatchQueue.main.async {
+            self.volumeViewController?.processAudioData(buffer: buffer)
+            self.spectrumViewController?.processAudioData(buffer: buffer)
+        }
     }
     
     func alertSilentsTooLoud(flag: Bool) {
