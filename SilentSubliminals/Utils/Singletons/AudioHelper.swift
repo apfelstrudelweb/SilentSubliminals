@@ -57,9 +57,6 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
     }
     
     
-    static let shared = AudioHelper()
-    
-    var resetLoop: Bool = false
     
     var singleAffirmationDuration: TimeInterval = 0
     var playingNodes: Set<AVAudioPlayerNode> = Set<AVAudioPlayerNode>()
@@ -69,9 +66,10 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
     private var audioEngine: AVAudioEngine = AVAudioEngine()
     private var audioRecorder: AVAudioRecorder = AVAudioRecorder()
     private var mixer: AVAudioMixerNode = AVAudioMixerNode()
-    private var equalizerHighPass: AVAudioUnitEQ = AVAudioUnitEQ(numberOfBands: 1)
+
 
     var routeIsChanging: Bool = false
+    var resetAll: Bool = false
     
     weak var delegate : AudioHelperDelegate?
     
@@ -94,12 +92,6 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         } catch {
             print("Failed to set audio session category.")
         }
-        
-        let highPass = self.equalizerHighPass.bands[0]
-        highPass.filterType = .highPass
-        highPass.frequency = modulationFrequency
-        highPass.bandwidth = bandwidth
-        highPass.bypass = false
         
         soundPlayer.delegate = self
     }
@@ -137,14 +129,6 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
     }
     
     
-    func getSilentPlayerNode() -> AVAudioPlayerNode {
-        return audioFiles.filter() { $0.isSilent == true }.first!.audioPlayer
-    }
-    
-    func getLoudPlayerNode() -> AVAudioPlayerNode {
-        return audioFiles.filter() { $0.isSilent == false }.first!.audioPlayer
-    }
-    
     func toggleMode(isSilent: Bool) {
         
         guard let player = soundPlayer.audioPlayer, let playerSilent = soundPlayer.audioPlayerSilent else { return }
@@ -160,258 +144,72 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
     
     func playInduction(type: Induction) {
         
+        resetAll = false
         var filename: String = bellSoundFile
 
         switch type {
         case .Introduction:
             filename = introductionSoundFile
         case .LeadInChair:
-            filename = "leadIn"
+            filename = leadInChairSoundFile
         case .LeadInBed:
-            filename = "leadIn"
+            filename = leadInBedSoundFile
         case .LeadOutDay:
-            filename = "leadOut"
+            filename = leadOutDaySoundFile
         case .LeadOutNight:
-            filename = "leadOut"
+            filename = leadOutNightSoundFile
         case .Bell:
             filename = bellSoundFile
         }
         
-        let audioFile = try! AVAudioFile(forReading: getFileFromMainBundle(filename: "introduction.aiff")!)
-        let format =  AVAudioFormat(standardFormatWithSampleRate: audioFile.fileFormat.sampleRate, channels: audioFile.fileFormat.channelCount)
-
-        soundPlayer.play(filename: "song", completionHandler: { (flag) in
+        soundPlayer.play(filename: filename, isSilent: false, completionHandler: { (flag) in
             print("*** induction done ***")
-            PlayerStateMachine.shared.doNextPlayerState()
+            if !self.resetAll {
+                PlayerStateMachine.shared.doNextPlayerState()
+            }
         })
-        
-   
-        
-//        delay(3) {
-//            print("*** induction done ***")
-//            PlayerStateMachine.shared.doNextPlayerState()
-//            return
-//        }
-        
-//        audioQueue.async {
-//
-//            self.resetLoop = false
-//            self.audioEngine.pause()
-//            let playerNode = AVAudioPlayerNode()
-//
-//            self.audioEngine.attach(playerNode)
-//
-//            var filename: String = bellSoundFile
-//
-//            switch type {
-//            case .Introduction:
-//                filename = introductionSoundFile
-//            case .LeadInChair:
-//                filename = leadInChairSoundFile
-//            case .LeadInBed:
-//                filename = leadInBedSoundFile
-//            case .LeadOutDay:
-//                filename = leadOutDaySoundFile
-//            case .LeadOutNight:
-//                filename = leadOutNightSoundFile
-//            case .Bell:
-//                filename = bellSoundFile
-//            }
-//
-//            let audioFile = try! AVAudioFile(forReading: getFileFromMainBundle(filename: filename)!)
-//            let format =  AVAudioFormat(standardFormatWithSampleRate: audioFile.fileFormat.sampleRate, channels: audioFile.fileFormat.channelCount)
-//
-//            playerNode.removeTap(onBus: 0)
-//
-//            self.audioEngine.connect(playerNode, to: self.audioEngine.outputNode, format: format)
-//
-//            try! self.audioEngine.start()
-//
-//            playerNode.installTap(onBus: 0, bufferSize: bufferSize, format: format) {
-//                (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
-//
-//                DispatchQueue.main.async {
-//                    self.delegate?.processAudioData(buffer: buffer)
-//                    CommandCenter.shared.updateTime(elapsedTime: playerNode.currentTime, totalDuration: audioFile.duration)
-//                }
-//            }
-//
-//            let audioFileBuffer = AVAudioPCMBuffer(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(audioFile.length))!
-//            try! audioFile.read(into: audioFileBuffer)
-//
-//            playerNode.scheduleBuffer(audioFileBuffer, completionHandler: {
-//
-//                self.audioEngine.stop()
-//                self.playingNodes.remove(playerNode)
-//
-//                if !self.resetLoop {
-//                    if type == .Introduction {
-//                        UserDefaults.standard.set(true, forKey: userDefaults_introductionPlayed)
-//                    }
-//
-//                    if PlayerStateMachine.shared.playerState != .ready { //&& !self.routeIsChanging {
-//                        DispatchQueue.main.async {
-//                            NotificationCenter.default.post(name: Notification.Name(notification_player_nextState), object: nil)
-//                        }
-//                    }
-//                }
-//            })
-//
-//            //self.routeIsChanging = false
-//
-//            self.playingNodes.insert(playerNode)
-//            playerNode.play()
-//        }
     }
     
     func playConsolidation() {
         
-        soundPlayer.play(filename: "consolidation", completionHandler: { (flag) in
+        resetAll = false
+        soundPlayer.play(filename: consolidationSoundFile, isSilent: true, completionHandler: { (flag) in
             print("*** consolidation done ***")
-            PlayerStateMachine.shared.doNextPlayerState()
+            if !self.resetAll {
+                PlayerStateMachine.shared.doNextPlayerState()
+            }
+
         })
-        
-//        delay(3) {
-//            print("*** consolidation done ***")
-//            PlayerStateMachine.shared.doNextPlayerState()
-//            return
-//        }
-        
-//        audioQueue.async {
-//
-//            self.resetLoop = false
-//            self.audioEngine.pause()
-//            let playerNode = AVAudioPlayerNode()
-//
-//            self.audioEngine.detach(self.equalizerHighPass)
-//            self.audioEngine.attach(playerNode)
-//            self.audioEngine.attach(self.equalizerHighPass)
-//
-//            let audioFile = try! AVAudioFile(forReading: getFileFromMainBundle(filename: consolidationSoundFile)!)
-//            let format =  AVAudioFormat(standardFormatWithSampleRate: audioFile.fileFormat.sampleRate, channels: audioFile.fileFormat.channelCount)
-//
-//            playerNode.removeTap(onBus: 0)
-//
-//            //self.audioEngine.connect(playerNode, to: self.audioEngine.outputNode, format: format)
-//            self.audioEngine.connect(playerNode, to: self.equalizerHighPass, format: format)
-//            self.audioEngine.connect(self.equalizerHighPass, to: self.mixer, format: format)
-////            self.audioEngine.connect(self.mixer, to: self.audioEngine.outputNode, format: format)
-//
-//            try! self.audioEngine.start()
-//
-//            playerNode.installTap(onBus: 0, bufferSize: bufferSize, format: format) {
-//                (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
-//
-//                DispatchQueue.main.async {
-//                    self.delegate?.processAudioData(buffer: buffer)
-//                    CommandCenter.shared.updateTime(elapsedTime: playerNode.currentTime, totalDuration: audioFile.duration)
-//                }
-//            }
-//
-//            let audioFileBuffer = AVAudioPCMBuffer(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(audioFile.length))!
-//            try! audioFile.read(into: audioFileBuffer)
-//
-//            playerNode.scheduleBuffer(audioFileBuffer, completionHandler: {
-//
-//                self.audioEngine.stop()
-//                self.playingNodes.remove(playerNode)
-//
-//                if PlayerStateMachine.shared.playerState != .ready {
-//                    DispatchQueue.main.async {
-//                        NotificationCenter.default.post(name: Notification.Name(notification_player_nextState), object: nil)
-//                    }
-//                }
-//            })
-//
-//            self.playingNodes.insert(playerNode)
-//            playerNode.play()
-//        }
     }
 
-    
-    
+
     func playSingleAffirmation(instance: SoundInstance) {
         
-        soundPlayer.play(filename: "subliminal", completionHandler: { (flag) in
+        resetAll = false
+        soundPlayer.play(filename: spokenAffirmation, isSilent: false, completionHandler: { (flag) in
             print("*** subliminal done ***")
-            PlayerStateMachine.shared.doNextPlayerState()
+            if instance == .player {
+                if !self.resetAll {
+                    PlayerStateMachine.shared.doNextPlayerState()
+                }
+            } else {
+                MakerStateMachine.shared.doNextPlayerState()
+            }
         })
+    }
+    
+    func playAffirmationLoop() {
         
-        
-//        delay(3) {
-//            print("*** affirmation done ***")
-//            PlayerStateMachine.shared.doNextPlayerState()
-//            return
-//        }
-        
-//        audioQueue.async {
-//            do {
-//
-//                self.resetLoop = false
-//                self.audioEngine.pause()
-//                let playerNode = AVAudioPlayerNode()//self.getLoudPlayerNode()
-//                self.audioEngine.attach(playerNode)
-//                self.audioEngine.attach(self.mixer)
-//
-//                let audioFile = try AVAudioFile(forReading: getFileFromSandbox(filename: spokenAffirmation))
-//                self.singleAffirmationDuration = audioFile.duration
-//
-//                let format =  AVAudioFormat(standardFormatWithSampleRate: audioFile.fileFormat.sampleRate, channels: audioFile.fileFormat.channelCount)
-//
-//                playerNode.removeTap(onBus: 0)
-//
-//                self.audioEngine.connect(playerNode, to: self.mixer, format: format)
-//
-//                self.audioEngine.connect(self.mixer, to: self.audioEngine.outputNode, format: format)
-//                try self.audioEngine.start()
-//
-//                playerNode.installTap(onBus: 0, bufferSize: bufferSize, format: format) {
-//                    (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
-//
-//                    DispatchQueue.main.async {
-//                        self.delegate?.processAudioData(buffer: buffer)
-//                        CommandCenter.shared.updateTime(elapsedTime: playerNode.currentTime, totalDuration: audioFile.duration)
-//                    }
-//                }
-//
-//                let audioFileBuffer = AVAudioPCMBuffer(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(audioFile.length))!
-//                try audioFile.read(into: audioFileBuffer)
-//
-//                playerNode.scheduleBuffer(audioFileBuffer, completionHandler: {
-//
-//                    self.audioEngine.pause()
-//                    self.playingNodes.remove(playerNode)
-//                    //self.playingNodes = Set<AVAudioPlayerNode>()
-//
-//                    DispatchQueue.main.async {
-//
-//                        if instance == .player {
-//                            if !self.resetLoop {
-//                                if PlayerStateMachine.shared.playerState != .ready {
-//                                    NotificationCenter.default.post(name: Notification.Name(notification_player_nextState), object: nil)
-//                                }
-//                            }
-//                        } else {
-//                            NotificationCenter.default.post(name: Notification.Name(notification_maker_stopPlayingState), object: nil)
-//                        }
-//                    }
-//                })
-//
-//                playerNode.play()
-//                self.playingNodes.insert(playerNode)
-//            } catch {
-//                print("File read error", error)
-//            }
-//        }
+        soundPlayer.playLoop(filenames: [spokenAffirmation, spokenAffirmationSilent], completionHandler: { (flag) in
+            print("*** loop done ***")
+            if !self.resetAll {
+                PlayerStateMachine.shared.doNextPlayerState()
+            }
+        })
     }
     
     // for the Maker ...
     func stopPlayingSingleAffirmation() {
-        
-        let playerNode = self.getLoudPlayerNode()
-        
-        self.audioEngine.detach(playerNode)
-        playerNode.stop()
         
         let inputNode = self.audioEngine.inputNode
         let bus = 0
@@ -420,8 +218,8 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
     }
     
     func reset() {
-        resetLoop = true
-        self.audioEngine.stop()
+        resetAll = true
+        soundPlayer.engine.stop()
         self.playingNodes = Set<AVAudioPlayerNode>()
         PlayerStateMachine.shared.playerState = .ready
         //MakerStateMachine.shared.playerState = .playStopped
@@ -429,153 +227,19 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
     
     func skip() {
         
-        soundPlayer.stop()
         // completion handler will automaticall call next state
+        soundPlayer.stop()
     }
     
-    
-    func playAffirmationLoop() {
-        
-        soundPlayer.playLoop(filename: "loop", completionHandler: { (flag) in
-            print("*** loop done ***")
-            PlayerStateMachine.shared.doNextPlayerState()
-        })
-        
-//        delay(3) {
-//            print("*** loop done ***")
-//            PlayerStateMachine.shared.doNextPlayerState()
-//            return
-//        }
-        
-//        audioQueue.async { [self] in
-//            do {
-//
-//                self.resetLoop = false
-//                self.audioEngine.detach(self.equalizerHighPass)
-//
-//                self.audioEngine.attach(self.mixer)
-//
-//                self.audioEngine.pause()
-//
-//                for audioFile in audioFiles {
-//
-//                    if audioFile.isSilent {
-//                        self.audioEngine.attach(self.equalizerHighPass)
-//                    }
-//
-//                    let playerNode = audioFile.audioPlayer
-//                    self.audioEngine.attach(playerNode)
-//
-//                    // TODO
-//                    // see https://developer.apple.com/forums/thread/68603
-//                    //self.audioEngine.disconnectNodeOutput(playerNode)
-//                    //let startTime = CACurrentMediaTime()
-//                    //self.audioEngine.prepare()
-//
-////                    let audioPlayer = AVAudioPlayer(contentsOfURL: soundFileURL, error: &error)
-////                    audioPlayer?.prepareToPlay()
-//
-//                    let avAudioFile = try AVAudioFile(forReading: getFileFromSandbox(filename: audioFile.filename))
-//                    let format =  AVAudioFormat(standardFormatWithSampleRate: avAudioFile.fileFormat.sampleRate, channels: avAudioFile.fileFormat.channelCount)
-//
-//                    playerNode.removeTap(onBus: 0)
-//
-//                    //self.audioEngine.connect(playerNode, to: self.mixer, format: format)
-//
-//                    //TODO: find out why "self.audioEngine.connect(playerNode, to: self.equalizerHighPass, format: format)" crashes at second play
-//                    if audioFile.isSilent {
-//                        self.audioEngine.connect(playerNode, to: self.equalizerHighPass, format: format)
-//                        self.audioEngine.connect(self.equalizerHighPass, to: self.mixer, format: format)
-//
-//                    } else {
-//                        self.audioEngine.connect(playerNode, to: self.mixer, format: format)
-//                    }
-//
-//                    self.audioEngine.connect(self.mixer, to: self.audioEngine.outputNode, format: format)
-//                    try self.audioEngine.start()
-//
-//                    let availableTimeForLoop: TimeInterval = (TimerManager.shared.remainingTime ?? defaultAffirmationTime) - self.singleAffirmationDuration
-//
-//                    var numExceeds = 0
-//                    var notificationPosted: Bool = false
-//
-//                    playerNode.installTap(onBus: 0, bufferSize: bufferSize, format: format) {
-//                        (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
-//
-//                        DispatchQueue.main.async {
-//
-//                            CommandCenter.shared.updateTime(elapsedTime: playerNode.currentTime, totalDuration: availableTimeForLoop)
-//
-//                            if audioFile.isSilent {
-//                                let exceed = SignalProcessing.checkForVolumeExceed(from: buffer)
-//                                if exceed {
-//                                    numExceeds += 1
-//                                }
-//                                if numExceeds > 5 {
-//                                    self.delegate?.alertSilentsTooLoud(flag: true)
-//                                    numExceeds = 0
-//                                } else {
-//                                    self.delegate?.alertSilentsTooLoud(flag: false)
-//                                }
-//
-//                            }
-//
-//                            if audioFile.isSilent && playerNode.currentTime > availableTimeForLoop {
-//                                //playerNode.stop()
-//                                self.audioEngine.pause()
-//                                self.playingNodes = Set<AVAudioPlayerNode>()
-//                                if PlayerStateMachine.shared.playerState == .affirmationLoop && !notificationPosted {
-//                                    NotificationCenter.default.post(name: Notification.Name(notification_player_nextState), object: nil)
-//                                    notificationPosted = true
-//                                    //PlayerStateMachine.shared.doNextPlayerState()
-//                                }
-//                            }
-//
-//                            if PlayerStateMachine.shared.frequencyState == .loud && !audioFile.isSilent {
-//                                self.delegate?.processAudioData(buffer: buffer)
-//                            }
-//
-//                            if PlayerStateMachine.shared.frequencyState == .silent && audioFile.isSilent {
-//                                self.delegate?.processAudioData(buffer: buffer)
-//                            }
-//                        }
-//                    }
-//
-//                    let audioFileBuffer = AVAudioPCMBuffer(pcmFormat: avAudioFile.processingFormat, frameCapacity: AVAudioFrameCount(avAudioFile.length))!
-//                    try avAudioFile.read(into: audioFileBuffer)
-//
-//                    playerNode.scheduleBuffer(audioFileBuffer, at: nil, options:.loops, completionHandler: {
-//
-//                        if !self.resetLoop && audioFile.isSilent && playerNode.currentTime < availableTimeForLoop && !notificationPosted {
-//                            NotificationCenter.default.post(name: Notification.Name(notification_player_nextState), object: nil)
-//                            notificationPosted = true
-//                        }
-//                    })
-//                    playerNode.play()
-//                    self.playingNodes.insert(playerNode)
-//                }
-//            } catch {
-//                print("File read error", error)
-//            }
-//        }
-    }
-    
+
     func pauseSound() {
         
         soundPlayer.pause()
-        
-//        for playerNode in self.playingNodes {
-//            playerNode.pause()
-//        }
     }
     
     func continueSound() {
         
         soundPlayer.continuePlayer()
-        
-//        for playerNode in self.playingNodes {
-//            playerNode.play()
-//        }
     }
     
     // MARK:VolumeManagerDelegate
@@ -583,6 +247,14 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         for playerNode in self.playingNodes {
             playerNode.volume = volume
         }
+    }
+    
+    func getSilentPlayerNode() -> AVAudioPlayerNode {
+        return audioFiles.filter() { $0.isSilent == true }.first!.audioPlayer
+    }
+    
+    func getLoudPlayerNode() -> AVAudioPlayerNode {
+        return audioFiles.filter() { $0.isSilent == false }.first!.audioPlayer
     }
     
     // MARK: MAKER

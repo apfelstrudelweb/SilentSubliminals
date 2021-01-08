@@ -30,7 +30,7 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
     private var scriptViewController: ScriptViewController?
     private var makerAddNewViewController: MakerAddNewViewController?
     
-    private var audioHelper = AudioHelper.shared
+    private var audioHelper = AudioHelper()
     
     var usedAffirmation: String?
     var usedImage: UIImage?
@@ -130,7 +130,7 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
     
     func stopPlaying() {
         //MakerStateMachine.shared.doNextPlayerState()
-        AudioHelper.shared.reset()
+        audioHelper.reset()
         //audioHelper.stopPlayingSingleAffirmation()
     }
     
@@ -176,7 +176,9 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
     
     // MARK: AudioHelperDelegate
     func processAudioData(buffer: AVAudioPCMBuffer) {
-        self.spectrumViewController?.processAudioData(buffer: buffer)
+        DispatchQueue.main.async {
+            self.spectrumViewController?.processAudioData(buffer: buffer)
+        }
     }
 
     // MARK: Segues

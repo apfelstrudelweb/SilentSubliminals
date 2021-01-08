@@ -92,7 +92,7 @@ func convertSoundFileToCaf(url: URL, completionHandler: @escaping(Bool) -> Void)
                 print("status exporting")
             case .completed:
                 print("status completed")
-                AudioHelper.shared.createSilentSubliminalFile()
+                AudioHelper().createSilentSubliminalFile()
                 do {
                     //try fileManager.removeItem(at: url)
                     try fileManager.removeItem(at: oldFileURL)

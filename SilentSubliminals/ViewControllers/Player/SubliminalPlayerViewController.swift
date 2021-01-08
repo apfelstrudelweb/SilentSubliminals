@@ -92,7 +92,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     private var spectrumViewController: SpectrumViewController?
     private var volumeViewController: VolumeViewController?
     
-    private var audioHelper = AudioHelper.shared
+    private var audioHelper = AudioHelper()
 
     
     var introButtons:[ToggleButton : PlayerStateMachine.IntroState]?
@@ -319,6 +319,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
                 break
             case .introduction:
                 print("introduction")
+                backButton.setEnabled(flag: true)
+                forwardButton.setEnabled(flag: true)
                 audioHelper.playInduction(type: Induction.Introduction)
                 introductionPulseImageView.animate()
                 break
@@ -326,13 +328,19 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
                 switch PlayerStateMachine.shared.introState {
                 case .chair:
                     print("intro chair")
+                    backButton.setEnabled(flag: true)
+                    forwardButton.setEnabled(flag: true)
                     audioHelper.playInduction(type: Induction.LeadInChair)
                     leadInChairPulseImageView.animate()
                 case .bed:
                     print("intro bed")
+                    backButton.setEnabled(flag: true)
+                    forwardButton.setEnabled(flag: true)
                     audioHelper.playInduction(type: Induction.LeadInBed)
                     leadInBedPulseImageView.animate()
                 case .none:
+                    backButton.setEnabled(flag: true)
+                    forwardButton.setEnabled(flag: true)
                     audioHelper.playInduction(type: Induction.Bell)
                     print("bell")
                 }
@@ -340,27 +348,39 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
             case .affirmation:
                 print("affirmation")
                 stopButtonAnimations()
+                backButton.setEnabled(flag: true)
+                forwardButton.setEnabled(flag: true)
                 audioHelper.playSingleAffirmation(instance: .player)
                 break
             case .affirmationLoop:
                 print("affirmation loop")
+                backButton.setEnabled(flag: true)
+                forwardButton.setEnabled(flag: true)
                 audioHelper.playAffirmationLoop()
                 break
             case .consolidation:
                 print("consolidation")
+                backButton.setEnabled(flag: true)
+                forwardButton.setEnabled(flag: true)
                 audioHelper.playConsolidation()
                 break
             case .leadOut:
                 switch PlayerStateMachine.shared.outroState {
                 case .day:
                     print("outro day")
+                    backButton.setEnabled(flag: true)
+                    forwardButton.setEnabled(flag: true)
                     audioHelper.playInduction(type: Induction.LeadOutDay)
                     leadOutDayPulseImageView.animate()
                 case .night:
                     print("outro night")
+                    backButton.setEnabled(flag: true)
+                    forwardButton.setEnabled(flag: true)
                     audioHelper.playInduction(type: Induction.LeadOutNight)
                     leadOutNightPulseImageView.animate()
                 case .none:
+                    backButton.setEnabled(flag: true)
+                    forwardButton.setEnabled(flag: true)
                     audioHelper.playInduction(type: Induction.Bell)
                     print("bell")
                 }
@@ -428,8 +448,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     
     func stopPlaying() {
         
-        AudioHelper.shared.reset()
-        playButton.setState(active: false)
+        audioHelper.reset()
+        //playButton.setState(active: false)
         backButton.setEnabled(flag: false)
         forwardButton.setEnabled(flag: false)
         introductionSwitch.setEnabled(flag: true)
@@ -445,11 +465,11 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     }
     
     func skip() {
-        AudioHelper.shared.skip()
+        audioHelper.skip()
     }
     
     func stepForward() {
-        AudioHelper.shared.skip()
+        audioHelper.skip()
     }
     
     
