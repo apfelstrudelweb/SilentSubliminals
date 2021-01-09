@@ -803,7 +803,7 @@
                                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                         </collectionViewFlowLayout>
                                                         <cells>
-                                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="recentSubliminalCell" id="xs0-3Y-faC" customClass="MediathekCollectionViewCell" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="playlistCell" id="xs0-3Y-faC" customClass="MediathekCollectionViewCell" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="4" width="128" height="128"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="uwv-7w-3FG">
@@ -875,7 +875,7 @@
                                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                         </collectionViewFlowLayout>
                                                         <cells>
-                                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="recentSubliminalCell" id="4Vi-2z-HCg" customClass="MediathekCollectionViewCell" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="purchasesCell" id="4Vi-2z-HCg" customClass="MediathekCollectionViewCell" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="4" width="128" height="128"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Erh-zU-Zpg">
@@ -947,7 +947,7 @@
                                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                         </collectionViewFlowLayout>
                                                         <cells>
-                                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="recentSubliminalCell" id="F0J-sf-FKW" customClass="MediathekCollectionViewCell" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="creationsCell" id="F0J-sf-FKW" customClass="MediathekCollectionViewCell" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="4" width="128" height="128"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="6wg-9O-j8o">
@@ -1032,6 +1032,8 @@
                     </view>
                     <navigationItem key="navigationItem" title="Mediathek" id="QOa-dT-TMi"/>
                     <connections>
+                        <outlet property="creationsCollectionView" destination="uld-Gr-nMA" id="xQC-nS-jNo"/>
+                        <outlet property="playlistCollectionView" destination="0Ld-06-JSl" id="2Vj-nh-C9v"/>
                         <outlet property="recentSubliminalsCollectionView" destination="6mm-6N-k8e" id="Ize-Ea-bLZ"/>
                         <segue destination="Wlk-fN-YWe" kind="show" identifier="showPlayerSegue" id="3gP-B1-m44"/>
                     </connections>
@@ -1922,6 +1924,23 @@
             <point key="canvasLocation" x="642" y="-382"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="1tk-Ks-GEn">
+            <size key="intrinsicContentSize" width="105" height="65"/>
+        </designable>
+        <designable name="8K9-c1-Qeq">
+            <size key="intrinsicContentSize" width="44" height="44"/>
+        </designable>
+        <designable name="IZd-0S-Jl0">
+            <size key="intrinsicContentSize" width="44" height="44"/>
+        </designable>
+        <designable name="XVj-v3-nvd">
+            <size key="intrinsicContentSize" width="44" height="44"/>
+        </designable>
+        <designable name="o31-l6-2Kv">
+            <size key="intrinsicContentSize" width="44" height="44"/>
+        </designable>
+    </designables>
     <inferredMetricsTieBreakers>
         <segue reference="QTW-cV-1zg"/>
         <segue reference="RTw-Dc-bPn"/>

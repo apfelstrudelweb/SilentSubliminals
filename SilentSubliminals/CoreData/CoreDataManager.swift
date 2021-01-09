@@ -219,6 +219,17 @@ class CoreDataManager: NSObject {
         }
     }
     
+    func deleteLibraryItem(item: LibraryItem) {
+        
+        do {
+            self.managedObjectContext.delete(item)
+            try self.managedObjectContext.save()
+            
+        } catch {
+            print(error)
+        }
+    }
+    
     func setNewTimestamp(item: LibraryItem) {
         
         do {
