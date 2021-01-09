@@ -17,8 +17,8 @@ protocol SoundPlayerDelegate : AnyObject {
 
 open class SoundPlayer: NSObject {
     
-    var audioPlayer : AVAudioPlayerNode!
-    var audioPlayerSilent : AVAudioPlayerNode!
+    var audioPlayerNode : AVAudioPlayerNode!
+    var audioPlayerSilentNode : AVAudioPlayerNode!
     var engine = AVAudioEngine()
     
     private var equalizerHighPass: AVAudioUnitEQ = AVAudioUnitEQ(numberOfBands: 1)
@@ -40,7 +40,6 @@ open class SoundPlayer: NSObject {
         do {
             let audioFile = try AVAudioFile(forReading: getFileFromSandbox(filename: spokenAffirmation))
             self.singleAffirmationDuration = audioFile.duration
-            availableTimeForLoop = (TimerManager.shared.remainingTime ?? defaultAffirmationTime) - self.singleAffirmationDuration
         } catch {
             print("File read error", error)
         }
@@ -61,33 +60,32 @@ open class SoundPlayer: NSObject {
                     url = getFileFromSandbox(filename: filename)
                 }
                 
-                //let url = Bundle.main.url(forResource: filename.fileName(), withExtension: filename.fileExtension())!
-                let f = try! AVAudioFile(forReading: url!)
-                let buffer = AVAudioPCMBuffer(pcmFormat: f.processingFormat, frameCapacity: UInt32(f.length /* /3 */)) // only need 1/3 of the original recording
-                try! f.read(into:buffer!)
+                let file = try! AVAudioFile(forReading: url!)
+                let buffer = AVAudioPCMBuffer(pcmFormat: file.processingFormat, frameCapacity: UInt32(file.length))
+                try! file.read(into:buffer!)
                 
                 self.engine.detach(self.equalizerHighPass)
-                audioPlayer = AVAudioPlayerNode()
-                self.engine.attach(audioPlayer)
+                audioPlayerNode = AVAudioPlayerNode()
+                self.engine.attach(audioPlayerNode)
                 let mixer = self.engine.mainMixerNode
                 
                 if isSilent {
                     self.engine.attach(self.equalizerHighPass)
-                    self.engine.connect(audioPlayer, to: self.equalizerHighPass, format: f.processingFormat)
-                    self.engine.connect(self.equalizerHighPass, to: mixer, format: f.processingFormat)
+                    self.engine.connect(audioPlayerNode, to: self.equalizerHighPass, format: file.processingFormat)
+                    self.engine.connect(self.equalizerHighPass, to: mixer, format: file.processingFormat)
                 } else {
-                    self.engine.connect(audioPlayer, to: mixer, format: f.processingFormat)
+                    self.engine.connect(audioPlayerNode, to: mixer, format: file.processingFormat)
                 }
                 
                 
-                audioPlayer.installTap(onBus: 0, bufferSize: bufferSize, format: f.processingFormat) {
+                audioPlayerNode.installTap(onBus: 0, bufferSize: bufferSize, format: file.processingFormat) {
                 (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
                     
                     delegate?.processAudioData(buffer: buffer)
 
                 }
                        
-                audioPlayer.scheduleBuffer(buffer!, at: nil, options: .interrupts, completionCallbackType: .dataConsumed) { (type) in
+                audioPlayerNode.scheduleBuffer(buffer!, at: nil, options: .interrupts, completionCallbackType: .dataConsumed) { (type) in
 
                     delay(0.1) {
                         if self.engine.isRunning {
@@ -100,7 +98,7 @@ open class SoundPlayer: NSObject {
                 
                 self.engine.prepare()
                 try! self.engine.start()
-                audioPlayer.play()
+                audioPlayerNode.play()
             }
         }
     }
@@ -109,6 +107,8 @@ open class SoundPlayer: NSObject {
         
         audioQueue.async { [self] in
             do {
+                
+                availableTimeForLoop = TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_loopDuration)) - self.singleAffirmationDuration
                 
                 self.engine.stop()
                 self.engine = AVAudioEngine()
@@ -119,35 +119,38 @@ open class SoundPlayer: NSObject {
                 try! formatLoud.read(into:bufferLoud!)
                 
                 // loud
-                audioPlayer = AVAudioPlayerNode()
-                self.engine.attach(audioPlayer)
+                audioPlayerNode = AVAudioPlayerNode()
+                self.engine.attach(audioPlayerNode)
                 let mixer = self.engine.mainMixerNode
-                self.engine.connect(audioPlayer, to: mixer, format: formatLoud.processingFormat)
+                self.engine.connect(audioPlayerNode, to: mixer, format: formatLoud.processingFormat)
                 
                 
                 let urlSilent = getFileFromSandbox(filename: filenames.last!)
                 let formatSilent = try! AVAudioFile(forReading: urlSilent)
-                let bufferSilent = AVAudioPCMBuffer(pcmFormat: formatSilent.processingFormat, frameCapacity: UInt32(formatSilent.length /* /3 */)) // only need 1/3 of the original recording
+                let bufferSilent = AVAudioPCMBuffer(pcmFormat: formatSilent.processingFormat, frameCapacity: UInt32(formatSilent.length))
                 try! formatSilent.read(into:bufferSilent!)
                 
                 // silent
                 self.engine.detach(self.equalizerHighPass)
-                audioPlayerSilent = AVAudioPlayerNode()
-                self.engine.attach(audioPlayerSilent)
+                audioPlayerSilentNode = AVAudioPlayerNode()
+                self.engine.attach(audioPlayerSilentNode)
                 self.engine.attach(self.equalizerHighPass)
                 let mixerSilent = self.engine.mainMixerNode
                 
-                self.engine.connect(audioPlayerSilent, to: self.equalizerHighPass, format: formatSilent.processingFormat)
+                self.engine.connect(audioPlayerSilentNode, to: self.equalizerHighPass, format: formatSilent.processingFormat)
                 self.engine.connect(self.equalizerHighPass, to: mixerSilent, format: formatSilent.processingFormat)
                 
-                audioPlayer.installTap(onBus: 0, bufferSize: bufferSize, format: formatLoud.processingFormat) {
+                let minutes = availableTimeForLoop / 60
+                print("loop time: \(minutes) minutes")
+                
+                audioPlayerNode.installTap(onBus: 0, bufferSize: bufferSize, format: formatLoud.processingFormat) {
                 (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
                     
-                    if audioPlayer.volume > 0 {
+                    if audioPlayerNode.volume > 0 {
                         delegate?.processAudioData(buffer: buffer)
                     }
                     
-                    if audioPlayer.currentTime  > availableTimeForLoop {
+                    if audioPlayerNode.currentTime  > availableTimeForLoop {
                         self.engine.stop()
                         delay(0.1) {
                             if self.engine.isRunning {
@@ -158,15 +161,15 @@ open class SoundPlayer: NSObject {
                     }
                 }
                 
-                audioPlayerSilent.installTap(onBus: 0, bufferSize: bufferSize, format: formatSilent.processingFormat) {
+                audioPlayerSilentNode.installTap(onBus: 0, bufferSize: bufferSize, format: formatSilent.processingFormat) {
                 (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
                     
-                    if audioPlayerSilent.volume > 0 {
+                    if audioPlayerSilentNode.volume > 0 {
                         delegate?.processAudioData(buffer: buffer)
                     }
                 }
                 
-                audioPlayer.scheduleBuffer(bufferLoud!, at: nil, options: .loops, completionCallbackType: .dataConsumed) { (type) in
+                audioPlayerNode.scheduleBuffer(bufferLoud!, at: nil, options: .loops, completionCallbackType: .dataConsumed) { (type) in
 
                     delay(0.1) {
                         if self.engine.isRunning {
@@ -177,7 +180,7 @@ open class SoundPlayer: NSObject {
                     }
                 }
                 
-                audioPlayerSilent.scheduleBuffer(bufferSilent!, at: nil, options: .loops, completionCallbackType: .dataConsumed) { (type) in
+                audioPlayerSilentNode.scheduleBuffer(bufferSilent!, at: nil, options: .loops, completionCallbackType: .dataConsumed) { (type) in
 
                     delay(0.1) {
                         if self.engine.isRunning {
@@ -189,11 +192,11 @@ open class SoundPlayer: NSObject {
                 
                 self.engine.prepare()
                 try! self.engine.start()
-                audioPlayer.play()
-                audioPlayerSilent.play()
+                audioPlayerNode.play()
+                audioPlayerSilentNode.play()
                 
-                audioPlayer.volume = 0
-                audioPlayerSilent.volume = 1
+                audioPlayerNode.volume = 0
+                audioPlayerSilentNode.volume = 1
             }
         }
     }
@@ -202,12 +205,10 @@ open class SoundPlayer: NSObject {
     
     func pause() {
         self.engine.pause()
-        //self.audioPlayer.pause()
     }
     
     func continuePlayer() {
         try! self.engine.start()
-        //self.audioPlayer.play()
     }
     
     func stop() {

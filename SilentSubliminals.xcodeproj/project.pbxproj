@@ -352,6 +352,7 @@
 				657AA0C5258F544200320465 /* Misc.swift */,
 				65654C05259CF1560066E4D2 /* AlertController.swift */,
 				65A0531325A0E50900F3C6BD /* ImagePicker.swift */,
+				65D561D02597517D00FC039C /* AudioHelper.swift */,
 				65C8E9D225A737FE0012B21A /* SoundPlayer.swift */,
 			);
 			path = Utils;
@@ -438,7 +439,6 @@
 		657AA0C7258F54C700320465 /* Singletons */ = {
 			isa = PBXGroup;
 			children = (
-				65D561D02597517D00FC039C /* AudioHelper.swift */,
 				6568E647258F50F8009390D5 /* TimerManager.swift */,
 				65D561C82595F94E00FC039C /* AudioSessionManager.swift */,
 				656654AD2595F36700DB03DC /* CommandCenter.swift */,

@@ -74,6 +74,7 @@ let minuteInSeconds: Int = 60
 
 // User defaults
 let userDefaults_introductionPlayed = "introductionPlayed"
+let userDefaults_loopDuration = "loopDuration"
 
 
 // Notification

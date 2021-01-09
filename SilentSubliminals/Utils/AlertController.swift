@@ -21,12 +21,9 @@ class AlertController {
     
     func showInfoLongAffirmationLoop(vc: UIViewController, completionHandler: @escaping (Bool) -> Void) {
         
-        guard let playTimeInSeconds = TimerManager.shared.remainingTime else {
-            completionHandler(true)
-            return
-        }
+        let playTimeInSeconds = UserDefaults.standard.integer(forKey: userDefaults_loopDuration)
 
-        if playTimeInSeconds < criticalLoopDurationInSeconds {
+        if playTimeInSeconds < Int(criticalLoopDurationInSeconds) {
             completionHandler(true)
             return
         }

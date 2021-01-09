@@ -8,18 +8,13 @@
 
 import UIKit
 
-protocol TimerDelegate : AnyObject {
-    
-    func timeIntervalChanged(time: TimeInterval)
-}
 
 class SetDurationViewController: UIViewController {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var timerPicker: UIDatePicker!
     @IBOutlet var activeTimeView: UIView!
-    
-    weak var delegate : TimerDelegate?
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,26 +32,14 @@ class SetDurationViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // we need it, otherwise datepicker's valuechanged does not update the first spin
-        self.timerPicker.countDownDuration = defaultAffirmationTime
-        
-        guard let singleAffirmationDuration = TimerManager.shared.singleAffirmationDuration else { return }
-        if 2 * singleAffirmationDuration > defaultAffirmationTime {
-            self.timerPicker.countDownDuration = 2 * singleAffirmationDuration
-        } else {
-            self.timerPicker.countDownDuration = TimerManager.shared.remainingTime ?? defaultAffirmationTime
-        }
-        
-        //update()
+        self.timerPicker.countDownDuration = TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_loopDuration))
     }
     
+
     @objc func onDidReceiveData(_ notification:Notification) {
-        update()
+        timerPicker.countDownDuration = TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_loopDuration))
     }
-    
-    func update() {
-        timerPicker.countDownDuration = TimerManager.shared.remainingTime ?? defaultAffirmationTime
-        delegate?.timeIntervalChanged(time: TimerManager.shared.remainingTime ?? defaultAffirmationTime)
-    }
+
 
     @IBAction func timePickerValueChanged(_ sender: Any) {
         
@@ -74,13 +57,10 @@ class SetDurationViewController: UIViewController {
             self.present(alert, animated: true)
         }
         
-        TimerManager.shared.remainingTime = timerPicker.countDownDuration
-        delegate?.timeIntervalChanged(time: timerPicker.countDownDuration)
+        UserDefaults.standard.setValue(Int(timerPicker.countDownDuration), forKey: userDefaults_loopDuration)
     }
     
     deinit {
-        print("Remove NotificationCenter Deinit")
         NotificationCenter.default.removeObserver(self)
     }
-    
 }

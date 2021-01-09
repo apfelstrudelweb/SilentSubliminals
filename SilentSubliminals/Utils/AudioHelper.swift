@@ -131,7 +131,7 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
     
     func toggleMode(isSilent: Bool) {
         
-        guard let player = soundPlayer.audioPlayer, let playerSilent = soundPlayer.audioPlayerSilent else { return }
+        guard let player = soundPlayer.audioPlayerNode, let playerSilent = soundPlayer.audioPlayerSilentNode else { return }
         
         if isSilent {
             player.volume = 0

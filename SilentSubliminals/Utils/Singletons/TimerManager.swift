@@ -13,11 +13,11 @@ class TimerManager {
     
     static let shared = TimerManager()
     
-    var remainingTime: TimeInterval?
+    //var remainingTime: TimeInterval?
     var singleAffirmationDuration: TimeInterval?
     
     func reset() {
-        remainingTime = defaultAffirmationTime
+        //remainingTime = defaultAffirmationTime
         
         do {
             let audioFile = try AVAudioFile(forReading: getFileFromSandbox(filename: spokenAffirmation))

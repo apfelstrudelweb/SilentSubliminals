@@ -41,6 +41,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("Failed to set audio session category.")
         }
         
+        UserDefaults.standard.setValue(5*60, forKey: userDefaults_loopDuration)
+        
         db.managedObjectContext.automaticallyMergesChangesFromParent = true
         
         

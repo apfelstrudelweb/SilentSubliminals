@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TimerViewController: UIViewController, TimerDelegate {
+class TimerViewController: UIViewController {
 
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var endtimeContainerView: UIView!
@@ -32,7 +32,9 @@ class TimerViewController: UIViewController, TimerDelegate {
         
         setActiveView()
         
-        self.durationLabel.text = TimerManager.shared.remainingTime?.stringFromTimeInterval()
+        self.durationLabel.text = TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_loopDuration)).stringFromTimeInterval()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(userDefaultsDidChange), name: UserDefaults.didChangeNotification, object: nil)
     }
     
     fileprivate func setActiveView() {
@@ -50,32 +52,21 @@ class TimerViewController: UIViewController, TimerDelegate {
         }
     }
     
+    @objc func userDefaultsDidChange(_ notification: Notification) {
+        self.durationLabel.text = TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_loopDuration)).stringFromTimeInterval()
+    }
+    
     
     @IBAction func segmentedControlValueChanged(_ sender: Any) {
         setActiveView()
     }
     
     @IBAction func closeButtonTouched(_ sender: Any) {
-        self.dismiss(animated: true) {
-            
-        }
+        self.dismiss(animated: true)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let vc = segue.destination
-        
-        if vc.isKind(of: SetDurationViewController.self) {
-            let vc1 = vc as! SetDurationViewController
-            vc1.delegate = self
-        } else if vc.isKind(of: SetEndtimeViewController.self) {
-            let vc1 = vc as! SetEndtimeViewController
-            vc1.delegate = self
-        }
-    }
-    
-    func timeIntervalChanged(time: TimeInterval) {
-        //self.durationLabel.text = time.stringFromTimeInterval()
-        self.durationLabel.text = TimerManager.shared.remainingTime?.stringFromTimeInterval()
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 

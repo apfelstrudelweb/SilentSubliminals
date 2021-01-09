@@ -14,8 +14,6 @@ class SetEndtimeViewController: UIViewController {
     @IBOutlet weak var timerPicker: UIDatePicker!
     @IBOutlet weak var activeTimeView: UIView!
     
-    weak var delegate : TimerDelegate?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -40,18 +38,7 @@ class SetEndtimeViewController: UIViewController {
     
     func reset() {
         self.timerPicker.date = Date()
-        
-        guard let singleAffirmationDuration = TimerManager.shared.singleAffirmationDuration else { return }
-        var duration = timerPicker.date.timeIntervalSinceNow
-        
-        if 2 * singleAffirmationDuration > timerPicker.date.timeIntervalSinceNow {
-            
-            duration += 2 * singleAffirmationDuration
-            self.timerPicker.date += duration
-        }
-        
-        TimerManager.shared.remainingTime = duration < 60 ? 60 : duration
-        delegate?.timeIntervalChanged(time: duration)
+        self.timerPicker.date += TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_loopDuration))
     }
     
     @IBAction func timePickerValueChanged(_ sender: Any) {
@@ -75,12 +62,10 @@ class SetEndtimeViewController: UIViewController {
             self.present(alert, animated: true)
         }
         
-        TimerManager.shared.remainingTime = duration
-        delegate?.timeIntervalChanged(time: duration)
+        UserDefaults.standard.setValue(Int(duration), forKey: userDefaults_loopDuration)
     }
     
     deinit {
-        print("Remove NotificationCenter Deinit")
         NotificationCenter.default.removeObserver(self)
     }
 }
