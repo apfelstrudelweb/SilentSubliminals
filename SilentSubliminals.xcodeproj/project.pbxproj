@@ -102,6 +102,7 @@
 		65C8EA4025A8A0CC0012B21A /* consolidationSilent.caf in Resources */ = {isa = PBXBuildFile; fileRef = 657A0F9F25A5C6BB00A4CCF2 /* consolidationSilent.caf */; };
 		65C8EA4125A8A0CC0012B21A /* leadInChair.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 65654BF7259BA7BC0066E4D2 /* leadInChair.aiff */; };
 		65C8EA4225A8A0CC0012B21A /* subliminal.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 65C8E9DA25A7406D0012B21A /* subliminal.mp3 */; };
+		65C8EA6725AA53BF0012B21A /* ShowIconViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8EA6625AA53BF0012B21A /* ShowIconViewController.swift */; };
 		65D561C52595F66E00FC039C /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D561C42595F66E00FC039C /* BackButton.swift */; };
 		65D561C92595F94E00FC039C /* AudioSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D561C82595F94E00FC039C /* AudioSessionManager.swift */; };
 		65D561D12597517D00FC039C /* AudioHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D561D02597517D00FC039C /* AudioHelper.swift */; };
@@ -214,6 +215,7 @@
 		65C8E9E325A753580012B21A /* test.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = test.mp3; sourceTree = "<group>"; };
 		65C8E9E625A754330012B21A /* song.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = song.mp3; sourceTree = "<group>"; };
 		65C8EA2F25A870960012B21A /* Integration-Silent.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Integration-Silent.mp3"; sourceTree = "<group>"; };
+		65C8EA6625AA53BF0012B21A /* ShowIconViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowIconViewController.swift; sourceTree = "<group>"; };
 		65D561C42595F66E00FC039C /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 		65D561C82595F94E00FC039C /* AudioSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSessionManager.swift; sourceTree = "<group>"; };
 		65D561D02597517D00FC039C /* AudioHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioHelper.swift; sourceTree = "<group>"; };
@@ -580,6 +582,7 @@
 				653BA541258E69EB004A0BA7 /* SetDurationViewController.swift */,
 				653BA544258E69FC004A0BA7 /* SetEndtimeViewController.swift */,
 				65A052B7259F2DDF00F3C6BD /* DisclaimerViewController.swift */,
+				65C8EA6625AA53BF0012B21A /* ShowIconViewController.swift */,
 			);
 			path = Modal;
 			sourceTree = "<group>";
@@ -769,6 +772,7 @@
 				6569A006253C413B000E7F95 /* ShadowView.swift in Sources */,
 				6563E03B257691CE000E261B /* Constants.swift in Sources */,
 				6558D30D24684934004E8660 /* SubliminalMakerViewController.swift in Sources */,
+				65C8EA6725AA53BF0012B21A /* ShowIconViewController.swift in Sources */,
 				65A169C2257C1693005D179A /* RoundedView.swift in Sources */,
 				6558D30924684934004E8660 /* AppDelegate.swift in Sources */,
 				65C6E64F259B4C460046E739 /* TimerButton.swift in Sources */,

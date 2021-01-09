@@ -17,6 +17,8 @@ protocol SoundPlayerDelegate : AnyObject {
 
 open class SoundPlayer: NSObject {
     
+    var commandCenter: CommandCenter?
+    
     var audioPlayerNode : AVAudioPlayerNode!
     var audioPlayerSilentNode : AVAudioPlayerNode!
     var engine = AVAudioEngine()
@@ -77,12 +79,15 @@ open class SoundPlayer: NSObject {
                     self.engine.connect(audioPlayerNode, to: mixer, format: file.processingFormat)
                 }
                 
+                let commandCenter = CommandCenter.shared
+                commandCenter.node = audioPlayerNode
+                commandCenter.audioFile = file
                 
                 audioPlayerNode.installTap(onBus: 0, bufferSize: bufferSize, format: file.processingFormat) {
                 (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
                     
                     delegate?.processAudioData(buffer: buffer)
-
+                    CommandCenter.shared.updateTime(elapsedTime: audioPlayerNode.currentTime, totalDuration: file.duration)
                 }
                        
                 audioPlayerNode.scheduleBuffer(buffer!, at: nil, options: .interrupts, completionCallbackType: .dataConsumed) { (type) in
@@ -143,12 +148,15 @@ open class SoundPlayer: NSObject {
                 let minutes = availableTimeForLoop / 60
                 print("loop time: \(minutes) minutes")
                 
+ 
                 audioPlayerNode.installTap(onBus: 0, bufferSize: bufferSize, format: formatLoud.processingFormat) {
                 (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
                     
                     if audioPlayerNode.volume > 0 {
                         delegate?.processAudioData(buffer: buffer)
                     }
+                    
+                    CommandCenter.shared.updateTime(elapsedTime: audioPlayerNode.currentTime, totalDuration: availableTimeForLoop)
                     
                     if audioPlayerNode.currentTime  > availableTimeForLoop {
                         self.engine.stop()

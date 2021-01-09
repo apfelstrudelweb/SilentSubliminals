@@ -56,8 +56,6 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         //print(buffer.frameLength)
     }
     
-    
-    
     var singleAffirmationDuration: TimeInterval = 0
     var playingNodes: Set<AVAudioPlayerNode> = Set<AVAudioPlayerNode>()
     
@@ -75,13 +73,13 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
     
     var soundPlayer = SoundPlayer()
     
+    
     init() {
+
         NotificationCenter.default.addObserver(self, selector: #selector(handleInterruption(notification:)), name: AVAudioSession.interruptionNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleRouteChange(notification:)), name: AVAudioSession.routeChangeNotification, object: nil)
-        
-        
-        
+
         let audioSession = AVAudioSession.sharedInstance()
         do {
             try audioSession.setActive(false, options: .notifyOthersOnDeactivation)
@@ -229,6 +227,7 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         
         // completion handler will automaticall call next state
         soundPlayer.stop()
+        CommandCenter.shared.updateTime(elapsedTime: 0, totalDuration: 0)
     }
     
 

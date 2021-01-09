@@ -89,6 +89,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         }
     }
     
+    @IBOutlet weak var iconButton: UIButton!
+    
     private var spectrumViewController: SpectrumViewController?
     private var volumeViewController: VolumeViewController?
     
@@ -181,6 +183,10 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         if let vc = segue.destination as? SpectrumViewController {
             spectrumViewController = vc
         }
+        if let vc = segue.destination as? ShowIconViewController {
+            vc.itemTitle = affirmationTitleLabel.text
+            vc.icon = iconImageView.image
+        }
     }
     
     // MARK: BackButtonDelegate
@@ -249,6 +255,11 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     @IBAction func volumeSliderChanged(_ sender: Any) {
         MPVolumeView.setVolume(volumeSlider.value)
     }
+    
+    @IBAction func iconButtonTouched(_ sender: Any) {
+        self.performSegue(withIdentifier: "showIconSegue", sender: sender)
+    }
+    
 
     func updateIntroButtons() {
         
@@ -313,14 +324,17 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
                 playButton.setState(active: false)
                 backButton.setEnabled(flag: false)
                 forwardButton.setEnabled(flag: false)
+                CommandCenter.shared.enableForwardButton(flag: false)
+                CommandCenter.shared.enableBackButton(flag: false)
                 timerButton.setEnabled(flag: true)
                 introductionSwitch.setEnabled(flag: true)
-                CommandCenter.shared.enableSkipButtons(flag: false)
                 break
             case .introduction:
                 print("introduction")
                 backButton.setEnabled(flag: true)
                 forwardButton.setEnabled(flag: true)
+                CommandCenter.shared.enableForwardButton(flag: true)
+                CommandCenter.shared.enableBackButton(flag: true)
                 audioHelper.playInduction(type: Induction.Introduction)
                 introductionPulseImageView.animate()
                 break
@@ -330,17 +344,23 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
                     print("intro chair")
                     backButton.setEnabled(flag: true)
                     forwardButton.setEnabled(flag: true)
+                    CommandCenter.shared.enableForwardButton(flag: true)
+                    CommandCenter.shared.enableBackButton(flag: true)
                     audioHelper.playInduction(type: Induction.LeadInChair)
                     leadInChairPulseImageView.animate()
                 case .bed:
                     print("intro bed")
                     backButton.setEnabled(flag: true)
                     forwardButton.setEnabled(flag: true)
+                    CommandCenter.shared.enableForwardButton(flag: true)
+                    CommandCenter.shared.enableBackButton(flag: true)
                     audioHelper.playInduction(type: Induction.LeadInBed)
                     leadInBedPulseImageView.animate()
                 case .none:
                     backButton.setEnabled(flag: true)
                     forwardButton.setEnabled(flag: true)
+                    CommandCenter.shared.enableForwardButton(flag: true)
+                    CommandCenter.shared.enableBackButton(flag: true)
                     audioHelper.playInduction(type: Induction.Bell)
                     print("bell")
                 }
@@ -350,18 +370,24 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
                 stopButtonAnimations()
                 backButton.setEnabled(flag: true)
                 forwardButton.setEnabled(flag: true)
+                CommandCenter.shared.enableForwardButton(flag: true)
+                CommandCenter.shared.enableBackButton(flag: true)
                 audioHelper.playSingleAffirmation(instance: .player)
                 break
             case .affirmationLoop:
                 print("affirmation loop")
                 backButton.setEnabled(flag: true)
                 forwardButton.setEnabled(flag: true)
+                CommandCenter.shared.enableForwardButton(flag: true)
+                CommandCenter.shared.enableBackButton(flag: true)
                 audioHelper.playAffirmationLoop()
                 break
             case .consolidation:
                 print("consolidation")
                 backButton.setEnabled(flag: true)
                 forwardButton.setEnabled(flag: true)
+                CommandCenter.shared.enableForwardButton(flag: true)
+                CommandCenter.shared.enableBackButton(flag: true)
                 audioHelper.playConsolidation()
                 break
             case .leadOut:
@@ -370,17 +396,23 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
                     print("outro day")
                     backButton.setEnabled(flag: true)
                     forwardButton.setEnabled(flag: true)
+                    CommandCenter.shared.enableForwardButton(flag: true)
+                    CommandCenter.shared.enableBackButton(flag: true)
                     audioHelper.playInduction(type: Induction.LeadOutDay)
                     leadOutDayPulseImageView.animate()
                 case .night:
                     print("outro night")
                     backButton.setEnabled(flag: true)
                     forwardButton.setEnabled(flag: true)
+                    CommandCenter.shared.enableForwardButton(flag: true)
+                    CommandCenter.shared.enableBackButton(flag: true)
                     audioHelper.playInduction(type: Induction.LeadOutNight)
                     leadOutNightPulseImageView.animate()
                 case .none:
                     backButton.setEnabled(flag: true)
                     forwardButton.setEnabled(flag: true)
+                    CommandCenter.shared.enableForwardButton(flag: true)
+                    CommandCenter.shared.enableBackButton(flag: true)
                     audioHelper.playInduction(type: Induction.Bell)
                     print("bell")
                 }
@@ -417,21 +449,21 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     
     // MARK: CommandCenterDelegate
     func startPlaying() {
-        
-        CommandCenter.shared.updateLockScreenInfo()
+
         PlayerStateMachine.shared.togglePlayPauseState()
-        backButton.setEnabled(flag: true)
-        forwardButton.setEnabled(flag: true)
         introductionSwitch.setEnabled(flag: false)
         timerButton.setEnabled(flag: false)
         
-        CommandCenter.shared.enableSkipButtons(flag: true)
+        CommandCenter.shared.enableForwardButton(flag: true)
         
         switch PlayerStateMachine.shared.pauseState {
         
         case .play:
             if let libraryItem = fetchedResultsController.fetchedObjects?.first {
                 CoreDataManager.sharedInstance.setNewTimestamp(item: libraryItem)
+                CommandCenter.shared.itemIcon = UIImage(data: libraryItem.icon ?? Data())
+                CommandCenter.shared.itemTitle = libraryItem.title
+                CommandCenter.shared.updateLockScreenInfo()
             }
             self.playButton.setState(active: true)
             PlayerStateMachine.shared.startPlayer()
@@ -456,7 +488,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         timerButton.setEnabled(flag: true)
         stopButtonAnimations()
         
-        CommandCenter.shared.enableSkipButtons(flag: false)
+        CommandCenter.shared.enableForwardButton(flag: false)
         
         introductionSwitch.layoutSubviews()
         TimerManager.shared.reset()
