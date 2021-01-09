@@ -8,23 +8,35 @@
 
 import UIKit
 import CoreData
+import PureLayout
 import MobileCoreServices
+import EasyTipView
 
 
-class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddAffirmationTextDelegate, UIDocumentPickerDelegate {
+class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddAffirmationTextDelegate, UIDocumentPickerDelegate, EasyTipViewDelegate {
+    
+    func easyTipViewDidTap(_ tipView: EasyTipView) {
+        
+    }
+    
+    func easyTipViewDidDismiss(_ tipView: EasyTipView) {
+        
+    }
+    
 
     @IBOutlet weak var affirmationTitleLabel: UILabel!
     @IBOutlet weak var coverImageButton: ImageButton!
     @IBOutlet weak var addAffirmationButton: UIButton!
     @IBOutlet weak var editButton: UIButton!
-    @IBOutlet weak var submitButton: UIButton!
     @IBOutlet weak var importButton: UIButton!
-    @IBOutlet weak var importFeedbackLabel: UILabel!
+    @IBOutlet weak var editTitleButton: UIButton!
     
     @IBOutlet weak var tableView: UITableView!
     
     var isEditingMode: Bool = false
     var hasOwnIcon = false
+    
+    var calledFromMediathek: Bool = false
     
     private var addAffirmationViewController: AddAffirmationViewController?
     
@@ -40,7 +52,7 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationController?.navigationBar.tintColor = submitButton.tintColor
+        self.navigationController?.navigationBar.tintColor = importButton.tintColor
         coverImageButton.layer.cornerRadius = 10
         coverImageButton.clipsToBounds = true
         coverImageButton.setImage(name: defaultImageButtonIcon)
@@ -48,6 +60,16 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
         addAffirmationButton.clipsToBounds = true
 
         tableView.isEditing = false
+        
+        let submitButton: UIButton = UIButton(type: .custom)
+        submitButton.setImage(UIImage(named: "checkmark"), for: .normal)
+        submitButton.addTarget(self, action: #selector(self.submitButtonTouched), for: .touchUpInside)
+        submitButton.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
+
+        let barButton = UIBarButtonItem(customView: submitButton)
+        self.navigationItem.rightBarButtonItem = barButton
+        submitButton.autoSetDimension(.width, toSize: 44)
+        submitButton.autoSetDimension(.height, toSize: 44)
         
         
         self.imagePicker = ImagePicker(presentationController: self, delegate: self)
@@ -74,11 +96,11 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
             showExistingLibraryItem()
         }
     }
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        self.importFeedbackLabel.alpha = 0
+
     }
     
     // MARK: UIDocumentPickerDelegate
@@ -97,14 +119,22 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
         convertSoundFileToCaf(url: newFileURL) { (success) in
             
             DispatchQueue.main.async {
-                self.importFeedbackLabel.alpha = 1
                 
-                if success {
-    
-                    self.importFeedbackLabel.text = "Your import was successful."
-                } else {
-                    self.importFeedbackLabel.text = "Your import did fail!"
+                var preferences = EasyTipView.Preferences()
+                preferences.drawing.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+                preferences.drawing.foregroundColor = .white
+                preferences.drawing.backgroundColor = success ? self.importButton.tintColor : .red
+                preferences.drawing.arrowPosition = EasyTipView.ArrowPosition.top
+                preferences.animating.showDuration = 1.5
+                preferences.animating.dismissDuration = 1.5
+                
+                let tipView = EasyTipView(text: success ? "Your import was successful." : "Your import did fail!", preferences: preferences)
+                tipView.show(forView: self.importButton, withinSuperview: self.view)
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                    tipView.dismiss()
                 }
+                
             }
         }
     }
@@ -121,6 +151,29 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
         hasOwnIcon = coverImageButton.isOverriden
 
         currentLibraryItem = CoreDataManager.sharedInstance.createLibraryItem(title: title, icon: buttonImage ?? UIImage(), hasOwnIcon: hasOwnIcon)
+    }
+    
+    func updateLibrary(title: String) {
+        let fetchRequest = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
+        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
+        let predicate = NSPredicate(format: "isActive == true")
+        fetchRequest.predicate = predicate
+        self.fetchedResultsController = NSFetchedResultsController<LibraryItem> (
+            fetchRequest: fetchRequest,
+            managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil)
+
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            print("An error occurred")
+        }
+        
+        if let libraryItem = fetchedResultsController.fetchedObjects?.first {
+            libraryItem.title = title
+            CoreDataManager.sharedInstance.save()
+        }
     }
     
     func showExistingLibraryItem() {
@@ -188,17 +241,36 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
 
     }
     
-    @IBAction func importButtonTouched(_ sender: Any) {
-        let documentPicker = UIDocumentPickerViewController(documentTypes: [String(kUTTypeAudio)], in: .import)
-        //Call Delegate
-        documentPicker.delegate = self
+    @IBAction func editTitleButtonTouched(_ sender: Any) {
         
+        showInputDialog(title: "Change Title",
+                        subtitle: "Please enter a new name for your library",
+                        actionTitle: "Add",
+                        cancelTitle: "Cancel",
+                        inputText: self.affirmationTitleLabel.text,
+                        inputPlaceholder: "",
+                        inputKeyboardType: .default,
+                        completionHandler: { (text) in
+                            self.updateLibrary(title: text)
+                            self.affirmationTitleLabel.text = text.capitalized
+                        },
+                        actionHandler: { (input:String?) in
+                            self.affirmationTitleLabel.text = input?.capitalized
+                        })
+    }
+    
+    
+    @IBAction func importButtonTouched(_ sender: Any) {
+        //let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.audio])
+        let documentPicker = UIDocumentPickerViewController(documentTypes: [String(kUTTypeAudio)], in: .import)
+
+        documentPicker.delegate = self
         self.present(documentPicker, animated: true)
     }
     
     
-    @IBAction func submitButtonTouched(_ sender: Any) {
-        
+    @objc func submitButtonTouched() {
+
         //if isEditingMode {
             if let title = affirmationTitleLabel.text, let icon = coverImageButton.image(for: .normal), var hasOwnIcon = currentLibraryItem?.hasOwnIcon {
                 if !hasOwnIcon {
@@ -210,7 +282,30 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
 //            //createNewLibraryItem()
 //        }
 
+        if calledFromMediathek {
+   
+            guard let viewControllers = self.navigationController?.viewControllers else { return }
+            var controllerStack = viewControllers
+
+            var index = 0
+            
+            for (i, vc) in controllerStack.enumerated() {
+                
+                if vc.isKind(of: MediathekViewController.self) {
+                    index = i
+                    break
+                }
+            }
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "SubliminalMaker")
+            controllerStack[index] = vc
+
+            self.navigationController?.setViewControllers(controllerStack, animated: true);
+        }
+        
         self.navigationController?.popViewController(animated: true)
+        
     }
     
     @IBAction func addAffirmationButtonTouched(_ sender: Any) {

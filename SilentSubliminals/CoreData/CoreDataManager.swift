@@ -140,6 +140,31 @@ class CoreDataManager: NSObject {
         }
     }
     
+    func createDummyItem() {
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
+        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "order", ascending: true)]
+        
+        do {
+            let playlists = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest) as! [Playlist]
+            let playlist = playlists.first // TODO
+            
+            let libraryItem = NSEntityDescription.insertNewObject(forEntityName: "LibraryItem", into: self.managedObjectContext) as! LibraryItem
+            libraryItem.title = ""
+            libraryItem.creationDate = Date(timeIntervalSince1970: 0)
+            libraryItem.icon = UIImage(named: "plusSymbolGreen")?.pngData()
+            libraryItem.soundFileName = ""
+            libraryItem.isActive = false
+            libraryItem.isDummyItem = true
+            
+            playlist?.addToLibraryItems(libraryItem)
+            try self.managedObjectContext.save()
+            
+        } catch {
+            print(error)
+        }
+    }
+    
     func createLibraryItem() {
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
@@ -198,6 +223,16 @@ class CoreDataManager: NSObject {
         
         return libraryItem
     }
+    
+//    func updateLibraryItem(item: LibraryItem) {
+//        
+//        do {
+//            item.title = title
+//            try self.managedObjectContext.save()
+//        } catch {
+//            print(error)
+//        }
+//    }
     
     func updateLibraryItem(title: String, icon : UIImage, hasOwnIcon: Bool) {
         

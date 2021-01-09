@@ -13,20 +13,22 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
     
     
     var fetchedResultsControllerRecent: NSFetchedResultsController<LibraryItem>!
-    var fetchedResultsControllerPlaylist: NSFetchedResultsController<LibraryItem>!
+    var fetchedResultsControllerCreation: NSFetchedResultsController<LibraryItem>!
     
     var recentItems: [LibraryItem]?
-    var playlistItems: [LibraryItem]?
+    var creationItems: [LibraryItem]?
+    var playlistItems = ["plusSymbolGreen", "meditation_02", "meditation_01", "meditation_09", "meditation_05"]
     var purchaseItems = ["plusSymbolGreen", "meditation_03", "meditation_05", "meditation_01", "meditation_08"]
-    var creationItems = ["plusSymbolGreen", "meditation_02", "meditation_01", "meditation_09", "meditation_05"]
+    
     
     var selectedAffirmation: Subliminal?
     
     
     @IBOutlet weak var recentSubliminalsCollectionView: UICollectionView!
-    @IBOutlet weak var playlistCollectionView: PlaylistCollectionView!
     @IBOutlet weak var creationsCollectionView: CreationsCollectionView!
+    @IBOutlet weak var playlistCollectionView: PlaylistCollectionView!
     
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -35,23 +37,28 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         let longPressGesture:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
         longPressGesture.minimumPressDuration = 1.0 // 1 second press
         longPressGesture.delegate = self
-        playlistCollectionView.addGestureRecognizer(longPressGesture)
+        creationsCollectionView.addGestureRecognizer(longPressGesture)
     }
     
     @objc func handleLongPress(longPressGesture:UILongPressGestureRecognizer) {
         
-        let p = longPressGesture.location(in: self.playlistCollectionView)
-        guard let indexPath = self.playlistCollectionView.indexPathForItem(at: p) else { return }
+        let p = longPressGesture.location(in: self.creationsCollectionView)
+        guard let indexPath = self.creationsCollectionView.indexPathForItem(at: p) else { return }
+        
+        // + icon
+        if indexPath.row == 0 {
+            return
+        }
         
         if (longPressGesture.state == UIGestureRecognizer.State.began) {
             print("Long press on row, at \(indexPath.row)")
             
-            guard let item = playlistItems?[indexPath.row], let title = item.title else {
+            guard let item = creationItems?[indexPath.row], let title = item.title else {
                 return
             }
             
             DispatchQueue.main.async {
-                let cell = self.playlistCollectionView!.cellForItem(at: indexPath) as! MediathekCollectionViewCell
+                let cell = self.creationsCollectionView!.cellForItem(at: indexPath) as! MediathekCollectionViewCell
                 cell.shake {
                     let alert = UIAlertController(title: title, message: "Do you really want to delete this item permanently?", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "YES", style: .default, handler: { _ in
@@ -59,9 +66,9 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
                         
                         do {
                             try self.fetchedResultsControllerRecent.performFetch()
-                            try self.fetchedResultsControllerPlaylist.performFetch()
+                            try self.fetchedResultsControllerCreation.performFetch()
                             self.recentItems = self.fetchedResultsControllerRecent.fetchedObjects!
-                            self.playlistItems = self.fetchedResultsControllerPlaylist.fetchedObjects!
+                            self.creationItems = self.fetchedResultsControllerCreation.fetchedObjects!
                             
                             self.recentSubliminalsCollectionView.reloadData()
                         } catch {
@@ -69,7 +76,7 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
                         }
                         
                         self.recentSubliminalsCollectionView.reloadData()
-                        self.playlistCollectionView.reloadData()
+                        self.creationsCollectionView.reloadData()
                     }))
                     alert.addAction(UIAlertAction(title: "NO", style: .cancel, handler: nil))
                     self.present(alert, animated: true)
@@ -92,20 +99,20 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
             cacheName: nil)
         self.fetchedResultsControllerRecent.delegate = self
         
-        let fetchRequestPlaylist = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
-        fetchRequestPlaylist.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)]
-        self.fetchedResultsControllerPlaylist = NSFetchedResultsController<LibraryItem> (
-            fetchRequest: fetchRequestPlaylist,
+        let fetchRequestCreations = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
+        fetchRequestCreations.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)]
+        self.fetchedResultsControllerCreation = NSFetchedResultsController<LibraryItem> (
+            fetchRequest: fetchRequestCreations,
             managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
             sectionNameKeyPath: nil,
             cacheName: nil)
-        self.fetchedResultsControllerPlaylist.delegate = self
+        self.fetchedResultsControllerCreation.delegate = self
         
         do {
             try fetchedResultsControllerRecent.performFetch()
-            try fetchedResultsControllerPlaylist.performFetch()
+            try fetchedResultsControllerCreation.performFetch()
             recentItems = fetchedResultsControllerRecent.fetchedObjects!
-            playlistItems = fetchedResultsControllerPlaylist.fetchedObjects!
+            creationItems = fetchedResultsControllerCreation.fetchedObjects!
             
             recentSubliminalsCollectionView.reloadData()
         } catch {
@@ -118,12 +125,12 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         
         if collectionView.isKind(of: RecentSubliminalsCollectionView.self) {
             return self.recentItems?.count ?? 0
+        } else if collectionView.isKind(of: CreationsCollectionView.self) {
+            return self.creationItems?.count ?? 0
         } else if collectionView.isKind(of: PlaylistCollectionView.self) {
-            return self.playlistItems?.count ?? 0
+            return self.playlistItems.count
         } else if collectionView.isKind(of: PurchasesCollectionView.self) {
             return self.purchaseItems.count
-        } else if collectionView.isKind(of: CreationsCollectionView.self) {
-            return self.creationItems.count
         }
         return 0
     }
@@ -142,9 +149,9 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
                 cell.title = ""
             }
             return cell
-        } else if collectionView.isKind(of: PlaylistCollectionView.self) {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "playlistCell", for: indexPath as IndexPath) as! MediathekCollectionViewCell
-            guard let item = fetchedResultsControllerPlaylist.fetchedObjects?[indexPath.row] else { return cell }
+        } else if collectionView.isKind(of: CreationsCollectionView.self) {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "creationsCell", for: indexPath as IndexPath) as! MediathekCollectionViewCell
+            guard let item = fetchedResultsControllerCreation.fetchedObjects?[indexPath.row] else { return cell }
             cell.symbolImageView.image = UIImage(data: item.icon ?? Data())
             if !item.hasOwnIcon {
                 cell.title = item.title
@@ -152,13 +159,13 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
                 cell.title = ""
             }
             return cell
+        } else if collectionView.isKind(of: PlaylistCollectionView.self) {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "playlistCell", for: indexPath as IndexPath) as! MediathekCollectionViewCell
+            cell.symbolImageView.image = UIImage(named: playlistItems[indexPath.row])
+            return cell
         } else if collectionView.isKind(of: PurchasesCollectionView.self) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "purchasesCell", for: indexPath as IndexPath) as! MediathekCollectionViewCell
             cell.symbolImageView.image = UIImage(named: purchaseItems[indexPath.row])
-            return cell
-        } else if collectionView.isKind(of: CreationsCollectionView.self) {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "creationsCell", for: indexPath as IndexPath) as! MediathekCollectionViewCell
-            cell.symbolImageView.image = UIImage(named: creationItems[indexPath.row])
             return cell
         }
         
@@ -173,8 +180,8 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
             item = recentItems?[indexPath.row]
         }
         
-        if collectionView.isKind(of: PlaylistCollectionView.self) {
-            item = playlistItems?[indexPath.row]
+        if collectionView.isKind(of: CreationsCollectionView.self) {
+            item = creationItems?[indexPath.row]
         }
         
         if let selectedItem = item, let fileName = selectedItem.soundFileName {
@@ -185,13 +192,15 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
             CoreDataManager.sharedInstance.save()
         }
         
+        if collectionView.isKind(of: CreationsCollectionView.self) && indexPath.row == 0 {
+            self.performSegue(withIdentifier: "createScriptSegue", sender: nil)
+            return
+        }
+        
         self.performSegue(withIdentifier: "showPlayerSegue", sender: nil)
     }
     
-    //    func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-    //        return true
-    //    }
-    
+
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         //recentSubliminalsCollectionView.reloadData()
     }
@@ -202,6 +211,9 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         
         if let vc = segue.destination as? SubliminalPlayerViewController {
             vc.affirmation = selectedAffirmation
+        }
+        if let vc = segue.destination as? MakerAddNewViewController {
+            vc.calledFromMediathek = true
         }
         
     }

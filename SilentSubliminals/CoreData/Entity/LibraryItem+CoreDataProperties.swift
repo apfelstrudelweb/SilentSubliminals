@@ -2,7 +2,7 @@
 //  LibraryItem+CoreDataProperties.swift
 //  FREE UR SPIRIT
 //
-//  Created by Ullrich Vormbrock on 05.01.21.
+//  Created by Ullrich Vormbrock on 09.01.21.
 //  Copyright © 2021 Ullrich Vormbrock. All rights reserved.
 //
 //
@@ -17,13 +17,14 @@ extension LibraryItem {
         return NSFetchRequest<LibraryItem>(entityName: "LibraryItem")
     }
 
-    @NSManaged public var icon: Data?
-    @NSManaged public var title: String?
-    @NSManaged public var lastUsedDate: Date?
-    @NSManaged public var isActive: Bool
     @NSManaged public var creationDate: Date?
-    @NSManaged public var soundFileName: String?
     @NSManaged public var hasOwnIcon: Bool
+    @NSManaged public var icon: Data?
+    @NSManaged public var isActive: Bool
+    @NSManaged public var lastUsedDate: Date?
+    @NSManaged public var soundFileName: String?
+    @NSManaged public var title: String?
+    @NSManaged public var isDummyItem: Bool
     @NSManaged public var playlist: Playlist?
     @NSManaged public var subliminals: NSSet?
 
