@@ -164,6 +164,10 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
             print("*** induction done ***")
             if !self.resetAll {
                 PlayerStateMachine.shared.doNextPlayerState()
+                
+                if filename == introductionSoundFile {
+                    UserDefaults.standard.setValue(true, forKey: userDefaults_introductionPlayed)
+                }
             }
         })
     }

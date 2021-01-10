@@ -9,11 +9,11 @@
 import UIKit
 
 class TimerViewController: UIViewController {
-
+    
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var endtimeContainerView: UIView!
     @IBOutlet weak var durationContainerView: UIView!
- 
+    
     
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var durationLabel: UILabel!
@@ -32,7 +32,7 @@ class TimerViewController: UIViewController {
         
         setActiveView()
         
-        self.durationLabel.text = TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_loopDuration)).stringFromTimeInterval()
+        self.durationLabel.text = TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_loopDuration)).stringFromTimeInterval(showSeconds: false)
         
         NotificationCenter.default.addObserver(self, selector: #selector(userDefaultsDidChange), name: UserDefaults.didChangeNotification, object: nil)
     }
@@ -53,7 +53,7 @@ class TimerViewController: UIViewController {
     }
     
     @objc func userDefaultsDidChange(_ notification: Notification) {
-        self.durationLabel.text = TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_loopDuration)).stringFromTimeInterval()
+        self.durationLabel.text = TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_loopDuration)).stringFromTimeInterval(showSeconds: false)
     }
     
     
@@ -72,14 +72,18 @@ class TimerViewController: UIViewController {
 
 
 extension TimeInterval {
-
-        func stringFromTimeInterval() -> String {
-
-            let time = NSInteger(self)
-
-            let minutes = (time / 60) % 60
-            let hours = (time / 3600)
-
-            return String(format: "%0.2dh %0.2dm",hours,minutes)
+    
+    func stringFromTimeInterval(showSeconds: Bool) -> String {
+        
+        let time = NSInteger(self)
+        
+        let seconds = time % 60
+        let minutes = (time / 60) % 60
+        let hours = (time / 3600)
+        
+        if showSeconds {
+            return String(format: "%0.2dh %0.2dm %0.2ds", hours, minutes, seconds)
         }
+        return String(format: "%0.2dh %0.2dm", hours, minutes)
     }
+}

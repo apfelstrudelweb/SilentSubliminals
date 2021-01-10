@@ -149,6 +149,17 @@ class CoreDataManager: NSObject {
             let playlists = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest) as! [Playlist]
             let playlist = playlists.first // TODO
             
+            let fetchRequest2 = NSFetchRequest<NSFetchRequestResult>(entityName: "LibraryItem")
+            fetchRequest2.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)] // TODO
+            let predicate2 = NSPredicate(format: "isDummyItem == true")
+            fetchRequest2.predicate = predicate2
+            
+            let items = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest2) as! [LibraryItem]
+            
+            if items.count > 0 {
+                return
+            }
+            
             let libraryItem = NSEntityDescription.insertNewObject(forEntityName: "LibraryItem", into: self.managedObjectContext) as! LibraryItem
             libraryItem.title = ""
             libraryItem.creationDate = Date(timeIntervalSince1970: 0)
@@ -224,15 +235,6 @@ class CoreDataManager: NSObject {
         return libraryItem
     }
     
-//    func updateLibraryItem(item: LibraryItem) {
-//        
-//        do {
-//            item.title = title
-//            try self.managedObjectContext.save()
-//        } catch {
-//            print(error)
-//        }
-//    }
     
     func updateLibraryItem(title: String, icon : UIImage, hasOwnIcon: Bool) {
         

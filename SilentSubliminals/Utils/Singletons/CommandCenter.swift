@@ -34,6 +34,8 @@ class CommandCenter {
     var itemTitle: String?
     var itemIcon: UIImage?
     
+    var nowPlayingInfo = [String: Any]()
+    
     private init() {
         
     }
@@ -44,12 +46,14 @@ class CommandCenter {
             print("PAUSE")
             //self.updateTime(elapsedTime: self.elapsedTime, totalDuration: self.totalDuration)
             self.delegate?.startPlaying()
+            self.commandCenter.nextTrackCommand.isEnabled = false
             return .success
         }
         commandCenter.playCommand.addTarget { [self] (_) -> MPRemoteCommandHandlerStatus in
             print("PLAY")
             //self.updateTime(elapsedTime: self.elapsedTime, totalDuration: self.totalDuration)
             self.delegate?.startPlaying()
+            self.commandCenter.nextTrackCommand.isEnabled = true
             return .success
         }
         commandCenter.previousTrackCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
@@ -100,18 +104,10 @@ class CommandCenter {
     
     func enableForwardButton(flag: Bool) {
         self.commandCenter.nextTrackCommand.isEnabled = flag
-        
-        //        if !flag {
-        //            updateTime(elapsedTime: 0, totalDuration: 0)
-        //        }
     }
     
     func enableBackButton(flag: Bool) {
         self.commandCenter.previousTrackCommand.isEnabled = flag
-        
-        //        if !flag {
-        //            updateTime(elapsedTime: 0, totalDuration: 0)
-        //        }
     }
     
     func removeCommandCenter() {
@@ -125,20 +121,21 @@ class CommandCenter {
     
     func updateLockScreenInfo() {
          
+        if let title = itemTitle {
+            nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = title
+        }
         if let image = itemIcon {
             let mediaArtwork = MPMediaItemArtwork(boundsSize: image.size) { (size: CGSize) -> UIImage in
                 return image
             }
-            MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPMediaItemPropertyArtwork] = mediaArtwork
+            nowPlayingInfo[MPMediaItemPropertyArtwork] = mediaArtwork
         }
 
         let bundleInfoDict: NSDictionary = Bundle.main.infoDictionary! as NSDictionary
         let appName = bundleInfoDict["CFBundleName"] as! String
+        nowPlayingInfo[MPMediaItemPropertyTitle] = appName
         
-        MPNowPlayingInfoCenter.default().nowPlayingInfo = [
-            MPMediaItemPropertyAlbumTitle: itemTitle! as String,
-            MPMediaItemPropertyTitle: appName,
-        ]
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }
     
     func updateTime(elapsedTime: TimeInterval, totalDuration: TimeInterval) {
@@ -146,14 +143,9 @@ class CommandCenter {
         self.elapsedTime = elapsedTime
         self.totalDuration = totalDuration
         
-        MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = elapsedTime
-        MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPMediaItemPropertyPlaybackDuration] = totalDuration
+        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = elapsedTime
+        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = totalDuration
         
-        if let image = itemIcon {
-            let mediaArtwork = MPMediaItemArtwork(boundsSize: image.size) { (size: CGSize) -> UIImage in
-                return image
-            }
-            MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPMediaItemPropertyArtwork] = mediaArtwork
-        }
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }
 }

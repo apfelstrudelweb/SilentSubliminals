@@ -57,24 +57,17 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         }
     }
     
-    @IBOutlet weak var iconImageView: UIImageView! {
-        didSet {
-            iconImageView.layer.cornerRadius = cornerRadius
-            iconImageView.clipsToBounds = true
-            
-            let overlay = UIView()
-            overlay.backgroundColor = .white
-            overlay.alpha = 0.4
-            iconImageView.addSubview(overlay)
-            overlay.autoPinEdgesToSuperviewEdges()
-        }
-    }
-    @IBOutlet weak var iconShadowView: ShadowView! {
-        didSet {
-            iconShadowView.opacity = 0.4
-            iconShadowView.size = 1
-        }
-    }
+//    @IBOutlet weak var iconImageView: UIImageView! {
+//        didSet {
+
+//        }
+//    }
+//    @IBOutlet weak var iconShadowView: ShadowView! {
+//        didSet {
+//            iconShadowView.opacity = 0.4
+//            iconShadowView.size = 1
+//        }
+//    }
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var graphView: UIView!
     @IBOutlet weak var backgroundImageView: UIImageView!
@@ -89,7 +82,19 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         }
     }
     
-    @IBOutlet weak var iconButton: UIButton!
+    @IBOutlet weak var iconButton: ToggleButton! {
+        didSet {
+            iconButton.layer.cornerRadius = 10
+            iconButton.clipsToBounds = true
+            iconButton.alpha = 0.75
+
+//            let overlay = UIView()
+//            overlay.backgroundColor = .white
+//            overlay.alpha = 0.25
+//            iconButton.addSubview(overlay)
+//            overlay.autoPinEdgesToSuperviewEdges()
+        }
+    }
     
     private var spectrumViewController: SpectrumViewController?
     private var volumeViewController: VolumeViewController?
@@ -144,6 +149,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         audioHelper.delegate = self
         PlayerStateMachine.shared.delegate = self
         
+        UserDefaults.standard.setValue(false, forKey: userDefaults_loopTerminated)
+        
         let fetchRequest = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
         let predicate = NSPredicate(format: "isActive = true")
         fetchRequest.predicate = predicate
@@ -163,7 +170,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         
         if let libraryItem = fetchedResultsController.fetchedObjects?.first {
             affirmationTitleLabel.text = libraryItem.title
-            iconImageView.image = UIImage(data: libraryItem.icon ?? Data())
+            iconButton.setImage(UIImage(data: libraryItem.icon ?? Data()), for: .normal)
         }
     }
     
@@ -171,6 +178,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         super.viewWillDisappear(animated)
         //audioHelper.reset()
         stopPlaying()
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = [:]
     }
     
     // MARK: Segues
@@ -185,7 +193,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         }
         if let vc = segue.destination as? ShowIconViewController {
             vc.itemTitle = affirmationTitleLabel.text
-            vc.icon = iconImageView.image
+            vc.icon = iconButton.image(for: .normal)
         }
     }
     
@@ -450,6 +458,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     // MARK: CommandCenterDelegate
     func startPlaying() {
 
+        UserDefaults.standard.setValue(false, forKey: userDefaults_loopTerminated)
+        
         PlayerStateMachine.shared.togglePlayPauseState()
         introductionSwitch.setEnabled(flag: false)
         timerButton.setEnabled(flag: false)
@@ -466,6 +476,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
                 CommandCenter.shared.updateLockScreenInfo()
             }
             self.playButton.setState(active: true)
+            forwardButton.setEnabled(flag: true)
             PlayerStateMachine.shared.startPlayer()
         case .pause:
             forwardButton.setEnabled(flag: false)
@@ -487,13 +498,13 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         introductionSwitch.setEnabled(flag: true)
         timerButton.setEnabled(flag: true)
         stopButtonAnimations()
-        
-        CommandCenter.shared.enableForwardButton(flag: false)
-        
+
         introductionSwitch.layoutSubviews()
         TimerManager.shared.reset()
         
+        CommandCenter.shared.enableForwardButton(flag: false)
         CommandCenter.shared.updateLockScreenInfo()
+        //CommandCenter.shared.removeCommandCenter()
     }
     
     func skip() {
