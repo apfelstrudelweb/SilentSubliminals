@@ -633,7 +633,7 @@
             <objects>
                 <viewController id="Bf0-ef-9YZ" customClass="SpectrumViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Nie-sQ-mcI">
-                        <rect key="frame" x="0.0" y="0.0" width="374" height="89.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="373" height="111.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="HBa-Po-3jv"/>
                     </view>
@@ -1061,6 +1061,12 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jd3-Ih-3A7">
                                                         <rect key="frame" x="0.0" y="0.0" width="373" height="371"/>
                                                         <subviews>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ojS-Cj-8Yn">
+                                                                <rect key="frame" x="0.0" y="0.0" width="373" height="371"/>
+                                                                <connections>
+                                                                    <action selector="backgroundButtonsTouched:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="Xu6-7i-5EA"/>
+                                                                </connections>
+                                                            </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="752" text="INTRODUCTION" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CsQ-FE-C27" customClass="ShadowLabel" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="12" y="12" width="145" height="24"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
@@ -1156,7 +1162,7 @@
                                                                     <constraint firstAttribute="width" constant="44" id="cC2-gS-UQ8"/>
                                                                 </constraints>
                                                                 <color key="tintColor" red="0.89405620100000005" green="0.89793753620000005" blue="0.90587967629999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                                <state key="normal" image="cancelIcon"/>
+                                                                <state key="normal" image="gong"/>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                         <integer key="value" value="10"/>
@@ -1228,7 +1234,7 @@
                                                                     <constraint firstAttribute="width" constant="44" id="l4z-r6-urg"/>
                                                                 </constraints>
                                                                 <color key="tintColor" red="0.89405620100000005" green="0.89793753620000005" blue="0.90587967629999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                                <state key="normal" image="cancelIcon"/>
+                                                                <state key="normal" image="gong"/>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                         <integer key="value" value="10"/>
@@ -1241,6 +1247,7 @@
                                                         </subviews>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
+                                                            <constraint firstItem="ojS-Cj-8Yn" firstAttribute="top" secondItem="jd3-Ih-3A7" secondAttribute="top" id="0Wt-En-LOb"/>
                                                             <constraint firstItem="2Vo-TK-6Ii" firstAttribute="top" secondItem="CsQ-FE-C27" secondAttribute="bottom" constant="44" id="1tx-g4-Y9x"/>
                                                             <constraint firstItem="1tk-Ks-GEn" firstAttribute="trailing" secondItem="WTQ-46-HQ2" secondAttribute="trailing" id="20r-VR-7WC"/>
                                                             <constraint firstItem="8K9-c1-Qeq" firstAttribute="trailing" secondItem="d8R-wR-p82" secondAttribute="trailing" id="3k3-qG-lmV"/>
@@ -1248,6 +1255,7 @@
                                                             <constraint firstItem="XVj-v3-nvd" firstAttribute="leading" secondItem="1lW-ea-hYl" secondAttribute="leading" id="6Lm-uX-oHY"/>
                                                             <constraint firstItem="XVj-v3-nvd" firstAttribute="trailing" secondItem="1lW-ea-hYl" secondAttribute="trailing" id="6Oh-Hm-t7t"/>
                                                             <constraint firstItem="XVj-v3-nvd" firstAttribute="top" secondItem="1lW-ea-hYl" secondAttribute="top" id="7YZ-0m-h53"/>
+                                                            <constraint firstAttribute="bottom" secondItem="ojS-Cj-8Yn" secondAttribute="bottom" id="8Aa-Xs-bwB"/>
                                                             <constraint firstItem="hKZ-yX-a0r" firstAttribute="leading" secondItem="CsQ-FE-C27" secondAttribute="leading" id="D9U-AT-3hL"/>
                                                             <constraint firstItem="o31-l6-2Kv" firstAttribute="top" secondItem="6XP-Xy-aRO" secondAttribute="top" id="EJ7-tl-DQ5"/>
                                                             <constraint firstItem="IZd-0S-Jl0" firstAttribute="top" secondItem="Nss-hv-Sk9" secondAttribute="top" id="Gik-XQ-zfb"/>
@@ -1271,9 +1279,11 @@
                                                             <constraint firstItem="CsQ-FE-C27" firstAttribute="top" secondItem="jd3-Ih-3A7" secondAttribute="top" constant="12" id="hPw-GO-Nsa"/>
                                                             <constraint firstItem="IZd-0S-Jl0" firstAttribute="bottom" secondItem="Nss-hv-Sk9" secondAttribute="bottom" id="lxn-EU-Af3"/>
                                                             <constraint firstItem="2Vo-TK-6Ii" firstAttribute="leading" secondItem="CsQ-FE-C27" secondAttribute="leading" id="nNQ-Pt-BaK"/>
+                                                            <constraint firstItem="ojS-Cj-8Yn" firstAttribute="leading" secondItem="jd3-Ih-3A7" secondAttribute="leading" id="nus-u7-vYF"/>
                                                             <constraint firstItem="6XP-Xy-aRO" firstAttribute="centerX" secondItem="Nss-hv-Sk9" secondAttribute="centerX" id="pKv-AD-cYq"/>
                                                             <constraint firstItem="XVj-v3-nvd" firstAttribute="bottom" secondItem="1lW-ea-hYl" secondAttribute="bottom" id="piG-un-RvB"/>
                                                             <constraint firstItem="IZd-0S-Jl0" firstAttribute="leading" secondItem="Nss-hv-Sk9" secondAttribute="leading" id="pyt-dS-dKH"/>
+                                                            <constraint firstAttribute="trailing" secondItem="ojS-Cj-8Yn" secondAttribute="trailing" id="r3C-r5-rch"/>
                                                             <constraint firstItem="I2n-2P-ia1" firstAttribute="centerX" secondItem="q6l-Tj-038" secondAttribute="centerX" id="rcm-kq-UWQ"/>
                                                             <constraint firstItem="1lW-ea-hYl" firstAttribute="centerY" secondItem="2Vo-TK-6Ii" secondAttribute="centerY" id="sxn-ZZ-NhQ"/>
                                                             <constraint firstItem="8K9-c1-Qeq" firstAttribute="top" secondItem="d8R-wR-p82" secondAttribute="top" id="tbL-AP-ofC"/>
@@ -1301,6 +1311,12 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wux-KS-pjg" customClass="RoundedView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="373" height="371"/>
                                                         <subviews>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YJd-UB-hWX">
+                                                                <rect key="frame" x="0.0" y="0.0" width="373" height="371"/>
+                                                                <connections>
+                                                                    <action selector="backgroundButtonsTouched:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="syI-L5-njn"/>
+                                                                </connections>
+                                                            </button>
                                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="MCu-q1-tlA" customClass="VolumeSlider" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="34.5" y="93.5" width="286.5" height="258.5"/>
                                                                 <color key="tintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1426,6 +1442,8 @@
                                                             <constraint firstItem="8eD-ZX-UW6" firstAttribute="leading" secondItem="o5j-AJ-IcV" secondAttribute="leading" id="2hP-RJ-E24"/>
                                                             <constraint firstItem="rc5-V6-YXt" firstAttribute="top" secondItem="SKF-7G-fNA" secondAttribute="bottom" constant="-6" id="3oX-4Q-4rt"/>
                                                             <constraint firstItem="2Uy-Bt-zJT" firstAttribute="top" secondItem="o5j-AJ-IcV" secondAttribute="top" id="4eS-qt-Oft"/>
+                                                            <constraint firstAttribute="trailing" secondItem="YJd-UB-hWX" secondAttribute="trailing" id="7Ba-Zy-plA"/>
+                                                            <constraint firstAttribute="bottom" secondItem="YJd-UB-hWX" secondAttribute="bottom" id="8Ew-t3-gLZ"/>
                                                             <constraint firstItem="nSG-D6-S8T" firstAttribute="top" secondItem="DEe-tW-fzs" secondAttribute="bottom" constant="-5.6843418860808015e-14" id="C57-QS-pZQ"/>
                                                             <constraint firstItem="CsD-QE-lCH" firstAttribute="centerY" secondItem="SKF-7G-fNA" secondAttribute="centerY" id="FLj-gL-d67"/>
                                                             <constraint firstItem="rc5-V6-YXt" firstAttribute="leading" secondItem="wux-KS-pjg" secondAttribute="leading" constant="12" id="GFi-bo-pmo"/>
@@ -1447,6 +1465,8 @@
                                                             <constraint firstItem="2Uy-Bt-zJT" firstAttribute="bottom" secondItem="o5j-AJ-IcV" secondAttribute="bottom" id="meW-gB-GzY"/>
                                                             <constraint firstItem="8eD-ZX-UW6" firstAttribute="trailing" secondItem="o5j-AJ-IcV" secondAttribute="trailing" id="mx9-Fn-gRa"/>
                                                             <constraint firstItem="SKF-7G-fNA" firstAttribute="top" secondItem="o5j-AJ-IcV" secondAttribute="bottom" constant="8" symbolic="YES" id="oYj-X1-RiE"/>
+                                                            <constraint firstItem="YJd-UB-hWX" firstAttribute="top" secondItem="wux-KS-pjg" secondAttribute="top" id="p8q-Aa-JGN"/>
+                                                            <constraint firstItem="YJd-UB-hWX" firstAttribute="leading" secondItem="wux-KS-pjg" secondAttribute="leading" id="qqI-Pj-tMI"/>
                                                             <constraint firstAttribute="bottom" secondItem="MCu-q1-tlA" secondAttribute="bottom" constant="20" id="syO-TN-ZCc"/>
                                                             <constraint firstItem="DEe-tW-fzs" firstAttribute="leading" secondItem="pvM-8t-Nqi" secondAttribute="trailing" constant="8" id="tWi-UC-Ajn"/>
                                                             <constraint firstAttribute="trailing" secondItem="o5j-AJ-IcV" secondAttribute="trailing" id="vOy-wo-aQz"/>
@@ -1470,6 +1490,12 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tg5-ND-tqn" customClass="RoundedView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="373" height="371"/>
                                                         <subviews>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8jl-1M-4Rd">
+                                                                <rect key="frame" x="0.0" y="0.0" width="373" height="371"/>
+                                                                <connections>
+                                                                    <action selector="backgroundButtonsTouched:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="94q-4u-CLE"/>
+                                                                </connections>
+                                                            </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Background Sound" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qwq-UC-mWg" customClass="SectionLabel" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
                                                                 <rect key="frame" x="99.5" y="12" width="174.5" height="24"/>
                                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
@@ -1479,8 +1505,12 @@
                                                         </subviews>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
+                                                            <constraint firstItem="8jl-1M-4Rd" firstAttribute="top" secondItem="tg5-ND-tqn" secondAttribute="top" id="BSq-KV-WiA"/>
                                                             <constraint firstItem="Qwq-UC-mWg" firstAttribute="top" secondItem="tg5-ND-tqn" secondAttribute="top" constant="12" id="Lh8-UP-7XT"/>
                                                             <constraint firstItem="Qwq-UC-mWg" firstAttribute="centerX" secondItem="tg5-ND-tqn" secondAttribute="centerX" id="vHo-h4-udU"/>
+                                                            <constraint firstAttribute="bottom" secondItem="8jl-1M-4Rd" secondAttribute="bottom" id="vbH-1S-VBt"/>
+                                                            <constraint firstItem="8jl-1M-4Rd" firstAttribute="leading" secondItem="tg5-ND-tqn" secondAttribute="leading" id="vey-xh-I13"/>
+                                                            <constraint firstAttribute="trailing" secondItem="8jl-1M-4Rd" secondAttribute="trailing" id="xQ9-nj-CcW"/>
                                                         </constraints>
                                                     </view>
                                                 </subviews>
@@ -1510,7 +1540,7 @@
                                 </connections>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6wh-a8-55O" customClass="ToggleButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                <rect key="frame" x="313.5" y="16.5" width="80" height="80"/>
+                                <rect key="frame" x="313.5" y="-426.5" width="80" height="80"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="6wh-a8-55O" secondAttribute="height" multiplier="1:1" id="CMz-Uo-bzB"/>
@@ -1526,6 +1556,24 @@
                                     <action selector="iconButtonTouched:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="Evp-Cu-KHc"/>
                                 </connections>
                             </button>
+                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A7d-re-UXC">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ReR-BM-Nwg">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                        <connections>
+                                            <action selector="overlayButtonTouchUpInside:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="NMr-T1-Z3h"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="ReR-BM-Nwg" secondAttribute="trailing" id="8HX-aD-aAl"/>
+                                    <constraint firstItem="ReR-BM-Nwg" firstAttribute="top" secondItem="A7d-re-UXC" secondAttribute="top" id="QXg-e1-vlw"/>
+                                    <constraint firstItem="ReR-BM-Nwg" firstAttribute="leading" secondItem="A7d-re-UXC" secondAttribute="leading" id="W60-fy-NZA"/>
+                                    <constraint firstAttribute="bottom" secondItem="ReR-BM-Nwg" secondAttribute="bottom" id="j0h-u6-TzL"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="55b-UD-eoa"/>
                         <constraints>
@@ -1537,7 +1585,11 @@
                             <constraint firstAttribute="bottom" secondItem="iUg-V1-pPz" secondAttribute="bottom" constant="50" id="MfE-3K-o6m"/>
                             <constraint firstItem="iUg-V1-pPz" firstAttribute="top" secondItem="55b-UD-eoa" secondAttribute="top" id="Mlm-QT-zBb"/>
                             <constraint firstItem="55b-UD-eoa" firstAttribute="trailing" secondItem="KIc-QH-czb" secondAttribute="trailing" id="TZc-kO-vXs"/>
+                            <constraint firstItem="A7d-re-UXC" firstAttribute="top" secondItem="S0S-wa-Cfu" secondAttribute="top" id="dhQ-8j-acO"/>
+                            <constraint firstAttribute="bottom" secondItem="A7d-re-UXC" secondAttribute="bottom" id="dz1-lM-Wai"/>
                             <constraint firstItem="iUg-V1-pPz" firstAttribute="centerX" secondItem="S0S-wa-Cfu" secondAttribute="centerX" id="eiG-OU-hG8"/>
+                            <constraint firstItem="A7d-re-UXC" firstAttribute="leading" secondItem="S0S-wa-Cfu" secondAttribute="leading" id="fVb-wZ-rPs"/>
+                            <constraint firstAttribute="trailing" secondItem="A7d-re-UXC" secondAttribute="trailing" id="kU2-Ip-7Y1"/>
                             <constraint firstItem="KIc-QH-czb" firstAttribute="leading" secondItem="55b-UD-eoa" secondAttribute="leading" id="s8W-9q-sj4"/>
                         </constraints>
                     </view>
@@ -1547,6 +1599,7 @@
                     <connections>
                         <outlet property="affirmationTitleLabel" destination="pvM-8t-Nqi" id="jid-2j-VVD"/>
                         <outlet property="backButton" destination="CsD-QE-lCH" id="w7L-At-r7E"/>
+                        <outlet property="backgroundButton" destination="ojS-Cj-8Yn" id="ExK-rt-8EV"/>
                         <outlet property="backgroundImageView" destination="KIc-QH-czb" id="Yh7-UH-0bm"/>
                         <outlet property="forwardButton" destination="qPP-wD-Fyb" id="kru-YK-jOT"/>
                         <outlet property="graphView" destination="o5j-AJ-IcV" id="td8-3C-e4d"/>
@@ -1568,6 +1621,8 @@
                         <outlet property="loudspeakerLowSymbol" destination="nxf-ce-GFG" id="L10-5H-xEc"/>
                         <outlet property="noLeadInButton" destination="q6l-Tj-038" id="ppx-WL-RRD"/>
                         <outlet property="noLeadOutButton" destination="I2n-2P-ia1" id="42O-1r-ppd"/>
+                        <outlet property="overlayButton" destination="ReR-BM-Nwg" id="RXF-Cb-aUl"/>
+                        <outlet property="overlayView" destination="A7d-re-UXC" id="zXH-aA-e42"/>
                         <outlet property="playButton" destination="SKF-7G-fNA" id="NYA-ku-FJY"/>
                         <outlet property="playerView" destination="wux-KS-pjg" id="uDz-IZ-zX1"/>
                         <outlet property="scrollView" destination="iUg-V1-pPz" id="Kcl-f9-OIM"/>
@@ -2044,19 +2099,19 @@
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="QTW-cV-1zg"/>
+        <segue reference="MRg-E8-hf8"/>
         <segue reference="RTw-Dc-bPn"/>
         <segue reference="VQu-IX-ctv"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="bedIcon" width="417" height="417"/>
-        <image name="cancelIcon" width="417" height="417"/>
         <image name="chairIcon" width="417" height="417"/>
         <image name="checkmark" width="1875" height="1875"/>
         <image name="earLoudIcon" width="1314" height="2115"/>
         <image name="editPencilSymbol" width="1597" height="1533"/>
         <image name="editSymbolOff" width="250" height="250"/>
         <image name="forwardIcon" width="320" height="313"/>
+        <image name="gong" width="340" height="340"/>
         <image name="importSymbol" width="400" height="400"/>
         <image name="loudspeakerSymbolHigh" width="100" height="79"/>
         <image name="loudspeakerSymbolLow" width="80" height="80"/>

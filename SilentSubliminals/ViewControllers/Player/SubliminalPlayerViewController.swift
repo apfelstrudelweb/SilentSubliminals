@@ -96,6 +96,11 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         }
     }
     
+    @IBOutlet weak var overlayView: UIView!
+    @IBOutlet weak var overlayButton: UIButton!
+    @IBOutlet weak var backgroundButton: UIButton!
+    
+    
     private var spectrumViewController: SpectrumViewController?
     private var volumeViewController: VolumeViewController?
     
@@ -110,6 +115,13 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        overlayView.layer.contents = #imageLiteral(resourceName: "subliminalPlayerBackground.png").cgImage
+        overlayButton.isEnabled = false
+        
+//        let tap = UITapGestureRecognizer(target: self, action: #selector(tapHandler))
+//        tap.numberOfTapsRequired = 1
+//        stackviewContainerView.addGestureRecognizer(tap)
         
         let commandCenter = CommandCenter.shared
         commandCenter.delegate = self
@@ -141,6 +153,15 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         
         NotificationCenter.default.addObserver(self, selector: #selector(volumeChanged(notification:)), name: NSNotification.Name(rawValue: notification_systemVolumeDidChange), object: nil)
     }
+    
+//    @objc func tapHandler(gesture: UITapGestureRecognizer) {
+//
+//        print("tap")
+////        UIView.animate(withDuration: 1) {
+////            self.overlayView.alpha = 0
+////        }
+//
+//    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -237,10 +258,21 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     }
     
     @IBAction func playButtonTouchUpInside(_ sender: Any) {
-        
+
         PlayerStateMachine.shared.setIntroductionState(isOn: introductionSwitch.isOn)
         
         if PlayerStateMachine.shared.playerState == .ready {
+            
+            
+            overlayButton.isEnabled = false
+
+            UIView.animate(withDuration: 1) {
+                self.overlayView.alpha = 1
+                self.navigationController?.navigationBar.alpha = 0.01
+            } completion: { _ in
+                self.overlayButton.isEnabled = true
+            }
+            
             AlertController().showInfoLongAffirmationLoop(vc: self) { result in
                 if result {
                     self.startPlaying()
@@ -248,10 +280,32 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
             }
         } else {
             self.startPlaying()
+            //overlayView.isHidden = false
         }
     }
     
+    @IBAction func overlayButtonTouchUpInside(_ sender: Any) {
+        
+        if !overlayButton.isEnabled {return}
+        
+        UIView.animate(withDuration: 1) {
+            self.overlayView.alpha = 0
+            self.navigationController?.navigationBar.alpha = 1
+        }
+    }
+    
+    @IBAction func backgroundButtonsTouched(_ sender: Any) {
+        overlayButton.isEnabled = false
 
+        UIView.animate(withDuration: 1) {
+            self.overlayView.alpha = 1
+            self.navigationController?.navigationBar.alpha = 0
+        } completion: { _ in
+            self.overlayButton.isEnabled = true
+        }
+    }
+
+    
     @IBAction func backwardButtonTouched(_ sender: Any) {
         stopPlaying()
     }

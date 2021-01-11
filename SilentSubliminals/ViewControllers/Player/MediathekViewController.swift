@@ -166,7 +166,9 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         self.fetchedResultsControllerRecent.delegate = self
         
         let fetchRequestCreations = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
-        fetchRequestCreations.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)]
+        fetchRequestCreations.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
+//        let predicateCreations = NSPredicate(format: "isDummyItem == null")
+//        fetchRequestCreations.predicate = predicateCreations
         self.fetchedResultsControllerCreation = NSFetchedResultsController<LibraryItem> (
             fetchRequest: fetchRequestCreations,
             managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,

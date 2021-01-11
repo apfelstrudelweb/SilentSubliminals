@@ -160,9 +160,14 @@ class CoreDataManager: NSObject {
                 return
             }
             
+            let date = Date()
+            var components = DateComponents()
+            components.setValue(100, for: .year)
+            let dummyDate = Calendar.current.date(byAdding: components, to: date)
+            
             let libraryItem = NSEntityDescription.insertNewObject(forEntityName: "LibraryItem", into: self.managedObjectContext) as! LibraryItem
             libraryItem.title = ""
-            libraryItem.creationDate = Date(timeIntervalSince1970: 0)
+            libraryItem.creationDate = dummyDate
             libraryItem.icon = UIImage(named: "plusSymbolGreen")?.pngData()
             libraryItem.soundFileName = ""
             libraryItem.isActive = false
