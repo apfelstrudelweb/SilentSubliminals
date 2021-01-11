@@ -24,7 +24,7 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
     var selectedAffirmation: Subliminal?
     
     
-    @IBOutlet weak var recentSubliminalsCollectionView: UICollectionView!
+    @IBOutlet weak var recentSubliminalsCollectionView: RecentSubliminalsCollectionView!
     @IBOutlet weak var creationsCollectionView: CreationsCollectionView!
     @IBOutlet weak var playlistCollectionView: PlaylistCollectionView!
     
@@ -34,13 +34,19 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         
         self.navigationController?.navigationBar.tintColor = .white
         
-        let longPressGesture:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
-        longPressGesture.minimumPressDuration = 1.0 // 1 second press
-        longPressGesture.delegate = self
-        creationsCollectionView.addGestureRecognizer(longPressGesture)
+        let longPressGestureCreations:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressCreations))
+        longPressGestureCreations.minimumPressDuration = 1.0 // 1 second press
+        longPressGestureCreations.delegate = self
+        //recentSubliminalsCollectionView.addGestureRecognizer(longPressGesture)
+        creationsCollectionView.addGestureRecognizer(longPressGestureCreations)
+        
+        let longPressGestureRecent:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressRecent))
+        longPressGestureRecent.minimumPressDuration = 1.0 // 1 second press
+        longPressGestureRecent.delegate = self
+        recentSubliminalsCollectionView.addGestureRecognizer(longPressGestureRecent)
     }
     
-    @objc func handleLongPress(longPressGesture:UILongPressGestureRecognizer) {
+    @objc func handleLongPressCreations(longPressGesture:UILongPressGestureRecognizer) {
         
         let p = longPressGesture.location(in: self.creationsCollectionView)
         guard let indexPath = self.creationsCollectionView.indexPathForItem(at: p) else { return }
@@ -62,8 +68,68 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
                 cell.shake {
                     let alert = UIAlertController(title: title, message: "Do you really want to delete this item permanently?", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "YES", style: .default, handler: { _ in
-                        CoreDataManager.sharedInstance.deleteLibraryItem(item: item)
                         
+                        if let fileName = item.soundFileName {
+                            // TODO: make it more generic
+                            removeFileFromSandbox(filename: fileName + ".caf")
+                            removeFileFromSandbox(filename: fileName + "Silent.caf")
+                        }
+                        
+                        CoreDataManager.sharedInstance.deleteLibraryItem(item: item)
+
+                        do {
+                            try self.fetchedResultsControllerRecent.performFetch()
+                            try self.fetchedResultsControllerCreation.performFetch()
+                            self.recentItems = self.fetchedResultsControllerRecent.fetchedObjects!
+                            self.creationItems = self.fetchedResultsControllerCreation.fetchedObjects!
+                            
+                            self.recentSubliminalsCollectionView.reloadData()
+                        } catch {
+                            print("An error occurred")
+                        }
+                        
+                        self.recentSubliminalsCollectionView.reloadData()
+                        self.creationsCollectionView.reloadData()
+                    }))
+                    alert.addAction(UIAlertAction(title: "NO", style: .cancel, handler: nil))
+                    self.present(alert, animated: true)
+                }
+            }
+        }
+    }
+    
+    // TODO: refactor
+    @objc func handleLongPressRecent(longPressGesture:UILongPressGestureRecognizer) {
+        
+        let p = longPressGesture.location(in: self.recentSubliminalsCollectionView)
+        guard let indexPath = self.recentSubliminalsCollectionView.indexPathForItem(at: p) else { return }
+        
+//        // + icon
+//        if indexPath.row == 0 {
+//            return
+//        }
+        
+        if (longPressGesture.state == UIGestureRecognizer.State.began) {
+            print("Long press on row, at \(indexPath.row)")
+            
+            guard let item = recentItems?[indexPath.row], let title = item.title else {
+                return
+            }
+            
+            DispatchQueue.main.async {
+                let cell = self.recentSubliminalsCollectionView!.cellForItem(at: indexPath) as! MediathekCollectionViewCell
+                cell.shake {
+                    let alert = UIAlertController(title: title, message: "Do you really want to delete this item permanently?", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "YES", style: .default, handler: { _ in
+                        
+                        if let fileName = item.soundFileName {
+                            // TODO: make it more generic
+                            removeFileFromSandbox(filename: fileName + ".caf")
+                            removeFileFromSandbox(filename: fileName + "Silent.caf")
+                        }
+                        
+                        CoreDataManager.sharedInstance.deleteLibraryItem(item: item)
+
                         do {
                             try self.fetchedResultsControllerRecent.performFetch()
                             try self.fetchedResultsControllerCreation.performFetch()

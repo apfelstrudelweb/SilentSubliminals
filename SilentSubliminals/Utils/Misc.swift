@@ -31,6 +31,24 @@ func getDocumentsDirectory() -> URL {
     return documentsDirectory
 }
 
+func removeFileFromSandbox(filename: String) {
+    
+    let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+    let fileURL = documentsURL!.appendingPathComponent(filename)
+    
+    let fileManager = FileManager.default
+    
+    do {
+        if fileManager.fileExists(atPath: fileURL.path) {
+            try fileManager.removeItem(atPath: fileURL.path)
+        } else {
+            print("File does not exist")
+        }
+    } catch {
+        print("Unable to copy file")
+    }
+}
+
 func copyFileToDocumentsFolder(sourceURL: URL, targetFileName: String) -> URL{
     
     let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
