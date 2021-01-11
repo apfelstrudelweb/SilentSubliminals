@@ -256,6 +256,23 @@ class CoreDataManager: NSObject {
         }
     }
     
+    func checkIfLibraryItemExists(title: String) -> LibraryItem? {
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "LibraryItem")
+        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)] // TODO
+        let predicate = NSPredicate(format: "title = %@", title as String)
+        fetchRequest.predicate = predicate
+        
+        do {
+            if let libraryItems = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest) as? [LibraryItem] {
+                return libraryItems.first
+            }
+        } catch {
+            print(error)
+        }
+        return nil
+    }
+    
     func deleteLibraryItem(item: LibraryItem) {
         
         do {

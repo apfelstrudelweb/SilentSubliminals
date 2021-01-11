@@ -82,19 +82,19 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
                             <view alpha="0.75" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yvy-h8-CaA" userLabel="Player View" customClass="ShadowView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                <rect key="frame" x="20" y="135.5" width="378" height="179"/>
+                                <rect key="frame" x="20" y="135.5" width="374" height="179"/>
                                 <subviews>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gKp-y1-suW">
-                                        <rect key="frame" x="0.0" y="0.0" width="378" height="89.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="89.5"/>
                                         <connections>
                                             <segue destination="Bf0-ef-9YZ" kind="embed" identifier="spectrumSegue" id="QTW-cV-1zg"/>
                                         </connections>
                                     </containerView>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mdr-3Q-yuN">
-                                        <rect key="frame" x="0.0" y="89.5" width="378" height="89.5"/>
+                                        <rect key="frame" x="0.0" y="89.5" width="374" height="89.5"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2kD-4u-X7j" customClass="PlayButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                                <rect key="frame" x="306" y="21" width="48" height="48"/>
+                                                <rect key="frame" x="302" y="21" width="48" height="48"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="2kD-4u-X7j" secondAttribute="height" multiplier="1:1" id="h0W-f1-WMi"/>
                                                     <constraint firstAttribute="width" constant="48" id="y6g-NE-9cC"/>
@@ -106,7 +106,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Record your Subliminal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="CeU-Ma-P7c">
-                                                <rect key="frame" x="8" y="21.5" width="211" height="24"/>
+                                                <rect key="frame" x="8" y="21.5" width="207" height="24"/>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -115,7 +115,7 @@
                                                 </variation>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add to Library with &quot;Save&quot;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="G2E-L2-5c1">
-                                                <rect key="frame" x="8" y="46" width="211" height="20"/>
+                                                <rect key="frame" x="8" y="46" width="207" height="20"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -124,7 +124,7 @@
                                                 </variation>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a0U-wz-QjM" customClass="RecordButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                                <rect key="frame" x="239" y="21.5" width="47" height="47"/>
+                                                <rect key="frame" x="235" y="21.5" width="47" height="47"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="a0U-wz-QjM" secondAttribute="height" multiplier="1:1" id="VBR-Qw-ZPS"/>
                                                     <constraint firstAttribute="width" constant="47" id="yAu-Fa-7Bi"/>
@@ -186,7 +186,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create your script" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="z8r-ZA-9nh">
-                                <rect key="frame" x="20" y="388.5" width="302.5" height="29"/>
+                                <rect key="frame" x="20" y="388.5" width="299" height="29"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="24"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -195,7 +195,7 @@
                                 </variation>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H1h-4Z-2C0">
-                                <rect key="frame" x="353" y="381" width="45" height="44.5"/>
+                                <rect key="frame" x="349" y="381" width="45" height="44.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="H1h-4Z-2C0" secondAttribute="height" id="blw-3e-pod"/>
                                 </constraints>
@@ -205,7 +205,7 @@
                                 </connections>
                             </button>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KHd-hc-lYm">
-                                <rect key="frame" x="20" y="493" width="378" height="313.5"/>
+                                <rect key="frame" x="20" y="493" width="374" height="313.5"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <segue destination="HOc-7b-b6k" kind="embed" id="uhL-Bl-3aJ"/>
@@ -235,6 +235,7 @@
                             <constraint firstItem="KHd-hc-lYm" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.35" id="vBm-Xj-B6t"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="JwT-Xp-0iE" secondAttribute="trailing" id="xdg-qX-NSu"/>
                             <constraint firstItem="Yvy-h8-CaA" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.2" id="xrS-lj-QSd"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Yvy-h8-CaA" secondAttribute="trailing" constant="20" id="yad-2j-xDI"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -312,15 +313,18 @@
                                 <rect key="frame" x="0.0" y="311.5" width="414" height="584.5"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="affirmationCell" rowHeight="101" id="Bej-LQ-5e0" customClass="AffirmationTableViewCell" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="101"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="affirmationCell" id="Bej-LQ-5e0" customClass="AffirmationTableViewCell" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Bej-LQ-5e0" id="E3P-hw-dGg">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="101"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="45"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LyW-DD-kjL">
-                                                    <rect key="frame" x="44" y="10" width="348" height="81"/>
+                                                    <rect key="frame" x="44" y="10" width="348" height="25"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="24.5" id="4Wa-Mb-fwr"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -496,14 +500,14 @@
             <objects>
                 <viewController id="HOc-7b-b6k" customClass="ScriptViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="avG-j5-3Gc">
-                        <rect key="frame" x="0.0" y="0.0" width="378" height="313.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="374" height="313.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GEd-oc-aDl" customClass="ShadowView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="47" width="378" height="266.5"/>
+                                <rect key="frame" x="0.0" y="47" width="374" height="266.5"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" editable="NO" text="your affirmation comes here ..." textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iz0-AX-dXj">
-                                        <rect key="frame" x="0.0" y="0.0" width="378" height="213"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="213"/>
                                         <color key="backgroundColor" red="0.61338037249999999" green="0.64416187999999996" blue="0.68199056390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="textColor" systemColor="labelColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="19"/>
@@ -521,10 +525,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JOn-ae-Wv5">
-                                <rect key="frame" x="0.0" y="260" width="378" height="53.5"/>
+                                <rect key="frame" x="0.0" y="260" width="374" height="53.5"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="50C-8g-wow">
-                                        <rect key="frame" x="0.0" y="-4" width="181.5" height="42.5"/>
+                                        <rect key="frame" x="0.0" y="-4" width="179.5" height="42.5"/>
                                         <color key="backgroundColor" red="0.28600493069999999" green="0.26861456039999998" blue="0.26840257639999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                         <state key="normal" title="Save">
@@ -535,7 +539,7 @@
                                         </variation>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J1l-Ma-ooR">
-                                        <rect key="frame" x="196.5" y="-4" width="181.5" height="42.5"/>
+                                        <rect key="frame" x="194.5" y="-4" width="179.5" height="42.5"/>
                                         <color key="backgroundColor" red="0.28600493069999999" green="0.26861456039999998" blue="0.26840257639999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                         <state key="normal" title="Export">
@@ -567,7 +571,7 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tPV-l5-2Xh">
-                                <rect key="frame" x="324" y="-24" width="50" height="50"/>
+                                <rect key="frame" x="320" y="-24" width="50" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="4H6-92-7He"/>
                                     <constraint firstAttribute="width" secondItem="tPV-l5-2Xh" secondAttribute="height" id="YAQ-SE-dVT"/>
@@ -579,7 +583,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Affirmation" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L9L-jU-5pK">
-                                <rect key="frame" x="95" y="0.0" width="221" height="47"/>
+                                <rect key="frame" x="95" y="0.0" width="217" height="47"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="24"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -629,7 +633,7 @@
             <objects>
                 <viewController id="Bf0-ef-9YZ" customClass="SpectrumViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Nie-sQ-mcI">
-                        <rect key="frame" x="0.0" y="0.0" width="373" height="111.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="374" height="89.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="HBa-Po-3jv"/>
                     </view>
@@ -2040,8 +2044,8 @@
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="MRg-E8-hf8"/>
-        <segue reference="b2O-Lo-AWt"/>
+        <segue reference="QTW-cV-1zg"/>
+        <segue reference="RTw-Dc-bPn"/>
         <segue reference="VQu-IX-ctv"/>
     </inferredMetricsTieBreakers>
     <resources>

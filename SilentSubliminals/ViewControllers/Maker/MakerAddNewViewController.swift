@@ -41,7 +41,7 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     private var addAffirmationViewController: AddAffirmationViewController?
     
     var imagePicker: ImagePicker!
-
+    
     var fetchedResultsController: NSFetchedResultsController<LibraryItem>!
     var fetchedResultsController2: NSFetchedResultsController<Subliminal>!
     
@@ -149,8 +149,23 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
         
         guard let title = self.affirmationTitleLabel.text else { return }
         hasOwnIcon = coverImageButton.isOverriden
-
-        currentLibraryItem = CoreDataManager.sharedInstance.createLibraryItem(title: title, icon: buttonImage ?? UIImage(), hasOwnIcon: hasOwnIcon)
+        
+        if let item = CoreDataManager.sharedInstance.checkIfLibraryItemExists(title: title) {
+            let alert = UIAlertController(title: "Warning", message: "An item '\(title)' already exists. Do you want to override the existant one?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "YES", style: .default, handler: { _ in
+                //updateLibrary(title: title)
+                SelectionHandler().selectLibraryItem(item)
+                CoreDataManager.sharedInstance.save()
+                self.showExistingLibraryItem()
+                self.isEditingMode = true
+            }))
+            alert.addAction(UIAlertAction(title: "NO", style: .cancel, handler: { _ in
+                self.navigationController?.popViewController(animated: true)
+            }))
+            self.present(alert, animated: true)
+        } else {
+            currentLibraryItem = CoreDataManager.sharedInstance.createLibraryItem(title: title, icon: buttonImage ?? UIImage(), hasOwnIcon: hasOwnIcon)
+        }
     }
     
     func updateLibrary(title: String) {
@@ -220,7 +235,7 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
                     print("An error occurred")
                 }
             }
-
+            self.tableView.reloadData()
         }
         
         tableView.tableFooterView = UIView()
@@ -233,7 +248,8 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     @IBAction func editButtonTouched(_ sender: Any) {
         
         DispatchQueue.main.async {
-            self.tableView.isEditing = !self.tableView.isEditing
+            //self.tableView.isEditing = !self.tableView.isEditing
+            self.tableView.setEditing(!self.tableView.isEditing, animated: true)
             
             let imageName = self.tableView.isEditing ? "editSymbolOn" : "editSymbolOff"
             self.editButton.setImage(UIImage(named: imageName), for: .normal)
@@ -245,7 +261,7 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
         
         showInputDialog(title: "Change Title",
                         subtitle: "Please enter a new name for your library",
-                        actionTitle: "Add",
+                        actionTitle: "Update",
                         cancelTitle: "Cancel",
                         inputText: self.affirmationTitleLabel.text,
                         inputPlaceholder: "",
@@ -263,30 +279,32 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     @IBAction func importButtonTouched(_ sender: Any) {
         //let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.audio])
         let documentPicker = UIDocumentPickerViewController(documentTypes: [String(kUTTypeAudio)], in: .import)
-
+        
         documentPicker.delegate = self
         self.present(documentPicker, animated: true)
     }
     
     
     @objc func submitButtonTouched() {
-
+        
         //if isEditingMode {
-            if let title = affirmationTitleLabel.text, let icon = coverImageButton.image(for: .normal), var hasOwnIcon = currentLibraryItem?.hasOwnIcon {
-                if !hasOwnIcon {
-                    hasOwnIcon = coverImageButton.isOverriden
-                }
-                CoreDataManager.sharedInstance.updateLibraryItem(title: title, icon: icon, hasOwnIcon: hasOwnIcon)
+        if let title = affirmationTitleLabel.text, let icon = coverImageButton.image(for: .normal) {
+            
+            var hasOwnIcon: Bool = ((currentLibraryItem?.hasOwnIcon) != nil)
+            if !hasOwnIcon {
+                hasOwnIcon = coverImageButton.isOverriden
             }
-//        } else {
-//            //createNewLibraryItem()
-//        }
-
+            CoreDataManager.sharedInstance.updateLibraryItem(title: title, icon: icon, hasOwnIcon: hasOwnIcon)
+        }
+        //        } else {
+        //            //createNewLibraryItem()
+        //        }
+        
         if calledFromMediathek {
-   
+            
             guard let viewControllers = self.navigationController?.viewControllers else { return }
             var controllerStack = viewControllers
-
+            
             var index = 0
             
             for (i, vc) in controllerStack.enumerated() {
@@ -300,7 +318,7 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "SubliminalMaker")
             controllerStack[index] = vc
-
+            
             self.navigationController?.setViewControllers(controllerStack, animated: true);
         }
         
@@ -335,10 +353,10 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
         cell.affirmationLabel?.text = fetchedResultsController2.fetchedObjects?[indexPath.row].text
         return cell
     }
-
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == .delete) {
-
+            
             let item = fetchedResultsController2.object(at: indexPath)
             CoreDataManager.sharedInstance.removeSubliminal(item: item)
         }
@@ -347,7 +365,7 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .delete
     }
-
+    
     func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
         return true
     }
@@ -358,11 +376,31 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
         guard let movedSubliminal = fetchedResultsController2.fetchedObjects?[sourceIndexPath.row] else { return }
         CoreDataManager.sharedInstance.moveSubliminal(item: movedSubliminal, fromOrder: sourceIndexPath.row, toOrder: destinationIndexPath.row)
         
-        self.tableView.reloadData()
+        //self.tableView.reloadData()
     }
     
     private func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let text = fetchedResultsController2.fetchedObjects?[indexPath.row].text
+        
+        let height = text?.height(withConstrainedWidth: 0.8 * tableView.frame.size.width, font: UIFont.systemFont(ofSize: 20)) ?? 44
+        
+        return height + 44
+    }
+    
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        
+        self.tableView.reloadData()
+        //        tableView.beginUpdates()
+        //        tableView.endUpdates()
     }
     
     // MARK: segue
@@ -377,7 +415,7 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     
     // AddAffirmationTextDelegate
     func addSubliminal(text: String) {
-
+        
         if let item = currentLibraryItem {
             CoreDataManager.sharedInstance.addSubliminal(text: text, libraryItem: item)
             
@@ -391,7 +429,7 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
                     managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
                     sectionNameKeyPath: nil,
                     cacheName: nil)
-
+                
                 do {
                     try fetchedResultsController2.performFetch()
                 } catch {
@@ -408,7 +446,7 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
 }
 
 extension MakerAddNewViewController: NSFetchedResultsControllerDelegate {
-
+    
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.tableView.beginUpdates()
     }
@@ -432,12 +470,12 @@ extension MakerAddNewViewController: NSFetchedResultsControllerDelegate {
             print(type)
         }
     }
-
-
+    
+    
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.tableView.endUpdates()
     }
-
+    
 }
 
 extension MakerAddNewViewController: ImagePickerDelegate {
@@ -510,5 +548,19 @@ extension String {
     
     mutating func capitalizeFirstLetter() {
         self = self.capitalizingFirstLetter()
+    }
+}
+
+
+extension String {
+    func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {
+        let label =  UILabel(frame: CGRect(x: 0, y: 0, width: width, height: .greatestFiniteMagnitude))
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        label.text = self
+        label.font = font
+        label.sizeToFit()
+        
+        return label.frame.height
     }
 }
