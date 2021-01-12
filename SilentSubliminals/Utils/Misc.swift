@@ -140,7 +140,7 @@ func getLayerAnimation() -> CAAnimationGroup {
     
     let layerAnimation = CABasicAnimation(keyPath: "transform.scale")
     layerAnimation.fromValue = 1
-    layerAnimation.toValue = 2
+    layerAnimation.toValue = 1.8
     layerAnimation.isAdditive = false
     layerAnimation.fillMode = CAMediaTimingFillMode.forwards
     layerAnimation.isRemovedOnCompletion = true

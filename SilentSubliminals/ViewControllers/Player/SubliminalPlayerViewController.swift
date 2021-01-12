@@ -90,11 +90,18 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
 
 //            let overlay = UIView()
 //            overlay.backgroundColor = .white
-//            overlay.alpha = 0.25
+//            overlay.alpha = 0.4
 //            iconButton.addSubview(overlay)
 //            overlay.autoPinEdgesToSuperviewEdges()
         }
     }
+    @IBOutlet weak var iconButtonBackgroundView: UIView! {
+        didSet {
+            iconButtonBackgroundView.layer.cornerRadius = 10
+            iconButtonBackgroundView.clipsToBounds = true
+        }
+    }
+    @IBOutlet weak var subliminalPulseImageView: PulseImageView!
     
     @IBOutlet weak var overlayView: UIView!
     @IBOutlet weak var overlayButton: UIButton!
@@ -115,13 +122,9 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+ 
         overlayView.layer.contents = #imageLiteral(resourceName: "subliminalPlayerBackground.png").cgImage
         overlayButton.isEnabled = false
-        
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(tapHandler))
-//        tap.numberOfTapsRequired = 1
-//        stackviewContainerView.addGestureRecognizer(tap)
         
         let commandCenter = CommandCenter.shared
         commandCenter.delegate = self
@@ -152,16 +155,16 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(volumeChanged(notification:)), name: NSNotification.Name(rawValue: notification_systemVolumeDidChange), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(appCameToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+
     }
     
-//    @objc func tapHandler(gesture: UITapGestureRecognizer) {
-//
-//        print("tap")
-////        UIView.animate(withDuration: 1) {
-////            self.overlayView.alpha = 0
-////        }
-//
-//    }
+    @objc func appCameToForeground() {
+        print("app enters foreground")
+        // TODO
+        //self.navigationController?.navigationBar.alpha = overlayButton.isEnabled ? 0 : 1
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -193,6 +196,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
             affirmationTitleLabel.text = libraryItem.title
             iconButton.setImage(UIImage(data: libraryItem.icon ?? Data()), for: .normal)
         }
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -435,6 +439,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
                 CommandCenter.shared.enableForwardButton(flag: true)
                 CommandCenter.shared.enableBackButton(flag: true)
                 audioHelper.playSingleAffirmation(instance: .player)
+                subliminalPulseImageView.animate()
                 break
             case .affirmationLoop:
                 print("affirmation loop")
@@ -443,6 +448,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
                 CommandCenter.shared.enableForwardButton(flag: true)
                 CommandCenter.shared.enableBackButton(flag: true)
                 audioHelper.playAffirmationLoop()
+                //subliminalPulseImageView.animate()
                 break
             case .consolidation:
                 print("consolidation")
@@ -451,6 +457,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
                 CommandCenter.shared.enableForwardButton(flag: true)
                 CommandCenter.shared.enableBackButton(flag: true)
                 audioHelper.playConsolidation()
+                subliminalPulseImageView.stopAnimation()
                 break
             case .leadOut:
                 switch PlayerStateMachine.shared.outroState {
@@ -490,6 +497,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
             self.leadInBedPulseImageView.layer.removeAllAnimations()
             self.leadOutDayPulseImageView.layer.removeAllAnimations()
             self.leadOutNightPulseImageView.layer.removeAllAnimations()
+            self.subliminalPulseImageView.layer.removeAllAnimations()
         }
     }
     

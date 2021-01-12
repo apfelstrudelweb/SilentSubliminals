@@ -1539,8 +1539,20 @@
                                     <outlet property="delegate" destination="Wlk-fN-YWe" id="2um-wt-H0f"/>
                                 </connections>
                             </scrollView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pulseSymbolBig" translatesAutoresizingMaskIntoConstraints="NO" id="eH5-ak-7m4" customClass="PulseImageView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
+                                <rect key="frame" x="313.5" y="16.5" width="80" height="80"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="symbolAlias">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nut-yP-AnK" userLabel="whiteView">
+                                <rect key="frame" x="313.5" y="16.5" width="80" height="80"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6wh-a8-55O" customClass="ToggleButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                <rect key="frame" x="313.5" y="-426.5" width="80" height="80"/>
+                                <rect key="frame" x="313.5" y="16.5" width="80" height="80"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="6wh-a8-55O" secondAttribute="height" multiplier="1:1" id="CMz-Uo-bzB"/>
@@ -1580,17 +1592,25 @@
                             <constraint firstItem="6wh-a8-55O" firstAttribute="trailing" secondItem="iUg-V1-pPz" secondAttribute="trailing" id="4dr-Ky-Dnr"/>
                             <constraint firstAttribute="bottom" secondItem="KIc-QH-czb" secondAttribute="bottom" id="8bH-Mt-kOS"/>
                             <constraint firstItem="6wh-a8-55O" firstAttribute="bottom" secondItem="WTQ-46-HQ2" secondAttribute="top" id="8bZ-ta-Xp9"/>
+                            <constraint firstItem="eH5-ak-7m4" firstAttribute="top" secondItem="6wh-a8-55O" secondAttribute="top" id="A3C-FU-5yB"/>
                             <constraint firstItem="iUg-V1-pPz" firstAttribute="width" secondItem="S0S-wa-Cfu" secondAttribute="width" multiplier="0.9" id="Bvd-Oq-No3"/>
+                            <constraint firstItem="Nut-yP-AnK" firstAttribute="trailing" secondItem="6wh-a8-55O" secondAttribute="trailing" id="DAl-ZA-VO5"/>
+                            <constraint firstItem="eH5-ak-7m4" firstAttribute="bottom" secondItem="6wh-a8-55O" secondAttribute="bottom" id="F8c-9a-aec"/>
+                            <constraint firstItem="Nut-yP-AnK" firstAttribute="top" secondItem="6wh-a8-55O" secondAttribute="top" id="Kay-VT-clS"/>
                             <constraint firstItem="KIc-QH-czb" firstAttribute="top" secondItem="S0S-wa-Cfu" secondAttribute="top" id="Lfr-xs-krp"/>
                             <constraint firstAttribute="bottom" secondItem="iUg-V1-pPz" secondAttribute="bottom" constant="50" id="MfE-3K-o6m"/>
                             <constraint firstItem="iUg-V1-pPz" firstAttribute="top" secondItem="55b-UD-eoa" secondAttribute="top" id="Mlm-QT-zBb"/>
                             <constraint firstItem="55b-UD-eoa" firstAttribute="trailing" secondItem="KIc-QH-czb" secondAttribute="trailing" id="TZc-kO-vXs"/>
+                            <constraint firstItem="eH5-ak-7m4" firstAttribute="trailing" secondItem="6wh-a8-55O" secondAttribute="trailing" id="X91-2a-Mlw"/>
+                            <constraint firstItem="Nut-yP-AnK" firstAttribute="bottom" secondItem="6wh-a8-55O" secondAttribute="bottom" id="cao-9b-JbP"/>
                             <constraint firstItem="A7d-re-UXC" firstAttribute="top" secondItem="S0S-wa-Cfu" secondAttribute="top" id="dhQ-8j-acO"/>
                             <constraint firstAttribute="bottom" secondItem="A7d-re-UXC" secondAttribute="bottom" id="dz1-lM-Wai"/>
                             <constraint firstItem="iUg-V1-pPz" firstAttribute="centerX" secondItem="S0S-wa-Cfu" secondAttribute="centerX" id="eiG-OU-hG8"/>
                             <constraint firstItem="A7d-re-UXC" firstAttribute="leading" secondItem="S0S-wa-Cfu" secondAttribute="leading" id="fVb-wZ-rPs"/>
+                            <constraint firstItem="Nut-yP-AnK" firstAttribute="leading" secondItem="6wh-a8-55O" secondAttribute="leading" id="hXq-1c-39z"/>
                             <constraint firstAttribute="trailing" secondItem="A7d-re-UXC" secondAttribute="trailing" id="kU2-Ip-7Y1"/>
                             <constraint firstItem="KIc-QH-czb" firstAttribute="leading" secondItem="55b-UD-eoa" secondAttribute="leading" id="s8W-9q-sj4"/>
+                            <constraint firstItem="eH5-ak-7m4" firstAttribute="leading" secondItem="6wh-a8-55O" secondAttribute="leading" id="xUe-4e-Qdb"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
@@ -1604,6 +1624,7 @@
                         <outlet property="forwardButton" destination="qPP-wD-Fyb" id="kru-YK-jOT"/>
                         <outlet property="graphView" destination="o5j-AJ-IcV" id="td8-3C-e4d"/>
                         <outlet property="iconButton" destination="6wh-a8-55O" id="ofM-sM-dj7"/>
+                        <outlet property="iconButtonBackgroundView" destination="Nut-yP-AnK" id="Uhg-JO-2r4"/>
                         <outlet property="introductionLabel" destination="CsQ-FE-C27" id="15j-L1-MFA"/>
                         <outlet property="introductionPulseImageView" destination="1tk-Ks-GEn" id="PUv-wl-8Ea"/>
                         <outlet property="introductionSwitch" destination="WTQ-46-HQ2" id="VYC-5c-29u"/>
@@ -1628,6 +1649,7 @@
                         <outlet property="scrollView" destination="iUg-V1-pPz" id="Kcl-f9-OIM"/>
                         <outlet property="silentButton" destination="rc5-V6-YXt" id="Whp-4d-4SH"/>
                         <outlet property="soundView" destination="tg5-ND-tqn" id="mkP-QH-NS4"/>
+                        <outlet property="subliminalPulseImageView" destination="eH5-ak-7m4" id="A70-cx-lJE"/>
                         <outlet property="timerButton" destination="DEe-tW-fzs" id="C2P-2g-PTJ"/>
                         <outlet property="volumeSlider" destination="MCu-q1-tlA" id="0cs-Yb-0pO"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="makerPlayerSegue" id="VQu-IX-ctv"/>
@@ -2002,7 +2024,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="yEI-Zt-PYa" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="6ZW-58-j26">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="6ZW-58-j26">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -2094,6 +2116,9 @@
         <designable name="XVj-v3-nvd">
             <size key="intrinsicContentSize" width="44" height="44"/>
         </designable>
+        <designable name="eH5-ak-7m4">
+            <size key="intrinsicContentSize" width="100" height="100"/>
+        </designable>
         <designable name="o31-l6-2Kv">
             <size key="intrinsicContentSize" width="44" height="44"/>
         </designable>
@@ -2111,7 +2136,7 @@
         <image name="editPencilSymbol" width="1597" height="1533"/>
         <image name="editSymbolOff" width="250" height="250"/>
         <image name="forwardIcon" width="320" height="313"/>
-        <image name="gong" width="340" height="340"/>
+        <image name="gong" width="1063" height="1063"/>
         <image name="importSymbol" width="400" height="400"/>
         <image name="loudspeakerSymbolHigh" width="100" height="79"/>
         <image name="loudspeakerSymbolLow" width="80" height="80"/>
@@ -2121,6 +2146,7 @@
         <image name="plusButton.png" width="35" height="33"/>
         <image name="plusSymbolGreen" width="100" height="100"/>
         <image name="pulseSymbol" width="44" height="44"/>
+        <image name="pulseSymbolBig" width="100" height="100"/>
         <image name="pulseSymbolOval" width="105" height="65"/>
         <image name="rewindIcon" width="320" height="313"/>
         <image name="schmettering_transparent" width="600" height="600"/>

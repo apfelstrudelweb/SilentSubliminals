@@ -35,6 +35,8 @@ final class PulseImageView: UIImageView {
                 self.layer.add(getLayerAnimation(), forKey: self.animationKey)
             } else if PlayerStateMachine.shared.introductionState == .some && self.symbolAlias == LeadInLeadOutSymbols.introduction.rawValue {
                 self.layer.add(getLayerAnimation(), forKey: self.animationKey)
+            } else if PlayerStateMachine.shared.playerState == .affirmation || PlayerStateMachine.shared.playerState == .affirmationLoop {
+                self.layer.add(getLayerAnimation(), forKey: self.animationKey)
             }
         }
     }
