@@ -46,7 +46,6 @@ final class PulseImageView: UIImageView {
         DispatchQueue.main.async {
             self.layer.removeAllAnimations()
         }
-        
     }
 
 }

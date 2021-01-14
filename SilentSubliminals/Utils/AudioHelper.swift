@@ -13,10 +13,12 @@ protocol AudioHelperDelegate : AnyObject {
     
     func processAudioData(buffer: AVAudioPCMBuffer)
     func alertSilentsTooLoud(flag: Bool)
+    func notifyAboutInterrupt(begin: Bool)
 }
 
 extension AudioHelperDelegate {
     func alertSilentsTooLoud(flag: Bool) {}
+    func notifyAboutInterrupt(begin: Bool) {}
 }
 
 struct Manager {
@@ -50,6 +52,11 @@ func delay(_ delay:Double, closure:@escaping ()->()) {
 }
 
 class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
+    
+    func notifyAboutInterrupt(begin: Bool) {
+        
+    }
+    
     
     func processAudioData(buffer: AVAudioPCMBuffer) {
         self.delegate?.processAudioData(buffer: buffer)
@@ -110,10 +117,13 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         switch type {
         case .began:
             // Pause your player
+            //pauseSound()
+            delegate?.notifyAboutInterrupt(begin: true)
             print(type)
             break;
             
         case .ended:
+            delegate?.notifyAboutInterrupt(begin: false)
             if let optionInt = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt {
                 let options = AVAudioSession.InterruptionOptions(rawValue: optionInt)
                 //TODO: resolve side effect with subliminal dictation in AddAffirmationViewController

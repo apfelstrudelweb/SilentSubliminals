@@ -14,7 +14,6 @@ import CoreData
 
 class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, PlayerStateMachineDelegate, CommandCenterDelegate, BackButtonDelegate, AudioHelperDelegate, NSFetchedResultsControllerDelegate {
 
-
     var fetchedResultsController: NSFetchedResultsController<LibraryItem>!
     
     // 1. section
@@ -164,6 +163,54 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         print("app enters foreground")
         // TODO
         //self.navigationController?.navigationBar.alpha = overlayButton.isEnabled ? 0 : 1
+        self.scrollView.layoutSubviews()
+        
+        switch PlayerStateMachine.shared.pauseState {
+        case .pause:
+            print("pause")
+            break
+            
+        case .play:
+            switch PlayerStateMachine.shared.playerState {
+            case .ready:
+                stopButtonAnimations()
+                break
+            case .introduction:
+                introductionPulseImageView.animate()
+                break
+            case .leadIn:
+                switch PlayerStateMachine.shared.introState {
+                case .chair:
+                    leadInChairPulseImageView.animate()
+                case .bed:
+                    leadInBedPulseImageView.animate()
+                case .none:
+                    break
+                }
+                break
+            case .affirmation:
+                subliminalPulseImageView.animate()
+            case .affirmationLoop:
+                subliminalPulseImageView.animate()
+                break
+            case .consolidation:
+                subliminalPulseImageView.stopAnimation()
+                break
+            case .leadOut:
+                switch PlayerStateMachine.shared.outroState {
+                case .day:
+                    leadOutDayPulseImageView.animate()
+                case .night:
+                    leadOutNightPulseImageView.animate()
+                case .none:
+                    break
+                }
+            }
+        }
+    }
+    
+    func notifyAboutInterrupt(begin: Bool) {
+        PlayerStateMachine.shared.pauseState = begin ? .pause : .play
     }
     
     override func viewWillAppear(_ animated: Bool) {

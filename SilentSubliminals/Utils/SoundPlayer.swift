@@ -216,7 +216,12 @@ open class SoundPlayer: NSObject {
     }
     
     func continuePlayer() {
-        try! self.engine.start()
+        
+        do {
+            try self.engine.start()
+        } catch {
+            print("Player could not be continued", error)
+        }
     }
     
     func stop() {
