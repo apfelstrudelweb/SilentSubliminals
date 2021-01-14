@@ -1050,7 +1050,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iUg-V1-pPz">
-                                <rect key="frame" x="20.5" y="44" width="373" height="802"/>
+                                <rect key="frame" x="20.5" y="80" width="373" height="766"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="44" translatesAutoresizingMaskIntoConstraints="NO" id="fxU-QY-bkn">
                                         <rect key="frame" x="0.0" y="44" width="373" height="1201"/>
@@ -1540,7 +1540,7 @@
                                 </connections>
                             </scrollView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pulseSymbolBig" translatesAutoresizingMaskIntoConstraints="NO" id="eH5-ak-7m4" customClass="PulseImageView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                <rect key="frame" x="313.5" y="16.5" width="80" height="80"/>
+                                <rect key="frame" x="313.5" y="80" width="80" height="80"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="symbolAlias">
                                         <integer key="value" value="5"/>
@@ -1548,11 +1548,11 @@
                                 </userDefinedRuntimeAttributes>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nut-yP-AnK" userLabel="whiteView">
-                                <rect key="frame" x="313.5" y="16.5" width="80" height="80"/>
+                                <rect key="frame" x="313.5" y="80" width="80" height="80"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6wh-a8-55O" customClass="ToggleButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                <rect key="frame" x="313.5" y="16.5" width="80" height="80"/>
+                                <rect key="frame" x="313.5" y="80" width="80" height="80"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="6wh-a8-55O" secondAttribute="height" multiplier="1:1" id="CMz-Uo-bzB"/>
@@ -1589,9 +1589,9 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="55b-UD-eoa"/>
                         <constraints>
+                            <constraint firstItem="6wh-a8-55O" firstAttribute="top" secondItem="iUg-V1-pPz" secondAttribute="top" id="0VS-T4-FLq"/>
                             <constraint firstItem="6wh-a8-55O" firstAttribute="trailing" secondItem="iUg-V1-pPz" secondAttribute="trailing" id="4dr-Ky-Dnr"/>
                             <constraint firstAttribute="bottom" secondItem="KIc-QH-czb" secondAttribute="bottom" id="8bH-Mt-kOS"/>
-                            <constraint firstItem="6wh-a8-55O" firstAttribute="bottom" secondItem="WTQ-46-HQ2" secondAttribute="top" id="8bZ-ta-Xp9"/>
                             <constraint firstItem="eH5-ak-7m4" firstAttribute="top" secondItem="6wh-a8-55O" secondAttribute="top" id="A3C-FU-5yB"/>
                             <constraint firstItem="iUg-V1-pPz" firstAttribute="width" secondItem="S0S-wa-Cfu" secondAttribute="width" multiplier="0.9" id="Bvd-Oq-No3"/>
                             <constraint firstItem="Nut-yP-AnK" firstAttribute="trailing" secondItem="6wh-a8-55O" secondAttribute="trailing" id="DAl-ZA-VO5"/>
@@ -1599,7 +1599,7 @@
                             <constraint firstItem="Nut-yP-AnK" firstAttribute="top" secondItem="6wh-a8-55O" secondAttribute="top" id="Kay-VT-clS"/>
                             <constraint firstItem="KIc-QH-czb" firstAttribute="top" secondItem="S0S-wa-Cfu" secondAttribute="top" id="Lfr-xs-krp"/>
                             <constraint firstAttribute="bottom" secondItem="iUg-V1-pPz" secondAttribute="bottom" constant="50" id="MfE-3K-o6m"/>
-                            <constraint firstItem="iUg-V1-pPz" firstAttribute="top" secondItem="55b-UD-eoa" secondAttribute="top" id="Mlm-QT-zBb"/>
+                            <constraint firstItem="iUg-V1-pPz" firstAttribute="top" secondItem="S0S-wa-Cfu" secondAttribute="top" constant="80" id="Mlm-QT-zBb"/>
                             <constraint firstItem="55b-UD-eoa" firstAttribute="trailing" secondItem="KIc-QH-czb" secondAttribute="trailing" id="TZc-kO-vXs"/>
                             <constraint firstItem="eH5-ak-7m4" firstAttribute="trailing" secondItem="6wh-a8-55O" secondAttribute="trailing" id="X91-2a-Mlw"/>
                             <constraint firstItem="Nut-yP-AnK" firstAttribute="bottom" secondItem="6wh-a8-55O" secondAttribute="bottom" id="cao-9b-JbP"/>

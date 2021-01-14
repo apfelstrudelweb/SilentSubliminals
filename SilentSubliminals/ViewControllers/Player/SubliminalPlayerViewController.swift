@@ -118,9 +118,15 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     
     var affirmation: Subliminal?
     
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //navigationController?.hidesBarsOnTap = true
  
         overlayView.layer.contents = #imageLiteral(resourceName: "subliminalPlayerBackground.png").cgImage
         overlayButton.isEnabled = false
@@ -158,11 +164,13 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         NotificationCenter.default.addObserver(self, selector: #selector(appCameToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
 
     }
-    
+
     @objc func appCameToForeground() {
         print("app enters foreground")
-        // TODO
-        //self.navigationController?.navigationBar.alpha = overlayButton.isEnabled ? 0 : 1
+
+        if self.overlayView.alpha == 1 {
+            self.navigationController?.setNavigationBarHidden(true, animated: true)
+        }
         self.scrollView.layoutSubviews()
         
         switch PlayerStateMachine.shared.pauseState {
@@ -319,7 +327,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
 
             UIView.animate(withDuration: 1) {
                 self.overlayView.alpha = 1
-                self.navigationController?.navigationBar.alpha = 0.01
+                //self.navigationController?.navigationBar.alpha = 0.01
+                self.navigationController?.setNavigationBarHidden(true, animated: true)
             } completion: { _ in
                 self.overlayButton.isEnabled = true
             }
@@ -341,7 +350,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         
         UIView.animate(withDuration: 1) {
             self.overlayView.alpha = 0
-            self.navigationController?.navigationBar.alpha = 1
+            //self.navigationController?.navigationBar.alpha = 1
+            self.navigationController?.setNavigationBarHidden(false, animated: true)
         }
     }
     
@@ -350,7 +360,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
 
         UIView.animate(withDuration: 1) {
             self.overlayView.alpha = 1
-            self.navigationController?.navigationBar.alpha = 0
+            //self.navigationController?.navigationBar.alpha = 0
+            self.navigationController?.setNavigationBarHidden(true, animated: true)
         } completion: { _ in
             self.overlayButton.isEnabled = true
         }

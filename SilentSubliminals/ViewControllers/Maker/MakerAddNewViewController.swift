@@ -359,6 +359,14 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
             
             let item = fetchedResultsController2.object(at: indexPath)
             CoreDataManager.sharedInstance.removeSubliminal(item: item)
+            
+            do {
+                try fetchedResultsController2.performFetch()
+                self.tableView.reloadData()
+            } catch {
+                print("An error occurred")
+            }
+            
         }
     }
     

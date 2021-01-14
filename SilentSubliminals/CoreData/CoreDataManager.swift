@@ -157,6 +157,8 @@ class CoreDataManager: NSObject {
             let items = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest2) as! [LibraryItem]
             
             if items.count > 0 {
+//                deleteLibraryItem(item: items.first!)
+//                try self.managedObjectContext.save()
                 return
             }
             
