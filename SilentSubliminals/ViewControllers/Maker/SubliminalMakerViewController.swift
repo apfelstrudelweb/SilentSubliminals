@@ -45,13 +45,15 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         MakerStateMachine.shared.playerState = .playStopped
         MakerStateMachine.shared.recorderState = .recordStopped
         
-        view.layer.contents = #imageLiteral(resourceName: "subliminalMakerBackground.png").cgImage
+        //view.layer.contents = #imageLiteral(resourceName: "subliminalMakerBackground.png").cgImage
         
         //self.navigationController?.navigationBar.tintColor = .white
         
         playerView.layer.cornerRadius = cornerRadius
         controlView.layer.cornerRadius = playerView.layer.cornerRadius
         controlView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        
+        playerView.layoutIfNeeded()
         
         let offset = 0.1 * view.frame.size.height
         containerView.autoPinEdge(.bottom, to: .bottom, of: view, withOffset: -offset)

@@ -13,24 +13,16 @@ final class ShadowView: UIView {
     private var shadowLayer: CAShapeLayer!
     
     var opacity: Float = 0.8
-    var size: Double = 2.0
+    var size: Double = 4
+    
 
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        if shadowLayer == nil {
-            shadowLayer = CAShapeLayer()
-            shadowLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: cornerRadius).cgPath
-
-            shadowLayer.shadowColor = UIColor.black.cgColor
-            shadowLayer.shadowPath = shadowLayer.path
-            shadowLayer.shadowOffset = CGSize(width: size, height: size)
-            shadowLayer.shadowOpacity = opacity
-            shadowLayer.shadowRadius = cornerRadius
-
-            layer.insertSublayer(shadowLayer, at: 0)
-            //layer.insertSublayer(shadowLayer, below: nil) // also works
-        }
+        layer.shadowOpacity = opacity
+        layer.shadowOffset = CGSize(width: size, height: size)
+        layer.shadowRadius = cornerRadius
+        layer.shadowColor = UIColor.black.cgColor
     }
 
 }
