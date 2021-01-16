@@ -9,6 +9,11 @@
 import UIKit
 import CoreData
 
+protocol ScriptViewDelegate : AnyObject {
+    
+    func editButtonTouched()
+}
+
 class ScriptViewController: UIViewController, NSFetchedResultsControllerDelegate {
     
 
@@ -25,6 +30,8 @@ class ScriptViewController: UIViewController, NSFetchedResultsControllerDelegate
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var buttonView: UIView!
     @IBOutlet weak var editButton: UIButton!
+    
+    weak var delegate : ScriptViewDelegate?
     
     var fetchedResultsController1: NSFetchedResultsController<LibraryItem>!
     var fetchedResultsController2: NSFetchedResultsController<Subliminal>!
@@ -52,6 +59,10 @@ class ScriptViewController: UIViewController, NSFetchedResultsControllerDelegate
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        update()
+    }
+    
+    func update() {
         let fetchRequest1 = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
         let predicate1 = NSPredicate(format: "isActive = true")
         fetchRequest1.predicate = predicate1
@@ -106,7 +117,7 @@ class ScriptViewController: UIViewController, NSFetchedResultsControllerDelegate
     }
     
     @IBAction func editButtonTouched(_ sender: Any) {
-        self.performSegue(withIdentifier: "showMakerAddNewSegue", sender: sender)
+        delegate?.editButtonTouched()
     }
     
     // MARK: Segues

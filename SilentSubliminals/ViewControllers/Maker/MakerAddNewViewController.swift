@@ -12,9 +12,14 @@ import PureLayout
 import MobileCoreServices
 import EasyTipView
 
+protocol UpdateMakerDelegate : AnyObject {
+    
+    func itemDidUpdate()
+}
+
 
 class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddAffirmationTextDelegate, UIDocumentPickerDelegate, EasyTipViewDelegate {
-    
+
     func easyTipViewDidTap(_ tipView: EasyTipView) {
         
     }
@@ -39,6 +44,7 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     var calledFromMediathek: Bool = false
     
     private var addAffirmationViewController: AddAffirmationViewController?
+    private var scriptViewController: ScriptViewController?
     
     var imagePicker: ImagePicker!
     
@@ -49,9 +55,11 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     
     let defaultImageButtonIcon = "playerPlaceholderSymbol"
     
+    weak var delegate : UpdateMakerDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         self.navigationController?.navigationBar.tintColor = importButton.tintColor
         coverImageButton.layer.cornerRadius = 10
         coverImageButton.clipsToBounds = true
@@ -61,15 +69,15 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
 
         tableView.isEditing = false
         
-        let submitButton: UIButton = UIButton(type: .custom)
-        submitButton.setImage(UIImage(named: "checkmark"), for: .normal)
-        submitButton.addTarget(self, action: #selector(self.submitButtonTouched), for: .touchUpInside)
-        submitButton.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
-
-        let barButton = UIBarButtonItem(customView: submitButton)
-        self.navigationItem.rightBarButtonItem = barButton
-        submitButton.autoSetDimension(.width, toSize: 44)
-        submitButton.autoSetDimension(.height, toSize: 44)
+//        let submitButton: UIButton = UIButton(type: .custom)
+//        submitButton.setImage(UIImage(named: "checkmark"), for: .normal)
+//        submitButton.addTarget(self, action: #selector(self.submitButtonTouched), for: .touchUpInside)
+//        submitButton.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
+//
+//        let barButton = UIBarButtonItem(customView: submitButton)
+//        self.navigationItem.rightBarButtonItem = barButton
+//        submitButton.autoSetDimension(.width, toSize: 44)
+//        submitButton.autoSetDimension(.height, toSize: 44)
         
         
         self.imagePicker = ImagePicker(presentationController: self, delegate: self)
@@ -103,6 +111,52 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
 
     }
     
+    @IBAction func submitButtonTouched(_ sender: Any) {
+        
+        //if isEditingMode {
+        if let title = affirmationTitleLabel.text, let icon = coverImageButton.image(for: .normal), let hasOwnIcon = currentLibraryItem?.hasOwnIcon {
+            
+//            var hasOwnIcon: Bool = ((currentLibraryItem?.hasOwnIcon) != nil) //((currentLibraryItem?.hasOwnIcon) != nil)
+////            if !hasOwnIcon {
+////                hasOwnIcon = coverImageButton.isOverriden
+////            }
+            CoreDataManager.sharedInstance.updateLibraryItem(title: title, icon: icon, hasOwnIcon: hasOwnIcon)
+        }
+        //        } else {
+        //            //createNewLibraryItem()
+        //        }
+        
+        if calledFromMediathek {
+            
+            guard let viewControllers = self.navigationController?.viewControllers else { return }
+            var controllerStack = viewControllers
+            
+            var index = 0
+            
+            for (i, vc) in controllerStack.enumerated() {
+                
+                if vc.isKind(of: MediathekViewController.self) {
+                    index = i
+                    break
+                }
+            }
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "SubliminalMaker")
+            controllerStack[index] = vc
+            
+            self.navigationController?.setViewControllers(controllerStack, animated: true);
+        }
+        
+        delegate?.itemDidUpdate()
+        
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func cancelButtonTouched(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
+
     // MARK: UIDocumentPickerDelegate
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         print(urls)
@@ -285,46 +339,6 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     
-    @objc func submitButtonTouched() {
-        
-        //if isEditingMode {
-        if let title = affirmationTitleLabel.text, let icon = coverImageButton.image(for: .normal) {
-            
-            var hasOwnIcon: Bool = ((currentLibraryItem?.hasOwnIcon) != nil)
-            if !hasOwnIcon {
-                hasOwnIcon = coverImageButton.isOverriden
-            }
-            CoreDataManager.sharedInstance.updateLibraryItem(title: title, icon: icon, hasOwnIcon: hasOwnIcon)
-        }
-        //        } else {
-        //            //createNewLibraryItem()
-        //        }
-        
-        if calledFromMediathek {
-            
-            guard let viewControllers = self.navigationController?.viewControllers else { return }
-            var controllerStack = viewControllers
-            
-            var index = 0
-            
-            for (i, vc) in controllerStack.enumerated() {
-                
-                if vc.isKind(of: MediathekViewController.self) {
-                    index = i
-                    break
-                }
-            }
-            
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "SubliminalMaker")
-            controllerStack[index] = vc
-            
-            self.navigationController?.setViewControllers(controllerStack, animated: true);
-        }
-        
-        self.navigationController?.popViewController(animated: true)
-        
-    }
     
     @IBAction func addAffirmationButtonTouched(_ sender: Any) {
         
@@ -341,9 +355,15 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
         optionMenu.addAction(selectFromLibraryAction)
         optionMenu.addAction(typeOwnAction)
         optionMenu.addAction(cancelAction)
+        
+        if let popoverController = optionMenu.popoverPresentationController {
+          popoverController.sourceView = self.view
+          popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+          popoverController.permittedArrowDirections = []
+        }
         self.present(optionMenu, animated: true, completion: nil)
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return fetchedResultsController2 == nil ? 0 : fetchedResultsController2.fetchedObjects?.count ?? 0
     }
@@ -535,7 +555,9 @@ extension UIViewController {
         })
         alert.addAction(cancelAction)
         
-        self.present(alert, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            self.present(alert, animated: true, completion: nil)
+        }
     }
 }
 

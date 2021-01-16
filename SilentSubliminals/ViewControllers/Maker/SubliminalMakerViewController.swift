@@ -17,7 +17,7 @@ import PureLayout
 let alpha: CGFloat = 0.85
 
 
-class SubliminalMakerViewController: UIViewController, BackButtonDelegate, MakerStateMachineDelegate, AudioHelperDelegate, NSFetchedResultsControllerDelegate {
+class SubliminalMakerViewController: UIViewController, BackButtonDelegate, MakerStateMachineDelegate, AudioHelperDelegate, UpdateMakerDelegate, ScriptViewDelegate, NSFetchedResultsControllerDelegate {
 
     @IBOutlet weak var controlView: UIView!
     @IBOutlet weak var playerView: UIView!
@@ -44,6 +44,7 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         MakerStateMachine.shared.delegate = self
         MakerStateMachine.shared.playerState = .playStopped
         MakerStateMachine.shared.recorderState = .recordStopped
+        
         
         //view.layer.contents = #imageLiteral(resourceName: "subliminalMakerBackground.png").cgImage
         
@@ -101,13 +102,37 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         //audioHelper.stopPlayingSingleAffirmation()
     }
     
-
-    // MARK: user actions
-    @IBAction func scriptCreationButtonTouched(_ sender: Any) {
+    // MARK: Segues
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
         
-        self.performSegue(withIdentifier: "showMakerAddNewSegue", sender: sender)
+        if let vc = segue.destination as? SpectrumViewController {
+            spectrumViewController = vc
+        }
+        if let vc = segue.destination as? ScriptViewController {
+            scriptViewController = vc
+            scriptViewController?.delegate = self
+        }
+        if let vc = segue.destination as? MakerAddNewViewController {
+            makerAddNewViewController = vc
+            makerAddNewViewController?.isEditingMode = segue.identifier == "editItemSegue"
+            makerAddNewViewController?.delegate = self
+        }
     }
     
+    // MARK: ScriptViewDelegate
+    func editButtonTouched() {
+        self.performSegue(withIdentifier: "editItemSegue", sender: self)
+    }
+    
+    // MARK: UpdateMakerDelegate
+    func itemDidUpdate() {
+        
+        scriptViewController?.update()
+    }
+    
+
+    // MARK: user actions
     @IBAction func playButtonTouched(_ sender: Any) {
         
         if MakerStateMachine.shared.playerState == .playStopped {
@@ -183,22 +208,6 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         }
     }
 
-    // MARK: Segues
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        
-        if let vc = segue.destination as? SpectrumViewController {
-            spectrumViewController = vc
-        }
-        if let vc = segue.destination as? ScriptViewController {
-            scriptViewController = vc
-        }
-        if let vc = segue.destination as? MakerAddNewViewController {
-            makerAddNewViewController = vc
-            makerAddNewViewController?.isEditingMode = false
-        }
-    }
-    
     
     // MARK: BackButtonDelegate
     func close() {
