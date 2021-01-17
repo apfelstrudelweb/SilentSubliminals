@@ -13,21 +13,11 @@ import MobileCoreServices
 import EasyTipView
 
 protocol UpdateMakerDelegate : AnyObject {
-    
     func itemDidUpdate()
 }
 
 
-class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddAffirmationTextDelegate, UIDocumentPickerDelegate, EasyTipViewDelegate {
-
-    func easyTipViewDidTap(_ tipView: EasyTipView) {
-        
-    }
-    
-    func easyTipViewDidDismiss(_ tipView: EasyTipView) {
-        
-    }
-    
+class MakerAddNewViewController: UIViewController, UITableViewDataSource, AddAffirmationTextDelegate {
 
     @IBOutlet weak var affirmationTitleLabel: UILabel!
     @IBOutlet weak var coverImageButton: ImageButton!
@@ -48,13 +38,11 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     
     var imagePicker: ImagePicker!
     
-    var fetchedResultsController: NSFetchedResultsController<LibraryItem>!
-    var fetchedResultsController2: NSFetchedResultsController<Subliminal>!
+    var fetchedResultsControllerLibraryItem: NSFetchedResultsController<LibraryItem>!
+    var fetchedResultsControllerSubliminal: NSFetchedResultsController<Subliminal>!
     
     var currentLibraryItem: LibraryItem?
-    
-    let defaultImageButtonIcon = "playerPlaceholderSymbol"
-    
+
     weak var delegate : UpdateMakerDelegate?
     
     override func viewDidLoad() {
@@ -63,27 +51,15 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
         self.navigationController?.navigationBar.tintColor = importButton.tintColor
         coverImageButton.layer.cornerRadius = 10
         coverImageButton.clipsToBounds = true
-        coverImageButton.setImage(name: defaultImageButtonIcon)
+        coverImageButton.setImage(defaultImageButtonIcon, for: .normal)
         addAffirmationButton.layer.cornerRadius = 0.5 * addAffirmationButton.frame.size.width
         addAffirmationButton.clipsToBounds = true
 
         tableView.isEditing = false
         
-//        let submitButton: UIButton = UIButton(type: .custom)
-//        submitButton.setImage(UIImage(named: "checkmark"), for: .normal)
-//        submitButton.addTarget(self, action: #selector(self.submitButtonTouched), for: .touchUpInside)
-//        submitButton.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
-//
-//        let barButton = UIBarButtonItem(customView: submitButton)
-//        self.navigationItem.rightBarButtonItem = barButton
-//        submitButton.autoSetDimension(.width, toSize: 44)
-//        submitButton.autoSetDimension(.height, toSize: 44)
-        
-        
         self.imagePicker = ImagePicker(presentationController: self, delegate: self)
         
-        // createNewLibraryItem(title: textField.text)
-        
+  
         if !isEditingMode {
             
             showInputDialog(title: "Action required",
@@ -94,7 +70,6 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
                             inputPlaceholder: "Your library title",
                             inputKeyboardType: .default,
                             completionHandler: { (text) in
-                                //self.createNewLibraryItem(title: text)
                                 self.createNewLibraryItem()
                             },
                             actionHandler: { (input:String?) in
@@ -111,21 +86,78 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
 
     }
     
-    @IBAction func submitButtonTouched(_ sender: Any) {
+    // MARK: user interactions
+    @IBAction func coverImageButtonTouched(_ sender: UIButton) {
+        self.imagePicker.present(from: sender)
+    }
+    
+    @IBAction func editButtonTouched(_ sender: Any) {
         
-        //if isEditingMode {
-        if let title = affirmationTitleLabel.text, let icon = coverImageButton.image(for: .normal), let hasOwnIcon = currentLibraryItem?.hasOwnIcon {
+        DispatchQueue.main.async {
+            self.tableView.setEditing(!self.tableView.isEditing, animated: true)
+            let imageName = self.tableView.isEditing ? "editSymbolOn" : "editSymbolOff"
+            self.editButton.setImage(UIImage(named: imageName), for: .normal)
+        }
+    }
+    
+    @IBAction func editTitleButtonTouched(_ sender: Any) {
+        
+        showInputDialog(title: "Change Title",
+                        subtitle: "Please enter a new name for your library",
+                        actionTitle: "Update",
+                        cancelTitle: "Cancel",
+                        inputText: self.affirmationTitleLabel.text,
+                        inputPlaceholder: "",
+                        inputKeyboardType: .default,
+                        completionHandler: { (text) in
+                            self.updateLibraryItem(title: text)
+                            self.affirmationTitleLabel.text = text.capitalized
+                        },
+                        actionHandler: { (input:String?) in
+                            self.affirmationTitleLabel.text = input?.capitalized
+                        })
+    }
+    
+    
+    @IBAction func importButtonTouched(_ sender: Any) {
+        //let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.audio])
+        let documentPicker = UIDocumentPickerViewController(documentTypes: [String(kUTTypeAudio)], in: .import)
+        documentPicker.delegate = self
+        self.present(documentPicker, animated: true)
+    }
+    
+    
+    @IBAction func addAffirmationButtonTouched(_ sender: Any) {
+        
+        let optionMenu = UIAlertController(title: nil, message: "Here you can configure your subliminals", preferredStyle: .actionSheet)
+        
+        
+        let selectFromLibraryAction = UIAlertAction(title: "Select from Library", style: .default)
+        let typeOwnAction = UIAlertAction(title: "Type your own", style: .default, handler: { (action:UIAlertAction) in
+            self.performSegue(withIdentifier: "addAffirmationSegue", sender: sender)
             
-//            var hasOwnIcon: Bool = ((currentLibraryItem?.hasOwnIcon) != nil) //((currentLibraryItem?.hasOwnIcon) != nil)
-////            if !hasOwnIcon {
-////                hasOwnIcon = coverImageButton.isOverriden
-////            }
+        })
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        
+        optionMenu.addAction(selectFromLibraryAction)
+        optionMenu.addAction(typeOwnAction)
+        optionMenu.addAction(cancelAction)
+        
+        if let popoverController = optionMenu.popoverPresentationController {
+          popoverController.sourceView = self.view
+          popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+          popoverController.permittedArrowDirections = []
+        }
+        self.present(optionMenu, animated: true, completion: nil)
+    }
+    
+    @IBAction func submitButtonTouched(_ sender: Any) {
+
+        if let title = affirmationTitleLabel.text, let icon = coverImageButton.image(for: .normal) {
+            let hasOwnIcon = defaultImageButtonIcon?.pngData() != icon.pngData()
             CoreDataManager.sharedInstance.updateLibraryItem(title: title, icon: icon, hasOwnIcon: hasOwnIcon)
         }
-        //        } else {
-        //            //createNewLibraryItem()
-        //        }
-        
+
         if calledFromMediathek {
             
             guard let viewControllers = self.navigationController?.viewControllers else { return }
@@ -156,43 +188,18 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     @IBAction func cancelButtonTouched(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
-
-    // MARK: UIDocumentPickerDelegate
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        print(urls)
- 
-        guard let title = affirmationTitleLabel.text, let url = urls.first else { return }
-
-        // TODO: refactor - it's too hacky ...
-        spokenAffirmation = title + ".caf"
-        spokenAffirmationSilent = title + "Silent.caf"
+    
+    // MARK: segue
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
         
-        let ext = url.pathExtension
-        let filename = title + "." + ext
-        let newFileURL = copyFileToDocumentsFolder(sourceURL: urls.first!, targetFileName: filename)
-        convertSoundFileToCaf(url: newFileURL) { (success) in
-            
-            DispatchQueue.main.async {
-                
-                var preferences = EasyTipView.Preferences()
-                preferences.drawing.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-                preferences.drawing.foregroundColor = .white
-                preferences.drawing.backgroundColor = success ? self.importButton.tintColor : .red
-                preferences.drawing.arrowPosition = EasyTipView.ArrowPosition.top
-                preferences.animating.showDuration = 1.5
-                preferences.animating.dismissDuration = 1.5
-                
-                let tipView = EasyTipView(text: success ? "Your import was successful." : "Your import did fail!", preferences: preferences)
-                tipView.show(forView: self.importButton, withinSuperview: self.view)
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                    tipView.dismiss()
-                }
-                
-            }
+        if let vc = segue.destination as? AddAffirmationViewController {
+            addAffirmationViewController = vc
+            addAffirmationViewController?.delegate = self
         }
     }
     
+    // MARK: CoreData
     func createNewLibraryItem() {
         
         var buttonImage = UIImage(named: "playerPlaceholder")
@@ -222,24 +229,24 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
-    func updateLibrary(title: String) {
+    func updateLibraryItem(title: String) {
         let fetchRequest = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
         fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
         let predicate = NSPredicate(format: "isActive == true")
         fetchRequest.predicate = predicate
-        self.fetchedResultsController = NSFetchedResultsController<LibraryItem> (
+        self.fetchedResultsControllerLibraryItem = NSFetchedResultsController<LibraryItem> (
             fetchRequest: fetchRequest,
             managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
             sectionNameKeyPath: nil,
             cacheName: nil)
 
         do {
-            try fetchedResultsController.performFetch()
+            try fetchedResultsControllerLibraryItem.performFetch()
         } catch {
             print("An error occurred")
         }
         
-        if let libraryItem = fetchedResultsController.fetchedObjects?.first {
+        if let libraryItem = fetchedResultsControllerLibraryItem.fetchedObjects?.first {
             libraryItem.title = title
             CoreDataManager.sharedInstance.save()
         }
@@ -251,19 +258,19 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
         fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
         let predicate = NSPredicate(format: "isActive == true")
         fetchRequest.predicate = predicate
-        self.fetchedResultsController = NSFetchedResultsController<LibraryItem> (
+        self.fetchedResultsControllerLibraryItem = NSFetchedResultsController<LibraryItem> (
             fetchRequest: fetchRequest,
             managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
             sectionNameKeyPath: nil,
             cacheName: nil)
 
         do {
-            try fetchedResultsController.performFetch()
+            try fetchedResultsControllerLibraryItem.performFetch()
         } catch {
             print("An error occurred")
         }
         
-        if let libraryItem = fetchedResultsController.fetchedObjects?.first, let imageData = libraryItem.icon {
+        if let libraryItem = fetchedResultsControllerLibraryItem.fetchedObjects?.first, let imageData = libraryItem.icon {
             currentLibraryItem = libraryItem
             
             let icon = UIImage(data: imageData)
@@ -276,15 +283,15 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
                 fetchRequest2.sortDescriptors = [NSSortDescriptor (key: "order", ascending: true)]
                 let predicate2 = NSPredicate(format: "libraryItem.title = %@", title as String)
                 fetchRequest2.predicate = predicate2
-                self.fetchedResultsController2 = NSFetchedResultsController<Subliminal> (
+                self.fetchedResultsControllerSubliminal = NSFetchedResultsController<Subliminal> (
                     fetchRequest: fetchRequest2,
                     managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
                     sectionNameKeyPath: nil,
                     cacheName: nil)
-                self.fetchedResultsController2.delegate = self
+                self.fetchedResultsControllerSubliminal.delegate = self
                 
                 do {
-                    try fetchedResultsController2.performFetch()
+                    try fetchedResultsControllerSubliminal.performFetch()
                 } catch {
                     print("An error occurred")
                 }
@@ -295,93 +302,58 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
         tableView.tableFooterView = UIView()
     }
     
-    @IBAction func coverImageButtonTouched(_ sender: UIButton) {
-        self.imagePicker.present(from: sender)
-    }
-    
-    @IBAction func editButtonTouched(_ sender: Any) {
+    // AddAffirmationTextDelegate
+    func addSubliminal(text: String) {
         
-        DispatchQueue.main.async {
-            //self.tableView.isEditing = !self.tableView.isEditing
-            self.tableView.setEditing(!self.tableView.isEditing, animated: true)
+        if let item = currentLibraryItem {
+            CoreDataManager.sharedInstance.addSubliminal(text: text, libraryItem: item)
             
-            let imageName = self.tableView.isEditing ? "editSymbolOn" : "editSymbolOff"
-            self.editButton.setImage(UIImage(named: imageName), for: .normal)
-        }
-
-    }
-    
-    @IBAction func editTitleButtonTouched(_ sender: Any) {
-        
-        showInputDialog(title: "Change Title",
-                        subtitle: "Please enter a new name for your library",
-                        actionTitle: "Update",
-                        cancelTitle: "Cancel",
-                        inputText: self.affirmationTitleLabel.text,
-                        inputPlaceholder: "",
-                        inputKeyboardType: .default,
-                        completionHandler: { (text) in
-                            self.updateLibrary(title: text)
-                            self.affirmationTitleLabel.text = text.capitalized
-                        },
-                        actionHandler: { (input:String?) in
-                            self.affirmationTitleLabel.text = input?.capitalized
-                        })
-    }
-    
-    
-    @IBAction func importButtonTouched(_ sender: Any) {
-        //let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.audio])
-        let documentPicker = UIDocumentPickerViewController(documentTypes: [String(kUTTypeAudio)], in: .import)
-        
-        documentPicker.delegate = self
-        self.present(documentPicker, animated: true)
-    }
-    
-    
-    
-    @IBAction func addAffirmationButtonTouched(_ sender: Any) {
-        
-        let optionMenu = UIAlertController(title: nil, message: "Here you can configure your subliminals", preferredStyle: .actionSheet)
-        
-        
-        let selectFromLibraryAction = UIAlertAction(title: "Select from Library", style: .default)
-        let typeOwnAction = UIAlertAction(title: "Type your own", style: .default, handler: { (action:UIAlertAction) in
-            self.performSegue(withIdentifier: "addAffirmationSegue", sender: sender)
+            if let title = item.title {
+                let fetchRequest = NSFetchRequest<Subliminal> (entityName: "Subliminal")
+                fetchRequest.sortDescriptors = [NSSortDescriptor (key: "order", ascending: true)]
+                let predicate = NSPredicate(format: "libraryItem.title = %@", title as String)
+                fetchRequest.predicate = predicate
+                self.fetchedResultsControllerSubliminal = NSFetchedResultsController<Subliminal> (
+                    fetchRequest: fetchRequest,
+                    managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
+                    sectionNameKeyPath: nil,
+                    cacheName: nil)
+                
+                do {
+                    try fetchedResultsControllerSubliminal.performFetch()
+                } catch {
+                    print("An error occurred")
+                }
+            }
             
-        })
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        
-        optionMenu.addAction(selectFromLibraryAction)
-        optionMenu.addAction(typeOwnAction)
-        optionMenu.addAction(cancelAction)
-        
-        if let popoverController = optionMenu.popoverPresentationController {
-          popoverController.sourceView = self.view
-          popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
-          popoverController.permittedArrowDirections = []
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
-        self.present(optionMenu, animated: true, completion: nil)
     }
+    
+}
 
+extension MakerAddNewViewController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fetchedResultsController2 == nil ? 0 : fetchedResultsController2.fetchedObjects?.count ?? 0
+        return fetchedResultsControllerSubliminal == nil ? 0 : fetchedResultsControllerSubliminal.fetchedObjects?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "affirmationCell", for: indexPath as IndexPath) as! AffirmationTableViewCell
-        cell.affirmationLabel?.text = fetchedResultsController2.fetchedObjects?[indexPath.row].text
+        cell.affirmationLabel?.text = fetchedResultsControllerSubliminal.fetchedObjects?[indexPath.row].text
         return cell
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == .delete) {
             
-            let item = fetchedResultsController2.object(at: indexPath)
+            let item = fetchedResultsControllerSubliminal.object(at: indexPath)
             CoreDataManager.sharedInstance.removeSubliminal(item: item)
             
             do {
-                try fetchedResultsController2.performFetch()
+                try fetchedResultsControllerSubliminal.performFetch()
                 self.tableView.reloadData()
             } catch {
                 print("An error occurred")
@@ -398,12 +370,10 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
         return true
     }
     
-    
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         
-        guard let movedSubliminal = fetchedResultsController2.fetchedObjects?[sourceIndexPath.row] else { return }
+        guard let movedSubliminal = fetchedResultsControllerSubliminal.fetchedObjects?[sourceIndexPath.row] else { return }
         CoreDataManager.sharedInstance.moveSubliminal(item: movedSubliminal, fromOrder: sourceIndexPath.row, toOrder: destinationIndexPath.row)
-        
         //self.tableView.reloadData()
     }
     
@@ -416,61 +386,15 @@ class MakerAddNewViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let text = fetchedResultsController2.fetchedObjects?[indexPath.row].text
-        
+        let text = fetchedResultsControllerSubliminal.fetchedObjects?[indexPath.row].text
         let height = text?.height(withConstrainedWidth: 0.8 * tableView.frame.size.width, font: UIFont.systemFont(ofSize: 20)) ?? 44
-        
         return height + 44
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
-        
         self.tableView.reloadData()
-        //        tableView.beginUpdates()
-        //        tableView.endUpdates()
     }
-    
-    // MARK: segue
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        
-        if let vc = segue.destination as? AddAffirmationViewController {
-            addAffirmationViewController = vc
-            addAffirmationViewController?.delegate = self
-        }
-    }
-    
-    // AddAffirmationTextDelegate
-    func addSubliminal(text: String) {
-        
-        if let item = currentLibraryItem {
-            CoreDataManager.sharedInstance.addSubliminal(text: text, libraryItem: item)
-            
-            if let title = item.title {
-                let fetchRequest2 = NSFetchRequest<Subliminal> (entityName: "Subliminal")
-                fetchRequest2.sortDescriptors = [NSSortDescriptor (key: "order", ascending: true)]
-                let predicate2 = NSPredicate(format: "libraryItem.title = %@", title as String)
-                fetchRequest2.predicate = predicate2
-                self.fetchedResultsController2 = NSFetchedResultsController<Subliminal> (
-                    fetchRequest: fetchRequest2,
-                    managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
-                    sectionNameKeyPath: nil,
-                    cacheName: nil)
-                
-                do {
-                    try fetchedResultsController2.performFetch()
-                } catch {
-                    print("An error occurred")
-                }
-            }
-            
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-    }
-    
 }
 
 extension MakerAddNewViewController: NSFetchedResultsControllerDelegate {
@@ -499,11 +423,45 @@ extension MakerAddNewViewController: NSFetchedResultsControllerDelegate {
         }
     }
     
-    
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         self.tableView.endUpdates()
     }
+}
+
+extension MakerAddNewViewController: UIDocumentPickerDelegate {
     
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        print(urls)
+ 
+        guard let title = affirmationTitleLabel.text, let url = urls.first else { return }
+
+        spokenAffirmation = String(format: audioTemplate, title)
+        spokenAffirmationSilent = String(format: audioSilentTemplate, title)
+        
+        let ext = url.pathExtension
+        let filename = title + "." + ext
+        let newFileURL = copyFileToDocumentsFolder(sourceURL: urls.first!, targetFileName: filename)
+        convertSoundFileToCaf(url: newFileURL) { (success) in
+            
+            DispatchQueue.main.async {
+                
+                var preferences = EasyTipView.Preferences()
+                preferences.drawing.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+                preferences.drawing.foregroundColor = .white
+                preferences.drawing.backgroundColor = success ? self.importButton.tintColor : .red
+                preferences.drawing.arrowPosition = EasyTipView.ArrowPosition.top
+                preferences.animating.showDuration = 1.5
+                preferences.animating.dismissDuration = 1.5
+                
+                let tipView = EasyTipView(text: success ? "Your import was successful." : "Your import did fail!", preferences: preferences)
+                tipView.show(forView: self.importButton, withinSuperview: self.view)
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                    tipView.dismiss()
+                }
+            }
+        }
+    }
 }
 
 extension MakerAddNewViewController: ImagePickerDelegate {
@@ -515,6 +473,12 @@ extension MakerAddNewViewController: ImagePickerDelegate {
         coverImageButton.setImage(img, for: .normal)
         coverImageButton.isOverriden = true
     }
+}
+
+extension MakerAddNewViewController: EasyTipViewDelegate {
+    // MARK EasyTipViewDelegate
+    func easyTipViewDidTap(_ tipView: EasyTipView) {}
+    func easyTipViewDidDismiss(_ tipView: EasyTipView) { }
 }
 
 extension UIViewController {

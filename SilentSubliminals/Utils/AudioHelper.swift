@@ -32,15 +32,15 @@ struct AudioFileTypes {
     var audioPlayer = AVAudioPlayerNode()
 }
 
-var audioFiles: Array<AudioFileTypes> = [AudioFileTypes(filename: "spokenAffirmation.caf", isSilent: false), AudioFileTypes(filename: "spokenAffirmationSilent.caf", isSilent: true)]
+var audioFiles: Array<AudioFileTypes> = [AudioFileTypes(filename: String(format: audioTemplate, defaultAudioName), isSilent: false), AudioFileTypes(filename: String(format: audioSilentTemplate, defaultAudioName), isSilent: true)]
 
 // from documents dir
-var spokenAffirmation: String = "spokenAffirmation.caf" {
+var spokenAffirmation: String = String(format: audioTemplate, defaultAudioName) {
     didSet {
         audioFiles = [AudioFileTypes(filename: spokenAffirmation, isSilent: false), AudioFileTypes(filename: spokenAffirmationSilent, isSilent: true)]
     }
 }
-var spokenAffirmationSilent: String = "spokenAffirmationSilent.caf" {
+var spokenAffirmationSilent: String = String(format: audioSilentTemplate, defaultAudioName) {
     didSet {
         audioFiles = [AudioFileTypes(filename: spokenAffirmation, isSilent: false), AudioFileTypes(filename: spokenAffirmationSilent, isSilent: true)]
     }

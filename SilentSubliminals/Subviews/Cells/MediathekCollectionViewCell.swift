@@ -21,10 +21,12 @@ class MediathekCollectionViewCell: UICollectionViewCell {
     var hasOwnIcon: Bool = false
     
     let label = UILabel()
+    let checkmark = UIImageView(image: UIImage(named: "editPencilSymbol"))
     
     override func awakeFromNib() {
         super.awakeFromNib()
         //shake()
+        addCheckmark()
     }
     
     override func layoutSubviews() {
@@ -57,12 +59,20 @@ class MediathekCollectionViewCell: UICollectionViewCell {
         label.lineBreakMode = .byWordWrapping
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.5
-        
-//        label.layer.shadowColor = UIColor.black.cgColor
-//        label.layer.shadowRadius = 1.0
-//        label.layer.shadowOpacity = 0.8
-//        label.layer.shadowOffset = CGSize(width: 2, height: 2)
-//        label.layer.masksToBounds = false
+    }
+    
+    func addCheckmark() {
+        checkmark.alpha = 0
+        checkmark.tintColor = .white
+        symbolImageView.addSubview(checkmark)
+        checkmark.autoPinEdge(.top, to: .top, of: symbolImageView, withOffset: 5)
+        checkmark.autoPinEdge(.right, to: .right, of: symbolImageView, withOffset: -5)
+        checkmark.autoMatch(.width, to: .width, of: symbolImageView, withMultiplier: 0.5)
+        checkmark.autoMatch(.height, to: .height, of: symbolImageView, withMultiplier: 0.5)
+    }
+    
+    func displayCheckmark(flag: Bool) {
+        checkmark.alpha = flag ? 1 : 0
     }
     
     func shake(completionHandler: @escaping() -> Void) {

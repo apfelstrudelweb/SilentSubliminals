@@ -62,7 +62,10 @@ class ShowIconViewController: UIViewController {
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
         timer?.fire()
     }
-
+    @IBAction func closeButtonTouched(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     @objc func runTimedCode() {
         
         if PlayerStateMachine.shared.playerState == .affirmationLoop {
@@ -97,6 +100,4 @@ class ShowIconViewController: UIViewController {
         stopTimer = true
         timer = nil
     }
-    
-
 }

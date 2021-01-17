@@ -23,10 +23,13 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
     
     var selectedAffirmation: Subliminal?
     
+    var isEditingCreations: Bool = false
+    
     
     @IBOutlet weak var recentSubliminalsCollectionView: RecentSubliminalsCollectionView!
     @IBOutlet weak var creationsCollectionView: CreationsCollectionView!
     @IBOutlet weak var playlistCollectionView: PlaylistCollectionView!
+    @IBOutlet weak var editButton: UIButton!
     
 
     override func viewDidLoad() {
@@ -46,6 +49,67 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         recentSubliminalsCollectionView.addGestureRecognizer(longPressGestureRecent)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        isEditingCreations = false
+        displayEditingMode()
+        
+        let fetchRequestRecent = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
+        fetchRequestRecent.sortDescriptors = [NSSortDescriptor (key: "lastUsedDate", ascending: false)]
+        let predicateRecent = NSPredicate(format: "lastUsedDate != null")
+        fetchRequestRecent.predicate = predicateRecent
+        self.fetchedResultsControllerRecent = NSFetchedResultsController<LibraryItem> (
+            fetchRequest: fetchRequestRecent,
+            managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil)
+        self.fetchedResultsControllerRecent.delegate = self
+        
+        let fetchRequestCreations = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
+        fetchRequestCreations.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
+//        let predicateCreations = NSPredicate(format: "isDummyItem == null")
+//        fetchRequestCreations.predicate = predicateCreations
+        self.fetchedResultsControllerCreation = NSFetchedResultsController<LibraryItem> (
+            fetchRequest: fetchRequestCreations,
+            managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil)
+        self.fetchedResultsControllerCreation.delegate = self
+        
+        do {
+            try fetchedResultsControllerRecent.performFetch()
+            try fetchedResultsControllerCreation.performFetch()
+            recentItems = fetchedResultsControllerRecent.fetchedObjects!
+            creationItems = fetchedResultsControllerCreation.fetchedObjects!
+            
+            recentSubliminalsCollectionView.reloadData()
+            creationsCollectionView.reloadData()
+        } catch {
+            print("An error occurred")
+        }
+    }
+    
+    @IBAction func editButtonTouched(_ sender: Any) {
+        isEditingCreations = !isEditingCreations
+        displayEditingMode()
+    }
+    
+    func displayEditingMode() {
+
+        editButton.tintColor = isEditingCreations ? .gray : .white
+        
+        creationsCollectionView.allowsMultipleSelection = false
+
+        let indexPaths = creationsCollectionView.indexPathsForVisibleItems
+        for indexPath in indexPaths {
+            if indexPath.row == 0 { continue }
+            let cell = creationsCollectionView.cellForItem(at: indexPath) as! MediathekCollectionViewCell
+            cell.displayCheckmark(flag: isEditingCreations)
+        }
+    }
+    
+
     @objc func handleLongPressCreations(longPressGesture:UILongPressGestureRecognizer) {
         
         let p = longPressGesture.location(in: self.creationsCollectionView)
@@ -70,9 +134,8 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
                     alert.addAction(UIAlertAction(title: "YES", style: .default, handler: { _ in
                         
                         if let fileName = item.soundFileName {
-                            // TODO: make it more generic
-                            removeFileFromSandbox(filename: fileName + ".caf")
-                            removeFileFromSandbox(filename: fileName + "Silent.caf")
+                            removeFileFromSandbox(filename: String(format: audioTemplate, fileName))
+                            removeFileFromSandbox(filename: String(format: audioSilentTemplate, fileName))
                         }
                         
                         CoreDataManager.sharedInstance.deleteLibraryItem(item: item)
@@ -123,9 +186,9 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
                     alert.addAction(UIAlertAction(title: "YES", style: .default, handler: { _ in
                         
                         if let fileName = item.soundFileName {
-                            // TODO: make it more generic
-                            removeFileFromSandbox(filename: fileName + ".caf")
-                            removeFileFromSandbox(filename: fileName + "Silent.caf")
+                           
+                            removeFileFromSandbox(filename: String(format: audioTemplate, fileName))
+                            removeFileFromSandbox(filename: String(format: audioSilentTemplate, fileName))
                         }
                         
                         CoreDataManager.sharedInstance.deleteLibraryItem(item: item)
@@ -151,43 +214,6 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        let fetchRequestRecent = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
-        fetchRequestRecent.sortDescriptors = [NSSortDescriptor (key: "lastUsedDate", ascending: false)]
-        let predicateRecent = NSPredicate(format: "lastUsedDate != null")
-        fetchRequestRecent.predicate = predicateRecent
-        self.fetchedResultsControllerRecent = NSFetchedResultsController<LibraryItem> (
-            fetchRequest: fetchRequestRecent,
-            managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
-            sectionNameKeyPath: nil,
-            cacheName: nil)
-        self.fetchedResultsControllerRecent.delegate = self
-        
-        let fetchRequestCreations = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
-        fetchRequestCreations.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
-//        let predicateCreations = NSPredicate(format: "isDummyItem == null")
-//        fetchRequestCreations.predicate = predicateCreations
-        self.fetchedResultsControllerCreation = NSFetchedResultsController<LibraryItem> (
-            fetchRequest: fetchRequestCreations,
-            managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
-            sectionNameKeyPath: nil,
-            cacheName: nil)
-        self.fetchedResultsControllerCreation.delegate = self
-        
-        do {
-            try fetchedResultsControllerRecent.performFetch()
-            try fetchedResultsControllerCreation.performFetch()
-            recentItems = fetchedResultsControllerRecent.fetchedObjects!
-            creationItems = fetchedResultsControllerCreation.fetchedObjects!
-            
-            recentSubliminalsCollectionView.reloadData()
-        } catch {
-            print("An error occurred")
-        }
-        
-    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
@@ -205,7 +231,6 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         
         if collectionView.isKind(of: RecentSubliminalsCollectionView.self) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recentSubliminalCell", for: indexPath as IndexPath) as! MediathekCollectionViewCell
@@ -226,6 +251,7 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
             } else {
                 cell.title = ""
             }
+            //cell.displayCheckmark(flag: isEditingCreations)
             return cell
         } else if collectionView.isKind(of: PlaylistCollectionView.self) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "playlistCell", for: indexPath as IndexPath) as! MediathekCollectionViewCell
@@ -240,6 +266,12 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         return MediathekCollectionViewCell()
     }
     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row == 0 { return }
+        (cell as! MediathekCollectionViewCell).displayCheckmark(flag: isEditingCreations)
+    }
+
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         var item: LibraryItem?
@@ -250,11 +282,18 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         
         if collectionView.isKind(of: CreationsCollectionView.self) {
             item = creationItems?[indexPath.row]
+            if isEditingCreations {
+                if let selectedItem = item {
+                    SelectionHandler().selectLibraryItem(selectedItem)
+                    self.performSegue(withIdentifier: "makerSegue", sender: nil)
+                    return
+                }
+            }
         }
         
         if let selectedItem = item, let fileName = selectedItem.soundFileName {
-            spokenAffirmation = "\(fileName).caf"
-            spokenAffirmationSilent = "\(fileName)Silent.caf"
+            spokenAffirmation = String(format: audioTemplate, fileName)
+            spokenAffirmationSilent = String(format: audioSilentTemplate, fileName)
             
             SelectionHandler().selectLibraryItem(selectedItem)
             CoreDataManager.sharedInstance.save()

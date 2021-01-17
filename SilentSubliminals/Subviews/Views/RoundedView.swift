@@ -11,6 +11,11 @@ import UIKit
 class RoundedView: UIView {
     
     var imageView: UIImageView?
+    var rootView: UIView?
+    
+    var globalFrame: CGRect? {
+        return self.superview?.convert(self.frame, to: rootView)
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -21,22 +26,26 @@ class RoundedView: UIView {
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         
-        self.addBlurEffect(imageView: imageView ?? UIImageView(), frame: self.globalFrame!)
+        self.addBlurEffect(imageView: imageView ?? UIImageView(), frame: globalFrame!)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.addBlurEffect(imageView: imageView ?? UIImageView(), frame: self.globalFrame!)
+        self.addBlurEffect(imageView: imageView ?? UIImageView(), frame: globalFrame!)
+    }
+    
+    func setRootView(view: UIView) {
+        rootView = view
     }
     
 }
 
 extension UIView {
     
-    var globalFrame: CGRect? {
-        let rootView = UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.rootViewController?.view
-        return self.superview?.convert(self.frame, to: rootView)
-    }
+//    var globalFrame: CGRect? {
+//        let rootView = UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.rootViewController?.view.subviews.first
+//        return self.superview?.convert(self.frame, to: rootView)
+//    }
 
     func addBlurEffect(imageView: UIImageView, frame: CGRect) {
         imageView.makeBlurImage(targetImageView:imageView, frame: frame)

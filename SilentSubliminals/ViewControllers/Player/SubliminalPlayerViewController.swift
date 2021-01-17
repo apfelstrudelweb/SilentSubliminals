@@ -56,27 +56,21 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         }
     }
     
-//    @IBOutlet weak var iconImageView: UIImageView! {
-//        didSet {
 
-//        }
-//    }
-//    @IBOutlet weak var iconShadowView: ShadowView! {
-//        didSet {
-//            iconShadowView.opacity = 0.4
-//            iconShadowView.size = 1
-//        }
-//    }
+    @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var graphView: UIView!
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var playerView: RoundedView! {
         didSet {
+            playerView.rootView = containerView
             playerView.imageView = backgroundImageView
         }
     }
     @IBOutlet weak var soundView: RoundedView! {
         didSet {
+            soundView.rootView = containerView
             soundView.imageView = backgroundImageView
         }
     }
@@ -251,7 +245,6 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
             affirmationTitleLabel.text = libraryItem.title
             iconButton.setImage(UIImage(data: libraryItem.icon ?? Data()), for: .normal)
         }
-
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -348,7 +341,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         
         if !overlayButton.isEnabled {return}
         
-        UIView.animate(withDuration: 1) {
+        UIView.animate(withDuration: 2) {
             self.overlayView.alpha = 0
             //self.navigationController?.navigationBar.alpha = 1
             self.navigationController?.setNavigationBarHidden(false, animated: true)

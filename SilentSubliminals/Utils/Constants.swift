@@ -12,6 +12,13 @@ import UIKit
 
 let cornerRadius: CGFloat = 15
 
+// Audio files
+var audioTemplate = "%@.caf"
+var audioSilentTemplate = "%@Silent.caf"
+var defaultAudioName = "spokenSubliminal"
+
+let defaultImageButtonIcon = UIImage(named: "playerPlaceholderSymbol")
+
 // from main bundle
 let introductionSoundFile = "introduction.aiff"
 let leadInChairSoundFile = "leadInChair.aiff"
@@ -22,9 +29,6 @@ let bellSoundFile = "bell.aiff"
 let consolidationSoundFile = "Integration-Silent.mp3"
 
 let bufferSize: AVAudioFrameCount = 1024
-
-
-
 
 let playOnImg = UIImage(named: "playIcon.svg")
 let playOffImg = UIImage(named: "stopIcon.svg")

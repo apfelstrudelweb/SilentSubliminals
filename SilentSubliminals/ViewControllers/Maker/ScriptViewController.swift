@@ -59,10 +59,10 @@ class ScriptViewController: UIViewController, NSFetchedResultsControllerDelegate
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        update()
+        updateGUI()
     }
     
-    func update() {
+    func updateGUI() {
         let fetchRequest1 = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
         let predicate1 = NSPredicate(format: "isActive = true")
         fetchRequest1.predicate = predicate1

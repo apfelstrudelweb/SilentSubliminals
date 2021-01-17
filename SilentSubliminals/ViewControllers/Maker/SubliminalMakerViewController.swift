@@ -14,7 +14,7 @@ import CoreData
 import PureLayout
 
 
-let alpha: CGFloat = 0.85
+let editItemSegue = "editItemSegue"
 
 
 class SubliminalMakerViewController: UIViewController, BackButtonDelegate, MakerStateMachineDelegate, AudioHelperDelegate, UpdateMakerDelegate, ScriptViewDelegate, NSFetchedResultsControllerDelegate {
@@ -44,25 +44,12 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         MakerStateMachine.shared.delegate = self
         MakerStateMachine.shared.playerState = .playStopped
         MakerStateMachine.shared.recorderState = .recordStopped
-        
-        
-        //view.layer.contents = #imageLiteral(resourceName: "subliminalMakerBackground.png").cgImage
-        
-        //self.navigationController?.navigationBar.tintColor = .white
-        
+
         playerView.layer.cornerRadius = cornerRadius
         controlView.layer.cornerRadius = playerView.layer.cornerRadius
         controlView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        
-        playerView.layoutIfNeeded()
-        
-        let offset = 0.1 * view.frame.size.height
-        containerView.autoPinEdge(.bottom, to: .bottom, of: view, withOffset: -offset)
-        self.view.layoutIfNeeded()
 
-        
         print(getDocumentsDirectory())
- 
         audioHelper.checkForPermission()
     }
     
@@ -70,6 +57,11 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         super.viewWillAppear(animated)
         
         self.navigationController?.navigationBar.tintColor = .white
+        
+        updateGUI()
+    }
+    
+    func updateGUI() {
         
         let fetchRequest = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
         let predicate = NSPredicate(format: "isActive = true")
@@ -91,8 +83,8 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         scriptViewController?.view.isHidden = fetchedResultsController.fetchedObjects?.count == 0
         
         if let libraryItem = fetchedResultsController.fetchedObjects?.first, let fileName = libraryItem.soundFileName {
-            spokenAffirmation = "\(fileName).caf"
-            spokenAffirmationSilent = "\(fileName)Silent.caf"
+            spokenAffirmation = String(format: audioTemplate, fileName)
+            spokenAffirmationSilent = String(format: audioSilentTemplate, fileName)
         }
     }
     
@@ -115,24 +107,29 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         }
         if let vc = segue.destination as? MakerAddNewViewController {
             makerAddNewViewController = vc
-            makerAddNewViewController?.isEditingMode = segue.identifier == "editItemSegue"
+            makerAddNewViewController?.isEditingMode = segue.identifier == editItemSegue
             makerAddNewViewController?.delegate = self
         }
     }
+
+    // MARK: user actions
     
     // MARK: ScriptViewDelegate
     func editButtonTouched() {
-        self.performSegue(withIdentifier: "editItemSegue", sender: self)
+        self.performSegue(withIdentifier: editItemSegue, sender: self)
+    }
+    
+    // MARK: BackButtonDelegate
+    func close() {
+        self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
     // MARK: UpdateMakerDelegate
     func itemDidUpdate() {
-        
-        scriptViewController?.update()
+        scriptViewController?.updateGUI()
+        updateGUI()
     }
     
-
-    // MARK: user actions
     @IBAction func playButtonTouched(_ sender: Any) {
         
         if MakerStateMachine.shared.playerState == .playStopped {
@@ -151,6 +148,7 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         }
     }
     
+    // MARK: Audio
     func startPlaying() {
        MakerStateMachine.shared.doNextPlayerState()
     }
@@ -170,22 +168,8 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         audioHelper.stopRecording()
     }
     
-    // MARK: MakerStateMachineDelegate
-    func performPlayerAction() {
-        
-        self.spectrumViewController?.clearGraph()
-        print(MakerStateMachine.shared.playerState)
 
-        if MakerStateMachine.shared.playerState == .play {
-            playButton.setState(active: true)
-            recordButton.setEnabled(flag: false)
-            audioHelper.playSingleAffirmation(instance: .maker)
-        } else if MakerStateMachine.shared.playerState == .playStopped {
-            playButton.setState(active: false)
-            recordButton.setEnabled(flag: true)
-        }
-    }
-    
+    // MARK: MakerStateMachineDelegate
     func performRecorderAction() {
         
         self.spectrumViewController?.clearGraph()
@@ -201,17 +185,25 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         }
     }
     
+    func performPlayerAction() {
+        
+        self.spectrumViewController?.clearGraph()
+        print(MakerStateMachine.shared.playerState)
+
+        if MakerStateMachine.shared.playerState == .play {
+            playButton.setState(active: true)
+            recordButton.setEnabled(flag: false)
+            audioHelper.playSingleAffirmation(instance: .maker)
+        } else if MakerStateMachine.shared.playerState == .playStopped {
+            playButton.setState(active: false)
+            recordButton.setEnabled(flag: true)
+        }
+    }
+
     // MARK: AudioHelperDelegate
     func processAudioData(buffer: AVAudioPCMBuffer) {
         DispatchQueue.main.async {
             self.spectrumViewController?.processAudioData(buffer: buffer)
         }
     }
-
-    
-    // MARK: BackButtonDelegate
-    func close() {
-        self.navigationController?.dismiss(animated: true, completion: nil)
-    }
-
 }
