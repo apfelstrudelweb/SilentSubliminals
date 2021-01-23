@@ -158,12 +158,28 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         NotificationCenter.default.addObserver(self, selector: #selector(appCameToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
 
     }
+    
+    func setTabBar(hidden:Bool) {
+        guard let frame = self.tabBarController?.tabBar.frame else {return }
+        
+        if hidden {
+            UIView.animate(withDuration: 1, animations: {
+                self.tabBarController?.tabBar.frame = CGRect(x: frame.origin.x, y: frame.origin.y + frame.height, width: frame.width, height: frame.height)
+            })
+        } else {
+            UIView.animate(withDuration: 1, animations: {
+                self.tabBarController?.tabBar.frame = UITabBarController().tabBar.frame
+
+            })
+        }
+    }
 
     @objc func appCameToForeground() {
         print("app enters foreground")
 
         if self.overlayView.alpha == 1 {
             self.navigationController?.setNavigationBarHidden(true, animated: true)
+            setTabBar(hidden: true)
         }
         self.scrollView.layoutSubviews()
         
@@ -322,6 +338,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
                 self.overlayView.alpha = 1
                 //self.navigationController?.navigationBar.alpha = 0.01
                 self.navigationController?.setNavigationBarHidden(true, animated: true)
+                self.setTabBar(hidden: true)
             } completion: { _ in
                 self.overlayButton.isEnabled = true
             }
@@ -345,6 +362,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
             self.overlayView.alpha = 0
             //self.navigationController?.navigationBar.alpha = 1
             self.navigationController?.setNavigationBarHidden(false, animated: true)
+            self.setTabBar(hidden: false)
         }
     }
     
@@ -355,6 +373,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
             self.overlayView.alpha = 1
             //self.navigationController?.navigationBar.alpha = 0
             self.navigationController?.setNavigationBarHidden(true, animated: true)
+            self.setTabBar(hidden: true)
         } completion: { _ in
             self.overlayButton.isEnabled = true
         }

@@ -792,7 +792,7 @@
                         <viewControllerLayoutGuide type="bottom" id="OGU-6r-KNa"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Nie-sQ-mcI">
-                        <rect key="frame" x="0.0" y="0.0" width="385.33333333333331" height="74"/>
+                        <rect key="frame" x="0.0" y="0.0" width="385.33333333333331" height="111.33333333333333"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
                 </viewController>
@@ -1899,10 +1899,10 @@
                                         </connections>
                                     </button>
                                     <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A7d-re-UXC">
-                                        <rect key="frame" x="0.0" y="44" width="428" height="848"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ReR-BM-Nwg">
-                                                <rect key="frame" x="0.0" y="0.0" width="428" height="848"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                                                 <connections>
                                                     <action selector="overlayButtonTouchUpInside:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="NMr-T1-Z3h"/>
                                                 </connections>
@@ -1931,10 +1931,12 @@
                                     <constraint firstItem="eH5-ak-7m4" firstAttribute="bottom" secondItem="6wh-a8-55O" secondAttribute="bottom" id="QN1-ob-iff"/>
                                     <constraint firstItem="Nut-yP-AnK" firstAttribute="trailing" secondItem="6wh-a8-55O" secondAttribute="trailing" id="Tfj-TZ-el9"/>
                                     <constraint firstItem="Nut-yP-AnK" firstAttribute="top" secondItem="6wh-a8-55O" secondAttribute="top" id="ZdZ-6c-evr"/>
+                                    <constraint firstItem="A7d-re-UXC" firstAttribute="top" secondItem="NCa-i9-p6t" secondAttribute="top" id="bch-bR-HAT"/>
                                     <constraint firstAttribute="bottom" secondItem="KIc-QH-czb" secondAttribute="bottom" id="c2i-XF-PbM"/>
                                     <constraint firstItem="iUg-V1-pPz" firstAttribute="top" secondItem="NCa-i9-p6t" secondAttribute="top" constant="100" id="jgC-4Z-Gc9"/>
                                     <constraint firstItem="eH5-ak-7m4" firstAttribute="top" secondItem="6wh-a8-55O" secondAttribute="top" id="lsO-ki-lL0"/>
                                     <constraint firstAttribute="trailing" secondItem="KIc-QH-czb" secondAttribute="trailing" id="mQP-75-1aR"/>
+                                    <constraint firstAttribute="bottom" secondItem="A7d-re-UXC" secondAttribute="bottom" id="mpj-DX-lb3"/>
                                     <constraint firstItem="Nut-yP-AnK" firstAttribute="leading" secondItem="6wh-a8-55O" secondAttribute="leading" id="vzt-bx-OL6"/>
                                     <constraint firstItem="6wh-a8-55O" firstAttribute="top" secondItem="KIc-QH-czb" secondAttribute="top" constant="60" id="yXZ-Rl-fkt"/>
                                     <constraint firstItem="eH5-ak-7m4" firstAttribute="trailing" secondItem="6wh-a8-55O" secondAttribute="trailing" id="z2O-lY-Xmm"/>
@@ -1963,8 +1965,6 @@
                             <constraint firstItem="NCa-i9-p6t" firstAttribute="height" secondItem="S0S-wa-Cfu" secondAttribute="height" multiplier="0.8" id="I8I-7s-eJ9"/>
                             <constraint firstItem="A7d-re-UXC" firstAttribute="leading" secondItem="S0S-wa-Cfu" secondAttribute="leading" id="LOf-pd-mbr"/>
                             <constraint firstItem="NCa-i9-p6t" firstAttribute="trailing" secondItem="S0S-wa-Cfu" secondAttribute="trailing" id="cV5-VD-EbR"/>
-                            <constraint firstItem="A7d-re-UXC" firstAttribute="top" secondItem="4WA-Iv-5ab" secondAttribute="bottom" id="cWh-gO-oxd"/>
-                            <constraint firstItem="YdH-CF-cIA" firstAttribute="top" secondItem="A7d-re-UXC" secondAttribute="bottom" id="gGI-Wy-pB7"/>
                             <constraint firstAttribute="top" secondItem="NCa-i9-p6t" secondAttribute="top" id="kFo-yc-new"/>
                             <constraint firstAttribute="leading" secondItem="NCa-i9-p6t" secondAttribute="leading" id="li7-3H-Gf0"/>
                             <constraint firstAttribute="trailing" secondItem="A7d-re-UXC" secondAttribute="trailing" id="pge-r3-QiD"/>
@@ -2682,9 +2682,9 @@
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="QTW-cV-1zg"/>
+        <segue reference="MRg-E8-hf8"/>
         <segue reference="Ynl-jh-dzU"/>
-        <segue reference="cAG-5h-vwQ"/>
+        <segue reference="VQu-IX-ctv"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="bedIcon" width="417" height="417"/>
