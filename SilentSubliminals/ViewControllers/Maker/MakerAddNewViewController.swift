@@ -31,7 +31,6 @@ class MakerAddNewViewController: UIViewController, UITableViewDataSource, AddAff
     var isEditingMode: Bool = false
     var hasOwnIcon = false
     
-    var calledFromMediathek: Bool = false
     
     private var addAffirmationViewController: AddAffirmationViewController?
     private var scriptViewController: ScriptViewController?
@@ -158,27 +157,27 @@ class MakerAddNewViewController: UIViewController, UITableViewDataSource, AddAff
             CoreDataManager.sharedInstance.updateLibraryItem(title: title, icon: icon, hasOwnIcon: hasOwnIcon)
         }
 
-        if calledFromMediathek {
-            
-            guard let viewControllers = self.navigationController?.viewControllers else { return }
-            var controllerStack = viewControllers
-            
-            var index = 0
-            
-            for (i, vc) in controllerStack.enumerated() {
-                
-                if vc.isKind(of: MediathekViewController.self) {
-                    index = i
-                    break
-                }
-            }
-            
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "SubliminalMaker")
-            controllerStack[index] = vc
-            
-            self.navigationController?.setViewControllers(controllerStack, animated: true);
-        }
+//        if false {
+//            
+//            guard let viewControllers = self.navigationController?.viewControllers else { return }
+//            var controllerStack = viewControllers
+//            
+//            var index = 0
+//            
+//            for (i, vc) in controllerStack.enumerated() {
+//                
+//                if vc.isKind(of: MediathekViewController.self) {
+//                    index = i
+//                    break
+//                }
+//            }
+//            
+//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//            let vc = storyboard.instantiateViewController(withIdentifier: "SubliminalMaker")
+//            controllerStack[index] = vc
+//            
+//            self.navigationController?.setViewControllers(controllerStack, animated: true);
+//        }
         
         delegate?.itemDidUpdate()
         

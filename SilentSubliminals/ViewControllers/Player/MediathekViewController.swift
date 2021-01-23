@@ -236,21 +236,23 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "recentSubliminalCell", for: indexPath as IndexPath) as! MediathekCollectionViewCell
             guard let item = fetchedResultsControllerRecent.fetchedObjects?[indexPath.row] else { return cell }
             cell.symbolImageView.image = UIImage(data: item.icon ?? Data())
-            if !item.hasOwnIcon {
-                cell.title = item.title
-            } else {
-                cell.title = ""
-            }
+            cell.titleLabel.text = item.title
+//            if !item.hasOwnIcon {
+//                cell.title = item.title
+//            } else {
+//                cell.title = ""
+//            }
             return cell
         } else if collectionView.isKind(of: CreationsCollectionView.self) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "creationsCell", for: indexPath as IndexPath) as! MediathekCollectionViewCell
             guard let item = fetchedResultsControllerCreation.fetchedObjects?[indexPath.row] else { return cell }
             cell.symbolImageView.image = UIImage(data: item.icon ?? Data())
-            if !item.hasOwnIcon {
-                cell.title = item.title
-            } else {
-                cell.title = ""
-            }
+            cell.titleLabel.text = item.title
+//            if !item.hasOwnIcon {
+//                cell.title = item.title
+//            } else {
+//                cell.title = ""
+//            }
             //cell.displayCheckmark(flag: isEditingCreations)
             return cell
         } else if collectionView.isKind(of: PlaylistCollectionView.self) {
@@ -300,7 +302,7 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         }
         
         if collectionView.isKind(of: CreationsCollectionView.self) && indexPath.row == 0 {
-            self.performSegue(withIdentifier: "createScriptSegue", sender: nil)
+            self.performSegue(withIdentifier: "makerSegue", sender: nil)
             return
         }
         
@@ -319,7 +321,7 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         if let vc = segue.destination as? SubliminalPlayerViewController {
             vc.affirmation = selectedAffirmation
         }
-        if let vc = segue.destination as? MakerAddNewViewController {
+        if let vc = segue.destination as? SubliminalMakerViewController {
             vc.calledFromMediathek = true
         }
         

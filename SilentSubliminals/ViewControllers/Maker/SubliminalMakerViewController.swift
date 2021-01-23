@@ -16,6 +16,7 @@ import PureLayout
 
 let editItemSegue = "editItemSegue"
 
+let documentInteractionController = UIDocumentInteractionController()
 
 class SubliminalMakerViewController: UIViewController, BackButtonDelegate, MakerStateMachineDelegate, AudioHelperDelegate, UpdateMakerDelegate, ScriptViewDelegate, NSFetchedResultsControllerDelegate {
 
@@ -35,10 +36,16 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
     var usedAffirmation: String?
     var usedImage: UIImage?
     
+    var calledFromMediathek: Bool = false
+    
     var fetchedResultsController: NSFetchedResultsController<LibraryItem>!
+    
+    let documentInteractionController = UIDocumentInteractionController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        documentInteractionController.delegate = self
   
         audioHelper.delegate = self
         MakerStateMachine.shared.delegate = self
@@ -51,6 +58,10 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
 
         print(getDocumentsDirectory())
         audioHelper.checkForPermission()
+        
+        if calledFromMediathek {
+            performSegue(withIdentifier: "addItemSegue", sender: self)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -166,6 +177,30 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
     func stopRecording() {
         MakerStateMachine.shared.doNextRecorderState()
         audioHelper.stopRecording()
+
+        let url = getFileFromSandbox(filename: spokenAffirmation) 
+               URLSession.shared.dataTask(with: url) { data, response, error in
+                   guard let data = data, error == nil else { return }
+                   let tmpURL = FileManager.default.temporaryDirectory
+                       .appendingPathComponent(response?.suggestedFilename ?? "bell.aiff")
+                   do {
+                       try data.write(to: tmpURL)
+                       DispatchQueue.main.async {
+                           self.share(url: tmpURL)
+                       }
+                   } catch {
+                       print(error)
+                   }
+
+               }.resume()
+    }
+    
+    func share(url: URL) {
+        documentInteractionController.url = url
+        documentInteractionController.uti = url.typeIdentifier ?? "public.data, public.content"
+        documentInteractionController.name = url.localizedName ?? url.lastPathComponent
+        documentInteractionController.presentOptionsMenu(from: view.frame, in: view, animated: true)
+        //documentInteractionController.presentPreview(animated: true)
     }
     
 
@@ -205,5 +240,16 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         DispatchQueue.main.async {
             self.spectrumViewController?.processAudioData(buffer: buffer)
         }
+    }
+}
+
+
+extension SubliminalMakerViewController: UIDocumentInteractionControllerDelegate {
+    /// If presenting atop a navigation stack, provide the navigation controller in order to animate in a manner consistent with the rest of the platform
+    func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
+        guard let navVC = self.navigationController else {
+            return self
+        }
+        return navVC
     }
 }

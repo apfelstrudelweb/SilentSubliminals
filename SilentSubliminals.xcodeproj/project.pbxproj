@@ -37,6 +37,7 @@
 		6569A006253C413B000E7F95 /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6569A005253C413B000E7F95 /* ShadowView.swift */; };
 		6569A008253C43A7000E7F95 /* plusButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 6569A007253C43A7000E7F95 /* plusButton.png */; };
 		6569A00A253C4834000E7F95 /* ScriptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6569A009253C4834000E7F95 /* ScriptViewController.swift */; };
+		656A214125B612D90084B84B /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656A214025B612D90084B84B /* CloudKit.framework */; };
 		656D43072594B50D0067A4D8 /* SymbolButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D43062594B50D0067A4D8 /* SymbolButton.swift */; };
 		656D430A2594B5840067A4D8 /* SymbolImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D43092594B5840067A4D8 /* SymbolImageView.swift */; };
 		656D430D2594B5F30067A4D8 /* VolumeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D430C2594B5F30067A4D8 /* VolumeSlider.swift */; };
@@ -52,6 +53,7 @@
 		657A0F9025A347C400A4CCF2 /* Subliminal+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657A0F8A25A347C400A4CCF2 /* Subliminal+CoreDataClass.swift */; };
 		657A0F9125A347C400A4CCF2 /* Subliminal+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657A0F8B25A347C400A4CCF2 /* Subliminal+CoreDataProperties.swift */; };
 		657A0F9725A4850700A4CCF2 /* ImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657A0F9625A4850700A4CCF2 /* ImageButton.swift */; };
+		657A460025BCB2E9003BF0D4 /* TabbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657A45FF25BCB2E9003BF0D4 /* TabbarController.swift */; };
 		657AA0C6258F544200320465 /* Misc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657AA0C5258F544200320465 /* Misc.swift */; };
 		6598C2F0259106FC0042A7E1 /* PlayerStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6598C2EF259106FC0042A7E1 /* PlayerStateMachine.swift */; };
 		65A052B8259F2DDF00F3C6BD /* DisclaimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A052B7259F2DDF00F3C6BD /* DisclaimerViewController.swift */; };
@@ -155,6 +157,8 @@
 		6569A005253C413B000E7F95 /* ShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowView.swift; sourceTree = "<group>"; };
 		6569A007253C43A7000E7F95 /* plusButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plusButton.png; sourceTree = "<group>"; };
 		6569A009253C4834000E7F95 /* ScriptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptViewController.swift; sourceTree = "<group>"; };
+		656A213E25B610860084B84B /* FREE UR SPIRIT.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "FREE UR SPIRIT.entitlements"; sourceTree = "<group>"; };
+		656A214025B612D90084B84B /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		656D43062594B50D0067A4D8 /* SymbolButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolButton.swift; sourceTree = "<group>"; };
 		656D43092594B5840067A4D8 /* SymbolImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolImageView.swift; sourceTree = "<group>"; };
 		656D430C2594B5F30067A4D8 /* VolumeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeSlider.swift; sourceTree = "<group>"; };
@@ -171,6 +175,7 @@
 		657A0F8B25A347C400A4CCF2 /* Subliminal+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Subliminal+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		657A0F9625A4850700A4CCF2 /* ImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageButton.swift; sourceTree = "<group>"; };
 		657A0F9F25A5C6BB00A4CCF2 /* consolidationSilent.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = consolidationSilent.caf; sourceTree = "<group>"; };
+		657A45FF25BCB2E9003BF0D4 /* TabbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarController.swift; sourceTree = "<group>"; };
 		657AA0C5258F544200320465 /* Misc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Misc.swift; sourceTree = "<group>"; };
 		6598C2EF259106FC0042A7E1 /* PlayerStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerStateMachine.swift; sourceTree = "<group>"; };
 		65A052B7259F2DDF00F3C6BD /* DisclaimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimerViewController.swift; sourceTree = "<group>"; };
@@ -237,6 +242,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				652D5C5A2546B6170083165B /* Accelerate.framework in Frameworks */,
+				656A214125B612D90084B84B /* CloudKit.framework in Frameworks */,
 				65F0727C25445673004C8BA3 /* AVFoundation.framework in Frameworks */,
 				AD83545AEC9D9F6A21E562C9 /* Pods_FREE_UR_SPIRIT.framework in Frameworks */,
 			);
@@ -257,6 +263,7 @@
 		4D7162C5A14251C1FA9FD75E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				656A214025B612D90084B84B /* CloudKit.framework */,
 				652D5C592546B6170083165B /* Accelerate.framework */,
 				65F0727B25445673004C8BA3 /* AVFoundation.framework */,
 				AB82CA3693914B0F783D9BCE /* Pods_FREE_UR_SPIRIT.framework */,
@@ -310,6 +317,7 @@
 		6558D2FC24684934004E8660 = {
 			isa = PBXGroup;
 			children = (
+				656A213E25B610860084B84B /* FREE UR SPIRIT.entitlements */,
 				6558D30724684934004E8660 /* SilentSubliminals */,
 				6558D30624684934004E8660 /* Products */,
 				2AA53B5A417622581E635D17 /* Pods */,
@@ -328,6 +336,7 @@
 		6558D30724684934004E8660 /* SilentSubliminals */ = {
 			isa = PBXGroup;
 			children = (
+				657A45FE25BCB2C4003BF0D4 /* Tabbar */,
 				653353E425A1EC820067A4A6 /* CoreData */,
 				6568E64D258F5268009390D5 /* Resources */,
 				65A052F925A0937400F3C6BD /* CollectionViews */,
@@ -436,6 +445,14 @@
 				656D43152594BEBA0067A4D8 /* VolumeViewController.swift */,
 			);
 			path = Controls;
+			sourceTree = "<group>";
+		};
+		657A45FE25BCB2C4003BF0D4 /* Tabbar */ = {
+			isa = PBXGroup;
+			children = (
+				657A45FF25BCB2E9003BF0D4 /* TabbarController.swift */,
+			);
+			path = Tabbar;
 			sourceTree = "<group>";
 		};
 		657AA0C7258F54C700320465 /* Singletons */ = {
@@ -743,6 +760,7 @@
 				653353E725A1ECB00067A4A6 /* Subliminal.xcdatamodeld in Sources */,
 				653BA545258E69FC004A0BA7 /* SetEndtimeViewController.swift in Sources */,
 				657AA0C6258F544200320465 /* Misc.swift in Sources */,
+				657A460025BCB2E9003BF0D4 /* TabbarController.swift in Sources */,
 				65651D78259DD763006BA4DD /* LoudspeakerSymbolView.swift in Sources */,
 				65A0531425A0E50900F3C6BD /* ImagePicker.swift in Sources */,
 				657A0F9025A347C400A4CCF2 /* Subliminal+CoreDataClass.swift in Sources */,
@@ -951,6 +969,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "FREE UR SPIRIT.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = P2EQM7YAFH;
@@ -976,6 +995,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "FREE UR SPIRIT.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = P2EQM7YAFH;

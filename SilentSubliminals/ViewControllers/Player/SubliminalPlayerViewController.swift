@@ -121,7 +121,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         super.viewDidLoad()
         
         //navigationController?.hidesBarsOnTap = true
- 
+        
         overlayView.layer.contents = #imageLiteral(resourceName: "subliminalPlayerBackground.png").cgImage
         overlayButton.isEnabled = false
         

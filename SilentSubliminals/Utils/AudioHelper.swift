@@ -307,14 +307,15 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         
         var settings: [String : Any] = [:]
         
-        settings[AVFormatIDKey] = kAudioFormatAppleLossless
-        settings[AVAudioFileTypeKey] = kAudioFileM4AType
+        settings[AVFormatIDKey] = kAudioFormatAppleIMA4
+        settings[AVAudioFileTypeKey] = kAudioFileCAFType
         settings[AVSampleRateKey] = readBuffer.format.sampleRate
         settings[AVNumberOfChannelsKey] = readBuffer.format.channelCount
         settings[AVLinearPCMIsFloatKey] = (readBuffer.format.commonFormat == .pcmFormatInt32)
-        settings[AVSampleRateConverterAudioQualityKey] = AVAudioQuality.max
-        settings[AVLinearPCMBitDepthKey] = 32
-        settings[AVEncoderAudioQualityKey] = AVAudioQuality.max
+//        settings[AVSampleRateConverterAudioQualityKey] = AVAudioQuality.max
+//        settings[AVLinearPCMBitDepthKey] = 32
+//        settings[AVEncoderAudioQualityKey] = AVAudioQuality.max
+        settings[AVEncoderBitDepthHintKey] = 16
         
         // The render format is also the output format
         let output = try! AVAudioFile(forWriting: getFileFromSandbox(filename: spokenAffirmationSilent), settings: settings, commonFormat: renderFormat.commonFormat, interleaved: renderFormat.isInterleaved)
@@ -416,7 +417,69 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         audioQueue.async {
             self.createSilentSubliminalFile()
         }
+        
+        audioQueue.async {
+            
+            //try! startBackup()
+//            let audioFile = getFileFromSandbox(filename: spokenAffirmation)
+//            //let cloudURL = FileManager.default.url(forUbiquityContainerIdentifier: nil)
+//            let iCloudDocumentsURL = FileManager.default.url(forUbiquityContainerIdentifier: "iCloud.silent.subliminals")//?.appendingPathComponent("Documents")
+//
+//            if  iCloudDocumentsURL != nil {
+//                if (!FileManager.default.fileExists(atPath: iCloudDocumentsURL!.path, isDirectory: nil)) {
+//                    try! FileManager.default.createDirectory(at: iCloudDocumentsURL!, withIntermediateDirectories: true, attributes: nil)
+//
+//
+//                }
+//            } else {
+//                print("iCloud is NOT working!")
+//                //return
+//            }
+//
+//            try! FileManager.default.copyItem(at: audioFile, to: iCloudDocumentsURL!)
+//        }
     }
+    
+    func startBackup() throws {
+        
+        guard let url = Bundle.main.url(forResource: "bell", withExtension: "aiff") else { return }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+                    guard let data = data, error == nil else { return }
+                    let tmpURL = FileManager.default.temporaryDirectory
+                        .appendingPathComponent(response?.suggestedFilename ?? "bell.aiff")
+                print(tmpURL)
+                    do {
+                        try data.write(to: tmpURL)
+//                        DispatchQueue.main.async {
+//                            self.share(url: tmpURL)
+//                        }
+                    } catch {
+                        print(error)
+                    }
+
+                }.resume()
+    }
+        
+//                guard let fileURL = Bundle.main.url(forResource: "bell", withExtension: "aiff") else { return }
+//
+//                guard let containerURL = FileManager.default.url(forUbiquityContainerIdentifier: "iCloud.silent.subliminals") else { return }
+//
+//                if !FileManager.default.fileExists(atPath: containerURL.path) {
+//                    try FileManager.default.createDirectory(at: containerURL, withIntermediateDirectories: true, attributes: nil)
+//                }
+//
+//                let backupFileURL = containerURL.appendingPathComponent("bell.aiff")
+//                if FileManager.default.fileExists(atPath: backupFileURL.path) {
+//                    try FileManager.default.removeItem(at: backupFileURL)
+//                    try FileManager.default.copyItem(at: fileURL, to: backupFileURL)
+//                } else {
+//                    try FileManager.default.copyItem(at: fileURL, to: backupFileURL)
+//                }
+//
+//            }
+    }
+        
     
     func checkForPermission() {
         Manager.recordingSession = AVAudioSession.sharedInstance()
@@ -439,5 +502,15 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         } catch {
             print("Failed to set Category", error.localizedDescription)
         }
+    }
+}
+
+
+extension URL {
+    var typeIdentifier: String? {
+        return (try? resourceValues(forKeys: [.typeIdentifierKey]))?.typeIdentifier
+    }
+    var localizedName: String? {
+        return (try? resourceValues(forKeys: [.localizedNameKey]))?.localizedName
     }
 }

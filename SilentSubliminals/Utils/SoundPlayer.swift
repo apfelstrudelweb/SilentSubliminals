@@ -39,6 +39,11 @@ open class SoundPlayer: NSObject {
         highPass.bandwidth = bandwidth
         highPass.bypass = false
         
+        // TODO
+        if spokenAffirmation == ".caf" {
+            return
+        }
+        
         do {
             let audioFile = try AVAudioFile(forReading: getFileFromSandbox(filename: spokenAffirmation))
             self.singleAffirmationDuration = audioFile.duration

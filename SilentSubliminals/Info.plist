@@ -26,6 +26,18 @@
 	<string>${PRODUCT_NAME} always needs your microphone</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app wants to use your photos.</string>
+	<key>NSUbiquitousContainers</key>
+	<dict>
+		<key>iCloud.FreeUrSpirit</key>
+		<dict>
+			<key>NSUbiquitousContainerIsDocumentScopePublic</key>
+			<true/>
+			<key>NSUbiquitousContainerName</key>
+			<string>FreeUrSpirit</string>
+			<key>NSUbiquitousContainerSupportedFolderLevels</key>
+			<string>Any</string>
+		</dict>
+	</dict>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -71,6 +83,55 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UISupportsDocumentBrowser</key>
+	<true/>
+    <key>UIFileSharingEnabled</key>
+    <true/>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Audio</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.data</string>
+				<string>public.content</string>
+				<string>public.composite-​content</string>
+				<string>public.plain-text</string>
+				<string>public.image</string>
+				<string>public.audio</string>
+				<string>public.caf</string>
+				<string>public.aiff</string>
+				<string>public.mpeg-4</string>
+				<string>public.avi</string>
+				<string>com.apple.quicktime-movie</string>
+				<string>public.mp3</string>
+				<string>public.movie</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Video</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.3gpp</string>
+				<string>public.3gpp2</string>
+				<string>public.mpeg-4</string>
+				<string>public.avi</string>
+				<string>com.apple.quicktime-movie</string>
+				<string>public.mpeg</string>
+				<string>public.movie</string>
+			</array>
+		</dict>
 	</array>
 </dict>
 </plist>

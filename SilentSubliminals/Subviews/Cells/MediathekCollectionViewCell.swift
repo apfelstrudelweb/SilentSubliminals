@@ -14,9 +14,10 @@ class MediathekCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var symbolImageView: UIImageView!
     var title: String? {
         didSet {
-            addLabel()
+            //addLabel()
         }
     }
+    @IBOutlet weak var titleLabel: UILabel!
     
     var hasOwnIcon: Bool = false
     

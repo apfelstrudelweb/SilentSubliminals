@@ -29,6 +29,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().shadowImage = UIImage()
         UINavigationBar.appearance().isTranslucent = true
         
+        UITabBar.appearance().barTintColor = darkGrayColor
+        UITabBar.appearance().tintColor = .white
+        UITabBar.appearance().unselectedItemTintColor = lightGrayColor
+        UITabBar.appearance().isTranslucent = true
+        
         
         let audioSession = AVAudioSession.sharedInstance()
         do {
