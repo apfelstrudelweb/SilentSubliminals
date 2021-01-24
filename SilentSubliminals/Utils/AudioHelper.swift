@@ -13,12 +13,10 @@ protocol AudioHelperDelegate : AnyObject {
     
     func processAudioData(buffer: AVAudioPCMBuffer)
     func alertSilentsTooLoud(flag: Bool)
-    func notifyAboutInterrupt(begin: Bool)
 }
 
 extension AudioHelperDelegate {
     func alertSilentsTooLoud(flag: Bool) {}
-    func notifyAboutInterrupt(begin: Bool) {}
 }
 
 struct Manager {
@@ -52,11 +50,6 @@ func delay(_ delay:Double, closure:@escaping ()->()) {
 }
 
 class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
-    
-    func notifyAboutInterrupt(begin: Bool) {
-        
-    }
-    
     
     func processAudioData(buffer: AVAudioPCMBuffer) {
         self.delegate?.processAudioData(buffer: buffer)
@@ -104,9 +97,6 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
     @objc func handleRouteChange(notification: Notification) {
         print(notification.name)
         routeIsChanging = true
-        //try! self.audioEngine.start()
-        //sleep(1)
-        //continueSound()
     }
     
     @objc func handleInterruption(notification: Notification) {
@@ -116,21 +106,15 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         
         switch type {
         case .began:
-            // Pause your player
-            //pauseSound()
-            delegate?.notifyAboutInterrupt(begin: true)
-            print(type)
-            break;
+            pauseSound()
+            break
             
         case .ended:
-            delegate?.notifyAboutInterrupt(begin: false)
-            if let optionInt = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt {
-                let options = AVAudioSession.InterruptionOptions(rawValue: optionInt)
-                //TODO: resolve side effect with subliminal dictation in AddAffirmationViewController
-//                if options.contains(.shouldResume) {
-//                    try! self.audioEngine.start()
-//                }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                self.continueSound() // sets up the audio session, connects nodes, starts the engine, plays the player, and sets isRunning to true
             }
+            break
+
         @unknown default:
             print("handleInterruption error")
         }
@@ -247,12 +231,12 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
 
     func pauseSound() {
         
-        soundPlayer.pause()
+        soundPlayer.pauseEngine()
     }
     
     func continueSound() {
         
-        soundPlayer.continuePlayer()
+        soundPlayer.continueEngine()
     }
     
     // MARK:VolumeManagerDelegate

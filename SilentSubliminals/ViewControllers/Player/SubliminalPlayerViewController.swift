@@ -227,10 +227,6 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         }
     }
     
-    func notifyAboutInterrupt(begin: Bool) {
-        PlayerStateMachine.shared.pauseState = begin ? .pause : .play
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         

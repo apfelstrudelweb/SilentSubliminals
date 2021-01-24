@@ -33,6 +33,8 @@ open class SoundPlayer: NSObject {
     var availableTimeForLoop: TimeInterval = 0
     
     public override init() {
+        super.init()
+
         let highPass = self.equalizerHighPass.bands[0]
         highPass.filterType = .highPass
         highPass.frequency = modulationFrequency
@@ -216,12 +218,12 @@ open class SoundPlayer: NSObject {
     
 
     
-    func pause() {
+    func pauseEngine() {
         self.engine.pause()
     }
     
-    func continuePlayer() {
-        
+    func continueEngine() {
+
         do {
             try self.engine.start()
         } catch {
