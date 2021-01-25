@@ -290,6 +290,9 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
             if isEditingCreations {
                 if let selectedItem = item {
                     SelectionHandler().selectLibraryItem(selectedItem)
+                    if indexPath.row == 0 {
+                        isEditingCreations = false
+                    }
                     self.performSegue(withIdentifier: "makerSegue", sender: nil)
                     return
                 }
@@ -330,7 +333,15 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
             vc.affirmation = selectedAffirmation
         }
         if let vc = segue.destination as? SubliminalMakerViewController {
-            vc.calledFromMediathek = true
+
+            if isEditingCreations {
+                vc.editItemFromMediathek = true
+                vc.createItemFromMediathek = false
+            } else {
+                vc.editItemFromMediathek = false
+                vc.createItemFromMediathek = true
+            }
+            
         }
         
     }

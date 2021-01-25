@@ -36,7 +36,8 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
     var usedAffirmation: String?
     var usedImage: UIImage?
     
-    var calledFromMediathek: Bool = false
+    var createItemFromMediathek: Bool = false
+    var editItemFromMediathek: Bool = false
     
     var fetchedResultsController: NSFetchedResultsController<LibraryItem>!
     
@@ -59,8 +60,11 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         print(getDocumentsDirectory())
         audioHelper.checkForPermission()
         
-        if calledFromMediathek {
+        if createItemFromMediathek {
             performSegue(withIdentifier: "addItemSegue", sender: self)
+        }
+        if editItemFromMediathek {
+            performSegue(withIdentifier: "editItemSegue", sender: self)
         }
     }
     
