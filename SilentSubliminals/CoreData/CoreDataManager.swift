@@ -118,19 +118,28 @@ class CoreDataManager: NSObject {
         }
     }
     
-    func createPlaylist() {
+    func createDummyPlaylist() {
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
-        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "order", ascending: true)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)]
+        let predicate = NSPredicate(format: "isDefault == true")
+        fetchRequest.predicate = predicate
         
         do {
             let playlists = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest) as! [Playlist]
-   
+            
             if playlists.count == 0 {
+                
+                let date = Date()
+                var components = DateComponents()
+                components.setValue(1000, for: .year)
+                let dummyDate = Calendar.current.date(byAdding: components, to: date)
+                
                 let playlist = NSEntityDescription.insertNewObject(forEntityName: "Playlist", into: self.managedObjectContext) as! Playlist
-                playlist.title = "My Playlist"
-                playlist.order = 0
-                playlist.icon = UIImage(named: "playerPlaceholder")?.pngData()
+                playlist.title = ""
+                playlist.isDefault = true
+                playlist.icon = UIImage(named: "plusSymbolGreen")?.pngData()
+                playlist.creationDate = dummyDate
                 
                 try self.managedObjectContext.save()
             }
@@ -143,28 +152,31 @@ class CoreDataManager: NSObject {
     func createDummyItem() {
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
-        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "order", ascending: true)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)]
+        let predicate = NSPredicate(format: "isDefault == true")
+        fetchRequest.predicate = predicate
+        
+        
+        let fetchRequest2 = NSFetchRequest<NSFetchRequestResult>(entityName: "LibraryItem")
+        fetchRequest2.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)] // TODO
+        let predicate2 = NSPredicate(format: "isDummyItem == true")
+        fetchRequest2.predicate = predicate2
         
         do {
-            let playlists = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest) as! [Playlist]
-            let playlist = playlists.first // TODO
-            
-            let fetchRequest2 = NSFetchRequest<NSFetchRequestResult>(entityName: "LibraryItem")
-            fetchRequest2.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)] // TODO
-            let predicate2 = NSPredicate(format: "isDummyItem == true")
-            fetchRequest2.predicate = predicate2
             
             let items = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest2) as! [LibraryItem]
             
             if items.count > 0 {
-//                deleteLibraryItem(item: items.first!)
-//                try self.managedObjectContext.save()
                 return
             }
             
+            
+            let playlists = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest) as! [Playlist]
+            let playlist = playlists.first
+            
             let date = Date()
             var components = DateComponents()
-            components.setValue(100, for: .year)
+            components.setValue(1000, for: .year)
             let dummyDate = Calendar.current.date(byAdding: components, to: date)
             
             let libraryItem = NSEntityDescription.insertNewObject(forEntityName: "LibraryItem", into: self.managedObjectContext) as! LibraryItem
@@ -183,34 +195,13 @@ class CoreDataManager: NSObject {
         }
     }
     
-    func createLibraryItem() {
-        
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
-        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "order", ascending: true)]
-        
-        do {
-            let playlists = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest) as! [Playlist]
-            let playlist = playlists.first // TODO
-            
-            let libraryItem = NSEntityDescription.insertNewObject(forEntityName: "LibraryItem", into: self.managedObjectContext) as! LibraryItem
-            libraryItem.title = "Wealth"
-            libraryItem.creationDate = Date()
-            libraryItem.icon = UIImage(named: "meditation_06")?.pngData()
-            libraryItem.soundFileName = "wealthSubliminal"
-            libraryItem.isActive = true
-            
-            playlist?.addToLibraryItems(libraryItem)
-            try self.managedObjectContext.save()
-            
-        } catch {
-            print(error)
-        }
-    }
     
     func createLibraryItem(title: String, icon: UIImage, hasOwnIcon: Bool) -> LibraryItem? {
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
-        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "order", ascending: true)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)]
+        let predicate = NSPredicate(format: "isDefault == true")
+        fetchRequest.predicate = predicate
         
         let libraryItem = NSEntityDescription.insertNewObject(forEntityName: "LibraryItem", into: self.managedObjectContext) as? LibraryItem
         
@@ -230,7 +221,7 @@ class CoreDataManager: NSObject {
                 SelectionHandler().selectLibraryItem(item)
                 playlist?.addToLibraryItems(item)
             }
- 
+            
             try self.managedObjectContext.save()
             
             return libraryItem
@@ -306,20 +297,6 @@ class CoreDataManager: NSObject {
         save()
     }
     
-    func createSubliminals() { // TODO: to library item
-        createSubliminal(text: "I am a magnet for money. Prosperity is drawn to me")
-        createSubliminal(text: "I welcome an unlimited source of income and wealth in my life")
-        createSubliminal(text: "I constantly attract opportunities that create more money")
-        createSubliminal(text: "My finances improve beyond my dreams")
-        createSubliminal(text: "Money is the root of joy and comfort")
-        createSubliminal(text: "Money and spirituality can co-exist in harmony")
-//        createSubliminal(text: "0")
-//        createSubliminal(text: "1")
-//        createSubliminal(text: "2")
-//        createSubliminal(text: "3")
-//        createSubliminal(text: "4")
-//        createSubliminal(text: "5")
-    }
     
     func createSubliminal(text: String) {
         
@@ -335,7 +312,7 @@ class CoreDataManager: NSObject {
             guard let title = libraryItem.title else { return }
             let predicate2 = NSPredicate(format: "libraryItem.title = %@", title as String)
             fetchRequest2.predicate = predicate2
-
+            
             let subliminals = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest2)
             let subliminal = NSEntityDescription.insertNewObject(forEntityName: "Subliminal", into: self.managedObjectContext) as! Subliminal
             if let lastOrder = subliminals.first?.order {
@@ -361,7 +338,7 @@ class CoreDataManager: NSObject {
             guard let title = libraryItem.title else { return }
             let predicate = NSPredicate(format: "libraryItem.title = %@", title as String)
             fetchRequest.predicate = predicate
-
+            
             let subliminals = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest)
             let subliminal = NSEntityDescription.insertNewObject(forEntityName: "Subliminal", into: self.managedObjectContext) as! Subliminal
             if let lastOrder = subliminals.first?.order {
@@ -378,7 +355,7 @@ class CoreDataManager: NSObject {
             print(error)
         }
     }
-     
+    
     func removeLibraryItem(item: LibraryItem) {
         
         CoreDataManager.sharedInstance.managedObjectContext.delete(item)
@@ -394,7 +371,7 @@ class CoreDataManager: NSObject {
     func moveSubliminal(item: Subliminal, fromOrder: Int, toOrder: Int) {
         
         item.order = Int16(toOrder)
-
+        
         do {
             let fetchRequest = NSFetchRequest<Subliminal> (entityName: "Subliminal")
             fetchRequest.sortDescriptors = [NSSortDescriptor (key: "order", ascending: true)]
@@ -408,13 +385,13 @@ class CoreDataManager: NSObject {
             var array: [Subliminal]  = Array()
             
             if let subliminals = fetchedResultsController.fetchedObjects {
-
+                
                 for subliminal in subliminals {
                     array.append(subliminal)
                 }
-
+                
                 array.move(item, to: toOrder)
-
+                
                 for (index, subliminal) in array.enumerated() {
                     subliminal.order = Int16(index)
                 }
@@ -427,7 +404,7 @@ class CoreDataManager: NSObject {
         save()
     }
     
-
+    
     func position(set: Set<Favorite>, id: Int16) -> Int16 {
         
         for item in set {
@@ -451,28 +428,28 @@ class Favorite: NSObject {
 }
 
 class SelectionHandler {
-
+    
     func clearSelection(in context: NSManagedObjectContext) {
         for item in currentSelected(in: context) {
             item.isActive = false
         }
     }
-
+    
     func selectLibraryItem(_ item: LibraryItem) {
         guard let context = item.managedObjectContext else {
             assertionFailure("broken !")
             return
         }
-
+        
         clearSelection(in: context)
         item.isActive = true
     }
-
+    
     func currentSelected(in context: NSManagedObjectContext) -> [LibraryItem] {
         let request = NSFetchRequest<LibraryItem>(entityName: LibraryItem.entity().name!)
         let predicate = NSPredicate(format: "isActive == true")
         request.predicate = predicate
-
+        
         do {
             let result = try context.fetch(request)
             return result
@@ -491,11 +468,11 @@ extension Array where Element: Equatable {
             move(at: index, to: newIndex)
         }
     }
-
+    
     mutating func bringToFront(item: Element) {
         move(item, to: 0)
     }
-
+    
     mutating func sendToBack(item: Element) {
         move(item, to: endIndex-1)
     }

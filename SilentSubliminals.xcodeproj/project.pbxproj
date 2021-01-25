@@ -46,6 +46,7 @@
 		656D431E2594CF450067A4D8 /* AudioExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D431D2594CF450067A4D8 /* AudioExtensions.swift */; };
 		656D43212594E0900067A4D8 /* Switch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D43202594E0900067A4D8 /* Switch.swift */; };
 		656D43242594E3790067A4D8 /* SpectrumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D43232594E3790067A4D8 /* SpectrumViewController.swift */; };
+		65700CCE25BF53D4000DA5C7 /* PlaylistAddNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65700CCD25BF53D4000DA5C7 /* PlaylistAddNewViewController.swift */; };
 		657A0F8C25A347C400A4CCF2 /* LibraryItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657A0F8625A347C400A4CCF2 /* LibraryItem+CoreDataClass.swift */; };
 		657A0F8D25A347C400A4CCF2 /* LibraryItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657A0F8725A347C400A4CCF2 /* LibraryItem+CoreDataProperties.swift */; };
 		657A0F8E25A347C400A4CCF2 /* Playlist+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657A0F8825A347C400A4CCF2 /* Playlist+CoreDataClass.swift */; };
@@ -167,6 +168,7 @@
 		656D431D2594CF450067A4D8 /* AudioExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioExtensions.swift; sourceTree = "<group>"; };
 		656D43202594E0900067A4D8 /* Switch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Switch.swift; sourceTree = "<group>"; };
 		656D43232594E3790067A4D8 /* SpectrumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumViewController.swift; sourceTree = "<group>"; };
+		65700CCD25BF53D4000DA5C7 /* PlaylistAddNewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistAddNewViewController.swift; sourceTree = "<group>"; };
 		657A0F8625A347C400A4CCF2 /* LibraryItem+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryItem+CoreDataClass.swift"; sourceTree = "<group>"; };
 		657A0F8725A347C400A4CCF2 /* LibraryItem+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryItem+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		657A0F8825A347C400A4CCF2 /* Playlist+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Playlist+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -385,6 +387,7 @@
 		6568E64C258F5230009390D5 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				65700CCC25BF53A3000DA5C7 /* Playlist */,
 				6556455225A1CC5B00F0FF76 /* Player */,
 				6556455125A1CC5500F0FF76 /* Maker */,
 				65D561DB259762A700FC039C /* Modal */,
@@ -445,6 +448,14 @@
 				656D43152594BEBA0067A4D8 /* VolumeViewController.swift */,
 			);
 			path = Controls;
+			sourceTree = "<group>";
+		};
+		65700CCC25BF53A3000DA5C7 /* Playlist */ = {
+			isa = PBXGroup;
+			children = (
+				65700CCD25BF53D4000DA5C7 /* PlaylistAddNewViewController.swift */,
+			);
+			path = Playlist;
 			sourceTree = "<group>";
 		};
 		657A45FE25BCB2C4003BF0D4 /* Tabbar */ = {
@@ -800,6 +811,7 @@
 				65D561E22598D53C00FC039C /* MakerStateMachine.swift in Sources */,
 				657A0F8D25A347C400A4CCF2 /* LibraryItem+CoreDataProperties.swift in Sources */,
 				65A052E525A0724800F3C6BD /* MediathekViewController.swift in Sources */,
+				65700CCE25BF53D4000DA5C7 /* PlaylistAddNewViewController.swift in Sources */,
 				656D430A2594B5840067A4D8 /* SymbolImageView.swift in Sources */,
 				65D561E52598D7D000FC039C /* RecordButton.swift in Sources */,
 				6598C2F0259106FC0042A7E1 /* PlayerStateMachine.swift in Sources */,

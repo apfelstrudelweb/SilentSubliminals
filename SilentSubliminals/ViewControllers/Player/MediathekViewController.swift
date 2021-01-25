@@ -14,10 +14,11 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
     
     var fetchedResultsControllerRecent: NSFetchedResultsController<LibraryItem>!
     var fetchedResultsControllerCreation: NSFetchedResultsController<LibraryItem>!
+    var fetchedResultsControllerPlaylist: NSFetchedResultsController<Playlist>!
     
     var recentItems: [LibraryItem]?
     var creationItems: [LibraryItem]?
-    var playlistItems = ["plusSymbolGreen", "meditation_02", "meditation_01", "meditation_09", "meditation_05"]
+    var playlistItems: [Playlist]?
     var purchaseItems = ["plusSymbolGreen", "meditation_03", "meditation_05", "meditation_01", "meditation_08"]
     
     
@@ -68,8 +69,6 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         
         let fetchRequestCreations = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
         fetchRequestCreations.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
-//        let predicateCreations = NSPredicate(format: "isDummyItem == null")
-//        fetchRequestCreations.predicate = predicateCreations
         self.fetchedResultsControllerCreation = NSFetchedResultsController<LibraryItem> (
             fetchRequest: fetchRequestCreations,
             managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
@@ -77,14 +76,27 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
             cacheName: nil)
         self.fetchedResultsControllerCreation.delegate = self
         
+        let fetchRequestPlaylist = NSFetchRequest<Playlist> (entityName: "Playlist")
+        fetchRequestPlaylist.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
+        self.fetchedResultsControllerPlaylist = NSFetchedResultsController<Playlist> (
+            fetchRequest: fetchRequestPlaylist,
+            managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil)
+        self.fetchedResultsControllerPlaylist.delegate = self
+        
         do {
             try fetchedResultsControllerRecent.performFetch()
             try fetchedResultsControllerCreation.performFetch()
+            try fetchedResultsControllerPlaylist.performFetch()
             recentItems = fetchedResultsControllerRecent.fetchedObjects!
             creationItems = fetchedResultsControllerCreation.fetchedObjects!
+            playlistItems = fetchedResultsControllerPlaylist.fetchedObjects!
             
             recentSubliminalsCollectionView.reloadData()
             creationsCollectionView.reloadData()
+            playlistCollectionView.reloadData()
+            
         } catch {
             print("An error occurred")
         }
@@ -222,7 +234,7 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         } else if collectionView.isKind(of: CreationsCollectionView.self) {
             return self.creationItems?.count ?? 0
         } else if collectionView.isKind(of: PlaylistCollectionView.self) {
-            return self.playlistItems.count
+            return self.playlistItems?.count ?? 0
         } else if collectionView.isKind(of: PurchasesCollectionView.self) {
             return self.purchaseItems.count
         }
@@ -237,27 +249,18 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
             guard let item = fetchedResultsControllerRecent.fetchedObjects?[indexPath.row] else { return cell }
             cell.symbolImageView.image = UIImage(data: item.icon ?? Data())
             cell.titleLabel.text = item.title
-//            if !item.hasOwnIcon {
-//                cell.title = item.title
-//            } else {
-//                cell.title = ""
-//            }
             return cell
         } else if collectionView.isKind(of: CreationsCollectionView.self) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "creationsCell", for: indexPath as IndexPath) as! MediathekCollectionViewCell
             guard let item = fetchedResultsControllerCreation.fetchedObjects?[indexPath.row] else { return cell }
             cell.symbolImageView.image = UIImage(data: item.icon ?? Data())
             cell.titleLabel.text = item.title
-//            if !item.hasOwnIcon {
-//                cell.title = item.title
-//            } else {
-//                cell.title = ""
-//            }
-            //cell.displayCheckmark(flag: isEditingCreations)
             return cell
         } else if collectionView.isKind(of: PlaylistCollectionView.self) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "playlistCell", for: indexPath as IndexPath) as! MediathekCollectionViewCell
-            cell.symbolImageView.image = UIImage(named: playlistItems[indexPath.row])
+            guard let item = fetchedResultsControllerPlaylist.fetchedObjects?[indexPath.row] else { return cell }
+            cell.symbolImageView.image = UIImage(data: item.icon ?? Data())
+            cell.titleLabel.text = item.title
             return cell
         } else if collectionView.isKind(of: PurchasesCollectionView.self) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "purchasesCell", for: indexPath as IndexPath) as! MediathekCollectionViewCell
@@ -292,7 +295,7 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
                 }
             }
         }
-        
+ 
         if let selectedItem = item, let fileName = selectedItem.soundFileName {
             spokenAffirmation = String(format: audioTemplate, fileName)
             spokenAffirmationSilent = String(format: audioSilentTemplate, fileName)
@@ -303,6 +306,11 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         
         if collectionView.isKind(of: CreationsCollectionView.self) && indexPath.row == 0 {
             self.performSegue(withIdentifier: "makerSegue", sender: nil)
+            return
+        }
+        
+        if collectionView.isKind(of: PlaylistCollectionView.self) && indexPath.row == 0 {
+            self.performSegue(withIdentifier: "playlistSegue", sender: nil)
             return
         }
         

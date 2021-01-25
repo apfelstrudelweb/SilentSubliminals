@@ -53,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         //CoreDataManager.sharedInstance.clearDB()
-        CoreDataManager.sharedInstance.createPlaylist()
+        CoreDataManager.sharedInstance.createDummyPlaylist()
         CoreDataManager.sharedInstance.createDummyItem()
 //        CoreDataManager.sharedInstance.createLibraryItem()
 //        CoreDataManager.sharedInstance.createSubliminals()

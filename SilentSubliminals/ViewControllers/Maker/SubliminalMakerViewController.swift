@@ -178,21 +178,21 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         MakerStateMachine.shared.doNextRecorderState()
         audioHelper.stopRecording()
 
-        let url = getFileFromSandbox(filename: spokenAffirmation) 
-               URLSession.shared.dataTask(with: url) { data, response, error in
-                   guard let data = data, error == nil else { return }
-                   let tmpURL = FileManager.default.temporaryDirectory
-                       .appendingPathComponent(response?.suggestedFilename ?? "bell.aiff")
-                   do {
-                       try data.write(to: tmpURL)
-                       DispatchQueue.main.async {
-                           self.share(url: tmpURL)
-                       }
-                   } catch {
-                       print(error)
-                   }
-
-               }.resume()
+//        let url = getFileFromSandbox(filename: spokenAffirmation) 
+//               URLSession.shared.dataTask(with: url) { data, response, error in
+//                   guard let data = data, error == nil else { return }
+//                   let tmpURL = FileManager.default.temporaryDirectory
+//                       .appendingPathComponent(response?.suggestedFilename ?? "bell.aiff")
+//                   do {
+//                       try data.write(to: tmpURL)
+//                       DispatchQueue.main.async {
+//                           self.share(url: tmpURL)
+//                       }
+//                   } catch {
+//                       print(error)
+//                   }
+//
+//               }.resume()
     }
     
     func share(url: URL) {

@@ -64,8 +64,8 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
     private var audioEngine: AVAudioEngine = AVAudioEngine()
     private var audioRecorder: AVAudioRecorder = AVAudioRecorder()
     private var mixer: AVAudioMixerNode = AVAudioMixerNode()
-
-
+    
+    
     var routeIsChanging: Bool = false
     var resetAll: Bool = false
     
@@ -75,11 +75,11 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
     
     
     init() {
-
+        
         NotificationCenter.default.addObserver(self, selector: #selector(handleInterruption(notification:)), name: AVAudioSession.interruptionNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleRouteChange(notification:)), name: AVAudioSession.routeChangeNotification, object: nil)
-
+        
         let audioSession = AVAudioSession.sharedInstance()
         do {
             try audioSession.setActive(false, options: .notifyOthersOnDeactivation)
@@ -114,7 +114,7 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
                 self.continueSound() // sets up the audio session, connects nodes, starts the engine, plays the player, and sets isRunning to true
             }
             break
-
+            
         @unknown default:
             print("handleInterruption error")
         }
@@ -138,7 +138,7 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         
         resetAll = false
         var filename: String = bellSoundFile
-
+        
         switch type {
         case .Introduction:
             filename = introductionSoundFile
@@ -174,11 +174,11 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
             if !self.resetAll {
                 PlayerStateMachine.shared.doNextPlayerState()
             }
-
+            
         })
     }
-
-
+    
+    
     func playSingleAffirmation(instance: SoundInstance) {
         
         resetAll = false
@@ -228,7 +228,7 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         CommandCenter.shared.updateTime(elapsedTime: 0, totalDuration: 0)
     }
     
-
+    
     func pauseSound() {
         
         soundPlayer.pauseEngine()
@@ -296,9 +296,9 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         settings[AVSampleRateKey] = readBuffer.format.sampleRate
         settings[AVNumberOfChannelsKey] = readBuffer.format.channelCount
         settings[AVLinearPCMIsFloatKey] = (readBuffer.format.commonFormat == .pcmFormatInt32)
-//        settings[AVSampleRateConverterAudioQualityKey] = AVAudioQuality.max
-//        settings[AVLinearPCMBitDepthKey] = 32
-//        settings[AVEncoderAudioQualityKey] = AVAudioQuality.max
+        //        settings[AVSampleRateConverterAudioQualityKey] = AVAudioQuality.max
+        //        settings[AVLinearPCMBitDepthKey] = 32
+        //        settings[AVEncoderAudioQualityKey] = AVAudioQuality.max
         settings[AVEncoderBitDepthHintKey] = 16
         
         // The render format is also the output format
@@ -401,70 +401,8 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         audioQueue.async {
             self.createSilentSubliminalFile()
         }
-        
-        audioQueue.async {
-            
-            //try! startBackup()
-//            let audioFile = getFileFromSandbox(filename: spokenAffirmation)
-//            //let cloudURL = FileManager.default.url(forUbiquityContainerIdentifier: nil)
-//            let iCloudDocumentsURL = FileManager.default.url(forUbiquityContainerIdentifier: "iCloud.silent.subliminals")//?.appendingPathComponent("Documents")
-//
-//            if  iCloudDocumentsURL != nil {
-//                if (!FileManager.default.fileExists(atPath: iCloudDocumentsURL!.path, isDirectory: nil)) {
-//                    try! FileManager.default.createDirectory(at: iCloudDocumentsURL!, withIntermediateDirectories: true, attributes: nil)
-//
-//
-//                }
-//            } else {
-//                print("iCloud is NOT working!")
-//                //return
-//            }
-//
-//            try! FileManager.default.copyItem(at: audioFile, to: iCloudDocumentsURL!)
-//        }
     }
-    
-    func startBackup() throws {
-        
-        guard let url = Bundle.main.url(forResource: "bell", withExtension: "aiff") else { return }
-        
-        URLSession.shared.dataTask(with: url) { data, response, error in
-                    guard let data = data, error == nil else { return }
-                    let tmpURL = FileManager.default.temporaryDirectory
-                        .appendingPathComponent(response?.suggestedFilename ?? "bell.aiff")
-                print(tmpURL)
-                    do {
-                        try data.write(to: tmpURL)
-//                        DispatchQueue.main.async {
-//                            self.share(url: tmpURL)
-//                        }
-                    } catch {
-                        print(error)
-                    }
 
-                }.resume()
-    }
-        
-//                guard let fileURL = Bundle.main.url(forResource: "bell", withExtension: "aiff") else { return }
-//
-//                guard let containerURL = FileManager.default.url(forUbiquityContainerIdentifier: "iCloud.silent.subliminals") else { return }
-//
-//                if !FileManager.default.fileExists(atPath: containerURL.path) {
-//                    try FileManager.default.createDirectory(at: containerURL, withIntermediateDirectories: true, attributes: nil)
-//                }
-//
-//                let backupFileURL = containerURL.appendingPathComponent("bell.aiff")
-//                if FileManager.default.fileExists(atPath: backupFileURL.path) {
-//                    try FileManager.default.removeItem(at: backupFileURL)
-//                    try FileManager.default.copyItem(at: fileURL, to: backupFileURL)
-//                } else {
-//                    try FileManager.default.copyItem(at: fileURL, to: backupFileURL)
-//                }
-//
-//            }
-    }
-        
-    
     func checkForPermission() {
         Manager.recordingSession = AVAudioSession.sharedInstance()
         do {

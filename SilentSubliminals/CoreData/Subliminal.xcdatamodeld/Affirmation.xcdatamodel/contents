@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17511" systemVersion="19H2" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="19H15" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="LibraryItem" representedClassName="LibraryItem" syncable="YES">
         <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="hasOwnIcon" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
@@ -13,8 +13,9 @@
         <relationship name="subliminals" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Subliminal" inverseName="libraryItem" inverseEntity="Subliminal"/>
     </entity>
     <entity name="Playlist" representedClassName="Playlist" syncable="YES">
+        <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="icon" optional="YES" attributeType="Binary"/>
-        <attribute name="order" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="isDefault" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <relationship name="libraryItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="LibraryItem" inverseName="playlist" inverseEntity="LibraryItem"/>
     </entity>
@@ -25,7 +26,7 @@
     </entity>
     <elements>
         <element name="LibraryItem" positionX="-290.48828125" positionY="-117.375" width="128" height="193"/>
-        <element name="Playlist" positionX="-482.56640625" positionY="-252.60546875" width="128" height="103"/>
+        <element name="Playlist" positionX="-482.56640625" positionY="-252.60546875" width="128" height="118"/>
         <element name="Subliminal" positionX="-105.64453125" positionY="-8.234375" width="128" height="88"/>
     </elements>
 </model>

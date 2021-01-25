@@ -2,7 +2,7 @@
 //  Playlist+CoreDataProperties.swift
 //  FREE UR SPIRIT
 //
-//  Created by Ullrich Vormbrock on 04.01.21.
+//  Created by Ullrich Vormbrock on 25.01.21.
 //  Copyright © 2021 Ullrich Vormbrock. All rights reserved.
 //
 //
@@ -19,7 +19,8 @@ extension Playlist {
 
     @NSManaged public var icon: Data?
     @NSManaged public var title: String?
-    @NSManaged public var order: Int16
+    @NSManaged public var isDefault: Bool
+    @NSManaged public var creationDate: Date?
     @NSManaged public var libraryItems: NSSet?
 
 }
