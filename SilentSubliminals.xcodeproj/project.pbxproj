@@ -29,6 +29,9 @@
 		65654C06259CF1560066E4D2 /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65654C05259CF1560066E4D2 /* AlertController.swift */; };
 		65654C09259CF2610066E4D2 /* PulseImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65654C08259CF2610066E4D2 /* PulseImageView.swift */; };
 		656654AE2595F36700DB03DC /* CommandCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656654AD2595F36700DB03DC /* CommandCenter.swift */; };
+		65675EFB25C08D56005AD730 /* UserPlaylistTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65675EFA25C08D56005AD730 /* UserPlaylistTableView.swift */; };
+		65675EFE25C08D70005AD730 /* DefaultPlaylistTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65675EFD25C08D70005AD730 /* DefaultPlaylistTableView.swift */; };
+		65675F0225C0976E005AD730 /* PlaylistItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65675F0125C0976E005AD730 /* PlaylistItemTableViewCell.swift */; };
 		65678FCC258932B60075518C /* ShadowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65678FCB258932B60075518C /* ShadowButton.swift */; };
 		656807392593733500D09CBE /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656807382593733500D09CBE /* ToggleButton.swift */; };
 		6568E648258F50F8009390D5 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6568E647258F50F8009390D5 /* TimerManager.swift */; };
@@ -150,6 +153,9 @@
 		65654C05259CF1560066E4D2 /* AlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
 		65654C08259CF2610066E4D2 /* PulseImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulseImageView.swift; sourceTree = "<group>"; };
 		656654AD2595F36700DB03DC /* CommandCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandCenter.swift; sourceTree = "<group>"; };
+		65675EFA25C08D56005AD730 /* UserPlaylistTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPlaylistTableView.swift; sourceTree = "<group>"; };
+		65675EFD25C08D70005AD730 /* DefaultPlaylistTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPlaylistTableView.swift; sourceTree = "<group>"; };
+		65675F0125C0976E005AD730 /* PlaylistItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistItemTableViewCell.swift; sourceTree = "<group>"; };
 		65678FCB258932B60075518C /* ShadowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowButton.swift; sourceTree = "<group>"; };
 		656807382593733500D09CBE /* ToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleButton.swift; sourceTree = "<group>"; };
 		6568E647258F50F8009390D5 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
@@ -341,6 +347,7 @@
 				657A45FE25BCB2C4003BF0D4 /* Tabbar */,
 				653353E425A1EC820067A4A6 /* CoreData */,
 				6568E64D258F5268009390D5 /* Resources */,
+				65675EF925C08D10005AD730 /* TableViews */,
 				65A052F925A0937400F3C6BD /* CollectionViews */,
 				6568E64C258F5230009390D5 /* ViewControllers */,
 				6568E64B258F51F3009390D5 /* Subviews */,
@@ -352,6 +359,15 @@
 				6558D31624684935004E8660 /* Info.plist */,
 			);
 			path = SilentSubliminals;
+			sourceTree = "<group>";
+		};
+		65675EF925C08D10005AD730 /* TableViews */ = {
+			isa = PBXGroup;
+			children = (
+				65675EFA25C08D56005AD730 /* UserPlaylistTableView.swift */,
+				65675EFD25C08D70005AD730 /* DefaultPlaylistTableView.swift */,
+			);
+			path = TableViews;
 			sourceTree = "<group>";
 		};
 		6568E64A258F51E2009390D5 /* Utils */ = {
@@ -523,6 +539,7 @@
 			children = (
 				65A052E925A086E900F3C6BD /* MediathekCollectionViewCell.swift */,
 				65A0531625A0ED9800F3C6BD /* AffirmationTableViewCell.swift */,
+				65675F0125C0976E005AD730 /* PlaylistItemTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -783,6 +800,7 @@
 				65A052FB25A093A100F3C6BD /* PlaylistCollectionView.swift in Sources */,
 				6568E648258F50F8009390D5 /* TimerManager.swift in Sources */,
 				65A052EA25A086E900F3C6BD /* MediathekCollectionViewCell.swift in Sources */,
+				65675EFB25C08D56005AD730 /* UserPlaylistTableView.swift in Sources */,
 				65D561D9259761FE00FC039C /* PlayButton.swift in Sources */,
 				656D430D2594B5F30067A4D8 /* VolumeSlider.swift in Sources */,
 				656D431E2594CF450067A4D8 /* AudioExtensions.swift in Sources */,
@@ -810,6 +828,7 @@
 				65D561C92595F94E00FC039C /* AudioSessionManager.swift in Sources */,
 				65D561E22598D53C00FC039C /* MakerStateMachine.swift in Sources */,
 				657A0F8D25A347C400A4CCF2 /* LibraryItem+CoreDataProperties.swift in Sources */,
+				65675EFE25C08D70005AD730 /* DefaultPlaylistTableView.swift in Sources */,
 				65A052E525A0724800F3C6BD /* MediathekViewController.swift in Sources */,
 				65700CCE25BF53D4000DA5C7 /* PlaylistAddNewViewController.swift in Sources */,
 				656D430A2594B5840067A4D8 /* SymbolImageView.swift in Sources */,
@@ -829,6 +848,7 @@
 				65A052DB259F558700F3C6BD /* CircularView.swift in Sources */,
 				656D43072594B50D0067A4D8 /* SymbolButton.swift in Sources */,
 				653353D625A1D3180067A4A6 /* AddAffirmationViewController.swift in Sources */,
+				65675F0225C0976E005AD730 /* PlaylistItemTableViewCell.swift in Sources */,
 				65D561D12597517D00FC039C /* AudioHelper.swift in Sources */,
 				65A0530125A093D800F3C6BD /* PurchasesCollectionView.swift in Sources */,
 				657A0F8E25A347C400A4CCF2 /* Playlist+CoreDataClass.swift in Sources */,

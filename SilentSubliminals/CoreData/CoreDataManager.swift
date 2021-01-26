@@ -215,6 +215,7 @@ class CoreDataManager: NSObject {
             libraryItem?.icon = icon.pngData()
             libraryItem?.soundFileName = title // TODO
             libraryItem?.hasOwnIcon = hasOwnIcon
+            libraryItem?.isDummyItem = false
             //libraryItem.isActive = true
             
             if let item = libraryItem {

@@ -68,7 +68,7 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         self.fetchedResultsControllerRecent.delegate = self
         
         let fetchRequestCreations = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
-        fetchRequestCreations.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
+        fetchRequestCreations.sortDescriptors = [NSSortDescriptor (key: "isDummyItem", ascending: false), NSSortDescriptor (key: "creationDate", ascending: false)]
         self.fetchedResultsControllerCreation = NSFetchedResultsController<LibraryItem> (
             fetchRequest: fetchRequestCreations,
             managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
@@ -77,7 +77,7 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         self.fetchedResultsControllerCreation.delegate = self
         
         let fetchRequestPlaylist = NSFetchRequest<Playlist> (entityName: "Playlist")
-        fetchRequestPlaylist.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
+        fetchRequestPlaylist.sortDescriptors = [NSSortDescriptor (key: "isDefault", ascending: false), NSSortDescriptor (key: "creationDate", ascending: false)]
         self.fetchedResultsControllerPlaylist = NSFetchedResultsController<Playlist> (
             fetchRequest: fetchRequestPlaylist,
             managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
@@ -293,9 +293,10 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
                     if indexPath.row == 0 {
                         isEditingCreations = false
                     }
-                    self.performSegue(withIdentifier: "makerSegue", sender: nil)
-                    return
+                    
                 }
+                self.performSegue(withIdentifier: "makerSegue", sender: nil)
+                return
             }
         }
  
@@ -305,11 +306,6 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
             
             SelectionHandler().selectLibraryItem(selectedItem)
             CoreDataManager.sharedInstance.save()
-        }
-        
-        if collectionView.isKind(of: CreationsCollectionView.self) && indexPath.row == 0 {
-            self.performSegue(withIdentifier: "makerSegue", sender: nil)
-            return
         }
         
         if collectionView.isKind(of: PlaylistCollectionView.self) && indexPath.row == 0 {
