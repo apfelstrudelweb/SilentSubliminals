@@ -9,7 +9,7 @@
         <attribute name="lastUsedDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="soundFileName" optional="YES" attributeType="String"/>
         <attribute name="title" optional="YES" attributeType="String"/>
-        <relationship name="playlist" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Playlist" inverseName="libraryItems" inverseEntity="Playlist"/>
+        <relationship name="playlists" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Playlist" inverseName="libraryItems" inverseEntity="Playlist"/>
         <relationship name="subliminals" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Subliminal" inverseName="libraryItem" inverseEntity="Subliminal"/>
     </entity>
     <entity name="Playlist" representedClassName="Playlist" syncable="YES">
@@ -17,7 +17,7 @@
         <attribute name="icon" optional="YES" attributeType="Binary"/>
         <attribute name="isDefault" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="title" optional="YES" attributeType="String"/>
-        <relationship name="libraryItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="LibraryItem" inverseName="playlist" inverseEntity="LibraryItem"/>
+        <relationship name="libraryItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="LibraryItem" inverseName="playlists" inverseEntity="LibraryItem"/>
     </entity>
     <entity name="Subliminal" representedClassName="Subliminal" syncable="YES">
         <attribute name="order" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
@@ -25,8 +25,8 @@
         <relationship name="libraryItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="LibraryItem" inverseName="subliminals" inverseEntity="LibraryItem"/>
     </entity>
     <elements>
-        <element name="LibraryItem" positionX="-290.48828125" positionY="-117.375" width="128" height="193"/>
-        <element name="Playlist" positionX="-482.56640625" positionY="-252.60546875" width="128" height="118"/>
-        <element name="Subliminal" positionX="-105.64453125" positionY="-8.234375" width="128" height="88"/>
+        <element name="LibraryItem" positionX="-509.18359375" positionY="311.84765625" width="128" height="193"/>
+        <element name="Playlist" positionX="-701.26171875" positionY="176.6171875" width="128" height="118"/>
+        <element name="Subliminal" positionX="-324.33984375" positionY="420.98828125" width="128" height="88"/>
     </elements>
 </model>

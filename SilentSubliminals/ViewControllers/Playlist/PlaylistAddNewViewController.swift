@@ -13,6 +13,8 @@ class PlaylistAddNewViewController: UIViewController, UITableViewDataSource, Add
     
     @IBOutlet weak var userPlaylistTableView: UserPlaylistTableView!
     @IBOutlet weak var defaultPlaylistTableView: DefaultPlaylistTableView!
+    @IBOutlet weak var newPlaylistTitleLabel: UILabel!
+    @IBOutlet weak var newPlaylistImageButton: UIButton!
     
     
     var isEditingMode: Bool = false
@@ -20,9 +22,10 @@ class PlaylistAddNewViewController: UIViewController, UITableViewDataSource, Add
     
     var imagePicker: ImagePicker!
     
-    var fetchedResultsControllerUserPlaylist: NSFetchedResultsController<LibraryItem>!
+    var fetchedResultsControllerUserPlaylist: NSFetchedResultsController<Playlist>!
     var fetchedResultsControllerDefaultPlaylist: NSFetchedResultsController<LibraryItem>!
     
+    //var imagePicker: ImagePicker!
     
     func addSubliminal(text: String) {
         print(text)
@@ -37,25 +40,55 @@ class PlaylistAddNewViewController: UIViewController, UITableViewDataSource, Add
   
 //        if !isEditingMode {
 //
-//            showInputDialog(title: "Action required",
-//                            subtitle: "Please enter a name for your playlist",
-//                            actionTitle: "Add",
-//                            cancelTitle: "Cancel",
-//                            inputText: "",
-//                            inputPlaceholder: "Your playlist title",
-//                            inputKeyboardType: .default,
-//                            completionHandler: { (text) in
-//                                //self.createNewLibraryItem()
-//                            },
-//                            actionHandler: { (input:String?) in
-//                                //self.affirmationTitleLabel.text = input?.capitalized
-//                            })
+            showInputDialog(title: "Action required",
+                            subtitle: "Please enter a name for your playlist",
+                            actionTitle: "Add",
+                            cancelTitle: "Cancel",
+                            inputText: "",
+                            inputPlaceholder: "Your playlist title",
+                            inputKeyboardType: .default,
+                            completionHandler: { (text) in
+                                //self.createNewLibraryItem()
+                                CoreDataManager.sharedInstance.createPlaylist(title: text, icon: nil)
+                                self.showUserPlaylist()
+                            },
+                            actionHandler: { (input:String?) in
+                                self.newPlaylistTitleLabel.text = input?.capitalized
+                            })
 //        } else {
 //            showExistingLibraryItem()
 //        }
         
         showDefaultPlaylist()
-        showUserPlaylist()
+        
+    }
+    
+    @IBAction func newPlaylistImageButtonTouched(_ sender: UIButton) {
+        self.imagePicker.present(from: sender)
+    }
+    
+    func showUserPlaylist() {
+        
+        guard let title = self.newPlaylistTitleLabel.text else { return }
+        
+        let fetchRequest = NSFetchRequest<Playlist> (entityName: "Playlist")
+        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
+        let predicate = NSPredicate(format: "title == %@", title)
+        fetchRequest.predicate = predicate
+        self.fetchedResultsControllerUserPlaylist = NSFetchedResultsController<Playlist> (
+            fetchRequest: fetchRequest,
+            managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil)
+
+        do {
+            try fetchedResultsControllerUserPlaylist.performFetch()
+        } catch {
+            print("An error occurred")
+        }
+        
+        userPlaylistTableView.reloadData()
+        userPlaylistTableView.tableFooterView = UIView()
     }
     
     func showDefaultPlaylist() {
@@ -77,27 +110,6 @@ class PlaylistAddNewViewController: UIViewController, UITableViewDataSource, Add
         }
 
         defaultPlaylistTableView.tableFooterView = UIView()
-    }
-    
-    func showUserPlaylist() {
-        
-        let fetchRequest = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
-        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
-        let predicate = NSPredicate(format: "isDummyItem == false")
-        fetchRequest.predicate = predicate
-        self.fetchedResultsControllerUserPlaylist = NSFetchedResultsController<LibraryItem> (
-            fetchRequest: fetchRequest,
-            managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
-            sectionNameKeyPath: nil,
-            cacheName: nil)
-
-        do {
-            try fetchedResultsControllerUserPlaylist.performFetch()
-        } catch {
-            print("An error occurred")
-        }
-        
-        userPlaylistTableView.tableFooterView = UIView()
     }
     
 }
@@ -136,7 +148,9 @@ extension PlaylistAddNewViewController: ImagePickerDelegate {
         guard let img = image else {
             return
         }
-//        coverImageButton.setImage(img, for: .normal)
-//        coverImageButton.isOverriden = true
+        newPlaylistImageButton.setImage(img, for: .normal)
+        guard let title = newPlaylistTitleLabel.text else { return }
+        CoreDataManager.sharedInstance.updatePlaylist(title: title, icon: img)
+        //newPlaylistImageButton.isOverriden = true
     }
 }

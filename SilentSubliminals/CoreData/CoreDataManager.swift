@@ -149,6 +149,47 @@ class CoreDataManager: NSObject {
         }
     }
     
+    func createPlaylist(title: String, icon: UIImage?) {
+        
+        do {
+            let playlist = NSEntityDescription.insertNewObject(forEntityName: "Playlist", into: self.managedObjectContext) as! Playlist
+            playlist.title = title
+            playlist.isDefault = false
+            playlist.creationDate = Date()
+            
+            if let selectedIcon = icon {
+                playlist.icon = selectedIcon.pngData()
+            } else {
+                playlist.icon = UIImage(named: "playerPlaceholder")?.pngData()
+            }
+            
+            try self.managedObjectContext.save()
+            
+        } catch {
+            print(error)
+        }
+    }
+    
+    func updatePlaylist(title: String, icon: UIImage) {
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
+        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)] // TODO
+        let predicate = NSPredicate(format: "title = %@", title as String)
+        fetchRequest.predicate = predicate
+        
+        do {
+            let playlists = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest) as! [Playlist]
+            guard let playlist = playlists.first else { return } // TODO
+            playlist.title = title
+            playlist.isDefault = false
+            playlist.icon = icon.pngData()
+            try self.managedObjectContext.save()
+            
+        } catch {
+            print(error)
+        }
+    }
+    
     func createDummyItem() {
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")

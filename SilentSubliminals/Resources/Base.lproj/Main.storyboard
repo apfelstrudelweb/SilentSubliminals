@@ -2936,12 +2936,24 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PX0-LE-hrw">
+                                        <rect key="frame" x="316.66666666666669" y="56.666666666666657" width="90" height="90"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="90" id="DIR-tN-Pz2"/>
+                                            <constraint firstAttribute="width" secondItem="PX0-LE-hrw" secondAttribute="height" id="nFX-ML-e7p"/>
+                                        </constraints>
+                                        <state key="normal" title="Button" image="plusSymbolGreen"/>
+                                        <connections>
+                                            <action selector="newPlaylistImageButtonTouched:" destination="GhJ-ll-qqs" eventType="touchUpInside" id="xlj-rs-DjH"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.51894545560000005" green="0.78854829069999999" blue="0.64033800360000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="Mk4-5R-gAU" firstAttribute="top" secondItem="rDd-GY-6gq" secondAttribute="bottom" constant="20" id="2aH-uE-P2D"/>
                                     <constraint firstItem="Mk4-5R-gAU" firstAttribute="trailing" secondItem="bTz-qB-OL8" secondAttribute="trailing" id="37F-Nw-lOC"/>
                                     <constraint firstItem="rDd-GY-6gq" firstAttribute="top" secondItem="bTz-qB-OL8" secondAttribute="bottom" constant="46" id="9ms-UE-nNa"/>
+                                    <constraint firstItem="PX0-LE-hrw" firstAttribute="trailing" secondItem="bTz-qB-OL8" secondAttribute="trailing" id="JAb-Wg-XS0"/>
                                     <constraint firstItem="Mk4-5R-gAU" firstAttribute="leading" secondItem="bTz-qB-OL8" secondAttribute="leading" id="JYK-HH-OqC"/>
                                     <constraint firstItem="rDd-GY-6gq" firstAttribute="leading" secondItem="Mk4-5R-gAU" secondAttribute="leading" id="KZ7-dR-zou"/>
                                     <constraint firstAttribute="width" secondItem="vxu-Dx-kcA" secondAttribute="height" multiplier="3:5" id="Tvg-BR-nis"/>
@@ -2951,6 +2963,7 @@
                                     <constraint firstItem="SwO-N2-2Qs" firstAttribute="top" secondItem="vxu-Dx-kcA" secondAttribute="top" constant="100" id="mOq-fV-0re">
                                         <variation key="heightClass=regular-widthClass=regular" constant="60"/>
                                     </constraint>
+                                    <constraint firstItem="PX0-LE-hrw" firstAttribute="centerY" secondItem="SwO-N2-2Qs" secondAttribute="bottom" multiplier="0.8" id="sKD-Zc-ZX0"/>
                                     <constraint firstItem="Mk4-5R-gAU" firstAttribute="height" secondItem="bTz-qB-OL8" secondAttribute="height" multiplier="1.5" id="tkC-jx-4mp"/>
                                     <constraint firstAttribute="bottom" secondItem="Mk4-5R-gAU" secondAttribute="bottom" constant="100" id="vDg-6e-bHO">
                                         <variation key="heightClass=regular-widthClass=regular" constant="60"/>
@@ -3006,6 +3019,8 @@
                     <navigationItem key="navigationItem" id="bv3-Yw-6S1"/>
                     <connections>
                         <outlet property="defaultPlaylistTableView" destination="Mk4-5R-gAU" id="79z-Jh-opV"/>
+                        <outlet property="newPlaylistImageButton" destination="PX0-LE-hrw" id="B69-is-0Gi"/>
+                        <outlet property="newPlaylistTitleLabel" destination="SwO-N2-2Qs" id="6ch-eh-Tca"/>
                         <outlet property="userPlaylistTableView" destination="bTz-qB-OL8" id="dgw-b5-H7j"/>
                     </connections>
                 </viewController>

@@ -2,7 +2,7 @@
 //  LibraryItem+CoreDataProperties.swift
 //  FREE UR SPIRIT
 //
-//  Created by Ullrich Vormbrock on 09.01.21.
+//  Created by Ullrich Vormbrock on 27.01.21.
 //  Copyright © 2021 Ullrich Vormbrock. All rights reserved.
 //
 //
@@ -21,12 +21,29 @@ extension LibraryItem {
     @NSManaged public var hasOwnIcon: Bool
     @NSManaged public var icon: Data?
     @NSManaged public var isActive: Bool
+    @NSManaged public var isDummyItem: Bool
     @NSManaged public var lastUsedDate: Date?
     @NSManaged public var soundFileName: String?
     @NSManaged public var title: String?
-    @NSManaged public var isDummyItem: Bool
-    @NSManaged public var playlist: Playlist?
+    @NSManaged public var playlists: NSSet?
     @NSManaged public var subliminals: NSSet?
+
+}
+
+// MARK: Generated accessors for playlists
+extension LibraryItem {
+
+    @objc(addPlaylistsObject:)
+    @NSManaged public func addToPlaylists(_ value: Playlist)
+
+    @objc(removePlaylistsObject:)
+    @NSManaged public func removeFromPlaylists(_ value: Playlist)
+
+    @objc(addPlaylists:)
+    @NSManaged public func addToPlaylists(_ values: NSSet)
+
+    @objc(removePlaylists:)
+    @NSManaged public func removeFromPlaylists(_ values: NSSet)
 
 }
 

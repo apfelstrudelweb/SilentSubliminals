@@ -293,11 +293,10 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
                     if indexPath.row == 0 {
                         isEditingCreations = false
                     }
-                    
                 }
-                self.performSegue(withIdentifier: "makerSegue", sender: nil)
-                return
             }
+            self.performSegue(withIdentifier: "makerSegue", sender: nil)
+            return
         }
  
         if let selectedItem = item, let fileName = selectedItem.soundFileName {
