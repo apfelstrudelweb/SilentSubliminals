@@ -24,6 +24,7 @@ class PlaylistAddNewViewController: UIViewController, UITableViewDataSource, Add
     
     var fetchedResultsControllerUserPlaylist: NSFetchedResultsController<Playlist>!
     var fetchedResultsControllerDefaultPlaylist: NSFetchedResultsController<LibraryItem>!
+    var playlistItems: [LibraryItem]?
     
     //var imagePicker: ImagePicker!
     
@@ -50,7 +51,11 @@ class PlaylistAddNewViewController: UIViewController, UITableViewDataSource, Add
                             completionHandler: { (text) in
                                 //self.createNewLibraryItem()
                                 CoreDataManager.sharedInstance.createPlaylist(title: text, icon: nil)
-                                self.showUserPlaylist()
+                                
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                    self.showUserPlaylist()
+                                }
+                                
                             },
                             actionHandler: { (input:String?) in
                                 self.newPlaylistTitleLabel.text = input?.capitalized
@@ -71,24 +76,32 @@ class PlaylistAddNewViewController: UIViewController, UITableViewDataSource, Add
         
         guard let title = self.newPlaylistTitleLabel.text else { return }
         
-        let fetchRequest = NSFetchRequest<Playlist> (entityName: "Playlist")
-        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
-        let predicate = NSPredicate(format: "title == %@", title)
-        fetchRequest.predicate = predicate
+        CoreDataManager.sharedInstance.addLibraryItemToPlaylist(playlistTitle: title, title: "Jeanstyp") // TODO: per drag&drop
+        CoreDataManager.sharedInstance.addLibraryItemToPlaylist(playlistTitle: title, title: "Engineered") // TODO: per drag&drop
+
+        let fetchRequest1 = NSFetchRequest<Playlist>(entityName: "Playlist")
+        fetchRequest1.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)]
+        let predicate1 = NSPredicate(format: "title == %@", title)
+        fetchRequest1.predicate = predicate1
         self.fetchedResultsControllerUserPlaylist = NSFetchedResultsController<Playlist> (
-            fetchRequest: fetchRequest,
+            fetchRequest: fetchRequest1,
             managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
             sectionNameKeyPath: nil,
             cacheName: nil)
-
+        
         do {
             try fetchedResultsControllerUserPlaylist.performFetch()
         } catch {
             print("An error occurred")
         }
         
+        let playlist = fetchedResultsControllerUserPlaylist.fetchedObjects?.first
+        playlistItems = playlist?.libraryItems?.allObjects as? [LibraryItem]
+        
         userPlaylistTableView.reloadData()
         userPlaylistTableView.tableFooterView = UIView()
+        
+        
     }
     
     func showDefaultPlaylist() {
@@ -118,7 +131,7 @@ extension PlaylistAddNewViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView.isKind(of: UserPlaylistTableView.self) {
-            return fetchedResultsControllerUserPlaylist == nil ? 0 : fetchedResultsControllerUserPlaylist.fetchedObjects?.count ?? 0
+            return playlistItems?.count ?? 0
         } else {
             return fetchedResultsControllerDefaultPlaylist == nil ? 0 : fetchedResultsControllerDefaultPlaylist.fetchedObjects?.count ?? 0
         }
@@ -129,7 +142,7 @@ extension PlaylistAddNewViewController: UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "playlistItemCell", for: indexPath as IndexPath) as! PlaylistItemTableViewCell
         
         if tableView.isKind(of: UserPlaylistTableView.self) {
-            guard let item = fetchedResultsControllerUserPlaylist.fetchedObjects?[indexPath.row] else { return cell }
+            guard let item = playlistItems?[indexPath.row] else { return cell }
             cell.symbolImageView.image = UIImage(data: item.icon ?? Data())
             cell.titleLabel.text = item.title
         } else {

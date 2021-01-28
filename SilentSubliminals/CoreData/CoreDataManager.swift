@@ -190,6 +190,33 @@ class CoreDataManager: NSObject {
         }
     }
     
+    func addLibraryItemToPlaylist(playlistTitle: String, title: String) {
+        
+        let fetchRequest1 = NSFetchRequest<NSFetchRequestResult>(entityName: "LibraryItem")
+        fetchRequest1.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)] // TODO
+        let predicate1 = NSPredicate(format: "title = %@", title as String)
+        fetchRequest1.predicate = predicate1
+        
+        let fetchRequest2 = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
+        fetchRequest2.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)]
+        let predicate2 = NSPredicate(format: "title == %@", playlistTitle)
+        fetchRequest2.predicate = predicate2
+        
+        do {
+            let libraryItems = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest1) as! [LibraryItem]
+            guard let libraryItem = libraryItems.first else { return } // TODO
+            
+            let playlists = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest2) as! [Playlist]
+            let playlist = playlists.first // TODO
+            
+            playlist?.addToLibraryItems(libraryItem)
+            try self.managedObjectContext.save()
+            
+        } catch {
+            print(error)
+        }
+    }
+    
     func createDummyItem() {
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
