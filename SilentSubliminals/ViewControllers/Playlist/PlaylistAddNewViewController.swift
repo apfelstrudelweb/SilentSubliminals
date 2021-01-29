@@ -9,28 +9,24 @@
 import UIKit
 import CoreData
 
-class PlaylistAddNewViewController: UIViewController, UITableViewDataSource, AddAffirmationTextDelegate {
+class PlaylistAddNewViewController: UIViewController, UITableViewDataSource {
     
     @IBOutlet weak var userPlaylistTableView: UserPlaylistTableView!
     @IBOutlet weak var defaultPlaylistTableView: DefaultPlaylistTableView!
     @IBOutlet weak var newPlaylistTitleLabel: UILabel!
     @IBOutlet weak var newPlaylistImageButton: UIButton!
     
+    var playlistTitle: String?
+    var playlistIcon: UIImage?
     
     var isEditingMode: Bool = false
     var hasOwnIcon = false
     
     var imagePicker: ImagePicker!
     
-    var fetchedResultsControllerUserPlaylist: NSFetchedResultsController<Playlist>!
+    var fetchedResultsControllerUserPlaylist: NSFetchedResultsController<LibraryItem>!
     var fetchedResultsControllerDefaultPlaylist: NSFetchedResultsController<LibraryItem>!
     var playlistItems: [LibraryItem]?
-    
-    //var imagePicker: ImagePicker!
-    
-    func addSubliminal(text: String) {
-        print(text)
-    }
     
 
     override func viewDidLoad() {
@@ -38,9 +34,11 @@ class PlaylistAddNewViewController: UIViewController, UITableViewDataSource, Add
         
         self.imagePicker = ImagePicker(presentationController: self, delegate: self)
         
-  
-//        if !isEditingMode {
-//
+        newPlaylistTitleLabel.text = playlistTitle
+        newPlaylistImageButton.setImage(playlistIcon, for: .normal)
+
+        if !isEditingMode {
+
             showInputDialog(title: "Action required",
                             subtitle: "Please enter a name for your playlist",
                             actionTitle: "Add",
@@ -58,11 +56,12 @@ class PlaylistAddNewViewController: UIViewController, UITableViewDataSource, Add
                                 
                             },
                             actionHandler: { (input:String?) in
+                                self.playlistTitle = input
                                 self.newPlaylistTitleLabel.text = input?.capitalized
                             })
-//        } else {
-//            showExistingLibraryItem()
-//        }
+        } else {
+            self.showUserPlaylist()
+        }
         
         showDefaultPlaylist()
         
@@ -74,17 +73,20 @@ class PlaylistAddNewViewController: UIViewController, UITableViewDataSource, Add
     
     func showUserPlaylist() {
         
-        guard let title = self.newPlaylistTitleLabel.text else { return }
+        guard let title = playlistTitle else { return }//self.newPlaylistTitleLabel.text else { return }
         
-        CoreDataManager.sharedInstance.addLibraryItemToPlaylist(playlistTitle: title, title: "Jeanstyp") // TODO: per drag&drop
-        CoreDataManager.sharedInstance.addLibraryItemToPlaylist(playlistTitle: title, title: "Engineered") // TODO: per drag&drop
+//        CoreDataManager.sharedInstance.addLibraryItemToPlaylist(playlistTitle: title, title: "Jeanstyp") // TODO: per drag&drop
+//        CoreDataManager.sharedInstance.addLibraryItemToPlaylist(playlistTitle: title, title: "Engineered") // TODO: per drag&drop
+//        CoreDataManager.sharedInstance.addLibraryItemToPlaylist(playlistTitle: title, title: "Jeansjacke")
+        
+        let fetchRequest = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
+        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)]
+        let predicate = NSPredicate(format: "ANY playlists.title = %@", title)
+        fetchRequest.predicate = predicate
+        fetchRequest.relationshipKeyPathsForPrefetching = ["Playlist"]
 
-        let fetchRequest1 = NSFetchRequest<Playlist>(entityName: "Playlist")
-        fetchRequest1.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)]
-        let predicate1 = NSPredicate(format: "title == %@", title)
-        fetchRequest1.predicate = predicate1
-        self.fetchedResultsControllerUserPlaylist = NSFetchedResultsController<Playlist> (
-            fetchRequest: fetchRequest1,
+        self.fetchedResultsControllerUserPlaylist = NSFetchedResultsController<LibraryItem> (
+            fetchRequest: fetchRequest,
             managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
             sectionNameKeyPath: nil,
             cacheName: nil)
@@ -95,13 +97,8 @@ class PlaylistAddNewViewController: UIViewController, UITableViewDataSource, Add
             print("An error occurred")
         }
         
-        let playlist = fetchedResultsControllerUserPlaylist.fetchedObjects?.first
-        playlistItems = playlist?.libraryItems?.allObjects as? [LibraryItem]
-        
         userPlaylistTableView.reloadData()
         userPlaylistTableView.tableFooterView = UIView()
-        
-        
     }
     
     func showDefaultPlaylist() {
@@ -131,7 +128,7 @@ extension PlaylistAddNewViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView.isKind(of: UserPlaylistTableView.self) {
-            return playlistItems?.count ?? 0
+            return fetchedResultsControllerUserPlaylist == nil ? 0 : fetchedResultsControllerUserPlaylist.fetchedObjects?.count ?? 0
         } else {
             return fetchedResultsControllerDefaultPlaylist == nil ? 0 : fetchedResultsControllerDefaultPlaylist.fetchedObjects?.count ?? 0
         }
@@ -142,7 +139,7 @@ extension PlaylistAddNewViewController: UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "playlistItemCell", for: indexPath as IndexPath) as! PlaylistItemTableViewCell
         
         if tableView.isKind(of: UserPlaylistTableView.self) {
-            guard let item = playlistItems?[indexPath.row] else { return cell }
+            guard let item = fetchedResultsControllerUserPlaylist.fetchedObjects?[indexPath.row] else { return cell }
             cell.symbolImageView.image = UIImage(data: item.icon ?? Data())
             cell.titleLabel.text = item.title
         } else {

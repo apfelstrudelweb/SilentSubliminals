@@ -21,10 +21,13 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
     var playlistItems: [Playlist]?
     var purchaseItems = ["plusSymbolGreen", "meditation_03", "meditation_05", "meditation_01", "meditation_08"]
     
+    var playlistTitle: String?
+    var playlistIcon: UIImage?
     
     var selectedAffirmation: Subliminal?
     
     var isEditingCreations: Bool = false
+    var isEditingPlaylist: Bool = false
     
     
     @IBOutlet weak var recentSubliminalsCollectionView: RecentSubliminalsCollectionView!
@@ -307,7 +310,11 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
             CoreDataManager.sharedInstance.save()
         }
         
-        if collectionView.isKind(of: PlaylistCollectionView.self) && indexPath.row == 0 {
+        if collectionView.isKind(of: PlaylistCollectionView.self)  {
+            isEditingPlaylist = indexPath.row != 0
+            let playlist = fetchedResultsControllerPlaylist.fetchedObjects?[indexPath.row]
+            playlistTitle = playlist?.title
+            playlistIcon = UIImage(data: playlist?.icon ?? Data())
             self.performSegue(withIdentifier: "playlistSegue", sender: nil)
             return
         }
@@ -336,9 +343,15 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
                 vc.editItemFromMediathek = false
                 vc.createItemFromMediathek = true
             }
-            
         }
         
+        if let vc = segue.destination as? PlaylistAddNewViewController {
+            print(isEditingPlaylist)
+            vc.isEditingMode = isEditingPlaylist
+            vc.playlistTitle = playlistTitle
+            vc.playlistIcon = playlistIcon
+        }
+
     }
     
 }
