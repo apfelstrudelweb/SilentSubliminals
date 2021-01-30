@@ -21,8 +21,8 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
     var playlistItems: [Playlist]?
     var purchaseItems = ["plusSymbolGreen", "meditation_03", "meditation_05", "meditation_01", "meditation_08"]
     
-    var playlistTitle: String?
-    var playlistIcon: UIImage?
+
+    var currentPlaylist: Playlist?
     
     var selectedAffirmation: Subliminal?
     
@@ -56,6 +56,7 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        currentPlaylist = nil
         isEditingCreations = false
         displayEditingMode()
         
@@ -312,9 +313,10 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         
         if collectionView.isKind(of: PlaylistCollectionView.self)  {
             isEditingPlaylist = indexPath.row != 0
-            let playlist = fetchedResultsControllerPlaylist.fetchedObjects?[indexPath.row]
-            playlistTitle = playlist?.title
-            playlistIcon = UIImage(data: playlist?.icon ?? Data())
+            if indexPath.row > 0 {
+                currentPlaylist = fetchedResultsControllerPlaylist.fetchedObjects?[indexPath.row]
+            }
+            
             self.performSegue(withIdentifier: "playlistSegue", sender: nil)
             return
         }
@@ -346,10 +348,7 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         }
         
         if let vc = segue.destination as? PlaylistAddNewViewController {
-            print(isEditingPlaylist)
-            vc.isEditingMode = isEditingPlaylist
-            vc.playlistTitle = playlistTitle
-            vc.playlistIcon = playlistIcon
+            vc.currentPlaylist = currentPlaylist
         }
 
     }

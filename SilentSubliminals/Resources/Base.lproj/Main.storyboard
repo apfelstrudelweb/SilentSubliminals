@@ -2936,15 +2936,32 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PX0-LE-hrw">
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PX0-LE-hrw">
                                         <rect key="frame" x="316.66666666666669" y="56.666666666666657" width="90" height="90"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="90" id="DIR-tN-Pz2"/>
                                             <constraint firstAttribute="width" secondItem="PX0-LE-hrw" secondAttribute="height" id="nFX-ML-e7p"/>
                                         </constraints>
                                         <state key="normal" title="Button" image="plusSymbolGreen"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="newPlaylistImageButtonTouched:" destination="GhJ-ll-qqs" eventType="touchUpInside" id="xlj-rs-DjH"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M04-VA-a0W">
+                                        <rect key="frame" x="260.66666666666669" y="91.666666666666671" width="44" height="44.000000000000014"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="M04-VA-a0W" secondAttribute="height" id="DW5-4c-kqK"/>
+                                            <constraint firstAttribute="width" constant="44" id="oWb-Ck-V9v"/>
+                                        </constraints>
+                                        <color key="tintColor" red="0.88921886679999995" green="0.93682569270000005" blue="0.97253698109999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <state key="normal" title="Button" image="editPencilSymbol"/>
+                                        <connections>
+                                            <action selector="editButtonTouched:" destination="GhJ-ll-qqs" eventType="touchUpInside" id="49a-jG-LKW"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -2957,6 +2974,7 @@
                                     <constraint firstItem="Mk4-5R-gAU" firstAttribute="leading" secondItem="bTz-qB-OL8" secondAttribute="leading" id="JYK-HH-OqC"/>
                                     <constraint firstItem="rDd-GY-6gq" firstAttribute="leading" secondItem="Mk4-5R-gAU" secondAttribute="leading" id="KZ7-dR-zou"/>
                                     <constraint firstAttribute="width" secondItem="vxu-Dx-kcA" secondAttribute="height" multiplier="3:5" id="Tvg-BR-nis"/>
+                                    <constraint firstItem="M04-VA-a0W" firstAttribute="centerY" secondItem="SwO-N2-2Qs" secondAttribute="centerY" id="V5i-b4-AQp"/>
                                     <constraint firstItem="bTz-qB-OL8" firstAttribute="centerX" secondItem="vxu-Dx-kcA" secondAttribute="centerX" id="Ytp-ld-Dsb"/>
                                     <constraint firstItem="bTz-qB-OL8" firstAttribute="top" secondItem="SwO-N2-2Qs" secondAttribute="bottom" constant="20" id="etN-KK-ceP"/>
                                     <constraint firstItem="bTz-qB-OL8" firstAttribute="width" secondItem="vxu-Dx-kcA" secondAttribute="width" multiplier="0.9" id="fzY-uw-339"/>
@@ -2969,6 +2987,7 @@
                                         <variation key="heightClass=regular-widthClass=regular" constant="60"/>
                                     </constraint>
                                     <constraint firstItem="SwO-N2-2Qs" firstAttribute="leading" secondItem="bTz-qB-OL8" secondAttribute="leading" id="vnM-9v-l22"/>
+                                    <constraint firstItem="PX0-LE-hrw" firstAttribute="leading" secondItem="M04-VA-a0W" secondAttribute="trailing" constant="12" id="wZJ-2m-WPb"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -3019,6 +3038,7 @@
                     <navigationItem key="navigationItem" id="bv3-Yw-6S1"/>
                     <connections>
                         <outlet property="defaultPlaylistTableView" destination="Mk4-5R-gAU" id="79z-Jh-opV"/>
+                        <outlet property="editButton" destination="M04-VA-a0W" id="4og-rx-rSG"/>
                         <outlet property="newPlaylistImageButton" destination="PX0-LE-hrw" id="B69-is-0Gi"/>
                         <outlet property="newPlaylistTitleLabel" destination="SwO-N2-2Qs" id="6ch-eh-Tca"/>
                         <outlet property="userPlaylistTableView" destination="bTz-qB-OL8" id="dgw-b5-H7j"/>
@@ -3052,7 +3072,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="MRg-E8-hf8"/>
         <segue reference="Ynl-jh-dzU"/>
-        <segue reference="CJT-bm-Huw"/>
+        <segue reference="VQu-IX-ctv"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="bedIcon" width="417" height="417"/>

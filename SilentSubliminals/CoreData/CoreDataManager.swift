@@ -149,7 +149,7 @@ class CoreDataManager: NSObject {
         }
     }
     
-    func createPlaylist(title: String, icon: UIImage?) {
+    func createPlaylist(title: String, icon: UIImage?) -> Playlist? {
         
         do {
             let playlist = NSEntityDescription.insertNewObject(forEntityName: "Playlist", into: self.managedObjectContext) as! Playlist
@@ -164,52 +164,53 @@ class CoreDataManager: NSObject {
             }
             
             try self.managedObjectContext.save()
+            return playlist
             
         } catch {
             print(error)
         }
+        return nil
     }
     
-    func updatePlaylist(title: String, icon: UIImage) {
+    func updatePlaylist(objectID: NSManagedObjectID, title: String?, icon: UIImage?) {
         
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
-        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)] // TODO
-        let predicate = NSPredicate(format: "title = %@", title as String)
-        fetchRequest.predicate = predicate
-        
-        do {
-            let playlists = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest) as! [Playlist]
-            guard let playlist = playlists.first else { return } // TODO
-            playlist.title = title
-            playlist.isDefault = false
-            playlist.icon = icon.pngData()
-            try self.managedObjectContext.save()
+        DispatchQueue.main.async {
+
+            let playlist = self.managedObjectContext.object(with: objectID) as! Playlist
             
-        } catch {
-            print(error)
+            if let playlistTitle = title, playlistTitle.count > 0 {
+                playlist.title = playlistTitle
+            }
+            
+            if let playlistIcon = icon {
+                playlist.icon = playlistIcon.pngData()
+            }
+
+            do {
+                try self.managedObjectContext.save()
+            } catch {
+                print(error)
+            }
+            
         }
     }
     
-    func addLibraryItemToPlaylist(playlistTitle: String, title: String) {
+    func addLibraryItemToPlaylist(playlistObjectID: NSManagedObjectID, title: String) {
         
         let fetchRequest1 = NSFetchRequest<NSFetchRequestResult>(entityName: "LibraryItem")
         fetchRequest1.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)] // TODO
         let predicate1 = NSPredicate(format: "title = %@", title as String)
         fetchRequest1.predicate = predicate1
         
-        let fetchRequest2 = NSFetchRequest<NSFetchRequestResult>(entityName: "Playlist")
-        fetchRequest2.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)]
-        let predicate2 = NSPredicate(format: "title == %@", playlistTitle)
-        fetchRequest2.predicate = predicate2
+
         
         do {
             let libraryItems = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest1) as! [LibraryItem]
             guard let libraryItem = libraryItems.first else { return } // TODO
             
-            let playlists = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest2) as! [Playlist]
-            let playlist = playlists.first // TODO
+            let playlist = self.managedObjectContext.object(with: playlistObjectID) as! Playlist
             
-            playlist?.addToLibraryItems(libraryItem)
+            playlist.addToLibraryItems(libraryItem)
             try self.managedObjectContext.save()
             
         } catch {
