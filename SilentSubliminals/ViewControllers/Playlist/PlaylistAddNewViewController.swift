@@ -8,25 +8,37 @@
 
 import UIKit
 import CoreData
+import MobileCoreServices
 
 class PlaylistAddNewViewController: UIViewController, UITableViewDataSource {
+    
+    
     
     @IBOutlet weak var userPlaylistTableView: UserPlaylistTableView!
     @IBOutlet weak var defaultPlaylistTableView: DefaultPlaylistTableView!
     @IBOutlet weak var newPlaylistTitleLabel: UILabel!
     @IBOutlet weak var newPlaylistImageButton: UIButton!
     @IBOutlet weak var editButton: UIButton!
+    @IBOutlet weak var tableViewEditButton: UIButton!
     
     var imagePicker: ImagePicker!
 
     var currentPlaylist: Playlist?
-    var fetchedResultsControllerUserPlaylistItems: NSFetchedResultsController<LibraryItem>!
+    var fetchedResultsControllerUserPlaylist: NSFetchedResultsController<Playlist>!
     var fetchedResultsControllerDefaultPlaylistItems: NSFetchedResultsController<LibraryItem>!
     var playlistItems: [LibraryItem]?
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        userPlaylistTableView.dragDelegate = self
+        userPlaylistTableView.dropDelegate = self
+        defaultPlaylistTableView.dragDelegate = self
+        defaultPlaylistTableView.dropDelegate = self
+
+        userPlaylistTableView.dragInteractionEnabled = true
+        defaultPlaylistTableView.dragInteractionEnabled = true
         
         self.imagePicker = ImagePicker(presentationController: self, delegate: self)
 
@@ -49,7 +61,8 @@ class PlaylistAddNewViewController: UIViewController, UITableViewDataSource {
                                 self.currentPlaylist = CoreDataManager.sharedInstance.createPlaylist(title: text, icon: nil)
                                 
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                    self.showUserPlaylistItems()
+                                    //self.showUserPlaylistItems()
+                                    self.getPlaylist(text)
                                 }
                                 
                             },
@@ -57,7 +70,8 @@ class PlaylistAddNewViewController: UIViewController, UITableViewDataSource {
                                 self.newPlaylistTitleLabel.text = input?.capitalized
                             })
         } else {
-            self.showUserPlaylistItems()
+            guard let title = currentPlaylist?.title else { return }
+            self.getPlaylist(title)
         }
         
         showDefaultPlaylistItems()
@@ -81,40 +95,40 @@ class PlaylistAddNewViewController: UIViewController, UITableViewDataSource {
                             self.newPlaylistTitleLabel.text = input?.capitalized
                         })
     }
+    @IBAction func tableViewEditButtonTouched(_ sender: Any) {
+        
+        DispatchQueue.main.async {
+            self.userPlaylistTableView.setEditing(!self.userPlaylistTableView.isEditing, animated: true)
+            let imageName = self.userPlaylistTableView.isEditing ? "editSymbolOn" : "editSymbolOff"
+            self.tableViewEditButton.setImage(UIImage(named: imageName), for: .normal)
+        }
+    }
     
     @IBAction func newPlaylistImageButtonTouched(_ sender: UIButton) {
         self.imagePicker.present(from: sender)
     }
     
-    
-    func showUserPlaylistItems() {
-        
-        guard let playlist = self.currentPlaylist else { return }
-        
-//        CoreDataManager.sharedInstance.addLibraryItemToPlaylist(playlistObjectID: currentPlaylist!.objectID, title: "Jeanstyp") // TODO: per drag&drop
-//        CoreDataManager.sharedInstance.addLibraryItemToPlaylist(playlistObjectID: currentPlaylist!.objectID, title: "Engineered") // TODO: per drag&drop
-//        CoreDataManager.sharedInstance.addLibraryItemToPlaylist(playlistObjectID: currentPlaylist!.objectID, title: "Jeansjacke")
-        
-        let fetchRequest = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
+    func getPlaylist(_ title: String) {
+        let fetchRequest = NSFetchRequest<Playlist> (entityName: "Playlist")
         fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)]
-        let predicate = NSPredicate(format: "ANY playlists = %@", playlist)
+        let predicate = NSPredicate(format: "title = %@", title)
         fetchRequest.predicate = predicate
-        fetchRequest.relationshipKeyPathsForPrefetching = ["Playlist"]
-
-        self.fetchedResultsControllerUserPlaylistItems = NSFetchedResultsController<LibraryItem> (
+        
+        self.fetchedResultsControllerUserPlaylist = NSFetchedResultsController<Playlist> (
             fetchRequest: fetchRequest,
             managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
             sectionNameKeyPath: nil,
             cacheName: nil)
         
         do {
-            try fetchedResultsControllerUserPlaylistItems.performFetch()
+            try fetchedResultsControllerUserPlaylist.performFetch()
+            self.currentPlaylist = fetchedResultsControllerUserPlaylist.fetchedObjects?.first
+            
+            self.userPlaylistTableView.reloadData()
+            self.userPlaylistTableView.tableFooterView = UIView()
         } catch {
             print("An error occurred")
         }
-        
-        userPlaylistTableView.reloadData()
-        userPlaylistTableView.tableFooterView = UIView()
     }
     
     func showDefaultPlaylistItems() {
@@ -144,7 +158,7 @@ extension PlaylistAddNewViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView.isKind(of: UserPlaylistTableView.self) {
-            return fetchedResultsControllerUserPlaylistItems == nil ? 0 : fetchedResultsControllerUserPlaylistItems.fetchedObjects?.count ?? 0
+            return currentPlaylist?.libraryItems?.count ?? 0//fetchedResultsControllerUserPlaylistItems == nil ? 0 : fetchedResultsControllerUserPlaylistItems.fetchedObjects?.count ?? 0
         } else {
             return fetchedResultsControllerDefaultPlaylistItems == nil ? 0 : fetchedResultsControllerDefaultPlaylistItems.fetchedObjects?.count ?? 0
         }
@@ -155,7 +169,8 @@ extension PlaylistAddNewViewController: UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "playlistItemCell", for: indexPath as IndexPath) as! PlaylistItemTableViewCell
         
         if tableView.isKind(of: UserPlaylistTableView.self) {
-            guard let item = fetchedResultsControllerUserPlaylistItems.fetchedObjects?[indexPath.row] else { return cell }
+            guard let items = currentPlaylist?.libraryItems else { return cell }//fetchedResultsControllerUserPlaylistItems.fetchedObjects?[indexPath.row] else { return cell }
+            let item = items[indexPath.row] as! LibraryItem
             cell.symbolImageView.image = UIImage(data: item.icon ?? Data())
             cell.titleLabel.text = item.title
         } else {
@@ -165,6 +180,95 @@ extension PlaylistAddNewViewController: UITableViewDelegate {
         }
       
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 80
+    }
+    
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == .delete) {
+            
+            guard let item = currentPlaylist?.libraryItems?[indexPath.row], let playlist = currentPlaylist, let title = playlist.title  else { return }
+            CoreDataManager.sharedInstance.removeLibraryItemFromPlaylist(libraryItem: item as! LibraryItem, playlist: playlist)
+            
+            getPlaylist(title)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
+    
+    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        
+        guard let items = currentPlaylist?.libraryItems, let playlist = currentPlaylist else { return }
+        let movedItem = items[sourceIndexPath.row] as! LibraryItem
+        print(movedItem)
+
+        CoreDataManager.sharedInstance.moveLibraryItemInPlaylist(playlist: playlist, item: movedItem, fromOrder: sourceIndexPath.row, toOrder: destinationIndexPath.row)
+        self.userPlaylistTableView.reloadData()
+    }
+    
+    private func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+}
+
+extension PlaylistAddNewViewController: UITableViewDragDelegate, UITableViewDropDelegate {
+    
+    func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
+        print("performDropWith")
+        
+        let destinationIndexPath: IndexPath
+
+        if let indexPath = coordinator.destinationIndexPath {
+            destinationIndexPath = indexPath
+        } else {
+            let section = userPlaylistTableView.numberOfSections - 1
+            let row = userPlaylistTableView.numberOfRows(inSection: section)
+            destinationIndexPath = IndexPath(row: row, section: section)
+        }
+        
+        coordinator.session.loadObjects(ofClass: NSString.self) { items in
+            // convert the item provider array to a string array or bail out
+            guard let strings = items as? [String] else { return }
+
+            // create an empty array to track rows we've copied
+            var indexPaths = [IndexPath]()
+
+            // loop over all the strings we received
+            for (index, string) in strings.enumerated() {
+  
+                let indexPath = IndexPath(row: destinationIndexPath.row + index, section: destinationIndexPath.section)
+                CoreDataManager.sharedInstance.addLibraryItemToPlaylist(playlistObjectID: self.currentPlaylist!.objectID, order: indexPath.row, title: string)
+                indexPaths.append(indexPath)
+            }
+
+            //self.showUserPlaylistItems()
+            guard let title = self.currentPlaylist?.title else { return }
+            self.getPlaylist(title)
+            self.userPlaylistTableView.reloadData()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        print("itemsForBeginning")
+        
+        guard let item = fetchedResultsControllerDefaultPlaylistItems.fetchedObjects?[indexPath.row] else { return [] }
+        guard let data = item.title?.data(using: .utf8) else { return [] }
+        let itemProvider = NSItemProvider(item: data as NSData, typeIdentifier: kUTTypePlainText as String)
+
+        return [UIDragItem(itemProvider: itemProvider)]
     }
 }
 

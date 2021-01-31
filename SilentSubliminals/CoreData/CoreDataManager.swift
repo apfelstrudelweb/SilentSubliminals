@@ -195,24 +195,36 @@ class CoreDataManager: NSObject {
         }
     }
     
-    func addLibraryItemToPlaylist(playlistObjectID: NSManagedObjectID, title: String) {
+    func addLibraryItemToPlaylist(playlistObjectID: NSManagedObjectID, order: Int, title: String) {
         
-        let fetchRequest1 = NSFetchRequest<NSFetchRequestResult>(entityName: "LibraryItem")
-        fetchRequest1.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)] // TODO
-        let predicate1 = NSPredicate(format: "title = %@", title as String)
-        fetchRequest1.predicate = predicate1
-        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "LibraryItem")
+        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)] // TODO
+        let predicate = NSPredicate(format: "title = %@", title as String)
+        fetchRequest.predicate = predicate
 
-        
         do {
-            let libraryItems = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest1) as! [LibraryItem]
+            
+            let libraryItems = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest) as! [LibraryItem]
             guard let libraryItem = libraryItems.first else { return } // TODO
-            
+            libraryItem.order = Int16(order)
+
             let playlist = self.managedObjectContext.object(with: playlistObjectID) as! Playlist
-            
             playlist.addToLibraryItems(libraryItem)
+
             try self.managedObjectContext.save()
+            //connectLibraryItemToPlaylistPosition(playlistObjectID: playlistObjectID, order: order, item: libraryItem)
             
+        } catch {
+            print(error)
+        }
+
+    }
+    
+    func removeLibraryItemFromPlaylist(libraryItem: LibraryItem, playlist: Playlist) {
+
+        do {
+            playlist.removeFromLibraryItems(libraryItem)
+            try self.managedObjectContext.save()
         } catch {
             print(error)
         }
@@ -472,6 +484,27 @@ class CoreDataManager: NSObject {
         }
         
         save()
+    }
+    
+    func moveLibraryItemInPlaylist(playlist: Playlist, item: LibraryItem, fromOrder: Int, toOrder: Int) {
+        
+        let orderedSet = playlist.mutableOrderedSetValue(forKey: "libraryItems")
+        
+        let indices = IndexSet(integer: fromOrder)
+        
+        if (fromOrder > toOrder) {
+            // we're moving up
+            orderedSet.moveObjects(at: indices, to: toOrder)
+        } else {
+            // we're moving down
+            orderedSet.moveObjects(at: indices, to: toOrder)// - indices.count)
+        }
+        
+        do {
+            try self.managedObjectContext.save()
+        } catch {
+            print(error)
+        }
     }
     
     

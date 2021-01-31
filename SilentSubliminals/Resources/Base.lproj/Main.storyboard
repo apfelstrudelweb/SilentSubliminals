@@ -2817,7 +2817,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="bTz-qB-OL8" customClass="UserPlaylistTableView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                        <rect key="frame" x="21.333333333333343" y="147" width="385.33333333333326" height="234.33333333333337"/>
+                                        <rect key="frame" x="21.333333333333343" y="157" width="385.33333333333326" height="230.33333333333337"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="playlistItemCell" id="Uxy-Lb-k4H" customClass="PlaylistItemTableViewCell" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
@@ -2857,6 +2857,11 @@
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <integer key="value" value="10"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <outlet property="symbolImageView" destination="GBs-lh-da7" id="kxi-Tk-iDp"/>
                                                     <outlet property="titleLabel" destination="DT1-6o-621" id="vn4-ci-jzz"/>
@@ -2864,13 +2869,18 @@
                                             </tableViewCell>
                                         </prototypes>
                                         <sections/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="dataSource" destination="GhJ-ll-qqs" id="vQT-nV-neg"/>
                                             <outlet property="delegate" destination="GhJ-ll-qqs" id="1Ct-El-oXQ"/>
                                         </connections>
                                     </tableView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Mk4-5R-gAU" customClass="DefaultPlaylistTableView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                        <rect key="frame" x="21.333333333333343" y="474.33333333333326" width="385.33333333333326" height="351.66666666666674"/>
+                                        <rect key="frame" x="21.333333333333343" y="480.33333333333326" width="385.33333333333326" height="345.66666666666674"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="playlistItemCell" id="68x-Hs-Nyg" customClass="PlaylistItemTableViewCell" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
@@ -2910,19 +2920,29 @@
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                        <integer key="value" value="10"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <outlet property="symbolImageView" destination="ia0-Fh-Vye" id="yfC-vt-DM4"/>
                                                     <outlet property="titleLabel" destination="v88-nn-36R" id="QUN-0u-Iyc"/>
                                                 </connections>
                                             </tableViewCell>
                                         </prototypes>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="dataSource" destination="GhJ-ll-qqs" id="r5R-4J-3v5"/>
                                             <outlet property="delegate" destination="GhJ-ll-qqs" id="b5a-bA-HfE"/>
                                         </connections>
                                     </tableView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Playlist 1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SwO-N2-2Qs">
-                                        <rect key="frame" x="21.333333333333329" y="100" width="87" height="27"/>
+                                        <rect key="frame" x="21.333333333333329" y="110" width="87" height="27"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="27" id="j49-aV-EUN"/>
                                         </constraints>
@@ -2930,14 +2950,14 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose your Playlist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rDd-GY-6gq">
-                                        <rect key="frame" x="21.333333333333329" y="427.33333333333331" width="203" height="27"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Drag &amp; Drop your Items to Playlist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rDd-GY-6gq">
+                                        <rect key="frame" x="21.333333333333343" y="433.33333333333331" width="333" height="27"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="22"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PX0-LE-hrw">
-                                        <rect key="frame" x="316.66666666666669" y="56.666666666666657" width="90" height="90"/>
+                                        <rect key="frame" x="316.66666666666669" y="51" width="90" height="90"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="90" id="DIR-tN-Pz2"/>
                                             <constraint firstAttribute="width" secondItem="PX0-LE-hrw" secondAttribute="height" id="nFX-ML-e7p"/>
@@ -2953,15 +2973,26 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M04-VA-a0W">
-                                        <rect key="frame" x="260.66666666666669" y="91.666666666666671" width="44" height="44.000000000000014"/>
+                                        <rect key="frame" x="212.66666666666666" y="101.66666666666667" width="43.999999999999972" height="44.000000000000014"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="M04-VA-a0W" secondAttribute="height" id="DW5-4c-kqK"/>
                                             <constraint firstAttribute="width" constant="44" id="oWb-Ck-V9v"/>
                                         </constraints>
-                                        <color key="tintColor" red="0.88921886679999995" green="0.93682569270000005" blue="0.97253698109999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Button" image="editPencilSymbol"/>
                                         <connections>
                                             <action selector="editButtonTouched:" destination="GhJ-ll-qqs" eventType="touchUpInside" id="49a-jG-LKW"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gSk-ih-NeF">
+                                        <rect key="frame" x="264.66666666666669" y="101.66666666666667" width="44" height="44.000000000000014"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="gSk-ih-NeF" secondAttribute="height" id="LsR-AO-y7i"/>
+                                        </constraints>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="editSymbolOff"/>
+                                        <connections>
+                                            <action selector="tableViewEditButtonTouched:" destination="GhJ-ll-qqs" eventType="touchUpInside" id="Xfe-Bk-IgF"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -2969,25 +3000,28 @@
                                 <constraints>
                                     <constraint firstItem="Mk4-5R-gAU" firstAttribute="top" secondItem="rDd-GY-6gq" secondAttribute="bottom" constant="20" id="2aH-uE-P2D"/>
                                     <constraint firstItem="Mk4-5R-gAU" firstAttribute="trailing" secondItem="bTz-qB-OL8" secondAttribute="trailing" id="37F-Nw-lOC"/>
+                                    <constraint firstItem="gSk-ih-NeF" firstAttribute="centerY" secondItem="M04-VA-a0W" secondAttribute="centerY" id="8nk-17-WRq"/>
                                     <constraint firstItem="rDd-GY-6gq" firstAttribute="top" secondItem="bTz-qB-OL8" secondAttribute="bottom" constant="46" id="9ms-UE-nNa"/>
                                     <constraint firstItem="PX0-LE-hrw" firstAttribute="trailing" secondItem="bTz-qB-OL8" secondAttribute="trailing" id="JAb-Wg-XS0"/>
                                     <constraint firstItem="Mk4-5R-gAU" firstAttribute="leading" secondItem="bTz-qB-OL8" secondAttribute="leading" id="JYK-HH-OqC"/>
                                     <constraint firstItem="rDd-GY-6gq" firstAttribute="leading" secondItem="Mk4-5R-gAU" secondAttribute="leading" id="KZ7-dR-zou"/>
+                                    <constraint firstItem="gSk-ih-NeF" firstAttribute="leading" secondItem="M04-VA-a0W" secondAttribute="trailing" constant="8" id="Ltt-od-nUx"/>
+                                    <constraint firstItem="gSk-ih-NeF" firstAttribute="height" secondItem="M04-VA-a0W" secondAttribute="height" id="SZO-eA-m4V"/>
+                                    <constraint firstItem="PX0-LE-hrw" firstAttribute="leading" secondItem="gSk-ih-NeF" secondAttribute="trailing" constant="8" id="SaB-Dx-DIC"/>
                                     <constraint firstAttribute="width" secondItem="vxu-Dx-kcA" secondAttribute="height" multiplier="3:5" id="Tvg-BR-nis"/>
                                     <constraint firstItem="M04-VA-a0W" firstAttribute="centerY" secondItem="SwO-N2-2Qs" secondAttribute="centerY" id="V5i-b4-AQp"/>
                                     <constraint firstItem="bTz-qB-OL8" firstAttribute="centerX" secondItem="vxu-Dx-kcA" secondAttribute="centerX" id="Ytp-ld-Dsb"/>
                                     <constraint firstItem="bTz-qB-OL8" firstAttribute="top" secondItem="SwO-N2-2Qs" secondAttribute="bottom" constant="20" id="etN-KK-ceP"/>
                                     <constraint firstItem="bTz-qB-OL8" firstAttribute="width" secondItem="vxu-Dx-kcA" secondAttribute="width" multiplier="0.9" id="fzY-uw-339"/>
-                                    <constraint firstItem="SwO-N2-2Qs" firstAttribute="top" secondItem="vxu-Dx-kcA" secondAttribute="top" constant="100" id="mOq-fV-0re">
+                                    <constraint firstItem="SwO-N2-2Qs" firstAttribute="top" secondItem="vxu-Dx-kcA" secondAttribute="top" constant="110" id="mOq-fV-0re">
                                         <variation key="heightClass=regular-widthClass=regular" constant="60"/>
                                     </constraint>
-                                    <constraint firstItem="PX0-LE-hrw" firstAttribute="centerY" secondItem="SwO-N2-2Qs" secondAttribute="bottom" multiplier="0.8" id="sKD-Zc-ZX0"/>
+                                    <constraint firstItem="PX0-LE-hrw" firstAttribute="centerY" secondItem="SwO-N2-2Qs" secondAttribute="bottom" multiplier="0.7" id="sKD-Zc-ZX0"/>
                                     <constraint firstItem="Mk4-5R-gAU" firstAttribute="height" secondItem="bTz-qB-OL8" secondAttribute="height" multiplier="1.5" id="tkC-jx-4mp"/>
                                     <constraint firstAttribute="bottom" secondItem="Mk4-5R-gAU" secondAttribute="bottom" constant="100" id="vDg-6e-bHO">
                                         <variation key="heightClass=regular-widthClass=regular" constant="60"/>
                                     </constraint>
                                     <constraint firstItem="SwO-N2-2Qs" firstAttribute="leading" secondItem="bTz-qB-OL8" secondAttribute="leading" id="vnM-9v-l22"/>
-                                    <constraint firstItem="PX0-LE-hrw" firstAttribute="leading" secondItem="M04-VA-a0W" secondAttribute="trailing" constant="12" id="wZJ-2m-WPb"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -3041,6 +3075,7 @@
                         <outlet property="editButton" destination="M04-VA-a0W" id="4og-rx-rSG"/>
                         <outlet property="newPlaylistImageButton" destination="PX0-LE-hrw" id="B69-is-0Gi"/>
                         <outlet property="newPlaylistTitleLabel" destination="SwO-N2-2Qs" id="6ch-eh-Tca"/>
+                        <outlet property="tableViewEditButton" destination="gSk-ih-NeF" id="WV0-mN-wDM"/>
                         <outlet property="userPlaylistTableView" destination="bTz-qB-OL8" id="dgw-b5-H7j"/>
                     </connections>
                 </viewController>
