@@ -195,6 +195,17 @@ class CoreDataManager: NSObject {
         }
     }
     
+    func deletePlaylist(playlist: Playlist) {
+        
+        do {
+            self.managedObjectContext.delete(playlist)
+            try self.managedObjectContext.save()
+            
+        } catch {
+            print(error)
+        }
+    }
+    
     func addLibraryItemToPlaylist(playlistObjectID: NSManagedObjectID, order: Int, title: String) {
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "LibraryItem")

@@ -1112,7 +1112,7 @@
                                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <state key="normal" image="editPencilSymbol"/>
                                                                 <connections>
-                                                                    <action selector="editButtonTouched:" destination="dci-BV-VbV" eventType="touchUpInside" id="HBI-bQ-rAY"/>
+                                                                    <action selector="editCreationsButtonTouched:" destination="dci-BV-VbV" eventType="touchUpInside" id="HBI-bQ-rAY"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>
@@ -1200,11 +1200,24 @@
                                                                     <outlet property="delegate" destination="dci-BV-VbV" id="Xq4-ne-BhA"/>
                                                                 </connections>
                                                             </collectionView>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a4Q-QI-EUm">
+                                                                <rect key="frame" x="334" y="10" width="44" height="44"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="44" id="GRA-Qk-PyL"/>
+                                                                    <constraint firstAttribute="width" constant="44" id="Rhv-5s-186"/>
+                                                                </constraints>
+                                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <state key="normal" image="editPencilSymbol"/>
+                                                                <connections>
+                                                                    <action selector="editPlaylistButtonTouched:" destination="dci-BV-VbV" eventType="touchUpInside" id="tNm-Jp-ZBI"/>
+                                                                </connections>
+                                                            </button>
                                                         </subviews>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstItem="0Ld-06-JSl" firstAttribute="top" secondItem="fFF-Nb-Arn" secondAttribute="bottom" constant="20" id="2GM-ci-N3o"/>
                                                             <constraint firstItem="0Ld-06-JSl" firstAttribute="leading" secondItem="fFF-Nb-Arn" secondAttribute="leading" id="J4g-uS-cdX"/>
+                                                            <constraint firstItem="a4Q-QI-EUm" firstAttribute="centerY" secondItem="fFF-Nb-Arn" secondAttribute="centerY" id="PRV-Sa-6EH"/>
                                                             <constraint firstAttribute="trailing" secondItem="0Ld-06-JSl" secondAttribute="trailing" id="Q8z-gJ-1eN"/>
                                                             <constraint firstItem="fFF-Nb-Arn" firstAttribute="leading" secondItem="d7u-1Y-3D6" secondAttribute="leading" constant="8" id="WbL-qW-zUs"/>
                                                             <constraint firstItem="fFF-Nb-Arn" firstAttribute="top" secondItem="d7u-1Y-3D6" secondAttribute="top" constant="20" id="a0E-QJ-iwR"/>
@@ -1292,6 +1305,9 @@
                                                         </constraints>
                                                     </view>
                                                 </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="a4Q-QI-EUm" firstAttribute="trailing" secondItem="NZM-L4-k0T" secondAttribute="trailing" id="vGq-XU-xtb"/>
+                                                </constraints>
                                             </stackView>
                                         </subviews>
                                         <constraints>
@@ -1370,7 +1386,8 @@
                     <navigationItem key="navigationItem" title="Mediathek" id="QOa-dT-TMi"/>
                     <connections>
                         <outlet property="creationsCollectionView" destination="uld-Gr-nMA" id="xQC-nS-jNo"/>
-                        <outlet property="editButton" destination="NZM-L4-k0T" id="bQo-49-9KV"/>
+                        <outlet property="editCreationsButton" destination="NZM-L4-k0T" id="bQo-49-9KV"/>
+                        <outlet property="editPlaylistButton" destination="a4Q-QI-EUm" id="zXl-3r-OHo"/>
                         <outlet property="playlistCollectionView" destination="0Ld-06-JSl" id="2Vj-nh-C9v"/>
                         <outlet property="recentSubliminalsCollectionView" destination="6mm-6N-k8e" id="Ize-Ea-bLZ"/>
                         <segue destination="Wlk-fN-YWe" kind="show" identifier="showPlayerSegue" id="3gP-B1-m44"/>
@@ -3107,7 +3124,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="MRg-E8-hf8"/>
         <segue reference="Ynl-jh-dzU"/>
-        <segue reference="VQu-IX-ctv"/>
+        <segue reference="cAG-5h-vwQ"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="bedIcon" width="417" height="417"/>

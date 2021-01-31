@@ -33,13 +33,19 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
     @IBOutlet weak var recentSubliminalsCollectionView: RecentSubliminalsCollectionView!
     @IBOutlet weak var creationsCollectionView: CreationsCollectionView!
     @IBOutlet weak var playlistCollectionView: PlaylistCollectionView!
-    @IBOutlet weak var editButton: UIButton!
+    @IBOutlet weak var editCreationsButton: UIButton!
+    @IBOutlet weak var editPlaylistButton: UIButton!
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.navigationController?.navigationBar.tintColor = .white
+
+        let longPressGestureRecent:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressRecent))
+        longPressGestureRecent.minimumPressDuration = 1.0 // 1 second press
+        longPressGestureRecent.delegate = self
+        recentSubliminalsCollectionView.addGestureRecognizer(longPressGestureRecent)
         
         let longPressGestureCreations:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressCreations))
         longPressGestureCreations.minimumPressDuration = 1.0 // 1 second press
@@ -47,10 +53,11 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         //recentSubliminalsCollectionView.addGestureRecognizer(longPressGesture)
         creationsCollectionView.addGestureRecognizer(longPressGestureCreations)
         
-        let longPressGestureRecent:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressRecent))
-        longPressGestureRecent.minimumPressDuration = 1.0 // 1 second press
-        longPressGestureRecent.delegate = self
-        recentSubliminalsCollectionView.addGestureRecognizer(longPressGestureRecent)
+        let longPressGesturePlaylist:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressPlaylist))
+        longPressGesturePlaylist.minimumPressDuration = 1.0 // 1 second press
+        longPressGesturePlaylist.delegate = self
+        //recentSubliminalsCollectionView.addGestureRecognizer(longPressGesture)
+        playlistCollectionView.addGestureRecognizer(longPressGesturePlaylist)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,7 +65,9 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         
         currentPlaylist = nil
         isEditingCreations = false
-        displayEditingMode()
+        isEditingPlaylist = false
+        displayCreationsEditingMode()
+        displayPlaylistEditingMode()
         
         let fetchRequestRecent = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
         fetchRequestRecent.sortDescriptors = [NSSortDescriptor (key: "lastUsedDate", ascending: false)]
@@ -106,14 +115,20 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         }
     }
     
-    @IBAction func editButtonTouched(_ sender: Any) {
+    @IBAction func editCreationsButtonTouched(_ sender: Any) {
         isEditingCreations = !isEditingCreations
-        displayEditingMode()
+        displayCreationsEditingMode()
     }
     
-    func displayEditingMode() {
+    @IBAction func editPlaylistButtonTouched(_ sender: Any) {
+        isEditingPlaylist = !isEditingPlaylist
+        displayPlaylistEditingMode()
+    }
+    
+    
+    func displayCreationsEditingMode() {
 
-        editButton.tintColor = isEditingCreations ? .gray : .white
+        editCreationsButton.tintColor = isEditingCreations ? .gray : .white
         
         creationsCollectionView.allowsMultipleSelection = false
 
@@ -125,55 +140,17 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         }
     }
     
+    func displayPlaylistEditingMode() {
 
-    @objc func handleLongPressCreations(longPressGesture:UILongPressGestureRecognizer) {
+        editPlaylistButton.tintColor = isEditingPlaylist ? .gray : .white
         
-        let p = longPressGesture.location(in: self.creationsCollectionView)
-        guard let indexPath = self.creationsCollectionView.indexPathForItem(at: p) else { return }
-        
-        // + icon
-        if indexPath.row == 0 {
-            return
-        }
-        
-        if (longPressGesture.state == UIGestureRecognizer.State.began) {
-            print("Long press on row, at \(indexPath.row)")
-            
-            guard let item = creationItems?[indexPath.row], let title = item.title else {
-                return
-            }
-            
-            DispatchQueue.main.async {
-                let cell = self.creationsCollectionView!.cellForItem(at: indexPath) as! MediathekCollectionViewCell
-                cell.shake {
-                    let alert = UIAlertController(title: title, message: "Do you really want to delete this item permanently?", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "YES", style: .default, handler: { _ in
-                        
-                        if let fileName = item.soundFileName {
-                            removeFileFromSandbox(filename: String(format: audioTemplate, fileName))
-                            removeFileFromSandbox(filename: String(format: audioSilentTemplate, fileName))
-                        }
-                        
-                        CoreDataManager.sharedInstance.deleteLibraryItem(item: item)
+        playlistCollectionView.allowsMultipleSelection = false
 
-                        do {
-                            try self.fetchedResultsControllerRecent.performFetch()
-                            try self.fetchedResultsControllerCreation.performFetch()
-                            self.recentItems = self.fetchedResultsControllerRecent.fetchedObjects!
-                            self.creationItems = self.fetchedResultsControllerCreation.fetchedObjects!
-                            
-                            self.recentSubliminalsCollectionView.reloadData()
-                        } catch {
-                            print("An error occurred")
-                        }
-                        
-                        self.recentSubliminalsCollectionView.reloadData()
-                        self.creationsCollectionView.reloadData()
-                    }))
-                    alert.addAction(UIAlertAction(title: "NO", style: .cancel, handler: nil))
-                    self.present(alert, animated: true)
-                }
-            }
+        let indexPaths = playlistCollectionView.indexPathsForVisibleItems
+        for indexPath in indexPaths {
+            if indexPath.row == 0 { continue }
+            let cell = playlistCollectionView.cellForItem(at: indexPath) as! MediathekCollectionViewCell
+            cell.displayCheckmark(flag: isEditingPlaylist)
         }
     }
     
@@ -229,6 +206,101 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
             }
         }
     }
+
+    @objc func handleLongPressCreations(longPressGesture:UILongPressGestureRecognizer) {
+        
+        let p = longPressGesture.location(in: self.creationsCollectionView)
+        guard let indexPath = self.creationsCollectionView.indexPathForItem(at: p) else { return }
+        
+        // + icon
+        if indexPath.row == 0 {
+            return
+        }
+        
+        if (longPressGesture.state == UIGestureRecognizer.State.began) {
+            print("Long press on row, at \(indexPath.row)")
+            
+            guard let item = creationItems?[indexPath.row], let title = item.title else {
+                return
+            }
+            
+            DispatchQueue.main.async {
+                let cell = self.creationsCollectionView!.cellForItem(at: indexPath) as! MediathekCollectionViewCell
+                cell.shake {
+                    let alert = UIAlertController(title: title, message: "Do you really want to delete this item permanently?", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "YES", style: .default, handler: { _ in
+                        
+                        if let fileName = item.soundFileName {
+                            removeFileFromSandbox(filename: String(format: audioTemplate, fileName))
+                            removeFileFromSandbox(filename: String(format: audioSilentTemplate, fileName))
+                        }
+                        
+                        CoreDataManager.sharedInstance.deleteLibraryItem(item: item)
+
+                        do {
+                            try self.fetchedResultsControllerRecent.performFetch()
+                            try self.fetchedResultsControllerCreation.performFetch()
+                            self.recentItems = self.fetchedResultsControllerRecent.fetchedObjects!
+                            self.creationItems = self.fetchedResultsControllerCreation.fetchedObjects!
+                            
+                            self.recentSubliminalsCollectionView.reloadData()
+                        } catch {
+                            print("An error occurred")
+                        }
+                        
+                        self.recentSubliminalsCollectionView.reloadData()
+                        self.creationsCollectionView.reloadData()
+                    }))
+                    alert.addAction(UIAlertAction(title: "NO", style: .cancel, handler: nil))
+                    self.present(alert, animated: true)
+                }
+            }
+        }
+    }
+    
+    
+    @objc func handleLongPressPlaylist(longPressGesture:UILongPressGestureRecognizer) {
+        
+        let p = longPressGesture.location(in: self.playlistCollectionView)
+        guard let indexPath = self.playlistCollectionView.indexPathForItem(at: p) else { return }
+        
+        // + icon
+        if indexPath.row == 0 {
+            return
+        }
+        
+        if (longPressGesture.state == UIGestureRecognizer.State.began) {
+            print("Long press on row, at \(indexPath.row)")
+            
+            guard let playlist = playlistItems?[indexPath.row], let title = playlist.title else {
+                return
+            }
+            
+            DispatchQueue.main.async {
+                let cell = self.playlistCollectionView!.cellForItem(at: indexPath) as! MediathekCollectionViewCell
+                cell.shake {
+                    let alert = UIAlertController(title: title, message: "Do you really want to delete this item permanently?", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "YES", style: .default, handler: { _ in
+                        
+                        CoreDataManager.sharedInstance.deletePlaylist(playlist: playlist)
+
+                        do {
+                            try self.fetchedResultsControllerPlaylist.performFetch()
+                            self.playlistItems = self.fetchedResultsControllerPlaylist.fetchedObjects!
+
+                        } catch {
+                            print("An error occurred")
+                        }
+                        
+                        self.playlistCollectionView.reloadData()
+                    }))
+                    alert.addAction(UIAlertAction(title: "NO", style: .cancel, handler: nil))
+                    self.present(alert, animated: true)
+                }
+            }
+        }
+    }
+   
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -276,8 +348,16 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.row == 0 { return }
-        (cell as! MediathekCollectionViewCell).displayCheckmark(flag: isEditingCreations)
+        if indexPath.row == 0 {
+            (cell as! MediathekCollectionViewCell).displayCheckmark(flag: false)
+            return
+        }
+        if collectionView.isKind(of: CreationsCollectionView.self) {
+            (cell as! MediathekCollectionViewCell).displayCheckmark(flag: isEditingCreations)
+        }
+        if collectionView.isKind(of: PlaylistCollectionView.self) {
+            (cell as! MediathekCollectionViewCell).displayCheckmark(flag: isEditingPlaylist)
+        }
     }
 
     
@@ -291,18 +371,15 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         
         if collectionView.isKind(of: CreationsCollectionView.self) {
             item = creationItems?[indexPath.row]
-            if isEditingCreations {
+            if isEditingCreations || indexPath.row == 0 {
                 if let selectedItem = item {
                     SelectionHandler().selectLibraryItem(selectedItem)
-                    if indexPath.row == 0 {
-                        isEditingCreations = false
-                    }
+                    self.performSegue(withIdentifier: "makerSegue", sender: nil)
+                    return
                 }
             }
-            self.performSegue(withIdentifier: "makerSegue", sender: nil)
-            return
         }
- 
+        
         if let selectedItem = item, let fileName = selectedItem.soundFileName {
             spokenAffirmation = String(format: audioTemplate, fileName)
             spokenAffirmationSilent = String(format: audioSilentTemplate, fileName)
@@ -312,13 +389,15 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         }
         
         if collectionView.isKind(of: PlaylistCollectionView.self)  {
-            isEditingPlaylist = indexPath.row != 0
+
             if indexPath.row > 0 {
                 currentPlaylist = fetchedResultsControllerPlaylist.fetchedObjects?[indexPath.row]
             }
-            
-            self.performSegue(withIdentifier: "playlistSegue", sender: nil)
-            return
+
+            if isEditingPlaylist || indexPath.row == 0 {
+                self.performSegue(withIdentifier: "playlistSegue", sender: nil)
+                return
+            }
         }
         
         self.performSegue(withIdentifier: "showPlayerSegue", sender: nil)
