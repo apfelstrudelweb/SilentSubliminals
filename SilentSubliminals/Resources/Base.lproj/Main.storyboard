@@ -2834,7 +2834,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="bTz-qB-OL8" customClass="UserPlaylistTableView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                        <rect key="frame" x="21.333333333333343" y="157" width="385.33333333333326" height="230.33333333333337"/>
+                                        <rect key="frame" x="21.333333333333343" y="157" width="385.33333333333326" height="288"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="playlistItemCell" id="Uxy-Lb-k4H" customClass="PlaylistItemTableViewCell" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
@@ -2897,7 +2897,7 @@
                                         </connections>
                                     </tableView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Mk4-5R-gAU" customClass="DefaultPlaylistTableView" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
-                                        <rect key="frame" x="21.333333333333343" y="480.33333333333326" width="385.33333333333326" height="345.66666666666674"/>
+                                        <rect key="frame" x="21.333333333333343" y="538" width="385.33333333333326" height="288"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="playlistItemCell" id="68x-Hs-Nyg" customClass="PlaylistItemTableViewCell" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
@@ -2967,8 +2967,8 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Drag &amp; Drop your Items to Playlist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rDd-GY-6gq">
-                                        <rect key="frame" x="21.333333333333343" y="433.33333333333331" width="333" height="27"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Drag &amp; Drop your Items to your Playlist" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="rDd-GY-6gq">
+                                        <rect key="frame" x="21.333333333333343" y="491" width="383" height="27"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="22"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -3034,7 +3034,7 @@
                                         <variation key="heightClass=regular-widthClass=regular" constant="60"/>
                                     </constraint>
                                     <constraint firstItem="PX0-LE-hrw" firstAttribute="centerY" secondItem="SwO-N2-2Qs" secondAttribute="bottom" multiplier="0.7" id="sKD-Zc-ZX0"/>
-                                    <constraint firstItem="Mk4-5R-gAU" firstAttribute="height" secondItem="bTz-qB-OL8" secondAttribute="height" multiplier="1.5" id="tkC-jx-4mp"/>
+                                    <constraint firstItem="Mk4-5R-gAU" firstAttribute="height" secondItem="bTz-qB-OL8" secondAttribute="height" id="tkC-jx-4mp"/>
                                     <constraint firstAttribute="bottom" secondItem="Mk4-5R-gAU" secondAttribute="bottom" constant="100" id="vDg-6e-bHO">
                                         <variation key="heightClass=regular-widthClass=regular" constant="60"/>
                                     </constraint>

@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 import MobileCoreServices
+import EasyTipView
+
 
 class PlaylistAddNewViewController: UIViewController, UITableViewDataSource {
     
@@ -27,6 +29,8 @@ class PlaylistAddNewViewController: UIViewController, UITableViewDataSource {
     var fetchedResultsControllerUserPlaylist: NSFetchedResultsController<Playlist>!
     var fetchedResultsControllerDefaultPlaylistItems: NSFetchedResultsController<LibraryItem>!
     var playlistItems: [LibraryItem]?
+    
+    var dropForbidden: Bool = false
     
 
     override func viewDidLoad() {
@@ -229,6 +233,8 @@ extension PlaylistAddNewViewController: UITableViewDragDelegate, UITableViewDrop
     func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
         print("performDropWith")
         
+        if dropForbidden { return }
+        
         let destinationIndexPath: IndexPath
 
         if let indexPath = coordinator.destinationIndexPath {
@@ -264,11 +270,45 @@ extension PlaylistAddNewViewController: UITableViewDragDelegate, UITableViewDrop
     func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
         print("itemsForBeginning")
         
+        dropForbidden = false
+        
         guard let item = fetchedResultsControllerDefaultPlaylistItems.fetchedObjects?[indexPath.row] else { return [] }
         guard let data = item.title?.data(using: .utf8) else { return [] }
+        
+        if let items = currentPlaylist?.libraryItems {
+            for el in items.array {
+                let libraryItem = el as! LibraryItem
+                if libraryItem.title == item.title {
+                    self.showDragDropWarning(title: item.title!)
+                    dropForbidden = true
+                    return [UIDragItem]()
+                }
+            }
+        }
+        
         let itemProvider = NSItemProvider(item: data as NSData, typeIdentifier: kUTTypePlainText as String)
-
         return [UIDragItem(itemProvider: itemProvider)]
+    }
+    
+    func showDragDropWarning(title: String) {
+        
+        DispatchQueue.main.async {
+            
+            var preferences = EasyTipView.Preferences()
+            preferences.drawing.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+            preferences.drawing.foregroundColor = .white
+            preferences.drawing.backgroundColor = .red
+            preferences.drawing.arrowPosition = EasyTipView.ArrowPosition.top
+            preferences.animating.showDuration = 1.5
+            preferences.animating.dismissDuration = 1.5
+            
+            let tipView = EasyTipView(text: "The item \(title) already exists in your playlist!", preferences: preferences)
+            tipView.show(forView: self.userPlaylistTableView, withinSuperview: self.view)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                tipView.dismiss()
+            }
+        }
     }
 }
 
