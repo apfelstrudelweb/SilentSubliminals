@@ -3022,9 +3022,13 @@
                                     <constraint firstItem="PX0-LE-hrw" firstAttribute="trailing" secondItem="bTz-qB-OL8" secondAttribute="trailing" id="JAb-Wg-XS0"/>
                                     <constraint firstItem="Mk4-5R-gAU" firstAttribute="leading" secondItem="bTz-qB-OL8" secondAttribute="leading" id="JYK-HH-OqC"/>
                                     <constraint firstItem="rDd-GY-6gq" firstAttribute="leading" secondItem="Mk4-5R-gAU" secondAttribute="leading" id="KZ7-dR-zou"/>
-                                    <constraint firstItem="gSk-ih-NeF" firstAttribute="leading" secondItem="M04-VA-a0W" secondAttribute="trailing" constant="8" id="Ltt-od-nUx"/>
+                                    <constraint firstItem="gSk-ih-NeF" firstAttribute="leading" secondItem="M04-VA-a0W" secondAttribute="trailing" constant="8" id="Ltt-od-nUx">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="20"/>
+                                    </constraint>
                                     <constraint firstItem="gSk-ih-NeF" firstAttribute="height" secondItem="M04-VA-a0W" secondAttribute="height" id="SZO-eA-m4V"/>
-                                    <constraint firstItem="PX0-LE-hrw" firstAttribute="leading" secondItem="gSk-ih-NeF" secondAttribute="trailing" constant="8" id="SaB-Dx-DIC"/>
+                                    <constraint firstItem="PX0-LE-hrw" firstAttribute="leading" secondItem="gSk-ih-NeF" secondAttribute="trailing" constant="8" id="SaB-Dx-DIC">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="20"/>
+                                    </constraint>
                                     <constraint firstAttribute="width" secondItem="vxu-Dx-kcA" secondAttribute="height" multiplier="3:5" id="Tvg-BR-nis"/>
                                     <constraint firstItem="M04-VA-a0W" firstAttribute="centerY" secondItem="SwO-N2-2Qs" secondAttribute="centerY" id="V5i-b4-AQp"/>
                                     <constraint firstItem="bTz-qB-OL8" firstAttribute="centerX" secondItem="vxu-Dx-kcA" secondAttribute="centerX" id="Ytp-ld-Dsb"/>

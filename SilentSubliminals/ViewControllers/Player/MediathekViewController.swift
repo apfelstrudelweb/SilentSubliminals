@@ -21,13 +21,12 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
     var playlistItems: [Playlist]?
     var purchaseItems = ["plusSymbolGreen", "meditation_03", "meditation_05", "meditation_01", "meditation_08"]
     
-
-    var currentPlaylist: Playlist?
     
-    var selectedAffirmation: Subliminal?
+    var currentPlaylist: Playlist?
     
     var isEditingCreations: Bool = false
     var isEditingPlaylist: Bool = false
+    var recordItem: Bool = false
     
     
     @IBOutlet weak var recentSubliminalsCollectionView: RecentSubliminalsCollectionView!
@@ -36,12 +35,12 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
     @IBOutlet weak var editCreationsButton: UIButton!
     @IBOutlet weak var editPlaylistButton: UIButton!
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.navigationController?.navigationBar.tintColor = .white
-
+        
         let longPressGestureRecent:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressRecent))
         longPressGestureRecent.minimumPressDuration = 1.0 // 1 second press
         longPressGestureRecent.delegate = self
@@ -66,6 +65,7 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         currentPlaylist = nil
         isEditingCreations = false
         isEditingPlaylist = false
+        recordItem = false
         displayCreationsEditingMode()
         displayPlaylistEditingMode()
         
@@ -127,11 +127,11 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
     
     
     func displayCreationsEditingMode() {
-
+        
         editCreationsButton.tintColor = isEditingCreations ? .gray : .white
         
         creationsCollectionView.allowsMultipleSelection = false
-
+        
         let indexPaths = creationsCollectionView.indexPathsForVisibleItems
         for indexPath in indexPaths {
             if indexPath.row == 0 { continue }
@@ -141,11 +141,11 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
     }
     
     func displayPlaylistEditingMode() {
-
+        
         editPlaylistButton.tintColor = isEditingPlaylist ? .gray : .white
         
         playlistCollectionView.allowsMultipleSelection = false
-
+        
         let indexPaths = playlistCollectionView.indexPathsForVisibleItems
         for indexPath in indexPaths {
             if indexPath.row == 0 { continue }
@@ -160,10 +160,10 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         let p = longPressGesture.location(in: self.recentSubliminalsCollectionView)
         guard let indexPath = self.recentSubliminalsCollectionView.indexPathForItem(at: p) else { return }
         
-//        // + icon
-//        if indexPath.row == 0 {
-//            return
-//        }
+        //        // + icon
+        //        if indexPath.row == 0 {
+        //            return
+        //        }
         
         if (longPressGesture.state == UIGestureRecognizer.State.began) {
             print("Long press on row, at \(indexPath.row)")
@@ -179,13 +179,13 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
                     alert.addAction(UIAlertAction(title: "YES", style: .default, handler: { _ in
                         
                         if let fileName = item.soundFileName {
-                           
+                            
                             removeFileFromSandbox(filename: String(format: audioTemplate, fileName))
                             removeFileFromSandbox(filename: String(format: audioSilentTemplate, fileName))
                         }
                         
                         CoreDataManager.sharedInstance.deleteLibraryItem(item: item)
-
+                        
                         do {
                             try self.fetchedResultsControllerRecent.performFetch()
                             try self.fetchedResultsControllerCreation.performFetch()
@@ -206,7 +206,7 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
             }
         }
     }
-
+    
     @objc func handleLongPressCreations(longPressGesture:UILongPressGestureRecognizer) {
         
         let p = longPressGesture.location(in: self.creationsCollectionView)
@@ -236,7 +236,7 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
                         }
                         
                         CoreDataManager.sharedInstance.deleteLibraryItem(item: item)
-
+                        
                         do {
                             try self.fetchedResultsControllerRecent.performFetch()
                             try self.fetchedResultsControllerCreation.performFetch()
@@ -283,11 +283,11 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
                     alert.addAction(UIAlertAction(title: "YES", style: .default, handler: { _ in
                         
                         CoreDataManager.sharedInstance.deletePlaylist(playlist: playlist)
-
+                        
                         do {
                             try self.fetchedResultsControllerPlaylist.performFetch()
                             self.playlistItems = self.fetchedResultsControllerPlaylist.fetchedObjects!
-
+                            
                         } catch {
                             print("An error occurred")
                         }
@@ -300,7 +300,7 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
             }
         }
     }
-   
+    
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -359,7 +359,7 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
             (cell as! MediathekCollectionViewCell).displayCheckmark(flag: isEditingPlaylist)
         }
     }
-
+    
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
@@ -367,6 +367,10 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         
         if collectionView.isKind(of: RecentSubliminalsCollectionView.self) {
             item = recentItems?[indexPath.row]
+            if let selectedItem = item {
+                SelectionHandler().selectLibraryItem(selectedItem)
+                CoreDataManager.sharedInstance.save()
+            }
         }
         
         if collectionView.isKind(of: CreationsCollectionView.self) {
@@ -378,32 +382,70 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
                     return
                 }
             }
-        }
-        
-        if let selectedItem = item, let fileName = selectedItem.soundFileName {
-            spokenAffirmation = String(format: audioTemplate, fileName)
-            spokenAffirmationSilent = String(format: audioSilentTemplate, fileName)
             
-            SelectionHandler().selectLibraryItem(selectedItem)
-            CoreDataManager.sharedInstance.save()
+            if let selectedItem = item, let fileName = selectedItem.soundFileName {
+                spokenAffirmation = String(format: audioTemplate, fileName)
+                spokenAffirmationSilent = String(format: audioSilentTemplate, fileName)
+                let affirmationFile = getFileFromSandbox(filename: spokenAffirmation)
+                if !affirmationFile.checkFileExist() {
+                    AlertController().showWarningMissingSilentFile(vc: self, fileName: fileName) { (flag) in
+                        self.recordItem = true
+                        self.performSegue(withIdentifier: "makerSegue", sender: self)
+                        return
+                    }
+                }
+            }
+            
+            if let selectedItem = item {
+                SelectionHandler().selectLibraryItem(selectedItem)
+                CoreDataManager.sharedInstance.save()
+            }
         }
         
         if collectionView.isKind(of: PlaylistCollectionView.self)  {
-
+            
             if indexPath.row > 0 {
                 currentPlaylist = fetchedResultsControllerPlaylist.fetchedObjects?[indexPath.row]
             }
-
+            
             if isEditingPlaylist || indexPath.row == 0 {
                 self.performSegue(withIdentifier: "playlistSegue", sender: nil)
                 return
             }
+            
+            // make sure for all items in playlist spoken files (with silents) exist
+            var nonExistingFileNames = Array<String>()
+            
+            if let items = currentPlaylist?.libraryItems {
+                for el in items.array {
+                    let libraryItem = el as! LibraryItem
+                    if let fileName = libraryItem.soundFileName {
+                        
+                        let spokenSubliminal = String(format: audioTemplate, fileName)
+                        let spokenSubliminalSilent = String(format: audioSilentTemplate, fileName)
+                        
+                        let subliminalFile = getFileFromSandbox(filename: spokenSubliminal)
+                        let silentSubliminalFile = getFileFromSandbox(filename: spokenSubliminalSilent)
+                        
+                        if !subliminalFile.checkFileExist() || !silentSubliminalFile.checkFileExist() {
+                            nonExistingFileNames.append(fileName)
+                        }
+                    }
+                }
+            }
+            
+            if nonExistingFileNames.count > 0 {
+                AlertController().showWarningMissingSilentFilesForPlaylist(vc: self, fileNames: nonExistingFileNames) { (flag) in
+                    // TODO: maybe some handling, redirecting to the maker
+                    return
+                }
+                return
+            }
         }
-        
         self.performSegue(withIdentifier: "showPlayerSegue", sender: nil)
     }
     
-
+    
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         //recentSubliminalsCollectionView.reloadData()
     }
@@ -411,12 +453,14 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-        
-        if let vc = segue.destination as? SubliminalPlayerViewController {
-            vc.affirmation = selectedAffirmation
-        }
-        if let vc = segue.destination as? SubliminalMakerViewController {
 
+        if let vc = segue.destination as? SubliminalMakerViewController {
+            
+            if recordItem {
+                vc.recordItem = true
+                return
+            }
+            
             if isEditingCreations {
                 vc.editItemFromMediathek = true
                 vc.createItemFromMediathek = false
@@ -426,10 +470,14 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
             }
         }
         
+        if let vc = segue.destination as? SubliminalPlayerViewController {
+            vc.currentPlaylist = currentPlaylist
+        }
+        
         if let vc = segue.destination as? PlaylistAddNewViewController {
             vc.currentPlaylist = currentPlaylist
         }
-
+        
     }
     
 }

@@ -11,8 +11,22 @@ import UIKit
 
 class AlertController {
     
-    func showWarningMissingAffirmationFile(vc: UIViewController, completionHandler: @escaping (Bool) -> Void) {
-        let alert = UIAlertController(title: "Warning", message: "You first need to record your Subliminal for this Library. You're now redirected to the Subliminal Maker.", preferredStyle: .alert)
+    func showWarningMissingSilentFile(vc: UIViewController, fileName: String, completionHandler: @escaping (Bool) -> Void) {
+        let alert = UIAlertController(title: "Warning", message: "You first need to record your Subliminal named '\(fileName)'. You're now redirected to the Subliminal Maker where you can record your Silent.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: {_ in
+            completionHandler(true)
+        }))
+        vc.present(alert, animated: true)
+    }
+    
+    func showWarningMissingSilentFilesForPlaylist(vc: UIViewController, fileNames: Array<String>, completionHandler: @escaping (Bool) -> Void) {
+        
+        var names: String = ""
+        for name in fileNames {
+            names += "\n\(name)"
+        }
+        
+        let alert = UIAlertController(title: "Warning", message: "You first need to record all Subliminals for this Playlist.\nSound files are missing for the following items:\n\(names)", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: {_ in
             completionHandler(true)
         }))

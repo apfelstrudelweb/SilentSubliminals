@@ -38,6 +38,7 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
     
     var createItemFromMediathek: Bool = false
     var editItemFromMediathek: Bool = false
+    var recordItem: Bool = false
     
     var fetchedResultsController: NSFetchedResultsController<LibraryItem>!
     

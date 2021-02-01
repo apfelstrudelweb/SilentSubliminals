@@ -110,7 +110,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     var introButtons:[ToggleButton : PlayerStateMachine.IntroState]?
     var outroButtons:[ToggleButton : PlayerStateMachine.OutroState]?
     
-    var affirmation: Subliminal?
+    var subliminal: Subliminal?
+    var currentPlaylist: Playlist?
     
     override var prefersStatusBarHidden: Bool {
         return true
@@ -145,14 +146,6 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         backButton.isEnabled = false
         forwardButton.isEnabled = false
 
-        let affirmationFile = getFileFromSandbox(filename: spokenAffirmation)
-        if !affirmationFile.checkFileExist() {
-            AlertController().showWarningMissingAffirmationFile(vc: self) { (flag) in
-                
-                self.performSegue(withIdentifier: "makerPlayerSegue", sender: self)
-            }
-        }
-        
         NotificationCenter.default.addObserver(self, selector: #selector(volumeChanged(notification:)), name: NSNotification.Name(rawValue: notification_systemVolumeDidChange), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(appCameToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
@@ -236,6 +229,9 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         
         UserDefaults.standard.setValue(false, forKey: userDefaults_loopTerminated)
         
+        //TODO: what about timer in playlists?
+        timerButton.isHidden = (currentPlaylist != nil)
+        
         let fetchRequest = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
         let predicate = NSPredicate(format: "isActive = true")
         fetchRequest.predicate = predicate
@@ -256,6 +252,11 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         if let libraryItem = fetchedResultsController.fetchedObjects?.first {
             affirmationTitleLabel.text = libraryItem.title
             iconButton.setImage(UIImage(data: libraryItem.icon ?? Data()), for: .normal)
+            
+            if let fileName = libraryItem.soundFileName {
+                spokenAffirmation = String(format: audioTemplate, fileName)
+                spokenAffirmationSilent = String(format: audioSilentTemplate, fileName)
+            }
         }
     }
     
