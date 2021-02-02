@@ -199,9 +199,9 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
                     break
                 }
                 break
-            case .affirmation:
+            case .subliminal:
                 subliminalPulseImageView.animate()
-            case .affirmationLoop:
+            case .silentSubliminal:
                 subliminalPulseImageView.animate()
                 break
             case .consolidation:
@@ -249,15 +249,38 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
             print("An error occurred")
         }
         
-        if let libraryItem = fetchedResultsController.fetchedObjects?.first {
+        var subliminals = Array<String>()
+        
+        if let playlist = currentPlaylist, let items = playlist.libraryItems {
+            for item in items {
+                if let fileName = (item as! LibraryItem).soundFileName {
+                    subliminals.append(fileName)
+                }
+            }
+            // TODO: make it dynamic
+            let libraryItem = items.firstObject as! LibraryItem
             affirmationTitleLabel.text = libraryItem.title
             iconButton.setImage(UIImage(data: libraryItem.icon ?? Data()), for: .normal)
             
+            CoreDataManager.sharedInstance.setNewTimestamp(item: libraryItem)
+            CommandCenter.shared.itemIcon = UIImage(data: libraryItem.icon ?? Data())
+            CommandCenter.shared.itemTitle = libraryItem.title
+        } else if let libraryItem = fetchedResultsController.fetchedObjects?.first {
             if let fileName = libraryItem.soundFileName {
-                spokenAffirmation = String(format: audioTemplate, fileName)
-                spokenAffirmationSilent = String(format: audioSilentTemplate, fileName)
+                subliminals.append(fileName)
             }
+            
+            affirmationTitleLabel.text = libraryItem.title
+            iconButton.setImage(UIImage(data: libraryItem.icon ?? Data()), for: .normal)
+            
+            CoreDataManager.sharedInstance.setNewTimestamp(item: libraryItem)
+            CommandCenter.shared.itemIcon = UIImage(data: libraryItem.icon ?? Data())
+            CommandCenter.shared.itemTitle = libraryItem.title
         }
+        
+        subliminalFileNames = subliminals
+
+        CommandCenter.shared.updateLockScreenInfo()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -498,23 +521,23 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
                     print("bell")
                 }
                 break
-            case .affirmation:
-                print("affirmation")
+            case .subliminal:
+                print("subliminal")
                 stopButtonAnimations()
                 backButton.setEnabled(flag: true)
                 forwardButton.setEnabled(flag: true)
                 CommandCenter.shared.enableForwardButton(flag: true)
                 CommandCenter.shared.enableBackButton(flag: true)
-                audioHelper.playSingleAffirmation(instance: .player)
+                audioHelper.playSubliminal(instance: .player)
                 subliminalPulseImageView.animate()
                 break
-            case .affirmationLoop:
-                print("affirmation loop")
+            case .silentSubliminal:
+                print("silent subliminal")
                 backButton.setEnabled(flag: true)
                 forwardButton.setEnabled(flag: true)
                 CommandCenter.shared.enableForwardButton(flag: true)
                 CommandCenter.shared.enableBackButton(flag: true)
-                audioHelper.playAffirmationLoop()
+                audioHelper.playSubliminalLoop()
                 //subliminalPulseImageView.animate()
                 break
             case .consolidation:
@@ -598,12 +621,6 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         switch PlayerStateMachine.shared.pauseState {
         
         case .play:
-            if let libraryItem = fetchedResultsController.fetchedObjects?.first {
-                CoreDataManager.sharedInstance.setNewTimestamp(item: libraryItem)
-                CommandCenter.shared.itemIcon = UIImage(data: libraryItem.icon ?? Data())
-                CommandCenter.shared.itemTitle = libraryItem.title
-                CommandCenter.shared.updateLockScreenInfo()
-            }
             self.playButton.setState(active: true)
             forwardButton.setEnabled(flag: true)
             PlayerStateMachine.shared.startPlayer()

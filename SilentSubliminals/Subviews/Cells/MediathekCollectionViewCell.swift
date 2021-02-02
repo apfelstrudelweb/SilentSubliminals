@@ -22,11 +22,13 @@ class MediathekCollectionViewCell: UICollectionViewCell {
     var hasOwnIcon: Bool = false
     
     let label = UILabel()
-    let checkmark = UIImageView(image: UIImage(named: "editPencilSymbol"))
+    let checkmark = UIImageView(image: UIImage(named: "checkboxOn"))
+    let darkOverlay = UIView()
     
     override func awakeFromNib() {
         super.awakeFromNib()
         //shake()
+        darkenImageView()
         addCheckmark()
     }
     
@@ -66,14 +68,25 @@ class MediathekCollectionViewCell: UICollectionViewCell {
         checkmark.alpha = 0
         checkmark.tintColor = .white
         symbolImageView.addSubview(checkmark)
-        checkmark.autoPinEdge(.top, to: .top, of: symbolImageView, withOffset: 5)
-        checkmark.autoPinEdge(.right, to: .right, of: symbolImageView, withOffset: -5)
-        checkmark.autoMatch(.width, to: .width, of: symbolImageView, withMultiplier: 0.5)
-        checkmark.autoMatch(.height, to: .height, of: symbolImageView, withMultiplier: 0.5)
+        checkmark.autoPinEdge(.top, to: .top, of: symbolImageView, withOffset: 3)
+        checkmark.autoPinEdge(.right, to: .right, of: symbolImageView, withOffset: -3)
+        checkmark.autoMatch(.width, to: .width, of: symbolImageView, withMultiplier: 0.35)
+        checkmark.autoMatch(.height, to: .height, of: symbolImageView, withMultiplier: 0.35)
+    }
+    
+    func darkenImageView() {
+        darkOverlay.alpha = 0
+        darkOverlay.backgroundColor = .black
+        symbolImageView.addSubview(darkOverlay)
+        darkOverlay.autoPinEdge(.top, to: .top, of: symbolImageView, withOffset: 0)
+        darkOverlay.autoPinEdge(.right, to: .right, of: symbolImageView, withOffset: 0)
+        darkOverlay.autoPinEdge(.left, to: .left, of: symbolImageView, withOffset: 0)
+        darkOverlay.autoPinEdge(.bottom, to: .bottom, of: symbolImageView, withOffset: 0)
     }
     
     func displayCheckmark(flag: Bool) {
         checkmark.alpha = flag ? 1 : 0
+        darkOverlay.alpha = flag ? 0.4 : 0
     }
     
     func shake(completionHandler: @escaping() -> Void) {

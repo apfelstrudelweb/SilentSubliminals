@@ -33,16 +33,18 @@ struct AudioFileTypes {
 var audioFiles: Array<AudioFileTypes> = [AudioFileTypes(filename: String(format: audioTemplate, defaultAudioName), isSilent: false), AudioFileTypes(filename: String(format: audioSilentTemplate, defaultAudioName), isSilent: true)]
 
 // from documents dir
-var spokenAffirmation: String = String(format: audioTemplate, defaultAudioName) {
+var spokenSubliminal: String = String(format: audioTemplate, defaultAudioName) {
     didSet {
-        audioFiles = [AudioFileTypes(filename: spokenAffirmation, isSilent: false), AudioFileTypes(filename: spokenAffirmationSilent, isSilent: true)]
+        audioFiles = [AudioFileTypes(filename: spokenSubliminal, isSilent: false), AudioFileTypes(filename: spokenSilentSubliminal, isSilent: true)]
     }
 }
-var spokenAffirmationSilent: String = String(format: audioSilentTemplate, defaultAudioName) {
+var spokenSilentSubliminal: String = String(format: audioSilentTemplate, defaultAudioName) {
     didSet {
-        audioFiles = [AudioFileTypes(filename: spokenAffirmation, isSilent: false), AudioFileTypes(filename: spokenAffirmationSilent, isSilent: true)]
+        audioFiles = [AudioFileTypes(filename: spokenSubliminal, isSilent: false), AudioFileTypes(filename: spokenSilentSubliminal, isSilent: true)]
     }
 }
+
+var subliminalFileNames: Array<String>?
 
 func delay(_ delay:Double, closure:@escaping ()->()) {
     let when = DispatchTime.now() + delay
@@ -179,10 +181,13 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
     }
     
     
-    func playSingleAffirmation(instance: SoundInstance) {
+    func playSubliminal(instance: SoundInstance) {
+        
+        guard let subliminalFileName = subliminalFileNames?.first else { return }
         
         resetAll = false
-        soundPlayer.play(filename: spokenAffirmation, isSilent: false, completionHandler: { (flag) in
+        let spokenSubliminal = String(format: audioTemplate, subliminalFileName) // TODO
+        soundPlayer.play(filename: spokenSubliminal, isSilent: false, completionHandler: { (flag) in
             print("*** subliminal done ***")
             if instance == .player {
                 if !self.resetAll {
@@ -194,18 +199,24 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         })
     }
     
-    func playAffirmationLoop() {
+    func playSubliminalLoop() {
         
-        soundPlayer.playLoop(filenames: [spokenAffirmation, spokenAffirmationSilent], completionHandler: { (flag) in
-            print("*** loop done ***")
+        //TODO: handle playlist
+        // Info: play loud and silent subliminals simultaneously - that's why we take an array of sound files
+        guard let subliminalFileName = subliminalFileNames?.first else { return }
+        let spokenSubliminal = String(format: audioTemplate, subliminalFileName)
+        let spokenSilentSubliminal = String(format: audioSilentTemplate, subliminalFileName)
+        soundPlayer.playLoop(filenames: [spokenSubliminal, spokenSilentSubliminal], completionHandler: { (flag) in
+            print("*** subliminal loop done ***")
             if !self.resetAll {
                 PlayerStateMachine.shared.doNextPlayerState()
+                //PlayerStateMachine.shared.repeatSubliminal()
             }
         })
     }
     
     // for the Maker ...
-    func stopPlayingSingleAffirmation() {
+    func stopPlayingSubliminal() {
         
         let inputNode = self.audioEngine.inputNode
         let bus = 0
@@ -257,7 +268,10 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
     // MARK: MAKER
     func createSilentSubliminalFile() {
         
-        let file = try! AVAudioFile(forReading: getFileFromSandbox(filename: spokenAffirmation))
+        guard let subliminalFileName = subliminalFileNames?.first else { return }
+        let spokenSubliminal = String(format: audioTemplate, subliminalFileName)
+        
+        let file = try! AVAudioFile(forReading: getFileFromSandbox(filename: spokenSubliminal))
         let engine = AVAudioEngine()
         let player = AVAudioPlayerNode()
         
@@ -302,7 +316,8 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         settings[AVEncoderBitDepthHintKey] = 16
         
         // The render format is also the output format
-        let output = try! AVAudioFile(forWriting: getFileFromSandbox(filename: spokenAffirmationSilent), settings: settings, commonFormat: renderFormat.commonFormat, interleaved: renderFormat.isInterleaved)
+        let spokenSilentSubliminal = String(format: audioSilentTemplate, subliminalFileName)
+        let output = try! AVAudioFile(forWriting: getFileFromSandbox(filename: spokenSilentSubliminal), settings: settings, commonFormat: renderFormat.commonFormat, interleaved: renderFormat.isInterleaved)
         
         var index: Int = 0;
         // Process the file
@@ -350,11 +365,13 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         player.stop()
         engine.stop()
         
-        print("Silent Subliminal file '\(spokenAffirmationSilent)' has been created")
+        print("Silent Subliminal file '\(spokenSilentSubliminal)' has been created")
     }
     
     
     func startRecording() {
+        
+        guard let subliminalFileName = subliminalFileNames?.first else { return }
         
         let settings = [
             AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
@@ -364,7 +381,8 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         ] as [String : Any]
         
         let inputNode = self.audioEngine.inputNode
-        let audioFile = getFileFromSandbox(filename: spokenAffirmation)
+        let spokenSubliminal = String(format: audioTemplate, subliminalFileName)
+        let audioFile = getFileFromSandbox(filename: spokenSubliminal)
         do {
             audioRecorder = try AVAudioRecorder(url: audioFile, settings: settings)
         } catch {

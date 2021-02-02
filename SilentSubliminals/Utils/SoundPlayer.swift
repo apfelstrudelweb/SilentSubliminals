@@ -42,12 +42,12 @@ open class SoundPlayer: NSObject {
         highPass.bypass = false
         
         // TODO
-        if spokenAffirmation == ".caf" {
+        if spokenSubliminal == ".caf" {
             return
         }
         
         do {
-            let audioFile = try AVAudioFile(forReading: getFileFromSandbox(filename: spokenAffirmation))
+            let audioFile = try AVAudioFile(forReading: getFileFromSandbox(filename: spokenSubliminal))
             self.singleAffirmationDuration = audioFile.duration
         } catch {
             print("File read error", error)

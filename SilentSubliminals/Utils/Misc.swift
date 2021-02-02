@@ -77,7 +77,7 @@ func convertSoundFileToCaf(url: URL, completionHandler: @escaping(Bool) -> Void)
     let dirPaths = fileMgr.urls(for: .documentDirectory,
                                 in: .userDomainMask)
     
-    let outputUrl = dirPaths[0].appendingPathComponent(spokenAffirmation)
+    let outputUrl = dirPaths[0].appendingPathComponent(spokenSubliminal)
     let oldFileURL = url
     let asset = AVAsset.init(url: url)
 

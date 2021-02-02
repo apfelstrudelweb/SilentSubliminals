@@ -38,7 +38,7 @@ class ShowIconViewController: UIViewController {
         super.viewDidLoad()
         
         do {
-            let audioFile = try AVAudioFile(forReading: getFileFromSandbox(filename: spokenAffirmation))
+            let audioFile = try AVAudioFile(forReading: getFileFromSandbox(filename: spokenSubliminal))
             availableTimeForLoop -= audioFile.duration
         } catch {
             print("File read error", error)
@@ -68,7 +68,7 @@ class ShowIconViewController: UIViewController {
     
     @objc func runTimedCode() {
         
-        if PlayerStateMachine.shared.playerState == .affirmationLoop {
+        if PlayerStateMachine.shared.playerState == .silentSubliminal {
             setRemainingTime()
         }
         if PlayerStateMachine.shared.playerState == .consolidation {

@@ -19,6 +19,7 @@ class PlaylistAddNewViewController: UIViewController, UITableViewDataSource {
     @IBOutlet weak var userPlaylistTableView: UserPlaylistTableView!
     @IBOutlet weak var defaultPlaylistTableView: DefaultPlaylistTableView!
     @IBOutlet weak var newPlaylistTitleLabel: UILabel!
+    @IBOutlet weak var defaultPlaylistTitleItem: UILabel!
     @IBOutlet weak var newPlaylistImageButton: UIButton!
     @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var tableViewEditButton: UIButton!
@@ -270,6 +271,8 @@ extension PlaylistAddNewViewController: UITableViewDragDelegate, UITableViewDrop
     func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
         print("itemsForBeginning")
         
+        if tableView.isKind(of: UserPlaylistTableView.self) { return [UIDragItem]() }
+        
         dropForbidden = false
         
         guard let item = fetchedResultsControllerDefaultPlaylistItems.fetchedObjects?[indexPath.row] else { return [] }
@@ -303,7 +306,7 @@ extension PlaylistAddNewViewController: UITableViewDragDelegate, UITableViewDrop
             preferences.animating.dismissDuration = 1.5
             
             let tipView = EasyTipView(text: "The item \(title) already exists in your playlist!", preferences: preferences)
-            tipView.show(forView: self.userPlaylistTableView, withinSuperview: self.view)
+            tipView.show(forView: self.defaultPlaylistTitleItem, withinSuperview: self.view)
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                 tipView.dismiss()

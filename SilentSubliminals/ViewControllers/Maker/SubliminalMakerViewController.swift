@@ -99,8 +99,8 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         scriptViewController?.view.isHidden = fetchedResultsController.fetchedObjects?.count == 0
         
         if let libraryItem = fetchedResultsController.fetchedObjects?.first, let fileName = libraryItem.soundFileName {
-            spokenAffirmation = String(format: audioTemplate, fileName)
-            spokenAffirmationSilent = String(format: audioSilentTemplate, fileName)
+            spokenSubliminal = String(format: audioTemplate, fileName)
+            spokenSilentSubliminal = String(format: audioSilentTemplate, fileName)
         }
     }
     
@@ -159,8 +159,10 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         
         if MakerStateMachine.shared.recorderState == .recordStopped {
             startRecording()
+            UIApplication.shared.isIdleTimerDisabled = true
         } else {
             stopRecording()
+            UIApplication.shared.isIdleTimerDisabled = false
         }
     }
     
@@ -233,7 +235,7 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         if MakerStateMachine.shared.playerState == .play {
             playButton.setState(active: true)
             recordButton.setEnabled(flag: false)
-            audioHelper.playSingleAffirmation(instance: .maker)
+            audioHelper.playSubliminal(instance: .maker)
         } else if MakerStateMachine.shared.playerState == .playStopped {
             playButton.setState(active: false)
             recordButton.setEnabled(flag: true)

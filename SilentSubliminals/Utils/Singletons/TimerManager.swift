@@ -20,7 +20,7 @@ class TimerManager {
         //remainingTime = defaultAffirmationTime
         
         do {
-            let audioFile = try AVAudioFile(forReading: getFileFromSandbox(filename: spokenAffirmation))
+            let audioFile = try AVAudioFile(forReading: getFileFromSandbox(filename: spokenSubliminal))
             singleAffirmationDuration = audioFile.duration
         } catch {
             print("File read error", error)

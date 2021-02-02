@@ -3093,6 +3093,7 @@
                     <navigationItem key="navigationItem" id="bv3-Yw-6S1"/>
                     <connections>
                         <outlet property="defaultPlaylistTableView" destination="Mk4-5R-gAU" id="79z-Jh-opV"/>
+                        <outlet property="defaultPlaylistTitleItem" destination="rDd-GY-6gq" id="fr0-iq-ERI"/>
                         <outlet property="editButton" destination="M04-VA-a0W" id="4og-rx-rSG"/>
                         <outlet property="newPlaylistImageButton" destination="PX0-LE-hrw" id="B69-is-0Gi"/>
                         <outlet property="newPlaylistTitleLabel" destination="SwO-N2-2Qs" id="6ch-eh-Tca"/>

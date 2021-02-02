@@ -384,9 +384,9 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
             }
             
             if let selectedItem = item, let fileName = selectedItem.soundFileName {
-                spokenAffirmation = String(format: audioTemplate, fileName)
-                spokenAffirmationSilent = String(format: audioSilentTemplate, fileName)
-                let affirmationFile = getFileFromSandbox(filename: spokenAffirmation)
+                spokenSubliminal = String(format: audioTemplate, fileName)
+                spokenSilentSubliminal = String(format: audioSilentTemplate, fileName)
+                let affirmationFile = getFileFromSandbox(filename: spokenSubliminal)
                 if !affirmationFile.checkFileExist() {
                     AlertController().showWarningMissingSilentFile(vc: self, fileName: fileName) { (flag) in
                         self.recordItem = true

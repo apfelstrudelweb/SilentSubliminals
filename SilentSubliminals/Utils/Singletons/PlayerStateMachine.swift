@@ -62,8 +62,8 @@ class PlayerStateMachine {
         case ready
         case introduction
         case leadIn
-        case affirmation
-        case affirmationLoop
+        case subliminal
+        case silentSubliminal
         case consolidation
         case leadOut
         
@@ -77,11 +77,11 @@ class PlayerStateMachine {
             case .introduction:
                 return .leadIn
             case .leadIn:
-                return .affirmation
-            case .affirmation:
+                return .subliminal
+            case .subliminal:
                 shared.setSilentMode()
-                return .affirmationLoop
-            case .affirmationLoop:
+                return .silentSubliminal
+            case .silentSubliminal:
                 //return .leadOut
                 return .consolidation
             case .consolidation:
@@ -185,6 +185,10 @@ class PlayerStateMachine {
         //}
     }
     
+    func repeatSubliminal() {
+        playerState = .subliminal
+    }
+    
     func startPlayer() {
         if playerState == .ready {
             doNextPlayerState()
@@ -196,7 +200,7 @@ class PlayerStateMachine {
     }
     
     func toggleFrequencyState() {
-        if playerState == .affirmationLoop {
+        if playerState == .silentSubliminal {
             frequencyState = self.frequencyState.nextState
         }
     }
