@@ -23,6 +23,9 @@ class Soundfile: NSObject {
     var filenameLoud: String?
     var filenameSilent: String?
     
+    var sandboxFileLoud: URL?
+    var sandboxFileSilent: URL?
+    
     var audioFileLoud: AVAudioFile?
     var audioFileSilent: AVAudioFile?
     
@@ -42,8 +45,12 @@ class Soundfile: NSObject {
         
         guard let filenameLoud = self.filenameLoud, let filenameSilent = self.filenameSilent else { return }
         
-        let sandboxFileLoud = getFileFromSandbox(filename: filenameLoud)
-        let sandboxFileSilent = getFileFromSandbox(filename: filenameSilent)
+        self.sandboxFileLoud = getFileFromSandbox(filename: filenameLoud)
+        self.sandboxFileSilent = getFileFromSandbox(filename: filenameSilent)
+        
+        print(self.sandboxFileLoud)
+        
+        guard let sandboxFileLoud = self.sandboxFileLoud, let sandboxFileSilent = self.sandboxFileSilent else { return }
         
         do {
             self.audioFileLoud = try AVAudioFile(forReading: sandboxFileLoud)
@@ -52,22 +59,6 @@ class Soundfile: NSObject {
             self.exists = self.audioFileLoud != nil
         } catch {
             print("File read error", error)
-            
-            do {
-                
-//                let settings = [
-//                    AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-//                    AVSampleRateKey: 44100, //48000,
-//                    AVNumberOfChannelsKey: 2,
-//                    AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
-//                ] as [String : Any]
-                
-                //self.audioFileLoud = try AVAudioFile(forWriting: sandboxFileLoud, settings: [:])
-                //self.audioFileSilent = try AVAudioFile(forWriting: getFileFromSandbox(filename: sandboxFileSilent), settings: [:])
-            }  catch {
-                print("File write error", error)
-            }
-            
         }
     }
       

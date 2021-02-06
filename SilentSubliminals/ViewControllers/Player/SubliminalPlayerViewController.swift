@@ -122,9 +122,6 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         super.viewDidLoad()
         
         //navigationController?.hidesBarsOnTap = true
-        let subliminal = getCurrentSubliminal()
-        affirmationTitleLabel.text = subliminal?.title
-        iconButton.setImage(UIImage(data: subliminal?.icon ?? Data()), for: .normal)
         
         overlayView.layer.contents = #imageLiteral(resourceName: "subliminalPlayerBackground.png").cgImage
         overlayButton.isEnabled = false
@@ -153,6 +150,30 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         
         NotificationCenter.default.addObserver(self, selector: #selector(appCameToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
 
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let subliminal = getCurrentSubliminal()
+        affirmationTitleLabel.text = subliminal?.title
+        iconButton.setImage(UIImage(data: subliminal?.icon ?? Data()), for: .normal)
+        
+        scrollView.delegate = self
+        audioHelper.delegate = self
+        PlayerStateMachine.shared.delegate = self
+        
+        UserDefaults.standard.setValue(false, forKey: userDefaults_loopTerminated)
+        //TODO: what about timer in playlists?
+        timerButton.isHidden = (currentPlaylist != nil)
+        CommandCenter.shared.updateLockScreenInfo()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        //audioHelper.reset()
+        stopPlaying()
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = [:]
     }
     
     func setTabBar(hidden:Bool) {
@@ -223,25 +244,6 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        scrollView.delegate = self
-        audioHelper.delegate = self
-        PlayerStateMachine.shared.delegate = self
-        
-        UserDefaults.standard.setValue(false, forKey: userDefaults_loopTerminated)
-        //TODO: what about timer in playlists?
-        timerButton.isHidden = (currentPlaylist != nil)
-        CommandCenter.shared.updateLockScreenInfo()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        //audioHelper.reset()
-        stopPlaying()
-        MPNowPlayingInfoCenter.default().nowPlayingInfo = [:]
-    }
     
     // MARK: Segues
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

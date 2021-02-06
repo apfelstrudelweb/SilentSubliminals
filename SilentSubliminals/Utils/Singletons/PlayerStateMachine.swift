@@ -75,6 +75,13 @@ class PlayerStateMachine {
             
             switch self {
             case .ready:
+                // reset played items
+                if let manager = shared.playlistManager {
+                    manager.reset()
+                    if manager.playNextSubliminal() {
+                        shared.delegate?.subliminalDidUpdate()
+                    }
+                }
                 return shared.introductionState == .some ? .introduction : .leadIn
             case .introduction:
                 return .leadIn
@@ -96,13 +103,6 @@ class PlayerStateMachine {
             case .consolidation:
                 return .leadOut
             case .leadOut:
-                // reset played items
-                if let manager = shared.playlistManager {
-                    manager.reset()
-                    if manager.playNextSubliminal() {
-                        shared.delegate?.subliminalDidUpdate()
-                    }
-                }
                 return .ready
             }
         }
