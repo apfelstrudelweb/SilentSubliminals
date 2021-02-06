@@ -33,16 +33,16 @@ struct AudioFileTypes {
 var audioFiles: Array<AudioFileTypes> = [AudioFileTypes(filename: String(format: audioTemplate, defaultAudioName), isSilent: false), AudioFileTypes(filename: String(format: audioSilentTemplate, defaultAudioName), isSilent: true)]
 
 // from documents dir
-var spokenSubliminal: String = String(format: audioTemplate, defaultAudioName) {
-    didSet {
-        audioFiles = [AudioFileTypes(filename: spokenSubliminal, isSilent: false), AudioFileTypes(filename: spokenSilentSubliminal, isSilent: true)]
-    }
-}
-var spokenSilentSubliminal: String = String(format: audioSilentTemplate, defaultAudioName) {
-    didSet {
-        audioFiles = [AudioFileTypes(filename: spokenSubliminal, isSilent: false), AudioFileTypes(filename: spokenSilentSubliminal, isSilent: true)]
-    }
-}
+//var spokenSubliminal: String = String(format: audioTemplate, defaultAudioName) {
+//    didSet {
+//        audioFiles = [AudioFileTypes(filename: spokenSubliminal, isSilent: false), AudioFileTypes(filename: spokenSilentSubliminal, isSilent: true)]
+//    }
+//}
+//var spokenSilentSubliminal: String = String(format: audioSilentTemplate, defaultAudioName) {
+//    didSet {
+//        audioFiles = [AudioFileTypes(filename: spokenSubliminal, isSilent: false), AudioFileTypes(filename: spokenSilentSubliminal, isSilent: true)]
+//    }
+//}
 
 var subliminalFileNames: Array<String>?
 
@@ -233,6 +233,11 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
     }
     
     func skip() {
+        
+        // TEST
+        // TODO: REMOVE!!!!
+        PlayerStateMachine.shared.doNextPlayerState()
+        return
         
         // completion handler will automaticall call next state
         soundPlayer.stop()

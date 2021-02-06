@@ -368,37 +368,31 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         if collectionView.isKind(of: RecentSubliminalsCollectionView.self) {
             item = recentItems?[indexPath.row]
             if let selectedItem = item {
-                SelectionHandler().selectLibraryItem(selectedItem)
-                CoreDataManager.sharedInstance.save()
+                setCurrentSubliminal(subliminal: selectedItem)
             }
         }
         
         if collectionView.isKind(of: CreationsCollectionView.self) {
             item = creationItems?[indexPath.row]
-            if isEditingCreations || indexPath.row == 0 {
-                if let selectedItem = item {
-                    SelectionHandler().selectLibraryItem(selectedItem)
+            
+            if let selectedItem = item {
+
+                setCurrentSubliminal(subliminal: selectedItem)
+                
+                if isEditingCreations || indexPath.row == 0 {
                     self.performSegue(withIdentifier: "makerSegue", sender: nil)
                     return
                 }
-            }
-            
-            if let selectedItem = item, let fileName = selectedItem.soundFileName {
-                spokenSubliminal = String(format: audioTemplate, fileName)
-                spokenSilentSubliminal = String(format: audioSilentTemplate, fileName)
-                let affirmationFile = getFileFromSandbox(filename: spokenSubliminal)
-                if !affirmationFile.checkFileExist() {
-                    AlertController().showWarningMissingSilentFile(vc: self, fileName: fileName) { (flag) in
-                        self.recordItem = true
-                        self.performSegue(withIdentifier: "makerSegue", sender: self)
-                        return
+                
+                if let currentSubliminal = getCurrentSubliminal(), let title = currentSubliminal.title {
+                    if !currentSubliminal.exists {
+                        AlertController().showWarningMissingSilentFile(vc: self, fileName: title) { (flag) in
+                            self.recordItem = true
+                            self.performSegue(withIdentifier: "makerSegue", sender: self)
+                            return
+                        }
                     }
                 }
-            }
-            
-            if let selectedItem = item {
-                SelectionHandler().selectLibraryItem(selectedItem)
-                CoreDataManager.sharedInstance.save()
             }
         }
         
@@ -406,36 +400,19 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
             
             if indexPath.row > 0 {
                 currentPlaylist = fetchedResultsControllerPlaylist.fetchedObjects?[indexPath.row]
+                if let playlist = currentPlaylist {
+                    setCurrentPlaylist(playlist: playlist)
+                }
             }
             
             if isEditingPlaylist || indexPath.row == 0 {
                 self.performSegue(withIdentifier: "playlistSegue", sender: nil)
                 return
             }
-            
-            // make sure for all items in playlist spoken files (with silents) exist
-            var nonExistingFileNames = Array<String>()
-            
-            if let items = currentPlaylist?.libraryItems {
-                for el in items.array {
-                    let libraryItem = el as! LibraryItem
-                    if let fileName = libraryItem.soundFileName {
-                        
-                        let spokenSubliminal = String(format: audioTemplate, fileName)
-                        let spokenSubliminalSilent = String(format: audioSilentTemplate, fileName)
-                        
-                        let subliminalFile = getFileFromSandbox(filename: spokenSubliminal)
-                        let silentSubliminalFile = getFileFromSandbox(filename: spokenSubliminalSilent)
-                        
-                        if !subliminalFile.checkFileExist() || !silentSubliminalFile.checkFileExist() {
-                            nonExistingFileNames.append(fileName)
-                        }
-                    }
-                }
-            }
-            
-            if nonExistingFileNames.count > 0 {
-                AlertController().showWarningMissingSilentFilesForPlaylist(vc: self, fileNames: nonExistingFileNames) { (flag) in
+
+            // make sure that for all items in playlist spoken files (with silents) exist
+            if getUnrecordedSoundFileNames().count > 0 {
+                AlertController().showWarningMissingSilentFilesForPlaylist(vc: self, fileNames: getUnrecordedSoundFileNames()) { (flag) in
                     // TODO: maybe some handling, redirecting to the maker
                     return
                 }

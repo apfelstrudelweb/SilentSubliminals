@@ -37,11 +37,15 @@ class ShowIconViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        do {
-            let audioFile = try AVAudioFile(forReading: getFileFromSandbox(filename: spokenSubliminal))
-            availableTimeForLoop -= audioFile.duration
-        } catch {
-            print("File read error", error)
+//        do {
+//            let audioFile = try AVAudioFile(forReading: getFileFromSandbox(filename: spokenSubliminal))
+//            availableTimeForLoop -= audioFile.duration
+//        } catch {
+//            print("File read error", error)
+//        }
+        
+        if let currentSubliminal = getCurrentSubliminal(), let duration = currentSubliminal.audioFileLoud?.duration {
+            availableTimeForLoop -= duration
         }
 
         titleLabel.text = itemTitle

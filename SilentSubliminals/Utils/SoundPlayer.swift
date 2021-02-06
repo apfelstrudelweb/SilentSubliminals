@@ -40,18 +40,6 @@ open class SoundPlayer: NSObject {
         highPass.frequency = modulationFrequency
         highPass.bandwidth = bandwidth
         highPass.bypass = false
-        
-        // TODO
-        if spokenSubliminal == ".caf" {
-            return
-        }
-        
-        do {
-            let audioFile = try AVAudioFile(forReading: getFileFromSandbox(filename: spokenSubliminal))
-            self.singleAffirmationDuration = audioFile.duration
-        } catch {
-            print("File read error", error)
-        }
     }
     
     func play(filename: String, isSilent: Bool, completionHandler: @escaping(Bool) -> Void) {
@@ -223,6 +211,8 @@ open class SoundPlayer: NSObject {
     }
     
     func continueEngine() {
+        
+        //stop()
 
         do {
             try self.engine.start()

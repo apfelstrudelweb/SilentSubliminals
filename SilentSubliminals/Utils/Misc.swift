@@ -10,6 +10,30 @@ import Foundation
 import UIKit
 import AVFoundation
 
+
+func setCurrentSubliminal(subliminal: LibraryItem) {
+    let orderedSet = NSMutableOrderedSet()
+    orderedSet.add(subliminal)
+    
+    let manager = PlaylistManager.init(subliminals: orderedSet)
+    
+    PlayerStateMachine.shared.playlistManager = manager
+}
+
+func setCurrentPlaylist(playlist: Playlist) {
+    guard let items = playlist.libraryItems else { return }
+    PlayerStateMachine.shared.playlistManager = PlaylistManager(subliminals: items)
+}
+
+func getCurrentSubliminal() -> Soundfile? {
+    return PlayerStateMachine.shared.playlistManager?.getCurrentSubliminal()
+}
+
+func getUnrecordedSoundFileNames() -> Array<String> {
+    return PlayerStateMachine.shared.playlistManager?.getUnrecordedSoundFileNames() ?? []
+}
+
+
 func getFileFromMainBundle(filename: String) -> URL? {
     
     let array = filename.split(separator: ".")
@@ -73,11 +97,8 @@ func copyFileToDocumentsFolder(sourceURL: URL, targetFileName: String) -> URL{
 
 func convertSoundFileToCaf(url: URL, completionHandler: @escaping(Bool) -> Void) {
     
-    let fileMgr = FileManager.default
-    let dirPaths = fileMgr.urls(for: .documentDirectory,
-                                in: .userDomainMask)
+    guard let currentSubliminal = getCurrentSubliminal(), let outputUrl = currentSubliminal.audioFileLoud?.url else { return }
     
-    let outputUrl = dirPaths[0].appendingPathComponent(spokenSubliminal)
     let oldFileURL = url
     let asset = AVAsset.init(url: url)
 

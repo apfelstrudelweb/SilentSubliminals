@@ -98,10 +98,10 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         
         scriptViewController?.view.isHidden = fetchedResultsController.fetchedObjects?.count == 0
         
-        if let libraryItem = fetchedResultsController.fetchedObjects?.first, let fileName = libraryItem.soundFileName {
-            spokenSubliminal = String(format: audioTemplate, fileName)
-            spokenSilentSubliminal = String(format: audioSilentTemplate, fileName)
-        }
+//        if let libraryItem = fetchedResultsController.fetchedObjects?.first, let fileName = libraryItem.soundFileName {
+//            spokenSubliminal = String(format: audioTemplate, fileName)
+//            spokenSilentSubliminal = String(format: audioSilentTemplate, fileName)
+//        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

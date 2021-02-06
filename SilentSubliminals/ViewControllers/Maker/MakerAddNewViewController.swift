@@ -433,9 +433,11 @@ extension MakerAddNewViewController: UIDocumentPickerDelegate {
         print(urls)
  
         guard let title = affirmationTitleLabel.text, let url = urls.first else { return }
+        
+        guard let currentSubliminal = getCurrentSubliminal() else { return }
 
-        spokenSubliminal = String(format: audioTemplate, title)
-        spokenSilentSubliminal = String(format: audioSilentTemplate, title)
+//        spokenSubliminal = currentSubliminal.filenameLoud
+//        spokenSilentSubliminal = currentSubliminal.filenameSilent
         
         let ext = url.pathExtension
         let filename = title + "." + ext

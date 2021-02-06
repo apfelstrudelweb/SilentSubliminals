@@ -18,6 +18,8 @@ protocol PlayerStateMachineDelegate : AnyObject {
     func pauseSound()
     func continueSound()
     func terminateSound()
+    
+    func subliminalDidUpdate()
 }
 
 //extension PlayerStateMachineDelegate {
@@ -47,7 +49,7 @@ class PlayerStateMachine {
     
     private init() {
         // background thread in AudioHelper
-        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: Notification.Name(notification_player_nextState), object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: Notification.Name(notification_player_nextState), object: nil)
     }
     
     @objc func onDidReceiveData(_ notification:Notification) {
@@ -73,6 +75,10 @@ class PlayerStateMachine {
             
             switch self {
             case .ready:
+                // reset played items
+                if let manager = shared.playlistManager {
+                    manager.reset()
+                }
                 return shared.introductionState == .some ? .introduction : .leadIn
             case .introduction:
                 return .leadIn
@@ -82,6 +88,13 @@ class PlayerStateMachine {
                 shared.setSilentMode()
                 return .silentSubliminal
             case .silentSubliminal:
+                // in the case we have to do with a playlist
+                if let manager = shared.playlistManager {
+                    if manager.playNextSubliminal() {
+                        shared.delegate?.subliminalDidUpdate()
+                        return .subliminal
+                    }
+                }
                 //return .leadOut
                 return .consolidation
             case .consolidation:
@@ -138,8 +151,12 @@ class PlayerStateMachine {
         }
     }
     
+    // TODO
+    var playlistManager : PlaylistManager?
+    
     var playerState : PlayerState = .ready {
         didSet {
+            //playlistManager?.nextSubliminal()
             //serialQueue.sync {
                 delegate?.performAction()
                 delegate?.updateIntroButtons()

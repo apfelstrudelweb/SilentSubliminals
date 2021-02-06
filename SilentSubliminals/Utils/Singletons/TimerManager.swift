@@ -19,12 +19,12 @@ class TimerManager {
     func reset() {
         //remainingTime = defaultAffirmationTime
         
-        do {
-            let audioFile = try AVAudioFile(forReading: getFileFromSandbox(filename: spokenSubliminal))
-            singleAffirmationDuration = audioFile.duration
-        } catch {
-            print("File read error", error)
-        }
+//        do {
+//            let audioFile = try AVAudioFile(forReading: getFileFromSandbox(filename: spokenSubliminal))
+//            singleAffirmationDuration = audioFile.duration
+//        } catch {
+//            print("File read error", error)
+//        }
     }
 
     private init() {

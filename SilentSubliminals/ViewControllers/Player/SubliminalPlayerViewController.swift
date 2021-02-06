@@ -110,7 +110,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     var introButtons:[ToggleButton : PlayerStateMachine.IntroState]?
     var outroButtons:[ToggleButton : PlayerStateMachine.OutroState]?
     
-    var subliminal: Subliminal?
+    
     var currentPlaylist: Playlist?
     
     override var prefersStatusBarHidden: Bool {
@@ -122,6 +122,9 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         super.viewDidLoad()
         
         //navigationController?.hidesBarsOnTap = true
+        let subliminal = getCurrentSubliminal()
+        affirmationTitleLabel.text = subliminal?.title
+        iconButton.setImage(UIImage(data: subliminal?.icon ?? Data()), for: .normal)
         
         overlayView.layer.contents = #imageLiteral(resourceName: "subliminalPlayerBackground.png").cgImage
         overlayButton.isEnabled = false
@@ -229,60 +232,62 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         
         UserDefaults.standard.setValue(false, forKey: userDefaults_loopTerminated)
         
+        
+        
         //TODO: what about timer in playlists?
         timerButton.isHidden = (currentPlaylist != nil)
         
-        let fetchRequest = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
-        let predicate = NSPredicate(format: "isActive = true")
-        fetchRequest.predicate = predicate
-        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
-        self.fetchedResultsController = NSFetchedResultsController<LibraryItem> (
-            fetchRequest: fetchRequest,
-            managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
-            sectionNameKeyPath: nil,
-            cacheName: nil)
-        self.fetchedResultsController.delegate = self
-        
-        do {
-            try fetchedResultsController.performFetch()
-        } catch {
-            print("An error occurred")
-        }
-        
-        var subliminals = Array<String>()
-        
-        if let playlist = currentPlaylist, let items = playlist.libraryItems {
-            for item in items {
-                if let fileName = (item as! LibraryItem).soundFileName {
-                    subliminals.append(fileName)
-                }
-            }
-            // TODO: make it dynamic
-            let libraryItem = items.firstObject as! LibraryItem
-            affirmationTitleLabel.text = libraryItem.title
-            iconButton.setImage(UIImage(data: libraryItem.icon ?? Data()), for: .normal)
-            
-            CoreDataManager.sharedInstance.setNewTimestamp(item: libraryItem)
-            CommandCenter.shared.itemIcon = UIImage(data: libraryItem.icon ?? Data())
-            CommandCenter.shared.itemTitle = libraryItem.title
-        } else if let libraryItem = fetchedResultsController.fetchedObjects?.first {
-            if let fileName = libraryItem.soundFileName {
-                subliminals.append(fileName)
-            }
-            
-            affirmationTitleLabel.text = libraryItem.title
-            iconButton.setImage(UIImage(data: libraryItem.icon ?? Data()), for: .normal)
-            
-            CoreDataManager.sharedInstance.setNewTimestamp(item: libraryItem)
-            CommandCenter.shared.itemIcon = UIImage(data: libraryItem.icon ?? Data())
-            CommandCenter.shared.itemTitle = libraryItem.title
-        }
-        
-        subliminalFileNames = subliminals
+//        let fetchRequest = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
+//        let predicate = NSPredicate(format: "isActive = true")
+//        fetchRequest.predicate = predicate
+//        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
+//        self.fetchedResultsController = NSFetchedResultsController<LibraryItem> (
+//            fetchRequest: fetchRequest,
+//            managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
+//            sectionNameKeyPath: nil,
+//            cacheName: nil)
+//        self.fetchedResultsController.delegate = self
+//
+//        do {
+//            try fetchedResultsController.performFetch()
+//        } catch {
+//            print("An error occurred")
+//        }
+//
+//        var subliminals = Array<String>()
+//
+//        if let playlist = currentPlaylist, let items = playlist.libraryItems {
+//            for item in items {
+//                if let fileName = (item as! LibraryItem).soundFileName {
+//                    subliminals.append(fileName)
+//                }
+//            }
+//            // TODO: make it dynamic
+//            let libraryItem = items.firstObject as! LibraryItem
+//            affirmationTitleLabel.text = libraryItem.title
+//            iconButton.setImage(UIImage(data: libraryItem.icon ?? Data()), for: .normal)
+//
+//            CoreDataManager.sharedInstance.setNewTimestamp(item: libraryItem)
+//            CommandCenter.shared.itemIcon = UIImage(data: libraryItem.icon ?? Data())
+//            CommandCenter.shared.itemTitle = libraryItem.title
+//        } else if let libraryItem = fetchedResultsController.fetchedObjects?.first {
+//            if let fileName = libraryItem.soundFileName {
+//                subliminals.append(fileName)
+//            }
+//
+//            affirmationTitleLabel.text = libraryItem.title
+//            iconButton.setImage(UIImage(data: libraryItem.icon ?? Data()), for: .normal)
+//
+//            CoreDataManager.sharedInstance.setNewTimestamp(item: libraryItem)
+//            CommandCenter.shared.itemIcon = UIImage(data: libraryItem.icon ?? Data())
+//            CommandCenter.shared.itemTitle = libraryItem.title
+//        }
+//
+//        subliminalFileNames = subliminals
 
         CommandCenter.shared.updateLockScreenInfo()
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         //audioHelper.reset()
@@ -460,6 +465,12 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     }
     
     // MARK: PlayerStateMachineDelegate
+    func subliminalDidUpdate() {
+        let subliminal = getCurrentSubliminal()
+        affirmationTitleLabel.text = subliminal?.title
+        iconButton.setImage(UIImage(data: subliminal?.icon ?? Data()), for: .normal)
+    }
+    
     func performAction() {
         
         self.spectrumViewController?.clearGraph()
