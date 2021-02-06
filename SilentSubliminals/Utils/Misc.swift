@@ -29,6 +29,10 @@ func getCurrentSubliminal() -> Soundfile? {
     return PlayerStateMachine.shared.playlistManager?.getCurrentSubliminal()
 }
 
+func playNextSubliminal() {
+    let _ = PlayerStateMachine.shared.playlistManager?.playNextSubliminal()
+}
+
 func getUnrecordedSoundFileNames() -> Array<String> {
     return PlayerStateMachine.shared.playlistManager?.getUnrecordedSoundFileNames() ?? []
 }

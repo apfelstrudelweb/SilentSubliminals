@@ -40,19 +40,35 @@ class Soundfile: NSObject {
         self.filenameLoud = String(format: audioTemplate, fileName)
         self.filenameSilent = String(format: audioSilentTemplate, fileName)
         
-        guard let sandboxFileLoud = self.filenameLoud, let sandboxFileSilent = self.filenameSilent else {
-            print("************** Fatal Error: no sandbox file for \(String(describing: self.title)) *****************")
-            return
-        }
+        guard let filenameLoud = self.filenameLoud, let filenameSilent = self.filenameSilent else { return }
+        
+        let sandboxFileLoud = getFileFromSandbox(filename: filenameLoud)
+        let sandboxFileSilent = getFileFromSandbox(filename: filenameSilent)
         
         do {
-            self.audioFileLoud = try AVAudioFile(forReading: getFileFromSandbox(filename: sandboxFileLoud))
-            self.audioFileSilent = try AVAudioFile(forReading: getFileFromSandbox(filename: sandboxFileSilent))
+            self.audioFileLoud = try AVAudioFile(forReading: sandboxFileLoud)
+            self.audioFileSilent = try AVAudioFile(forReading: sandboxFileSilent)
             self.duration = self.audioFileLoud?.duration
             self.exists = self.audioFileLoud != nil
         } catch {
             print("File read error", error)
+            
+            do {
+                
+//                let settings = [
+//                    AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+//                    AVSampleRateKey: 44100, //48000,
+//                    AVNumberOfChannelsKey: 2,
+//                    AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+//                ] as [String : Any]
+                
+                //self.audioFileLoud = try AVAudioFile(forWriting: sandboxFileLoud, settings: [:])
+                //self.audioFileSilent = try AVAudioFile(forWriting: getFileFromSandbox(filename: sandboxFileSilent), settings: [:])
+            }  catch {
+                print("File write error", error)
+            }
+            
         }
     }
-    
+      
 }

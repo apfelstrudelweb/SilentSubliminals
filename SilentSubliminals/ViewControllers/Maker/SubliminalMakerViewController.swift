@@ -97,11 +97,6 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         }
         
         scriptViewController?.view.isHidden = fetchedResultsController.fetchedObjects?.count == 0
-        
-//        if let libraryItem = fetchedResultsController.fetchedObjects?.first, let fileName = libraryItem.soundFileName {
-//            spokenSubliminal = String(format: audioTemplate, fileName)
-//            spokenSilentSubliminal = String(format: audioSilentTemplate, fileName)
-//        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -184,22 +179,6 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
     func stopRecording() {
         MakerStateMachine.shared.doNextRecorderState()
         audioHelper.stopRecording()
-
-//        let url = getFileFromSandbox(filename: spokenAffirmation) 
-//               URLSession.shared.dataTask(with: url) { data, response, error in
-//                   guard let data = data, error == nil else { return }
-//                   let tmpURL = FileManager.default.temporaryDirectory
-//                       .appendingPathComponent(response?.suggestedFilename ?? "bell.aiff")
-//                   do {
-//                       try data.write(to: tmpURL)
-//                       DispatchQueue.main.async {
-//                           self.share(url: tmpURL)
-//                       }
-//                   } catch {
-//                       print(error)
-//                   }
-//
-//               }.resume()
     }
     
     func share(url: URL) {
@@ -235,7 +214,8 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         if MakerStateMachine.shared.playerState == .play {
             playButton.setState(active: true)
             recordButton.setEnabled(flag: false)
-            audioHelper.playSubliminal(instance: .maker)
+            //audioHelper.playSubliminal(instance: .maker)
+            audioHelper.playPreview()
         } else if MakerStateMachine.shared.playerState == .playStopped {
             playButton.setState(active: false)
             recordButton.setEnabled(flag: true)

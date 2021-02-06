@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 import AVFoundation
 
 protocol AudioHelperDelegate : AnyObject {
@@ -30,21 +31,12 @@ struct AudioFileTypes {
     var audioPlayer = AVAudioPlayerNode()
 }
 
+
+// TODO: remove
 var audioFiles: Array<AudioFileTypes> = [AudioFileTypes(filename: String(format: audioTemplate, defaultAudioName), isSilent: false), AudioFileTypes(filename: String(format: audioSilentTemplate, defaultAudioName), isSilent: true)]
 
-// from documents dir
-//var spokenSubliminal: String = String(format: audioTemplate, defaultAudioName) {
-//    didSet {
-//        audioFiles = [AudioFileTypes(filename: spokenSubliminal, isSilent: false), AudioFileTypes(filename: spokenSilentSubliminal, isSilent: true)]
-//    }
-//}
-//var spokenSilentSubliminal: String = String(format: audioSilentTemplate, defaultAudioName) {
-//    didSet {
-//        audioFiles = [AudioFileTypes(filename: spokenSubliminal, isSilent: false), AudioFileTypes(filename: spokenSilentSubliminal, isSilent: true)]
-//    }
-//}
 
-var subliminalFileNames: Array<String>?
+var recordSoundFile: Soundfile?
 
 func delay(_ delay:Double, closure:@escaping ()->()) {
     let when = DispatchTime.now() + delay
@@ -183,30 +175,23 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
     
     func playSubliminal(instance: SoundInstance) {
         
-        guard let subliminalFileName = subliminalFileNames?.first else { return }
-        
         resetAll = false
-        let spokenSubliminal = String(format: audioTemplate, subliminalFileName) // TODO
-        soundPlayer.play(filename: spokenSubliminal, isSilent: false, completionHandler: { (flag) in
-            print("*** subliminal done ***")
-            if instance == .player {
-                if !self.resetAll {
-                    PlayerStateMachine.shared.doNextPlayerState()
-                }
-            } else {
-                MakerStateMachine.shared.doNextPlayerState()
+        guard let subliminal = getCurrentSubliminal(), let filenameLoud = subliminal.filenameLoud else { return }
+        print("play intro sublimal: \(filenameLoud)")
+        soundPlayer.play(filename: filenameLoud, isSilent: false, completionHandler: { (flag) in
+            print("*** loud subliminal done ***")
+            if !self.resetAll {
+                PlayerStateMachine.shared.doNextPlayerState()
             }
         })
     }
     
     func playSubliminalLoop() {
         
-        //TODO: handle playlist
         // Info: play loud and silent subliminals simultaneously - that's why we take an array of sound files
-        guard let subliminalFileName = subliminalFileNames?.first else { return }
-        let spokenSubliminal = String(format: audioTemplate, subliminalFileName)
-        let spokenSilentSubliminal = String(format: audioSilentTemplate, subliminalFileName)
-        soundPlayer.playLoop(filenames: [spokenSubliminal, spokenSilentSubliminal], completionHandler: { (flag) in
+        guard let subliminal = getCurrentSubliminal(), let filenameLoud = subliminal.filenameLoud, let filenameSilent = subliminal.filenameSilent else { return }
+        print("play loop sublimal: \(filenameSilent)")
+        soundPlayer.playLoop(filenames: [filenameLoud, filenameSilent], completionHandler: { (flag) in
             print("*** subliminal loop done ***")
             if !self.resetAll {
                 PlayerStateMachine.shared.doNextPlayerState()
@@ -233,11 +218,6 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
     }
     
     func skip() {
-        
-        // TEST
-        // TODO: REMOVE!!!!
-        PlayerStateMachine.shared.doNextPlayerState()
-        return
         
         // completion handler will automaticall call next state
         soundPlayer.stop()
@@ -271,12 +251,144 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
     }
     
     // MARK: MAKER
+    func getCurrentRecordingItem() {
+        
+        // TODO: put into CoreDataManager
+        let fetchRequest = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
+        let predicate = NSPredicate(format: "isActive = true")
+        fetchRequest.predicate = predicate
+        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
+        let fetchedResultsController = NSFetchedResultsController<LibraryItem> (
+            fetchRequest: fetchRequest,
+            managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil)
+
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            print("An error occurred")
+        }
+  
+        if let libraryItem = fetchedResultsController.fetchedObjects?.first {
+            recordSoundFile = Soundfile.init(item: libraryItem)
+        }
+    }
+    
+    func playPreview() {
+        
+        getCurrentRecordingItem()
+        
+        guard let subliminal = recordSoundFile, let filenameLoud = subliminal.filenameLoud else { return }
+        print("play recorded sublimal: \(filenameLoud)")
+        soundPlayer.play(filename: filenameLoud, isSilent: false, completionHandler: { (flag) in
+            print("*** sound preview done ***")
+            MakerStateMachine.shared.doNextPlayerState()
+        })
+    }
+    
+//    func __startRecording() {
+//        
+//        guard let subliminalFileName = subliminalFileNames?.first else { return }
+//        
+//        let settings = [
+//            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+//            AVSampleRateKey: 44100, //48000,
+//            AVNumberOfChannelsKey: 2,
+//            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+//        ] as [String : Any]
+//        
+//        let inputNode = self.audioEngine.inputNode
+//        let spokenSubliminal = String(format: audioTemplate, subliminalFileName)
+//        let audioFile = getFileFromSandbox(filename: spokenSubliminal)
+//        do {
+//            audioRecorder = try AVAudioRecorder(url: audioFile, settings: settings)
+//        } catch {
+//            print(error)
+//        }
+//        
+//        let format =  AVAudioFormat(standardFormatWithSampleRate: AVAudioSession.sharedInstance().sampleRate, channels: 2)
+//        
+//        inputNode.removeTap(onBus: 0)
+//        
+//        inputNode.installTap(onBus: 0, bufferSize: bufferSize, format: format) {
+//            (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
+//            
+//            DispatchQueue.main.async {
+//                self.delegate?.processAudioData(buffer: buffer)
+//            }
+//        }
+//        
+//        self.audioEngine.prepare()
+//        try! self.audioEngine.start()
+//        
+//        audioRecorder.record()
+//    }
+    
+    func startRecording() {
+        
+        getCurrentRecordingItem()
+        
+        guard let subliminal = recordSoundFile, let filenameLoud = subliminal.filenameLoud else { return }
+         
+        let settings = [
+            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+            AVSampleRateKey: 44100, //48000,
+            AVNumberOfChannelsKey: 2,
+            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+        ] as [String : Any]
+        
+        let inputNode = self.audioEngine.inputNode
+        
+        let audioFile = getFileFromSandbox(filename: filenameLoud)
+
+        do {
+            audioRecorder = try AVAudioRecorder(url: audioFile, settings: settings)
+        } catch {
+            print(error)
+        }
+        
+        let format =  AVAudioFormat(standardFormatWithSampleRate: AVAudioSession.sharedInstance().sampleRate, channels: 2)
+        
+        inputNode.removeTap(onBus: 0)
+        
+        inputNode.installTap(onBus: 0, bufferSize: bufferSize, format: format) {
+            (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
+            
+            DispatchQueue.main.async {
+                self.delegate?.processAudioData(buffer: buffer)
+            }
+        }
+        
+        self.audioEngine.prepare()
+        try! self.audioEngine.start()
+        
+        audioRecorder.record()
+    }
+    
+    func stopRecording() {
+        
+        audioRecorder.stop()
+        
+        let inputNode = self.audioEngine.inputNode
+        inputNode.removeTap(onBus: 0)
+        self.audioEngine.stop()
+        
+        let audioQueue: DispatchQueue = DispatchQueue(label: "SilentCreationQueue", attributes: [])
+        audioQueue.async {
+            self.createSilentSubliminalFile()
+        }
+    }
+    
+    
     func createSilentSubliminalFile() {
         
-        guard let subliminalFileName = subliminalFileNames?.first else { return }
-        let spokenSubliminal = String(format: audioTemplate, subliminalFileName)
+        getCurrentRecordingItem()
         
-        let file = try! AVAudioFile(forReading: getFileFromSandbox(filename: spokenSubliminal))
+        guard let subliminal = recordSoundFile, let filenameLoud = subliminal.filenameLoud, let filenameSilent = subliminal.filenameSilent else { return }
+        let spokenSubliminal = String(format: audioTemplate, filenameSilent)
+        
+        let file = try! AVAudioFile(forReading: getFileFromSandbox(filename: filenameLoud))
         let engine = AVAudioEngine()
         let player = AVAudioPlayerNode()
         
@@ -321,8 +433,7 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         settings[AVEncoderBitDepthHintKey] = 16
         
         // The render format is also the output format
-        let spokenSilentSubliminal = String(format: audioSilentTemplate, subliminalFileName)
-        let output = try! AVAudioFile(forWriting: getFileFromSandbox(filename: spokenSilentSubliminal), settings: settings, commonFormat: renderFormat.commonFormat, interleaved: renderFormat.isInterleaved)
+        let output = try! AVAudioFile(forWriting: getFileFromSandbox(filename: filenameSilent), settings: settings, commonFormat: renderFormat.commonFormat, interleaved: renderFormat.isInterleaved)
         
         var index: Int = 0;
         // Process the file
@@ -370,61 +481,11 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         player.stop()
         engine.stop()
         
-        print("Silent Subliminal file '\(spokenSilentSubliminal)' has been created")
+
+        print("Silent Subliminal file '\(filenameSilent)' has been created")
+
     }
-    
-    
-    func startRecording() {
-        
-        guard let subliminalFileName = subliminalFileNames?.first else { return }
-        
-        let settings = [
-            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-            AVSampleRateKey: 44100, //48000,
-            AVNumberOfChannelsKey: 2,
-            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
-        ] as [String : Any]
-        
-        let inputNode = self.audioEngine.inputNode
-        let spokenSubliminal = String(format: audioTemplate, subliminalFileName)
-        let audioFile = getFileFromSandbox(filename: spokenSubliminal)
-        do {
-            audioRecorder = try AVAudioRecorder(url: audioFile, settings: settings)
-        } catch {
-            print(error)
-        }
-        
-        let format =  AVAudioFormat(standardFormatWithSampleRate: AVAudioSession.sharedInstance().sampleRate, channels: 2)
-        
-        inputNode.removeTap(onBus: 0)
-        
-        inputNode.installTap(onBus: 0, bufferSize: bufferSize, format: format) {
-            (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
-            
-            DispatchQueue.main.async {
-                self.delegate?.processAudioData(buffer: buffer)
-            }
-        }
-        
-        self.audioEngine.prepare()
-        try! self.audioEngine.start()
-        
-        audioRecorder.record()
-    }
-    
-    func stopRecording() {
-        
-        audioRecorder.stop()
-        
-        let inputNode = self.audioEngine.inputNode
-        inputNode.removeTap(onBus: 0)
-        self.audioEngine.stop()
-        
-        let audioQueue: DispatchQueue = DispatchQueue(label: "SilentCreationQueue", attributes: [])
-        audioQueue.async {
-            self.createSilentSubliminalFile()
-        }
-    }
+
 
     func checkForPermission() {
         Manager.recordingSession = AVAudioSession.sharedInstance()

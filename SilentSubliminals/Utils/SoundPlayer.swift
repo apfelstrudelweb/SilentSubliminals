@@ -15,6 +15,10 @@ protocol SoundPlayerDelegate : AnyObject {
     //func alertSilentsTooLoud(flag: Bool)
 }
 
+enum MyError: Error {
+    case runtimeError(String)
+}
+
 open class SoundPlayer: NSObject {
     
     var commandCenter: CommandCenter?
@@ -50,16 +54,32 @@ open class SoundPlayer: NSObject {
                 self.engine.stop()
                 self.engine = AVAudioEngine()
                 
-                // simplest possible "play a buffer" scenario
-                var url = Bundle.main.url(forResource: filename.fileName(), withExtension: filename.fileExtension())
+                var audioFile: AVAudioFile?
                 
-                if url == nil {
-                    url = getFileFromSandbox(filename: filename)
+                do {
+                    let url = Bundle.main.url(forResource: filename.fileName(), withExtension: filename.fileExtension())
+                    if url == nil {
+                        throw MyError.runtimeError("file \(filename) not in sandbox")
+                    }
+                    audioFile = try AVAudioFile(forReading: url!)
+                } catch {
+                    do {
+                        audioFile = try AVAudioFile(forReading: getFileFromSandbox(filename: filename))
+                    } catch {
+                        print(error)
+                    }
                 }
                 
-                let file = try! AVAudioFile(forReading: url!)
+                guard let file = audioFile else { return }
+                
                 let buffer = AVAudioPCMBuffer(pcmFormat: file.processingFormat, frameCapacity: UInt32(file.length))
-                try! file.read(into:buffer!)
+                
+                do {
+                    try file.read(into:buffer!)
+                } catch {
+                    print(error)
+                }
+                
                 
                 self.engine.detach(self.equalizerHighPass)
                 audioPlayerNode = AVAudioPlayerNode()
@@ -142,6 +162,10 @@ open class SoundPlayer: NSObject {
                 
                 let minutes = availableTimeForLoop / 60
                 print("loop time: \(minutes) minutes")
+                
+                // Only for testing
+                // availableTimeForLoop = 5
+                // TODO: different time interval for playlist items
                 
  
                 audioPlayerNode.installTap(onBus: 0, bufferSize: bufferSize, format: formatLoud.processingFormat) {

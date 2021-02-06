@@ -369,6 +369,7 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
             item = recentItems?[indexPath.row]
             if let selectedItem = item {
                 setCurrentSubliminal(subliminal: selectedItem)
+                playNextSubliminal()
             }
         }
         
@@ -378,6 +379,7 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
             if let selectedItem = item {
 
                 setCurrentSubliminal(subliminal: selectedItem)
+                playNextSubliminal()
                 
                 if isEditingCreations || indexPath.row == 0 {
                     self.performSegue(withIdentifier: "makerSegue", sender: nil)
@@ -402,6 +404,7 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
                 currentPlaylist = fetchedResultsControllerPlaylist.fetchedObjects?[indexPath.row]
                 if let playlist = currentPlaylist {
                     setCurrentPlaylist(playlist: playlist)
+                    playNextSubliminal()
                 }
             }
             

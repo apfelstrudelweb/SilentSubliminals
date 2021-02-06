@@ -231,60 +231,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         PlayerStateMachine.shared.delegate = self
         
         UserDefaults.standard.setValue(false, forKey: userDefaults_loopTerminated)
-        
-        
-        
         //TODO: what about timer in playlists?
         timerButton.isHidden = (currentPlaylist != nil)
-        
-//        let fetchRequest = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
-//        let predicate = NSPredicate(format: "isActive = true")
-//        fetchRequest.predicate = predicate
-//        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
-//        self.fetchedResultsController = NSFetchedResultsController<LibraryItem> (
-//            fetchRequest: fetchRequest,
-//            managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
-//            sectionNameKeyPath: nil,
-//            cacheName: nil)
-//        self.fetchedResultsController.delegate = self
-//
-//        do {
-//            try fetchedResultsController.performFetch()
-//        } catch {
-//            print("An error occurred")
-//        }
-//
-//        var subliminals = Array<String>()
-//
-//        if let playlist = currentPlaylist, let items = playlist.libraryItems {
-//            for item in items {
-//                if let fileName = (item as! LibraryItem).soundFileName {
-//                    subliminals.append(fileName)
-//                }
-//            }
-//            // TODO: make it dynamic
-//            let libraryItem = items.firstObject as! LibraryItem
-//            affirmationTitleLabel.text = libraryItem.title
-//            iconButton.setImage(UIImage(data: libraryItem.icon ?? Data()), for: .normal)
-//
-//            CoreDataManager.sharedInstance.setNewTimestamp(item: libraryItem)
-//            CommandCenter.shared.itemIcon = UIImage(data: libraryItem.icon ?? Data())
-//            CommandCenter.shared.itemTitle = libraryItem.title
-//        } else if let libraryItem = fetchedResultsController.fetchedObjects?.first {
-//            if let fileName = libraryItem.soundFileName {
-//                subliminals.append(fileName)
-//            }
-//
-//            affirmationTitleLabel.text = libraryItem.title
-//            iconButton.setImage(UIImage(data: libraryItem.icon ?? Data()), for: .normal)
-//
-//            CoreDataManager.sharedInstance.setNewTimestamp(item: libraryItem)
-//            CommandCenter.shared.itemIcon = UIImage(data: libraryItem.icon ?? Data())
-//            CommandCenter.shared.itemTitle = libraryItem.title
-//        }
-//
-//        subliminalFileNames = subliminals
-
         CommandCenter.shared.updateLockScreenInfo()
     }
 

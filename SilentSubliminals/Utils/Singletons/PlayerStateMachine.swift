@@ -42,7 +42,7 @@ enum Induction {
 }
 
 class PlayerStateMachine {
-
+    
     weak var delegate : PlayerStateMachineDelegate?
     
     static let shared = PlayerStateMachine()
@@ -75,10 +75,6 @@ class PlayerStateMachine {
             
             switch self {
             case .ready:
-                // reset played items
-                if let manager = shared.playlistManager {
-                    manager.reset()
-                }
                 return shared.introductionState == .some ? .introduction : .leadIn
             case .introduction:
                 return .leadIn
@@ -100,6 +96,13 @@ class PlayerStateMachine {
             case .consolidation:
                 return .leadOut
             case .leadOut:
+                // reset played items
+                if let manager = shared.playlistManager {
+                    manager.reset()
+                    if manager.playNextSubliminal() {
+                        shared.delegate?.subliminalDidUpdate()
+                    }
+                }
                 return .ready
             }
         }
@@ -158,9 +161,9 @@ class PlayerStateMachine {
         didSet {
             //playlistManager?.nextSubliminal()
             //serialQueue.sync {
-                delegate?.performAction()
-                delegate?.updateIntroButtons()
-                delegate?.updateOutroButtons()
+            delegate?.performAction()
+            delegate?.updateIntroButtons()
+            delegate?.updateOutroButtons()
             //}
         }
     }
@@ -198,7 +201,7 @@ class PlayerStateMachine {
     
     func doNextPlayerState() {
         //serialQueue.sync {
-            playerState = self.playerState.nextState
+        playerState = self.playerState.nextState
         //}
     }
     

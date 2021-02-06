@@ -40,9 +40,9 @@ class PlaylistManager {
     func getCurrentSubliminal() -> Soundfile? {
         
         // when we play the first item
-        if currentSubliminal == nil {
-            let _ = playNextSubliminal()
-        }
+//        if currentSubliminal == nil {
+//            let _ = playNextSubliminal()
+//        }
         
         return currentSubliminal
     }
