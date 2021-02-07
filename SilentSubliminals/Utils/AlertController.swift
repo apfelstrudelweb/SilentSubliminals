@@ -33,6 +33,15 @@ class AlertController {
         vc.present(alert, animated: true)
     }
     
+    func showWarningEmptyPlaylist(vc: UIViewController, completionHandler: @escaping (Bool) -> Void) {
+
+        let alert = UIAlertController(title: "Warning", message: "This playlist is empty! Please switch to the edit mode and drag at least one item into the playlist!", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: {_ in
+            completionHandler(true)
+        }))
+        vc.present(alert, animated: true)
+    }
+    
     func showInfoLongAffirmationLoop(vc: UIViewController, completionHandler: @escaping (Bool) -> Void) {
         
         let playTimeInSeconds = UserDefaults.standard.integer(forKey: userDefaults_loopDuration)

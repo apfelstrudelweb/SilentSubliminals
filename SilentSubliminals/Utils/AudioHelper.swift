@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 import CoreData
 import AVFoundation
 
@@ -214,10 +215,6 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         soundPlayer.engine.stop()
         self.playingNodes = Set<AVAudioPlayerNode>()
         PlayerStateMachine.shared.playerState = .ready
-//        PlayerStateMachine.shared.playlistManager?.reset()
-//        let _ = PlayerStateMachine.shared.playlistManager?.playNextSubliminal()
-//        PlayerStateMachine.shared.delegate?.subliminalDidUpdate()
-        //MakerStateMachine.shared.playerState = .playStopped
     }
     
     func skip() {
@@ -254,7 +251,7 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
     }
     
     // MARK: MAKER
-    func getCurrentRecordingItem() {
+    func getCurrentRecordingItem() -> LibraryItem? {
         
         // TODO: put into CoreDataManager
         let fetchRequest = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
@@ -272,17 +269,26 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         } catch {
             print("An error occurred")
         }
+        
+        return fetchedResultsController.fetchedObjects?.first
   
-        if let libraryItem = fetchedResultsController.fetchedObjects?.first {
-            recordSoundFile = Soundfile.init(item: libraryItem)
-        }
+//        if let libraryItem = fetchedResultsController.fetchedObjects?.first, let title = libraryItem.title {
+//            do {
+//                try recordSoundFile = Soundfile(item: libraryItem)
+//            } catch {
+//                print("Soundfile \(title) does not exist in sandbox")
+//            }
+//
+//        }
     }
     
     func playPreview() {
+ 
+        let item = getCurrentRecordingItem()
         
-        getCurrentRecordingItem()
-        
-        guard let subliminal = recordSoundFile, let filenameLoud = subliminal.filenameLoud else { return }
+        guard let fileName = item?.soundFileName else { return }
+        let filenameLoud = String(format: audioTemplate, fileName)
+
         print("play recorded sublimal: \(filenameLoud)")
         soundPlayer.play(filename: filenameLoud, isSilent: false, completionHandler: { (flag) in
             print("*** sound preview done ***")
@@ -293,9 +299,13 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
 
     func startRecording() {
         
-        getCurrentRecordingItem()
+        let item = getCurrentRecordingItem()
         
-        guard let subliminal = recordSoundFile, let audioFile = subliminal.sandboxFileLoud else { return }
+        guard let fileName = item?.soundFileName else { return }
+        let filenameLoud = String(format: audioTemplate, fileName)
+        let sandboxFileLoud = getFileFromSandbox(filename: filenameLoud)
+
+        print("record sublimal: \(filenameLoud)")
          
         let settings = [
             AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
@@ -307,7 +317,7 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         let inputNode = self.audioEngine.inputNode
         
         do {
-            audioRecorder = try AVAudioRecorder(url: audioFile, settings: settings)
+            audioRecorder = try AVAudioRecorder(url: sandboxFileLoud, settings: settings)
         } catch {
             print(error)
         }
@@ -347,11 +357,16 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
     
     func createSilentSubliminalFile() {
         
-        getCurrentRecordingItem()
+        let item = getCurrentRecordingItem()
         
-        guard let subliminal = recordSoundFile, let filenameLoud = subliminal.filenameLoud, let filenameSilent = subliminal.filenameSilent else { return }
+        guard let fileName = item?.soundFileName else { return }
+        let filenameLoud = String(format: audioTemplate, fileName)
+        let filenameSilent = String(format: audioSilentTemplate, fileName)
+        let sandboxFileLoud = getFileFromSandbox(filename: filenameLoud)
+        let sandboxFileSilent = getFileFromSandbox(filename: filenameSilent)
+
         
-        let file = try! AVAudioFile(forReading: getFileFromSandbox(filename: filenameLoud))
+        let file = try! AVAudioFile(forReading: sandboxFileLoud)
         let engine = AVAudioEngine()
         let player = AVAudioPlayerNode()
         
@@ -396,7 +411,7 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         settings[AVEncoderBitDepthHintKey] = 16
         
         // The render format is also the output format
-        let output = try! AVAudioFile(forWriting: getFileFromSandbox(filename: filenameSilent), settings: settings, commonFormat: renderFormat.commonFormat, interleaved: renderFormat.isInterleaved)
+        let output = try! AVAudioFile(forWriting: sandboxFileSilent, settings: settings, commonFormat: renderFormat.commonFormat, interleaved: renderFormat.isInterleaved)
         
         var index: Int = 0;
         // Process the file

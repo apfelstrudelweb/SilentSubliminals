@@ -32,7 +32,7 @@ class Soundfile: NSObject {
     var exists: Bool = false
     
     
-    required init(item: LibraryItem) {
+    required init(item: LibraryItem) throws {
         
         self.item = item
 
@@ -47,10 +47,16 @@ class Soundfile: NSObject {
         
         self.sandboxFileLoud = getFileFromSandbox(filename: filenameLoud)
         self.sandboxFileSilent = getFileFromSandbox(filename: filenameSilent)
-        
-        print(self.sandboxFileLoud)
-        
+
         guard let sandboxFileLoud = self.sandboxFileLoud, let sandboxFileSilent = self.sandboxFileSilent else { return }
+        
+        if !sandboxFileLoud.checkFileExist() {
+            throw FileReadError.runtimeError("file \(filenameLoud) not in sandbox")
+        }
+        
+        if !sandboxFileSilent.checkFileExist() {
+            throw FileReadError.runtimeError("file \(filenameSilent) not in sandbox")
+        }
         
         do {
             self.audioFileLoud = try AVAudioFile(forReading: sandboxFileLoud)
@@ -58,7 +64,7 @@ class Soundfile: NSObject {
             self.duration = self.audioFileLoud?.duration
             self.exists = self.audioFileLoud != nil
         } catch {
-            print("File read error", error)
+            throw FileReadError.runtimeError("file \(filenameLoud) not in sandbox")
         }
     }
       

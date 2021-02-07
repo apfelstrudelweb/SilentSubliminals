@@ -25,6 +25,10 @@ func setCurrentPlaylist(playlist: Playlist) {
     PlayerStateMachine.shared.playlistManager = PlaylistManager(subliminals: items)
 }
 
+func resetPlaylist() {
+    PlayerStateMachine.shared.playlistManager = PlaylistManager(subliminals: [])
+}
+
 func getCurrentSubliminal() -> Soundfile? {
     return PlayerStateMachine.shared.playlistManager?.getCurrentSubliminal()
 }
@@ -97,6 +101,21 @@ func copyFileToDocumentsFolder(sourceURL: URL, targetFileName: String) -> URL{
     }
     
     return destURL
+}
+
+func renameSubliminalFilesInSandbox(oldTitle: String, newTitle: String) {
+    
+    do {
+        let oldSoundSandboxFile = getFileFromSandbox(filename: String(format: audioTemplate, oldTitle))
+        let newSoundSandboxFile = getFileFromSandbox(filename: String(format: audioTemplate, newTitle))
+        try FileManager.default.moveItem(at: oldSoundSandboxFile, to: newSoundSandboxFile)
+        
+        let oldSoundSandboxFileSilent = getFileFromSandbox(filename: String(format: audioSilentTemplate, oldTitle))
+        let newSoundSandboxFileSilent = getFileFromSandbox(filename: String(format: audioSilentTemplate, newTitle))
+        try FileManager.default.moveItem(at: oldSoundSandboxFileSilent, to: newSoundSandboxFileSilent)
+    } catch {
+        print(error)
+    }
 }
 
 func convertSoundFileToCaf(url: URL, completionHandler: @escaping(Bool) -> Void) {

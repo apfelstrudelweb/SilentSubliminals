@@ -31,6 +31,8 @@ class MakerAddNewViewController: UIViewController, UITableViewDataSource, AddAff
     var isEditingMode: Bool = false
     var hasOwnIcon = false
     
+    var currentSoundFileName: String?
+    
     
     private var addAffirmationViewController: AddAffirmationViewController?
     private var scriptViewController: ScriptViewController?
@@ -156,29 +158,7 @@ class MakerAddNewViewController: UIViewController, UITableViewDataSource, AddAff
             let hasOwnIcon = defaultImageButtonIcon?.pngData() != icon.pngData()
             CoreDataManager.sharedInstance.updateLibraryItem(title: title, icon: icon, hasOwnIcon: hasOwnIcon)
         }
-
-//        if false {
-//            
-//            guard let viewControllers = self.navigationController?.viewControllers else { return }
-//            var controllerStack = viewControllers
-//            
-//            var index = 0
-//            
-//            for (i, vc) in controllerStack.enumerated() {
-//                
-//                if vc.isKind(of: MediathekViewController.self) {
-//                    index = i
-//                    break
-//                }
-//            }
-//            
-//            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//            let vc = storyboard.instantiateViewController(withIdentifier: "SubliminalMaker")
-//            controllerStack[index] = vc
-//            
-//            self.navigationController?.setViewControllers(controllerStack, animated: true);
-//        }
-        
+ 
         delegate?.itemDidUpdate()
         
         self.dismiss(animated: true, completion: nil)
@@ -225,30 +205,18 @@ class MakerAddNewViewController: UIViewController, UITableViewDataSource, AddAff
             self.present(alert, animated: true)
         } else {
             currentLibraryItem = CoreDataManager.sharedInstance.createLibraryItem(title: title, icon: buttonImage ?? UIImage(), hasOwnIcon: hasOwnIcon)
+            currentSoundFileName = currentLibraryItem?.soundFileName
         }
     }
     
     func updateLibraryItem(title: String) {
-        let fetchRequest = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
-        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: false)]
-        let predicate = NSPredicate(format: "isActive == true")
-        fetchRequest.predicate = predicate
-        self.fetchedResultsControllerLibraryItem = NSFetchedResultsController<LibraryItem> (
-            fetchRequest: fetchRequest,
-            managedObjectContext: CoreDataManager.sharedInstance.managedObjectContext,
-            sectionNameKeyPath: nil,
-            cacheName: nil)
-
-        do {
-            try fetchedResultsControllerLibraryItem.performFetch()
-        } catch {
-            print("An error occurred")
-        }
         
-        if let libraryItem = fetchedResultsControllerLibraryItem.fetchedObjects?.first {
-            libraryItem.title = title
-            CoreDataManager.sharedInstance.save()
-        }
+        guard let oldTitle = currentSoundFileName else { return }
+        
+        let newItem = CoreDataManager.sharedInstance.updateLibraryItem(title: title)
+        guard let newTitle = newItem?.soundFileName else { return }
+        
+        renameSubliminalFilesInSandbox(oldTitle: oldTitle, newTitle: newTitle)
     }
     
     func showExistingLibraryItem() {
@@ -271,6 +239,7 @@ class MakerAddNewViewController: UIViewController, UITableViewDataSource, AddAff
         
         if let libraryItem = fetchedResultsControllerLibraryItem.fetchedObjects?.first, let imageData = libraryItem.icon {
             currentLibraryItem = libraryItem
+            currentSoundFileName = currentLibraryItem?.soundFileName
             
             let icon = UIImage(data: imageData)
             coverImageButton.setImage(icon, for: .normal)

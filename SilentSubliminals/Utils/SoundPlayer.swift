@@ -15,7 +15,7 @@ protocol SoundPlayerDelegate : AnyObject {
     //func alertSilentsTooLoud(flag: Bool)
 }
 
-enum MyError: Error {
+enum FileReadError: Error {
     case runtimeError(String)
 }
 
@@ -59,7 +59,7 @@ open class SoundPlayer: NSObject {
                 do {
                     let url = Bundle.main.url(forResource: filename.fileName(), withExtension: filename.fileExtension())
                     if url == nil {
-                        throw MyError.runtimeError("file \(filename) not in sandbox")
+                        throw FileReadError.runtimeError("file \(filename) not in sandbox")
                     }
                     audioFile = try AVAudioFile(forReading: url!)
                 } catch {

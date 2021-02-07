@@ -77,6 +77,15 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         updateGUI()
     }
     
+    // hide play button when no subliminal has been recorded before
+    func togglePlayButton() {
+        if let item = fetchedResultsController.fetchedObjects?.first, let filename = item.soundFileName {
+            let filenameLoud = String(format: audioTemplate, filename)
+            let sandboxFileLoud = getFileFromSandbox(filename: filenameLoud)
+            playButton.isHidden = !sandboxFileLoud.checkFileExist()
+        }
+    }
+    
     func updateGUI() {
         
         let fetchRequest = NSFetchRequest<LibraryItem> (entityName: "LibraryItem")
@@ -97,6 +106,9 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         }
         
         scriptViewController?.view.isHidden = fetchedResultsController.fetchedObjects?.count == 0
+        
+        togglePlayButton()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -158,6 +170,7 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         } else {
             stopRecording()
             UIApplication.shared.isIdleTimerDisabled = false
+            updateGUI()
         }
     }
     

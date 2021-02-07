@@ -374,52 +374,77 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         }
         
         if collectionView.isKind(of: CreationsCollectionView.self) {
-            item = creationItems?[indexPath.row]
-            
-            if let selectedItem = item {
 
-                setCurrentSubliminal(subliminal: selectedItem)
-                playNextSubliminal()
+            if indexPath.row == 0 {
+                SelectionHandler().clearSelection(in: CoreDataManager.sharedInstance.managedObjectContext)
+                self.performSegue(withIdentifier: "makerSegue", sender: nil)
+                return
+            }
+
+            let item = creationItems?[indexPath.row]
+            if let selectedItem = item, let title = item?.title {
                 
-                if isEditingCreations || indexPath.row == 0 {
+                setCurrentSubliminal(subliminal: selectedItem)
+                SelectionHandler().selectLibraryItem(selectedItem)
+                
+                if isEditingCreations {
                     self.performSegue(withIdentifier: "makerSegue", sender: nil)
                     return
                 }
                 
-                if let currentSubliminal = getCurrentSubliminal(), let title = currentSubliminal.title {
-                    if !currentSubliminal.exists {
-                        AlertController().showWarningMissingSilentFile(vc: self, fileName: title) { (flag) in
-                            self.recordItem = true
-                            self.performSegue(withIdentifier: "makerSegue", sender: self)
-                            return
-                        }
+                do {
+                    let _ = try Soundfile(item: selectedItem)
+                } catch {
+                    AlertController().showWarningMissingSilentFile(vc: self, fileName: title) { (flag) in
+                        self.recordItem = true
+                        self.performSegue(withIdentifier: "makerSegue", sender: self)
+                        return
                     }
+                    return
                 }
+
+                playNextSubliminal()
             }
+
         }
         
         if collectionView.isKind(of: PlaylistCollectionView.self)  {
+            
+            if isEditingPlaylist || indexPath.row == 0 {
+                if indexPath.row == 0 {
+                    currentPlaylist = nil
+                }
+                
+                self.performSegue(withIdentifier: "playlistSegue", sender: nil)
+                return
+            }
             
             if indexPath.row > 0 {
                 currentPlaylist = fetchedResultsControllerPlaylist.fetchedObjects?[indexPath.row]
                 if let playlist = currentPlaylist {
                     setCurrentPlaylist(playlist: playlist)
+                    
+                    // make sure that for all items in playlist spoken files (with silents) exist
+                    if getUnrecordedSoundFileNames().count > 0 {
+                        AlertController().showWarningMissingSilentFilesForPlaylist(vc: self, fileNames: getUnrecordedSoundFileNames()) { (flag) in
+                            // TODO: maybe some handling, redirecting to the maker
+                            return
+                        }
+                        return
+                    }
+                    
+                    if playlist.libraryItems?.count == 0 {
+                        AlertController().showWarningEmptyPlaylist(vc: self) { (flag) in
+                            // TODO: maybe some handling, redirecting to the maker
+                            return
+                        }
+                        return
+                    }
+                    
                     playNextSubliminal()
+                    
+                    
                 }
-            }
-            
-            if isEditingPlaylist || indexPath.row == 0 {
-                self.performSegue(withIdentifier: "playlistSegue", sender: nil)
-                return
-            }
-
-            // make sure that for all items in playlist spoken files (with silents) exist
-            if getUnrecordedSoundFileNames().count > 0 {
-                AlertController().showWarningMissingSilentFilesForPlaylist(vc: self, fileNames: getUnrecordedSoundFileNames()) { (flag) in
-                    // TODO: maybe some handling, redirecting to the maker
-                    return
-                }
-                return
             }
         }
         self.performSegue(withIdentifier: "showPlayerSegue", sender: nil)

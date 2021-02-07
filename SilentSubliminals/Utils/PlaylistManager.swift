@@ -54,23 +54,27 @@ class PlaylistManager {
         }
         
         for element in self.subliminals?.array ?? [] {
-            let item = element as! LibraryItem
-            let soundfile = Soundfile(item: item)
+            guard let item = element as? LibraryItem, let title = item.title else { continue }
+            
+            do {
+                let soundfile = try Soundfile(item: item)
+                guard let title = soundfile.title else { continue }
 
-            guard let title = soundfile.title else { continue }
-
-            if !playedSubliminals.contains(title) {
-                currentSubliminal = soundfile
-                playedSubliminals.append(title)
-                
-                if soundfile.exists {
-                    CoreDataManager.sharedInstance.setNewTimestamp(item: item)
+                if !playedSubliminals.contains(title) {
+                    currentSubliminal = soundfile
+                    playedSubliminals.append(title)
+                    
+                    if soundfile.exists {
+                        CoreDataManager.sharedInstance.setNewTimestamp(item: item)
+                    }
+                    
+                    SelectionHandler().selectLibraryItem(item)
+                    CoreDataManager.sharedInstance.save()
+                    
+                    return true
                 }
-                
-                SelectionHandler().selectLibraryItem(item)
-                CoreDataManager.sharedInstance.save()
-                
-                return true
+            } catch {
+                print("Soundfile \(title) does not exist in sandbox")
             }
         }
 
@@ -83,12 +87,12 @@ class PlaylistManager {
         var unrecordedSoundfileNames = Array<String>()
         
         for element in self.subliminals?.array ?? [] {
-            let item = element as! LibraryItem
-            let soundfile = Soundfile(item: item)
+            guard let item = element as? LibraryItem, let title = item.title else { continue }
             
-            guard let title = soundfile.title else { continue }
-            
-            if soundfile.audioFileLoud == nil || soundfile.audioFileSilent == nil {
+            do {
+                let _ = try Soundfile(item: item)
+            } catch {
+                print("Soundfile \(title) does not exist in sandbox")
                 unrecordedSoundfileNames.append(title)
             }
         }

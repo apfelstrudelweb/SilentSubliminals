@@ -265,6 +265,13 @@ extension PlaylistAddNewViewController: UITableViewDragDelegate, UITableViewDrop
             guard let title = self.currentPlaylist?.title else { return }
             self.getPlaylist(title)
             self.userPlaylistTableView.reloadData()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                let numberOfRows = self.userPlaylistTableView.numberOfRows(inSection: 0)
+                self.userPlaylistTableView.scrollToRow(at: IndexPath(row: numberOfRows - 1, section: 0), at: .bottom, animated: true)
+            }
+            
+            
         }
     }
     

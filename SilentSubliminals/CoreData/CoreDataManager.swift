@@ -305,7 +305,7 @@ class CoreDataManager: NSObject {
             libraryItem?.title = title
             libraryItem?.creationDate = Date()
             libraryItem?.icon = icon.pngData()
-            libraryItem?.soundFileName = title // TODO
+            libraryItem?.soundFileName = String(title.filter { !" \n\t\r".contains($0) })
             libraryItem?.hasOwnIcon = hasOwnIcon
             libraryItem?.isDummyItem = false
             //libraryItem.isActive = true
@@ -326,6 +326,26 @@ class CoreDataManager: NSObject {
         return libraryItem
     }
     
+    func updateLibraryItem(title: String) -> LibraryItem?  {
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "LibraryItem")
+        fetchRequest.sortDescriptors = [NSSortDescriptor (key: "creationDate", ascending: true)] // TODO
+        let predicate = NSPredicate(format: "isActive == true")
+        fetchRequest.predicate = predicate
+        
+        do {
+            let libraryItems = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest) as! [LibraryItem]
+            guard let libraryItem = libraryItems.first else { return nil } // TODO
+            libraryItem.title = title
+            libraryItem.soundFileName = String(title.filter { !" \n\t\r".contains($0) })
+            try self.managedObjectContext.save()
+            return libraryItem
+        } catch {
+            print(error)
+        }
+        return nil
+    }
+    
     
     func updateLibraryItem(title: String, icon : UIImage, hasOwnIcon: Bool) {
         
@@ -338,6 +358,7 @@ class CoreDataManager: NSObject {
             let libraryItems = try CoreDataManager.sharedInstance.managedObjectContext.fetch(fetchRequest) as! [LibraryItem]
             guard let libraryItem = libraryItems.first else { return } // TODO
             libraryItem.title = title
+            libraryItem.soundFileName = String(title.filter { !" \n\t\r".contains($0) })
             libraryItem.icon = icon.pngData()
             libraryItem.hasOwnIcon = hasOwnIcon
             try self.managedObjectContext.save()
