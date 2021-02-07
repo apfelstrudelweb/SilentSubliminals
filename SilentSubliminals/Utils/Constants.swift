@@ -81,6 +81,7 @@ let userDefaults_introductionPlayed = "introductionPlayed"
 let userDefaults_loopDuration = "loopDuration"
 let userDefaults_loopTerminated = "loopTerminated"
 let userDefaults_loopTerminationTime = "loopTerminationTime"
+let userDefaults_frequencyModulation = "frequencyModulation"
 
 
 // Notification

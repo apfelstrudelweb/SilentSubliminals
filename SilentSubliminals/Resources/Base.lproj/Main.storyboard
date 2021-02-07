@@ -2599,10 +2599,10 @@
             </objects>
             <point key="canvasLocation" x="-913.47656249999989" y="1093.7042459736456"/>
         </scene>
-        <!--View Controller-->
+        <!--Settings View Controller-->
         <scene sceneID="IH4-hF-kND">
             <objects>
-                <viewController id="a22-fM-SNY" sceneMemberID="viewController">
+                <viewController id="a22-fM-SNY" customClass="SettingsViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="a71-hV-Dzf"/>
                         <viewControllerLayoutGuide type="bottom" id="m33-ww-Ilv"/>
@@ -2613,9 +2613,43 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lIh-S0-4ER">
                                 <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                                <subviews>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MbO-Yg-NWN">
+                                        <rect key="frame" x="189.66666666666666" y="169.66666666666666" width="51" height="31"/>
+                                        <connections>
+                                            <action selector="modulationSwitchTouched:" destination="a22-fM-SNY" eventType="valueChanged" id="IeU-sP-zbP"/>
+                                        </connections>
+                                    </switch>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amplitude" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sQN-UZ-72G">
+                                        <rect key="frame" x="71.666666666666671" y="174.66666666666666" width="78.000000000000014" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Frequency" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rOJ-eH-rSO">
+                                        <rect key="frame" x="278.66666666666669" y="174.66666666666666" width="81" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Modulation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gwc-je-q0g">
+                                        <rect key="frame" x="164" y="121" width="100" height="23"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
                                 <color key="backgroundColor" red="0.88921886679999995" green="0.93682569270000005" blue="0.97253698109999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
+                                    <constraint firstItem="MbO-Yg-NWN" firstAttribute="top" secondItem="gwc-je-q0g" secondAttribute="bottom" constant="25.666666666666657" id="Ck3-Er-LjL"/>
+                                    <constraint firstItem="gwc-je-q0g" firstAttribute="centerX" secondItem="lIh-S0-4ER" secondAttribute="centerX" id="LpG-Kh-Fg8"/>
+                                    <constraint firstItem="sQN-UZ-72G" firstAttribute="centerY" secondItem="MbO-Yg-NWN" secondAttribute="centerY" id="Nye-gH-7t5"/>
+                                    <constraint firstItem="rOJ-eH-rSO" firstAttribute="leading" secondItem="MbO-Yg-NWN" secondAttribute="trailing" constant="40" id="Udq-FO-zO7"/>
+                                    <constraint firstItem="MbO-Yg-NWN" firstAttribute="centerX" secondItem="lIh-S0-4ER" secondAttribute="centerX" id="VEI-L0-cga"/>
                                     <constraint firstAttribute="width" secondItem="lIh-S0-4ER" secondAttribute="height" multiplier="3:5" id="Vxg-iY-ERt"/>
+                                    <constraint firstItem="MbO-Yg-NWN" firstAttribute="leading" secondItem="sQN-UZ-72G" secondAttribute="trailing" constant="40" id="XCr-Dl-tlH"/>
+                                    <constraint firstItem="MbO-Yg-NWN" firstAttribute="centerY" secondItem="lIh-S0-4ER" secondAttribute="centerY" multiplier="0.4" id="bhJ-SI-6uA"/>
+                                    <constraint firstItem="rOJ-eH-rSO" firstAttribute="centerY" secondItem="MbO-Yg-NWN" secondAttribute="centerY" id="d9l-nX-tUb"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -2664,6 +2698,9 @@
                         </variation>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="tabbar_settings" id="Xe3-T4-iC6"/>
+                    <connections>
+                        <outlet property="modulationSwitch" destination="MbO-Yg-NWN" id="ef6-b4-iag"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Qw-XE-xNa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

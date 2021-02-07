@@ -23,6 +23,8 @@
 		6558D31024684934004E8660 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6558D30E24684934004E8660 /* Main.storyboard */; };
 		6558D31224684935004E8660 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6558D31124684935004E8660 /* Assets.xcassets */; };
 		6558D31524684935004E8660 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6558D31324684935004E8660 /* LaunchScreen.storyboard */; };
+		655FADD625D042430084A1A1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655FADD525D042430084A1A1 /* SettingsViewController.swift */; };
+		655FADDB25D043C20084A1A1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 655FADD525D042430084A1A1 /* SettingsViewController.swift */; };
 		6563E03725763C6C000E261B /* SignalProcessing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6563E03625763C6C000E261B /* SignalProcessing.swift */; };
 		6563E03B257691CE000E261B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6563E03A257691CE000E261B /* Constants.swift */; };
 		65651D78259DD763006BA4DD /* LoudspeakerSymbolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65651D77259DD763006BA4DD /* LoudspeakerSymbolView.swift */; };
@@ -259,6 +261,7 @@
 		6558D31124684935004E8660 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6558D31424684935004E8660 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6558D31624684935004E8660 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		655FADD525D042430084A1A1 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		6563E03625763C6C000E261B /* SignalProcessing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignalProcessing.swift; sourceTree = "<group>"; };
 		6563E03A257691CE000E261B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		65651D77259DD763006BA4DD /* LoudspeakerSymbolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoudspeakerSymbolView.swift; sourceTree = "<group>"; };
@@ -495,6 +498,14 @@
 			path = SilentSubliminals;
 			sourceTree = "<group>";
 		};
+		655FADD425D042210084A1A1 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				655FADD525D042430084A1A1 /* SettingsViewController.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		65675EF925C08D10005AD730 /* TableViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -539,6 +550,7 @@
 		6568E64C258F5230009390D5 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				655FADD425D042210084A1A1 /* Settings */,
 				65700CCC25BF53A3000DA5C7 /* Playlist */,
 				6556455225A1CC5B00F0FF76 /* Player */,
 				6556455125A1CC5500F0FF76 /* Maker */,
@@ -1098,6 +1110,7 @@
 				657A0F8E25A347C400A4CCF2 /* Playlist+CoreDataClass.swift in Sources */,
 				65C6E64B259A77CC0046E739 /* SkipButton.swift in Sources */,
 				656654AE2595F36700DB03DC /* CommandCenter.swift in Sources */,
+				655FADD625D042430084A1A1 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1176,6 +1189,7 @@
 				6569580225C6D4DF00E4F7CC /* Playlist+CoreDataClass.swift in Sources */,
 				6569580325C6D4DF00E4F7CC /* SkipButton.swift in Sources */,
 				6569580425C6D4DF00E4F7CC /* CommandCenter.swift in Sources */,
+				655FADDB25D043C20084A1A1 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -413,6 +413,8 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         // The render format is also the output format
         let output = try! AVAudioFile(forWriting: sandboxFileSilent, settings: settings, commonFormat: renderFormat.commonFormat, interleaved: renderFormat.isInterleaved)
         
+        let frequencyModulation = UserDefaults.standard.bool(forKey: userDefaults_frequencyModulation)
+        
         var index: Int = 0;
         // Process the file
         while true {
@@ -434,13 +436,39 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
                 let rightTargetData = renderBuffer.floatChannelData?[1]
                 
                 // Process the audio in 'renderBuffer' here
-                for i in 0..<Int(readBuffer.frameLength) {
-                    let val: Double = sin(Double(2 * modulationFrequency) * Double(index) * Double.pi / Double(renderBuffer.format.sampleRate))
-                    leftTargetData?[i] = Float(val) * (leftSourceData?[i] ?? 0)
-                    rightTargetData?[i] = Float(val) * (rightSourceData?[i] ?? 0)
-                    index += 1
+                if !frequencyModulation {
+                    for i in 0..<Int(readBuffer.frameLength) {
+                        let val: Double = sin(Double(2 * modulationFrequency) * Double(index) * Double.pi / Double(renderBuffer.format.sampleRate))
+                        leftTargetData?[i] = Float(val) * (leftSourceData?[i] ?? 0)
+                        rightTargetData?[i] = Float(val) * (rightSourceData?[i] ?? 0)
+                        index += 1
+                    }
+                } else {
+                    for i in 0..<Int(readBuffer.frameLength) {
+                        //let val: Double = sin(Double(2 * modulationFrequency) * Double(index) * Double.pi / Double(renderBuffer.format.sampleRate))
+                        
+                        guard let leftData = leftTargetData?[i] else { continue }
+                        guard let rightData = rightTargetData?[i] else { continue }
+     
+                        let a0 = Double(leftData)
+                        let a1 = asin(Double(a0))
+                        let m = Double(sin(Double(2 * modulationFrequency) * Double(index) * Double.pi / Double(renderBuffer.format.sampleRate)))
+
+                        let b0 = Double(rightData)
+                        let b1 = asin(Double(b0))
+                        //let b2 = sin(Double(2 * modulationFrequency) * Double(index) * Double.pi / Double(renderBuffer.format.sampleRate))
+                            
+                        // https://www.tutorialspoint.com/analog_communication/analog_communication_numerical_problems_2.htm
+                        
+                        let beta: Double = 0.25//Double(2000 / modulationFrequency)
+                        
+                        leftTargetData?[i] = Float(sin(a1 + beta * m))
+                        rightTargetData?[i] = Float(sin(b1 + beta * m))
+                        
+                        index += 1
+                    }
                 }
-                
+
                 if index == Int(file.fileFormat.sampleRate) {
                     index = 0
                 }
@@ -460,7 +488,12 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         engine.stop()
         
 
-        print("Silent Subliminal file '\(filenameSilent)' has been created")
+        print("Silent Subliminal file '\(filenameSilent)' has been created.")
+        if frequencyModulation {
+            print("Your silent is now frequency modulated")
+        } else {
+            print("Your silent is now amplitude modulated")
+        }
 
     }
 
