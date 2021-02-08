@@ -164,8 +164,6 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         PlayerStateMachine.shared.delegate = self
         
         UserDefaults.standard.setValue(false, forKey: userDefaults_loopTerminated)
-        //TODO: what about timer in playlists?
-        timerButton.isHidden = (currentPlaylist != nil)
         CommandCenter.shared.updateLockScreenInfo()
     }
 
@@ -369,6 +367,16 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     
     @IBAction func iconButtonTouched(_ sender: Any) {
         self.performSegue(withIdentifier: "showIconSegue", sender: sender)
+    }
+    
+    
+    @IBAction func timerButtonTouched(_ sender: Any) {
+        
+        if currentPlaylist != nil {
+            performSegue(withIdentifier: "repetitionSegue", sender: self)
+        } else {
+            performSegue(withIdentifier: "timerSegue", sender: self)
+        }
     }
     
 

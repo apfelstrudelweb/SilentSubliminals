@@ -1763,7 +1763,7 @@
                                                                         <color key="tintColor" red="0.4355739951" green="0.456391871" blue="0.48877990249999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <state key="normal" image="timerIcon"/>
                                                                         <connections>
-                                                                            <segue destination="hDO-On-2rK" kind="presentation" identifier="timerSegue" id="EdD-cE-P7d"/>
+                                                                            <action selector="timerButtonTouched:" destination="Wlk-fN-YWe" eventType="touchUpInside" id="PIB-Oy-ik7"/>
                                                                         </connections>
                                                                     </button>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CsD-QE-lCH" customClass="SkipButton" customModule="FREE_UR_SPIRIT" customModuleProvider="target">
@@ -2082,6 +2082,8 @@
                         <outlet property="volumeSlider" destination="MCu-q1-tlA" id="0cs-Yb-0pO"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="makerPlayerSegue" id="VQu-IX-ctv"/>
                         <segue destination="4l5-eP-aWz" kind="presentation" identifier="showIconSegue" id="LBn-nQ-xkF"/>
+                        <segue destination="hDO-On-2rK" kind="presentation" identifier="timerSegue" id="QKI-pp-gp9"/>
+                        <segue destination="bBK-Sz-eRF" kind="presentation" identifier="repetitionSegue" id="zRQ-7E-gje"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XWw-Sa-g8I" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -2173,7 +2175,7 @@
                                         </connections>
                                     </containerView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1h 5min" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8fc-YE-AyF">
-                                        <rect key="frame" x="8" y="17" width="62" height="20"/>
+                                        <rect key="frame" x="16" y="17" width="62" height="20"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -2218,7 +2220,7 @@
                                     <constraint firstItem="yFd-20-MIN" firstAttribute="top" secondItem="VAr-Uq-wX3" secondAttribute="top" id="kBh-NY-YL4"/>
                                     <constraint firstAttribute="width" constant="300" id="oEV-ZK-TTc"/>
                                     <constraint firstItem="twz-lf-lcu" firstAttribute="leading" secondItem="VAr-Uq-wX3" secondAttribute="leading" id="pNE-Ik-YDP"/>
-                                    <constraint firstItem="8fc-YE-AyF" firstAttribute="leading" secondItem="VAr-Uq-wX3" secondAttribute="leading" constant="8" id="vkc-nK-TNE"/>
+                                    <constraint firstItem="8fc-YE-AyF" firstAttribute="leading" secondItem="VAr-Uq-wX3" secondAttribute="leading" constant="16" id="vkc-nK-TNE"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -2267,6 +2269,111 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LLr-sE-ErK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4686.4485981308408" y="786.60907127429812"/>
+        </scene>
+        <!--Repetition View Controller-->
+        <scene sceneID="g2P-Qy-Qe1">
+            <objects>
+                <viewController modalPresentationStyle="formSheet" id="bBK-Sz-eRF" customClass="RepetitionViewController" customModule="FREE_UR_SPIRIT" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="86q-Rk-Pc4"/>
+                        <viewControllerLayoutGuide type="bottom" id="Sg8-CZ-Dan"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="6ZL-kT-eQA">
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4BG-Gh-TYH">
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="subliminalPlayerBackground.png" translatesAutoresizingMaskIntoConstraints="NO" id="cPK-ce-ICu">
+                                        <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                                    </imageView>
+                                    <view alpha="0.30000001192092896" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v9b-U5-dzc" userLabel="darkLayer">
+                                        <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                                        <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1h 5min" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mWu-Zy-yAU">
+                                        <rect key="frame" x="16" y="17" width="62" height="20"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eUk-Uk-L3x">
+                                        <rect key="frame" x="239" y="12" width="45" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="UWx-LS-ct5"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                        <state key="normal" title="Close">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="closeButtonTouched:" destination="hDO-On-2rK" eventType="touchUpInside" id="1kF-ZQ-1AO"/>
+                                            <action selector="closeButtonTouched:" destination="bBK-Sz-eRF" eventType="touchUpInside" id="gI7-3f-yqT"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please select the number of repetitions for one silent subliminal" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t4g-VZ-ARU">
+                                        <rect key="frame" x="16" y="67" width="268" height="61"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RpB-JD-FnL">
+                                        <rect key="frame" x="0.0" y="138" width="300" height="162"/>
+                                    </pickerView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="cPK-ce-ICu" secondAttribute="trailing" id="70P-VQ-uah"/>
+                                    <constraint firstItem="mWu-Zy-yAU" firstAttribute="centerY" secondItem="eUk-Uk-L3x" secondAttribute="centerY" id="7Xh-Ua-VlG"/>
+                                    <constraint firstItem="v9b-U5-dzc" firstAttribute="top" secondItem="cPK-ce-ICu" secondAttribute="top" id="7gh-rB-eg4"/>
+                                    <constraint firstAttribute="trailing" secondItem="RpB-JD-FnL" secondAttribute="trailing" id="9AG-dv-g2y"/>
+                                    <constraint firstAttribute="width" constant="300" id="Bf1-Q2-pK1"/>
+                                    <constraint firstItem="t4g-VZ-ARU" firstAttribute="trailing" secondItem="eUk-Uk-L3x" secondAttribute="trailing" id="DDb-ag-5Qp"/>
+                                    <constraint firstAttribute="height" constant="300" id="DLV-FT-RHi"/>
+                                    <constraint firstItem="t4g-VZ-ARU" firstAttribute="top" secondItem="mWu-Zy-yAU" secondAttribute="bottom" constant="30" id="HoT-PQ-WFF"/>
+                                    <constraint firstItem="v9b-U5-dzc" firstAttribute="bottom" secondItem="cPK-ce-ICu" secondAttribute="bottom" id="M9O-Cb-Di0"/>
+                                    <constraint firstItem="v9b-U5-dzc" firstAttribute="leading" secondItem="cPK-ce-ICu" secondAttribute="leading" id="NfO-ga-mKE"/>
+                                    <constraint firstAttribute="trailing" secondItem="eUk-Uk-L3x" secondAttribute="trailing" constant="16" id="Pkb-5Z-ddW"/>
+                                    <constraint firstItem="mWu-Zy-yAU" firstAttribute="leading" secondItem="4BG-Gh-TYH" secondAttribute="leading" constant="16" id="VjX-CG-n0H"/>
+                                    <constraint firstItem="RpB-JD-FnL" firstAttribute="leading" secondItem="4BG-Gh-TYH" secondAttribute="leading" id="cVC-Tj-Rym"/>
+                                    <constraint firstAttribute="bottom" secondItem="RpB-JD-FnL" secondAttribute="bottom" id="cmr-mN-q2I"/>
+                                    <constraint firstItem="cPK-ce-ICu" firstAttribute="leading" secondItem="4BG-Gh-TYH" secondAttribute="leading" id="daV-QO-v73"/>
+                                    <constraint firstItem="v9b-U5-dzc" firstAttribute="trailing" secondItem="cPK-ce-ICu" secondAttribute="trailing" id="jbD-6J-AnS"/>
+                                    <constraint firstItem="t4g-VZ-ARU" firstAttribute="leading" secondItem="mWu-Zy-yAU" secondAttribute="leading" id="mUa-du-7Fn"/>
+                                    <constraint firstAttribute="bottom" secondItem="cPK-ce-ICu" secondAttribute="bottom" id="q1t-IG-Qt1"/>
+                                    <constraint firstItem="eUk-Uk-L3x" firstAttribute="top" secondItem="4BG-Gh-TYH" secondAttribute="top" constant="12" id="wF7-EL-jYD"/>
+                                    <constraint firstItem="cPK-ce-ICu" firstAttribute="top" secondItem="4BG-Gh-TYH" secondAttribute="top" id="yFN-XQ-65I"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="4BG-Gh-TYH" firstAttribute="centerX" secondItem="6ZL-kT-eQA" secondAttribute="centerX" id="hvf-7e-NnS"/>
+                            <constraint firstItem="4BG-Gh-TYH" firstAttribute="centerY" secondItem="6ZL-kT-eQA" secondAttribute="centerY" id="nx1-PY-M0n"/>
+                        </constraints>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="300" height="300"/>
+                    <connections>
+                        <outlet property="closeButton" destination="eUk-Uk-L3x" id="gmA-yI-6XS"/>
+                        <outlet property="durationLabel" destination="mWu-Zy-yAU" id="Qzy-n5-57R"/>
+                        <outlet property="numberPicker" destination="RpB-JD-FnL" id="fPt-Fc-IDB"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AvY-Md-oPk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4685.0467289719627" y="1143.6285097192226"/>
         </scene>
         <!--Set Endtime View Controller-->
         <scene sceneID="vjh-rY-Dbu">
