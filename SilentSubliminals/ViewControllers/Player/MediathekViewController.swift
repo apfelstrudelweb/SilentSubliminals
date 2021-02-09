@@ -368,6 +368,14 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         if collectionView.isKind(of: RecentSubliminalsCollectionView.self) {
             item = recentItems?[indexPath.row]
             if let selectedItem = item {
+                
+                do {
+                    let soundfile = try Soundfile(item: selectedItem)
+                    TimerManager.shared.singleAffirmationDuration = soundfile.duration
+                } catch {
+                    return
+                }
+                
                 setCurrentSubliminal(subliminal: selectedItem)
                 playNextSubliminal()
             }
@@ -393,7 +401,8 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
                 }
                 
                 do {
-                    let _ = try Soundfile(item: selectedItem)
+                    let soundfile = try Soundfile(item: selectedItem)
+                    TimerManager.shared.singleAffirmationDuration = soundfile.duration
                 } catch {
                     AlertController().showWarningMissingSilentFile(vc: self, fileName: title) { (flag) in
                         self.recordItem = true
