@@ -15,7 +15,10 @@ class RepetitionViewController: UIViewController, UIPickerViewDataSource, UIPick
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var numberPicker: UIPickerView!
     
+    var currentPlaylist: Playlist?
     var pickerData: [Int]!
+    var numberOfRepetitions: Int = 1
+    var totalTime: TimeInterval = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,9 +52,9 @@ class RepetitionViewController: UIViewController, UIPickerViewDataSource, UIPick
         pickerSelectionIndicatorTopLine.autoSetDimension(.height, toSize: 2)
         pickerSelectionIndicatorBottomLine.autoSetDimension(.height, toSize: 2)
         
-        let minNum = 2
-        let maxNum = 20
-        pickerData = Array(stride(from: minNum, to: maxNum + 1, by: 1))
+        pickerData = Array(stride(from: 1, to: 21, by: 1))
+        
+        calculateTotalTime(numberOfRepetitions: numberOfRepetitions)
     }
     
     @IBAction func closeButtonTouched(_ sender: Any) {
@@ -71,10 +74,31 @@ class RepetitionViewController: UIViewController, UIPickerViewDataSource, UIPick
         return "\(pickerData[row])"
     }
     
-    //    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-    //
-    //        let string = "\(pickerData[row])"
-    //        return NSAttributedString(string: string, attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
-    //    }
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        
+        numberOfRepetitions = row + 1
+        
+        print("number of repetitions: \(numberOfRepetitions)")
+        calculateTotalTime(numberOfRepetitions: numberOfRepetitions)
+    }
     
+    func calculateTotalTime(numberOfRepetitions: Int) {
+        
+        totalTime = 0
+        
+        for item in currentPlaylist?.libraryItems ?? [] {
+            
+            do {
+                let soundFile = try Soundfile(item: item as! LibraryItem)
+                totalTime += (soundFile.duration ?? 0) * Double(numberOfRepetitions)
+            } catch {
+                print(error)
+            }
+        }
+        
+        durationLabel.text = totalTime.stringFromTimeInterval(showSeconds: true)
+        
+        TimerManager.shared.singleAffirmationDuration = totalTime // TODO
+        
+    }
 }

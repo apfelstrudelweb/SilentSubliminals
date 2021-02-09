@@ -257,6 +257,10 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
             vc.itemTitle = affirmationTitleLabel.text
             vc.icon = iconButton.image(for: .normal)
         }
+        
+        if let vc = segue.destination as? RepetitionViewController {
+            vc.currentPlaylist = currentPlaylist
+        }
     }
     
     // MARK: BackButtonDelegate

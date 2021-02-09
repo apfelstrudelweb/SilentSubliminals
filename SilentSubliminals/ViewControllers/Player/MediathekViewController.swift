@@ -419,17 +419,20 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         
         if collectionView.isKind(of: PlaylistCollectionView.self)  {
             
-            if isEditingPlaylist || indexPath.row == 0 {
-                if indexPath.row == 0 {
-                    currentPlaylist = nil
-                }
-                
+            if indexPath.row == 0 {
+                currentPlaylist = nil
                 self.performSegue(withIdentifier: "playlistSegue", sender: nil)
                 return
             }
-            
+
             if indexPath.row > 0 {
                 currentPlaylist = fetchedResultsControllerPlaylist.fetchedObjects?[indexPath.row]
+                
+                if isEditingPlaylist {
+                    self.performSegue(withIdentifier: "playlistSegue", sender: nil)
+                    return
+                }
+                
                 if let playlist = currentPlaylist {
                     setCurrentPlaylist(playlist: playlist)
                     
@@ -491,7 +494,7 @@ class MediathekViewController: UIViewController, UICollectionViewDataSource, UIC
         if let vc = segue.destination as? PlaylistAddNewViewController {
             vc.currentPlaylist = currentPlaylist
         }
-        
+  
     }
     
 }

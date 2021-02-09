@@ -64,9 +64,9 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
         if createItemFromMediathek {
             performSegue(withIdentifier: "addItemSegue", sender: self)
         }
-        if editItemFromMediathek {
-            performSegue(withIdentifier: "editItemSegue", sender: self)
-        }
+//        if editItemFromMediathek {
+//            performSegue(withIdentifier: "editItemSegue", sender: self)
+//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
