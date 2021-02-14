@@ -34,6 +34,7 @@ class ShowCountdownViewController: UIViewController {
 
     var stopTimer: Bool = false
     var elapsedTime: TimeInterval = 0
+    var lastDuration: TimeInterval = 0
     
     var availableTimeForLoop: TimeInterval = TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_subliminalLoopDuration))
     var numberOfRepetitions = UserDefaults.standard.integer(forKey: userDefaults_subliminalNumRepetitions)
@@ -53,14 +54,31 @@ class ShowCountdownViewController: UIViewController {
         loopCompletionTimeLabel.text = UserDefaults.standard.string(forKey: userDefaults_loopTerminationTime)
         
         loopDurationValueLabel.text = isPlaylist() ? availableTimeForPlaylist.stringFromTimeInterval(showSeconds: true) : availableTimeForLoop.stringFromTimeInterval(showSeconds: true)
+        
+        
+        if isPlaylist() {
+            if let subliminal = currentSubliminal, let singleDurantion = subliminal.duration {
+                self.lastDuration = TimeInterval(singleDurantion * Double(self.numberOfRepetitions + 1))
+                self.loopDurationValueLabel.text = self.lastDuration.stringFromTimeInterval(showSeconds: true)
+            } else {
+                self.loopDurationValueLabel.text = ""
+            }
+        } else {
+            loopDurationValueLabel.text = availableTimeForLoop.stringFromTimeInterval(showSeconds: true)
+        }
+        
         remainingTimeValueLabel.text = loopDurationValueLabel.text
         
-        remainingTimeValueLabel.text = loopTerminated ? TimeInterval(0).stringFromTimeInterval(showSeconds: true) : ( isPlaylist() ? availableTimeForPlaylist.stringFromTimeInterval(showSeconds: true) : availableTimeForLoop.stringFromTimeInterval(showSeconds: true) )
-        
+        if loopTerminated {
+            remainingTimeValueLabel.text = TimeInterval(0).stringFromTimeInterval(showSeconds: true)
+            loopDurationValueLabel.text = isPlaylist() ? self.lastDuration.stringFromTimeInterval(showSeconds: true) : availableTimeForLoop.stringFromTimeInterval(showSeconds: true)
+        }
+         
         stopTimer = false
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
         timer?.fire()
     }
+    
     @IBAction func closeButtonTouched(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -96,10 +114,11 @@ class ShowCountdownViewController: UIViewController {
                 
                 let subliminal = getCurrentSubliminal()
                 if subliminal != self.currentSubliminal {
-                    subliminal?.elapsedTime = 0
+                    CommandCenter.shared.elapsedTimeForPlaylist = 0
                     self.currentSubliminal = subliminal
                     self.titleLabel.text = subliminal?.title
                     if let singleDurantion = subliminal?.duration {
+                        self.loopDurationValueLabel.text = TimeInterval(singleDurantion * Double(self.numberOfRepetitions + 1)).stringFromTimeInterval(showSeconds: true)
                         let remainingTime: TimeInterval = singleDurantion * Double(self.numberOfRepetitions + 1)
                         self.remainingTimeValueLabel.text = remainingTime.stringFromTimeInterval(showSeconds: true)
                     }
@@ -110,11 +129,11 @@ class ShowCountdownViewController: UIViewController {
                 }
                 
 
-                //CommandCenter.shared.elapsedTimeForPlaylist += 1
+                CommandCenter.shared.elapsedTimeForPlaylist += 1
                 
                 guard let singleDurantion = subliminal?.duration else { return }
  
-                let remainingTime: TimeInterval = singleDurantion * Double(self.numberOfRepetitions + 1) - CommandCenter.shared.elapsedTime
+                let remainingTime: TimeInterval = max(singleDurantion * Double(self.numberOfRepetitions + 1) - CommandCenter.shared.elapsedTimeForPlaylist, 0)
                 self.remainingTimeValueLabel.text = remainingTime.stringFromTimeInterval(showSeconds: true)
                 
             } else {
