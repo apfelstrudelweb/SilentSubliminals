@@ -44,7 +44,7 @@ class AlertController {
     
     func showInfoLongAffirmationLoop(vc: UIViewController, completionHandler: @escaping (Bool) -> Void) {
         
-        let playTimeInSeconds = UserDefaults.standard.integer(forKey: userDefaults_loopDuration)
+        let playTimeInSeconds = UserDefaults.standard.integer(forKey: userDefaults_subliminalLoopDuration)
 
         if playTimeInSeconds < Int(criticalLoopDurationInSeconds) {
             completionHandler(true)

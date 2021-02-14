@@ -32,12 +32,12 @@ class SetDurationViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // we need it, otherwise datepicker's valuechanged does not update the first spin
-        self.timerPicker.countDownDuration = TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_loopDuration))
+        self.timerPicker.countDownDuration = TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_subliminalLoopDuration))
     }
     
 
     @objc func onDidReceiveData(_ notification:Notification) {
-        timerPicker.countDownDuration = TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_loopDuration))
+        timerPicker.countDownDuration = TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_subliminalLoopDuration))
     }
 
 
@@ -45,19 +45,19 @@ class SetDurationViewController: UIViewController {
         
         print(timerPicker.countDownDuration)
         
-        guard let singleAffirmationDuration = TimerManager.shared.singleAffirmationDuration else { return }
-        if timerPicker.countDownDuration < 2 * singleAffirmationDuration {
-            
-            let minutes: Int = Int(singleAffirmationDuration) / minuteInSeconds
-            
-            let alert = UIAlertController(title: "Error", message: "Your affirmation is about \(minutes) minutes long. You need at least set the double time of the affirmation in order to play the Silent Subliminal as well.", preferredStyle: .alert)
+        guard let soundfile = getCurrentSubliminal(), let duration = soundfile.duration else { return }
+        if timerPicker.countDownDuration < 2 * duration {
+
+            let durationString: String = duration.stringFromTimeInterval(showHours: false)
+
+            let alert = UIAlertController(title: "Error", message: "Your subliminal is exactly \(durationString) long. You need at least set twice the time of this subliminal in order to play the silent part as well.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { _ in
-                self.timerPicker.countDownDuration = 2 * singleAffirmationDuration
+                self.timerPicker.countDownDuration = 2 * duration
             }))
             self.present(alert, animated: true)
         }
         
-        UserDefaults.standard.setValue(Int(timerPicker.countDownDuration), forKey: userDefaults_loopDuration)
+        UserDefaults.standard.setValue(Int(timerPicker.countDownDuration), forKey: userDefaults_subliminalLoopDuration)
     }
     
     deinit {

@@ -32,7 +32,7 @@ class TimerViewController: UIViewController {
         
         setActiveView()
         
-        self.durationLabel.text = TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_loopDuration)).stringFromTimeInterval(showSeconds: false)
+        self.durationLabel.text = TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_subliminalLoopDuration)).stringFromTimeInterval(showSeconds: false)
         
         NotificationCenter.default.addObserver(self, selector: #selector(userDefaultsDidChange), name: UserDefaults.didChangeNotification, object: nil)
     }
@@ -53,7 +53,7 @@ class TimerViewController: UIViewController {
     }
     
     @objc func userDefaultsDidChange(_ notification: Notification) {
-        self.durationLabel.text = TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_loopDuration)).stringFromTimeInterval(showSeconds: false)
+        self.durationLabel.text = TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_subliminalLoopDuration)).stringFromTimeInterval(showSeconds: false)
     }
     
     
@@ -85,5 +85,19 @@ extension TimeInterval {
             return String(format: "%0.2dh %0.2dm %0.2ds", hours, minutes, seconds)
         }
         return String(format: "%0.2dh %0.2dm", hours, minutes)
+    }
+    
+    func stringFromTimeInterval(showHours: Bool) -> String {
+        
+        let time = NSInteger(self)
+        
+        let seconds = time % 60
+        let minutes = (time / 60) % 60
+        let hours = (time / 3600)
+        
+        if showHours {
+            return String(format: "%0.2dh %0.2dm %0.2ds", hours, minutes, seconds)
+        }
+        return String(format: "%0.2dm %0.2ds", minutes, seconds)
     }
 }

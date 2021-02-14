@@ -29,9 +29,15 @@ func resetPlaylist() {
     PlayerStateMachine.shared.playlistManager = PlaylistManager(subliminals: [])
 }
 
+func isPlaylist() -> Bool {
+    guard let playlistManager = PlayerStateMachine.shared.playlistManager, let isPlaylist = playlistManager.isPlaylist else { return false }
+    return isPlaylist
+}
+
 func getCurrentSubliminal() -> Soundfile? {
     return PlayerStateMachine.shared.playlistManager?.getCurrentSubliminal()
 }
+
 
 func playNextSubliminal() {
     let _ = PlayerStateMachine.shared.playlistManager?.playNextSubliminal()

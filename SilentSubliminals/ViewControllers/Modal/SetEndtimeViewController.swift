@@ -38,31 +38,31 @@ class SetEndtimeViewController: UIViewController {
     
     func reset() {
         self.timerPicker.date = Date()
-        self.timerPicker.date += TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_loopDuration))
+        self.timerPicker.date += TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_subliminalLoopDuration))
     }
     
     @IBAction func timePickerValueChanged(_ sender: Any) {
         print(timerPicker.date)
 
-        var duration = timerPicker.date.timeIntervalSinceNow
-        if duration < 0 {
-            duration += dayInSeconds
+        var endtime = timerPicker.date.timeIntervalSinceNow
+        if endtime < 0 {
+            endtime += dayInSeconds
         }
         
-        guard let singleAffirmationDuration = TimerManager.shared.singleAffirmationDuration else { return }
-        if duration < 2 * singleAffirmationDuration {
+        guard let soundfile = getCurrentSubliminal(), let duration = soundfile.duration else { return }
+        if endtime < 2 * duration {
             
-            let minutes: Int = Int(singleAffirmationDuration) / minuteInSeconds
-            
-            let alert = UIAlertController(title: "Error", message: "Your affirmation is about \(minutes) minutes long. You need at least set the double time of the affirmation in order to play the Silent Subliminal as well.", preferredStyle: .alert)
+            let durationString: String = duration.stringFromTimeInterval(showHours: false)
+
+            let alert = UIAlertController(title: "Error", message: "Your subliminal is exactly \(durationString) long. You need at least set twice the time of this subliminal in order to play the silent part as well.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { _ in
                 self.timerPicker.date = Date()
-                self.timerPicker.date += 2 * singleAffirmationDuration
+                self.timerPicker.date += 2 * duration
             }))
             self.present(alert, animated: true)
         }
         
-        UserDefaults.standard.setValue(Int(duration), forKey: userDefaults_loopDuration)
+        UserDefaults.standard.setValue(Int(duration), forKey: userDefaults_subliminalLoopDuration)
     }
     
     deinit {

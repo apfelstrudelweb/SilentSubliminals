@@ -123,12 +123,12 @@ open class SoundPlayer: NSObject {
         }
     }
     
-    func playLoop(filenames: [String], completionHandler: @escaping(Bool) -> Void) {
+
+    func playLoop(filenames: [String], isInPlaylist: Bool, completionHandler: @escaping(Bool) -> Void) {
         
         audioQueue.async { [self] in
             do {
                 
-                availableTimeForLoop = TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_loopDuration)) - self.singleAffirmationDuration
                 
                 self.engine.stop()
                 self.engine = AVAudioEngine()
@@ -137,6 +137,15 @@ open class SoundPlayer: NSObject {
                 let formatLoud = try! AVAudioFile(forReading: urlLoud)
                 let bufferLoud = AVAudioPCMBuffer(pcmFormat: formatLoud.processingFormat, frameCapacity: UInt32(formatLoud.length /* /3 */)) // only need 1/3 of the original recording
                 try! formatLoud.read(into:bufferLoud!)
+                
+                do {
+                    let audioFile = try AVAudioFile(forReading: urlLoud)
+                    singleAffirmationDuration = audioFile.duration
+                } catch {
+                    print("File read error", error)
+                }
+                
+                availableTimeForLoop = TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_subliminalLoopDuration)) - singleAffirmationDuration
                 
                 // loud
                 audioPlayerNode = AVAudioPlayerNode()
@@ -163,11 +172,6 @@ open class SoundPlayer: NSObject {
                 let minutes = availableTimeForLoop / 60
                 print("loop time: \(minutes) minutes")
                 
-                // Only for testing
-                // availableTimeForLoop = 5
-                // TODO: different time interval for playlist items
-                
- 
                 audioPlayerNode.installTap(onBus: 0, bufferSize: bufferSize, format: formatLoud.processingFormat) {
                 (buffer: AVAudioPCMBuffer!, time: AVAudioTime!) -> Void in
                     
@@ -177,7 +181,19 @@ open class SoundPlayer: NSObject {
                     
                     CommandCenter.shared.updateTime(elapsedTime: audioPlayerNode.currentTime, totalDuration: availableTimeForLoop)
                     
-                    if audioPlayerNode.currentTime  > availableTimeForLoop {
+                    let numberOfRepetitions = UserDefaults.standard.double(forKey: userDefaults_subliminalNumRepetitions)
+ 
+                    if isInPlaylist && audioPlayerNode.currentTime >= singleAffirmationDuration * numberOfRepetitions {
+                        self.engine.stop()
+                        delay(0.1) {
+                            if self.engine.isRunning {
+                                print("engine was running, really stopping")
+                                self.engine.stop()
+                            }
+                        }
+                    }
+ 
+                    if !isInPlaylist && audioPlayerNode.currentTime  > availableTimeForLoop {
                         self.engine.stop()
                         delay(0.1) {
                             if self.engine.isRunning {
@@ -236,7 +252,8 @@ open class SoundPlayer: NSObject {
     
     func continueEngine() {
         
-        //stop()
+        // occurs when user has dictated a text rather than using the keyboard
+        if self.engine.attachedNodes.count == 0 { return }
 
         do {
             try self.engine.start()

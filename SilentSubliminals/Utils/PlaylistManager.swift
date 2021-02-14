@@ -30,7 +30,7 @@ class PlaylistManager {
         
         self.playedSubliminals = []
         self.subliminals = subliminals
-        self.isPlaylist = subliminals.count > 0
+        self.isPlaylist = subliminals.count > 1
     }
     
     func reset() {

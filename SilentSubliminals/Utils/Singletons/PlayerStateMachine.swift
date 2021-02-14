@@ -75,6 +75,8 @@ class PlayerStateMachine {
             
             switch self {
             case .ready:
+                // TODO: remove
+                //return .silentSubliminal
                 // reset played items
                 if let manager = shared.playlistManager {
                     manager.reset()

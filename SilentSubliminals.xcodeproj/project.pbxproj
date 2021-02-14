@@ -38,7 +38,6 @@
 		65675F0225C0976E005AD730 /* PlaylistItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65675F0125C0976E005AD730 /* PlaylistItemTableViewCell.swift */; };
 		65678FCC258932B60075518C /* ShadowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65678FCB258932B60075518C /* ShadowButton.swift */; };
 		656807392593733500D09CBE /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656807382593733500D09CBE /* ToggleButton.swift */; };
-		6568E648258F50F8009390D5 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6568E647258F50F8009390D5 /* TimerManager.swift */; };
 		656957C025C6D4DF00E4F7CC /* Subliminal.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 653353E525A1ECB00067A4A6 /* Subliminal.xcdatamodeld */; };
 		656957C125C6D4DF00E4F7CC /* SetEndtimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 653BA544258E69FC004A0BA7 /* SetEndtimeViewController.swift */; };
 		656957C225C6D4DF00E4F7CC /* Misc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657AA0C5258F544200320465 /* Misc.swift */; };
@@ -52,7 +51,6 @@
 		656957CA25C6D4DF00E4F7CC /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656807382593733500D09CBE /* ToggleButton.swift */; };
 		656957CB25C6D4DF00E4F7CC /* CreationsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A0530325A093F000F3C6BD /* CreationsCollectionView.swift */; };
 		656957CC25C6D4DF00E4F7CC /* PlaylistCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A052FA25A093A100F3C6BD /* PlaylistCollectionView.swift */; };
-		656957CD25C6D4DF00E4F7CC /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6568E647258F50F8009390D5 /* TimerManager.swift */; };
 		656957CE25C6D4DF00E4F7CC /* MediathekCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A052E925A086E900F3C6BD /* MediathekCollectionViewCell.swift */; };
 		656957CF25C6D4DF00E4F7CC /* UserPlaylistTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65675EFA25C08D56005AD730 /* UserPlaylistTableView.swift */; };
 		656957D025C6D4DF00E4F7CC /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D561D8259761FE00FC039C /* PlayButton.swift */; };
@@ -73,7 +71,7 @@
 		656957DF25C6D4DF00E4F7CC /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6569A005253C413B000E7F95 /* ShadowView.swift */; };
 		656957E025C6D4DF00E4F7CC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6563E03A257691CE000E261B /* Constants.swift */; };
 		656957E125C6D4DF00E4F7CC /* SubliminalMakerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558D30C24684934004E8660 /* SubliminalMakerViewController.swift */; };
-		656957E225C6D4DF00E4F7CC /* ShowIconViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8EA6625AA53BF0012B21A /* ShowIconViewController.swift */; };
+		656957E225C6D4DF00E4F7CC /* ShowCountdownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8EA6625AA53BF0012B21A /* ShowCountdownViewController.swift */; };
 		656957E325C6D4DF00E4F7CC /* RoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A169C0257C1693005D179A /* RoundedView.swift */; };
 		656957E425C6D4DF00E4F7CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6558D30824684934004E8660 /* AppDelegate.swift */; };
 		656957E525C6D4DF00E4F7CC /* TimerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C6E64E259B4C460046E739 /* TimerButton.swift */; };
@@ -225,7 +223,7 @@
 		65C8EA4025A8A0CC0012B21A /* consolidationSilent.caf in Resources */ = {isa = PBXBuildFile; fileRef = 657A0F9F25A5C6BB00A4CCF2 /* consolidationSilent.caf */; };
 		65C8EA4125A8A0CC0012B21A /* leadInChair.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 65654BF7259BA7BC0066E4D2 /* leadInChair.aiff */; };
 		65C8EA4225A8A0CC0012B21A /* subliminal.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 65C8E9DA25A7406D0012B21A /* subliminal.mp3 */; };
-		65C8EA6725AA53BF0012B21A /* ShowIconViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8EA6625AA53BF0012B21A /* ShowIconViewController.swift */; };
+		65C8EA6725AA53BF0012B21A /* ShowCountdownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C8EA6625AA53BF0012B21A /* ShowCountdownViewController.swift */; };
 		65CBC6E725CEAF9400EB9897 /* PlaylistManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CBC6E625CEAF9400EB9897 /* PlaylistManager.swift */; };
 		65CBC6E825CEAF9400EB9897 /* PlaylistManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CBC6E625CEAF9400EB9897 /* PlaylistManager.swift */; };
 		65CBC6EC25CEAFF900EB9897 /* Soundfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CBC6EB25CEAFF900EB9897 /* Soundfile.swift */; };
@@ -281,7 +279,6 @@
 		65675F0125C0976E005AD730 /* PlaylistItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistItemTableViewCell.swift; sourceTree = "<group>"; };
 		65678FCB258932B60075518C /* ShadowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowButton.swift; sourceTree = "<group>"; };
 		656807382593733500D09CBE /* ToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleButton.swift; sourceTree = "<group>"; };
-		6568E647258F50F8009390D5 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
 		6569583725C6D4DF00E4F7CC /* FREE UR SPIRIT TEST.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FREE UR SPIRIT TEST.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6569583825C6D4E000E4F7CC /* FREE UR SPIRIT copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "FREE UR SPIRIT copy2-Info.plist"; path = "/Users/rookie/Library/Mobile Documents/com~apple~CloudDocs/Documents/Development/SilentSubliminals/FREE UR SPIRIT copy2-Info.plist"; sourceTree = "<absolute>"; };
 		65699FFB253C3706000E7F95 /* subliminalMakerBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = subliminalMakerBackground.png; sourceTree = "<group>"; };
@@ -353,7 +350,7 @@
 		65C8E9E325A753580012B21A /* test.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = test.mp3; sourceTree = "<group>"; };
 		65C8E9E625A754330012B21A /* song.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = song.mp3; sourceTree = "<group>"; };
 		65C8EA2F25A870960012B21A /* Integration-Silent.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Integration-Silent.mp3"; sourceTree = "<group>"; };
-		65C8EA6625AA53BF0012B21A /* ShowIconViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowIconViewController.swift; sourceTree = "<group>"; };
+		65C8EA6625AA53BF0012B21A /* ShowCountdownViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCountdownViewController.swift; sourceTree = "<group>"; };
 		65CBC6E625CEAF9400EB9897 /* PlaylistManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistManager.swift; sourceTree = "<group>"; };
 		65CBC6EB25CEAFF900EB9897 /* Soundfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Soundfile.swift; sourceTree = "<group>"; };
 		65D561C42595F66E00FC039C /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
@@ -636,7 +633,6 @@
 		657AA0C7258F54C700320465 /* Singletons */ = {
 			isa = PBXGroup;
 			children = (
-				6568E647258F50F8009390D5 /* TimerManager.swift */,
 				65D561C82595F94E00FC039C /* AudioSessionManager.swift */,
 				656654AD2595F36700DB03DC /* CommandCenter.swift */,
 				6598C2EF259106FC0042A7E1 /* PlayerStateMachine.swift */,
@@ -779,7 +775,7 @@
 				653BA541258E69EB004A0BA7 /* SetDurationViewController.swift */,
 				653BA544258E69FC004A0BA7 /* SetEndtimeViewController.swift */,
 				65A052B7259F2DDF00F3C6BD /* DisclaimerViewController.swift */,
-				65C8EA6625AA53BF0012B21A /* ShowIconViewController.swift */,
+				65C8EA6625AA53BF0012B21A /* ShowCountdownViewController.swift */,
 			);
 			path = Modal;
 			sourceTree = "<group>";
@@ -1057,7 +1053,6 @@
 				65A0530425A093F000F3C6BD /* CreationsCollectionView.swift in Sources */,
 				65A052FB25A093A100F3C6BD /* PlaylistCollectionView.swift in Sources */,
 				65CBC6EC25CEAFF900EB9897 /* Soundfile.swift in Sources */,
-				6568E648258F50F8009390D5 /* TimerManager.swift in Sources */,
 				65A052EA25A086E900F3C6BD /* MediathekCollectionViewCell.swift in Sources */,
 				65675EFB25C08D56005AD730 /* UserPlaylistTableView.swift in Sources */,
 				65D561D9259761FE00FC039C /* PlayButton.swift in Sources */,
@@ -1078,7 +1073,7 @@
 				6569A006253C413B000E7F95 /* ShadowView.swift in Sources */,
 				6563E03B257691CE000E261B /* Constants.swift in Sources */,
 				6558D30D24684934004E8660 /* SubliminalMakerViewController.swift in Sources */,
-				65C8EA6725AA53BF0012B21A /* ShowIconViewController.swift in Sources */,
+				65C8EA6725AA53BF0012B21A /* ShowCountdownViewController.swift in Sources */,
 				65A169C2257C1693005D179A /* RoundedView.swift in Sources */,
 				6558D30924684934004E8660 /* AppDelegate.swift in Sources */,
 				65C6E64F259B4C460046E739 /* TimerButton.swift in Sources */,
@@ -1137,7 +1132,6 @@
 				656957CB25C6D4DF00E4F7CC /* CreationsCollectionView.swift in Sources */,
 				656957CC25C6D4DF00E4F7CC /* PlaylistCollectionView.swift in Sources */,
 				65CBC6ED25CEAFF900EB9897 /* Soundfile.swift in Sources */,
-				656957CD25C6D4DF00E4F7CC /* TimerManager.swift in Sources */,
 				656957CE25C6D4DF00E4F7CC /* MediathekCollectionViewCell.swift in Sources */,
 				656957CF25C6D4DF00E4F7CC /* UserPlaylistTableView.swift in Sources */,
 				656957D025C6D4DF00E4F7CC /* PlayButton.swift in Sources */,
@@ -1158,7 +1152,7 @@
 				656957DF25C6D4DF00E4F7CC /* ShadowView.swift in Sources */,
 				656957E025C6D4DF00E4F7CC /* Constants.swift in Sources */,
 				656957E125C6D4DF00E4F7CC /* SubliminalMakerViewController.swift in Sources */,
-				656957E225C6D4DF00E4F7CC /* ShowIconViewController.swift in Sources */,
+				656957E225C6D4DF00E4F7CC /* ShowCountdownViewController.swift in Sources */,
 				656957E325C6D4DF00E4F7CC /* RoundedView.swift in Sources */,
 				656957E425C6D4DF00E4F7CC /* AppDelegate.swift in Sources */,
 				656957E525C6D4DF00E4F7CC /* TimerButton.swift in Sources */,

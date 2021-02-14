@@ -90,15 +90,14 @@ class RepetitionViewController: UIViewController, UIPickerViewDataSource, UIPick
             
             do {
                 let soundFile = try Soundfile(item: item as! LibraryItem)
-                totalTime += (soundFile.duration ?? 0) * Double(numberOfRepetitions)
+                totalTime += (soundFile.duration ?? 0) * Double(numberOfRepetitions + 1)
             } catch {
                 print(error)
             }
         }
         
         durationLabel.text = totalTime.stringFromTimeInterval(showSeconds: true)
-        
-        TimerManager.shared.singleAffirmationDuration = totalTime // TODO
-        
+        UserDefaults.standard.setValue(numberOfRepetitions, forKey: userDefaults_subliminalNumRepetitions)
+        UserDefaults.standard.setValue(totalTime, forKey: userDefaults_subliminalPlaylistTotalTime)
     }
 }

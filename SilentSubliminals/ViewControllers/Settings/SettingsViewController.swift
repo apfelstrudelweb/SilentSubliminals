@@ -10,26 +10,16 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
-    @IBOutlet weak var modulationSwitch: UISwitch!
     
     private var audioHelper = AudioHelper()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        modulationSwitch.isOn = false
-        // Do any additional setup after loading the view.
     }
     
 
  
-    @IBAction func modulationSwitchTouched(_ sender: Any) {
-        
-        UserDefaults.standard.setValue(modulationSwitch.isOn, forKey: userDefaults_frequencyModulation)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.audioHelper.createSilentSubliminalFile()
-        }
-    }
+
     
 }

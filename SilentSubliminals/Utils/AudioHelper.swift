@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import CoreData
 import AVFoundation
+import Accelerate
 
 protocol AudioHelperDelegate : AnyObject {
     
@@ -44,7 +45,26 @@ func delay(_ delay:Double, closure:@escaping ()->()) {
     DispatchQueue.main.asyncAfter(deadline: when, execute: closure)
 }
 
+var sampleCount: Int = 1024
+
+let forwardDCT = vDSP.DCT(count: sampleCount,
+                          transformType: .II)
+
+let inverseDCT = vDSP.DCT(count: sampleCount,
+                          transformType: .III)
+
+var forwardDCT_PreProcessed = [Float](repeating: 0,
+                                           count: sampleCount)
+
+var forwardDCT_PostProcessed = [Float](repeating: 0,
+                                            count: sampleCount)
+
+var inverseDCT_Result = [Float](repeating: 0,
+                              count: sampleCount)
+
 class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
+
+    
     
     func processAudioData(buffer: AVAudioPCMBuffer) {
         self.delegate?.processAudioData(buffer: buffer)
@@ -187,12 +207,12 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         })
     }
     
-    func playSubliminalLoop() {
+    func playSubliminalLoop(isInPlaylist: Bool) {
         
         // Info: play loud and silent subliminals simultaneously - that's why we take an array of sound files
         guard let subliminal = getCurrentSubliminal(), let filenameLoud = subliminal.filenameLoud, let filenameSilent = subliminal.filenameSilent else { return }
         print("play loop sublimal: \(filenameSilent)")
-        soundPlayer.playLoop(filenames: [filenameLoud, filenameSilent], completionHandler: { (flag) in
+        soundPlayer.playLoop(filenames: [filenameLoud, filenameSilent], isInPlaylist: isInPlaylist, completionHandler: { (flag) in
             print("*** subliminal loop done ***")
             if !self.resetAll {
                 PlayerStateMachine.shared.doNextPlayerState()
@@ -221,7 +241,7 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         
         // completion handler will automaticall call next state
         soundPlayer.stop()
-        CommandCenter.shared.updateTime(elapsedTime: 0, totalDuration: 0)
+        //CommandCenter.shared.updateTime(elapsedTime: 0, totalDuration: 0)
     }
     
     
@@ -383,7 +403,7 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         //print(engine)
         
         // Run the engine in manual rendering mode using chunks of 512 frames
-        let renderSize: AVAudioFrameCount = 512
+        let renderSize: AVAudioFrameCount = 1024
         
         // Use the file's processing format as the rendering format
         let renderFormat = AVAudioFormat(commonFormat: file.processingFormat.commonFormat, sampleRate: file.processingFormat.sampleRate, channels: file.processingFormat.channelCount, interleaved: false)!
@@ -436,38 +456,43 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
                 let rightTargetData = renderBuffer.floatChannelData?[1]
                 
                 // Process the audio in 'renderBuffer' here
-                if !frequencyModulation {
+                //if !frequencyModulation {
                     for i in 0..<Int(readBuffer.frameLength) {
                         let val: Double = sin(Double(2 * modulationFrequency) * Double(index) * Double.pi / Double(renderBuffer.format.sampleRate))
                         leftTargetData?[i] = Float(val) * (leftSourceData?[i] ?? 0)
                         rightTargetData?[i] = Float(val) * (rightSourceData?[i] ?? 0)
                         index += 1
                     }
-                } else {
-                    for i in 0..<Int(readBuffer.frameLength) {
-                        //let val: Double = sin(Double(2 * modulationFrequency) * Double(index) * Double.pi / Double(renderBuffer.format.sampleRate))
-                        
-                        guard let leftData = leftTargetData?[i] else { continue }
-                        guard let rightData = rightTargetData?[i] else { continue }
-     
-                        let a0 = Double(leftData)
-                        let a1 = asin(Double(a0))
-                        let m = Double(sin(Double(2 * modulationFrequency) * Double(index) * Double.pi / Double(renderBuffer.format.sampleRate)))
-
-                        let b0 = Double(rightData)
-                        let b1 = asin(Double(b0))
-                        //let b2 = sin(Double(2 * modulationFrequency) * Double(index) * Double.pi / Double(renderBuffer.format.sampleRate))
-                            
-                        // https://www.tutorialspoint.com/analog_communication/analog_communication_numerical_problems_2.htm
-                        
-                        let beta: Double = 0.25//Double(2000 / modulationFrequency)
-                        
-                        leftTargetData?[i] = Float(sin(a1 + beta * m))
-                        rightTargetData?[i] = Float(sin(b1 + beta * m))
-                        
-                        index += 1
-                    }
-                }
+//                } else {
+//                    for i in 0..<Int(readBuffer.frameLength) {
+//                        let val: Double = Double(2 * modulationFrequency) * Double(index) * Double.pi / Double(renderBuffer.format.sampleRate)
+//                        let modIndex: Double = Double(2000 / modulationFrequency)
+//
+//                        guard let leftData = leftTargetData?[i] else { continue }
+//                        guard let rightData = rightTargetData?[i] else { continue }
+//
+//                        let modulationLeft = Double( sin(val * modIndex * Double(leftData)) )
+//                        let modulationRight = Double( sin(val * modIndex * Double(rightData)) )
+//
+////                        leftDataArray.append(Float(modulationLeft))
+////                        rightDataArray.append(Float(modulationRight))
+//                        leftTargetData?[i] = Float(modulationLeft)
+//                        rightTargetData?[i] = Float(modulationRight)
+//
+//                        index += 1
+//                    }
+//                }
+                
+//                let leftDataArray = Array(UnsafeBufferPointer(start: leftTargetData, count: Int(readBuffer.frameLength)))//.map { $0 }
+//                let rightDataArray = Array(UnsafeBufferPointer(start: rightTargetData, count: Int(readBuffer.frameLength)))//.map { $0 }
+//                let arrayLeft = apply(dctMultiplier: EqualizationFilters.dctBandPass, toInput: leftDataArray)
+//                let arrayRight = apply(dctMultiplier: EqualizationFilters.dctBandPass, toInput: rightDataArray)
+//
+//                for i in 0..<Int(readBuffer.frameLength) {
+//
+//                    leftTargetData?[i] = arrayLeft[i]
+//                    rightTargetData?[i] = arrayRight[i]
+//                }
 
                 if index == Int(file.fileFormat.sampleRate) {
                     index = 0
@@ -497,6 +522,28 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
 
     }
 
+//    func apply(dctMultiplier: [Float], toInput input: [Float]) -> [Float] {
+//        // Perform forward DCT.
+//        forwardDCT?.transform(input,
+//                              result: &forwardDCT_PreProcessed)
+//        // Multiply frequency-domain data by `dctMultiplier`.
+//        vDSP.multiply(dctMultiplier,
+//                      forwardDCT_PreProcessed,
+//                      result: &forwardDCT_PostProcessed)
+//
+//        // Perform inverse DCT.
+//        inverseDCT?.transform(forwardDCT_PostProcessed,
+//                              result: &inverseDCT_Result)
+//
+//        // In-place scale inverse DCT result by n / 2.
+//        // Output samples are now in range -1...+1
+//        vDSP.divide(inverseDCT_Result,
+//                    Float(sampleCount / 2),
+//                    result: &inverseDCT_Result)
+//
+//        return inverseDCT_Result
+//    }
+
 
     func checkForPermission() {
         Manager.recordingSession = AVAudioSession.sharedInstance()
@@ -522,6 +569,41 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
     }
 }
 
+//struct EqualizationFilters {
+//    
+//    static let dctHighPass: [Float] = {
+//        return interpolatedVectorFrom(magnitudes:  [0,   0,   0.1,    0.5],
+//                                      indices:     [0, 800, 1000, 1024],
+//                                      count: sampleCount)
+//    }()
+//    
+//    static let dctBandPass: [Float] = {
+//        return interpolatedVectorFrom(magnitudes:  [0,   0,   0,   0,   1,    1],
+//                                      indices:     [0, 290, 700, 800, 950, 1024],
+//                                      count: sampleCount)
+//    }()
+//    
+//
+//    static func interpolatedVectorFrom(magnitudes: [Float],
+//                                       indices: [Float],
+//                                       count: Int) -> [Float] {
+//        assert(magnitudes.count == indices.count,
+//               "`magnitudes.count` must equal `indices.count`.")
+//        
+//        var c = [Float](repeating: 0,
+//                        count: count)
+//        
+//        let stride = vDSP_Stride(1)
+//        
+//        vDSP_vgenp(magnitudes, stride,
+//                   indices, stride,
+//                   &c, stride,
+//                   vDSP_Length(count),
+//                   vDSP_Length(magnitudes.count))
+//        
+//        return c
+//    }
+//}
 
 extension URL {
     var typeIdentifier: String? {

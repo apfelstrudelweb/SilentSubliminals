@@ -26,6 +26,16 @@ class CommandCenter {
     let commandCenter = MPRemoteCommandCenter.shared()
     
     var elapsedTime: TimeInterval = 0
+    var elapsedTimeForPlaylist: TimeInterval = 0
+    
+    var elapsedTimeForLoudSubliminal: TimeInterval = 0 {
+        didSet {
+            if elapsedTimeForLoudSubliminal == 0 {
+                print("reset")
+            }
+        }
+    }
+    var elapsedTimeForSilentSubliminal: TimeInterval = 0
     var totalDuration: TimeInterval = 0
     
     var node: AVAudioPlayerNode?
@@ -54,6 +64,7 @@ class CommandCenter {
             //self.updateTime(elapsedTime: self.elapsedTime, totalDuration: self.totalDuration)
             self.delegate?.startPlaying()
             self.commandCenter.nextTrackCommand.isEnabled = true
+
             return .success
         }
         commandCenter.previousTrackCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
@@ -142,6 +153,12 @@ class CommandCenter {
         
         self.elapsedTime = elapsedTime
         self.totalDuration = totalDuration
+        
+        if PlayerStateMachine.shared.playerState == .subliminal {
+            CommandCenter.shared.elapsedTimeForLoudSubliminal = elapsedTime
+        } else if PlayerStateMachine.shared.playerState == .silentSubliminal  {
+            CommandCenter.shared.elapsedTimeForSilentSubliminal = elapsedTime
+        }
         
         nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = elapsedTime
         nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = totalDuration

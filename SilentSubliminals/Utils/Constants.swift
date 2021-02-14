@@ -74,13 +74,17 @@ let criticalLoopDurationInSeconds: TimeInterval = 6 * 60 * 60
 let defaultAffirmationTime: TimeInterval = 5 * 60
 let dayInSeconds: Double = 24 * 60 * 60
 let hourInSeconds: Int = 60 * 60
-let minuteInSeconds: Int = 60
+let minuteInSeconds: Double = 60
 
 // User defaults
 let userDefaults_introductionPlayed = "introductionPlayed"
-let userDefaults_loopDuration = "loopDuration"
 let userDefaults_loopTerminated = "loopTerminated"
 let userDefaults_loopTerminationTime = "loopTerminationTime"
+// timer
+let userDefaults_subliminalLoopDuration = "subliminalLoopDuration"
+let userDefaults_subliminalNumRepetitions = "subliminalNumRepetitions"
+let userDefaults_subliminalPlaylistTotalTime = "subliminalPlaylistTotalTime"
+
 let userDefaults_frequencyModulation = "frequencyModulation"
 
 

@@ -24,6 +24,8 @@ class ShowCountdownViewController: UIViewController {
     var itemTitle: String?
     var icon: UIImage?
     
+    var currentSubliminal: Soundfile?
+    
     var timer: Timer? = nil {
         willSet {
             timer?.invalidate()
@@ -34,14 +36,14 @@ class ShowCountdownViewController: UIViewController {
     var elapsedTime: TimeInterval = 0
     
     var availableTimeForLoop: TimeInterval = TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_subliminalLoopDuration))
+    var numberOfRepetitions = UserDefaults.standard.integer(forKey: userDefaults_subliminalNumRepetitions)
+    var availableTimeForPlaylist = TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_subliminalPlaylistTotalTime))
+    
+    //let test = isPlaylist()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        if let currentSubliminal = getCurrentSubliminal(), let duration = currentSubliminal.audioFileLoud?.duration {
-//            availableTimeForLoop -= duration
-//        }
-
         titleLabel.text = itemTitle
         imageView.image = icon
         
@@ -50,10 +52,10 @@ class ShowCountdownViewController: UIViewController {
         loopCompletionTimeLabel.alpha = loopTerminated ? 1 : 0
         loopCompletionTimeLabel.text = UserDefaults.standard.string(forKey: userDefaults_loopTerminationTime)
         
-        loopDurationValueLabel.text = availableTimeForLoop.stringFromTimeInterval(showSeconds: true)
+        loopDurationValueLabel.text = isPlaylist() ? availableTimeForPlaylist.stringFromTimeInterval(showSeconds: true) : availableTimeForLoop.stringFromTimeInterval(showSeconds: true)
         remainingTimeValueLabel.text = loopDurationValueLabel.text
         
-        remainingTimeValueLabel.text = loopTerminated ? TimeInterval(0).stringFromTimeInterval(showSeconds: true) : availableTimeForLoop.stringFromTimeInterval(showSeconds: true)
+        remainingTimeValueLabel.text = loopTerminated ? TimeInterval(0).stringFromTimeInterval(showSeconds: true) : ( isPlaylist() ? availableTimeForPlaylist.stringFromTimeInterval(showSeconds: true) : availableTimeForLoop.stringFromTimeInterval(showSeconds: true) )
         
         stopTimer = false
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
@@ -65,10 +67,8 @@ class ShowCountdownViewController: UIViewController {
     
     @objc func runTimedCode() {
         
-        if PlayerStateMachine.shared.playerState == .subliminal {
-            setRemainingTime(loop: false)
-        } else if PlayerStateMachine.shared.playerState == .silentSubliminal {
-            setRemainingTime(loop: true)
+        if PlayerStateMachine.shared.playerState == .subliminal || PlayerStateMachine.shared.playerState == .silentSubliminal {
+            setRemainingTime()
         }
         
         if PlayerStateMachine.shared.playerState == .consolidation {
@@ -89,11 +89,38 @@ class ShowCountdownViewController: UIViewController {
         }
     }
     
-    func setRemainingTime(loop: Bool) {
+    func setRemainingTime() {
         DispatchQueue.main.async {
+            
+            if isPlaylist() {
+                
+                let subliminal = getCurrentSubliminal()
+                if subliminal != self.currentSubliminal {
+                    subliminal?.elapsedTime = 0
+                    self.currentSubliminal = subliminal
+                    self.titleLabel.text = subliminal?.title
+                    if let singleDurantion = subliminal?.duration {
+                        let remainingTime: TimeInterval = singleDurantion * Double(self.numberOfRepetitions + 1)
+                        self.remainingTimeValueLabel.text = remainingTime.stringFromTimeInterval(showSeconds: true)
+                    }
+                    
+                    if let icon = subliminal?.icon {
+                        self.imageView.image = UIImage(data: icon)
+                    }
+                }
+                
 
-            let remainingTime: TimeInterval = self.availableTimeForLoop - CommandCenter.shared.elapsedTimeForLoudSubliminal - CommandCenter.shared.elapsedTimeForSilentSubliminal
-            self.remainingTimeValueLabel.text = remainingTime.stringFromTimeInterval(showSeconds: true)
+                //CommandCenter.shared.elapsedTimeForPlaylist += 1
+                
+                guard let singleDurantion = subliminal?.duration else { return }
+ 
+                let remainingTime: TimeInterval = singleDurantion * Double(self.numberOfRepetitions + 1) - CommandCenter.shared.elapsedTime
+                self.remainingTimeValueLabel.text = remainingTime.stringFromTimeInterval(showSeconds: true)
+                
+            } else {
+                let remainingTime: TimeInterval = self.availableTimeForLoop - CommandCenter.shared.elapsedTimeForLoudSubliminal - CommandCenter.shared.elapsedTimeForSilentSubliminal
+                self.remainingTimeValueLabel.text = remainingTime.stringFromTimeInterval(showSeconds: true)
+            }
         }
     }
     

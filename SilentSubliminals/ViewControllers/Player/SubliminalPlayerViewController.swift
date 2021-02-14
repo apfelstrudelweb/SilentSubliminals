@@ -117,6 +117,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         return true
     }
     
+    let TEST_MODE = true
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -158,12 +160,13 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         let subliminal = getCurrentSubliminal()
         affirmationTitleLabel.text = subliminal?.title
         iconButton.setImage(UIImage(data: subliminal?.icon ?? Data()), for: .normal)
+        scrollView.contentOffset.y = scrollView.contentOffset.y + 1  // otherwise, glass view appears white
         
         scrollView.delegate = self
         audioHelper.delegate = self
         PlayerStateMachine.shared.delegate = self
         
-        UserDefaults.standard.setValue(false, forKey: userDefaults_loopTerminated)
+        //UserDefaults.standard.setValue(false, forKey: userDefaults_loopTerminated)
         CommandCenter.shared.updateLockScreenInfo()
     }
 
@@ -253,7 +256,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         if let vc = segue.destination as? SpectrumViewController {
             spectrumViewController = vc
         }
-        if let vc = segue.destination as? ShowIconViewController {
+        if let vc = segue.destination as? ShowCountdownViewController {
             vc.itemTitle = affirmationTitleLabel.text
             vc.icon = iconButton.image(for: .normal)
         }
@@ -303,23 +306,40 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     }
     
     @IBAction func playButtonTouchUpInside(_ sender: Any) {
+        
+        if currentPlaylist == nil {
+            let availableTimeForLoop = TimeInterval(UserDefaults.standard.integer(forKey: userDefaults_subliminalLoopDuration))
+            guard let soundfile = getCurrentSubliminal(), let duration = soundfile.duration else { return }
+            if availableTimeForLoop < 2 * duration {
+
+                let durationString: String = duration.stringFromTimeInterval(showHours: false)
+
+                let alert = UIAlertController(title: "Error", message: "Your subliminal is exactly \(durationString) long. You need at least set twice the time of this subliminal in order to play the silent part as well. Please correct this now!", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { _ in
+                    self.performSegue(withIdentifier: "timerSegue", sender: self)
+                }))
+                self.present(alert, animated: true)
+                return
+            }
+        }
 
         PlayerStateMachine.shared.setIntroductionState(isOn: introductionSwitch.isOn)
         
         if PlayerStateMachine.shared.playerState == .ready {
             
-            
-            overlayButton.isEnabled = false
+            if !TEST_MODE {
+                overlayButton.isEnabled = false
 
-            UIView.animate(withDuration: 1) {
-                self.overlayView.alpha = 1
-                //self.navigationController?.navigationBar.alpha = 0.01
-                self.navigationController?.setNavigationBarHidden(true, animated: true)
-                self.setTabBar(hidden: true)
-            } completion: { _ in
-                self.overlayButton.isEnabled = true
+                UIView.animate(withDuration: 1) {
+                    self.overlayView.alpha = 1
+                    //self.navigationController?.navigationBar.alpha = 0.01
+                    self.navigationController?.setNavigationBarHidden(true, animated: true)
+                    self.setTabBar(hidden: true)
+                } completion: { _ in
+                    self.overlayButton.isEnabled = true
+                }
             }
-            
+
             AlertController().showInfoLongAffirmationLoop(vc: self) { result in
                 if result {
                     self.startPlaying()
@@ -333,6 +353,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     
     @IBAction func overlayButtonTouchUpInside(_ sender: Any) {
         
+        if TEST_MODE { return }
+        
         if !overlayButton.isEnabled {return}
         
         UIView.animate(withDuration: 2) {
@@ -344,8 +366,11 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     }
     
     @IBAction func backgroundButtonsTouched(_ sender: Any) {
+        
+        if TEST_MODE { return }
+        
         overlayButton.isEnabled = false
-
+        
         UIView.animate(withDuration: 1) {
             self.overlayView.alpha = 1
             //self.navigationController?.navigationBar.alpha = 0
@@ -510,7 +535,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
                 forwardButton.setEnabled(flag: true)
                 CommandCenter.shared.enableForwardButton(flag: true)
                 CommandCenter.shared.enableBackButton(flag: true)
-                audioHelper.playSubliminalLoop()
+                audioHelper.playSubliminalLoop(isInPlaylist: currentPlaylist != nil)
                 //subliminalPulseImageView.animate()
                 break
             case .consolidation:
@@ -590,6 +615,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         timerButton.setEnabled(flag: false)
         
         CommandCenter.shared.enableForwardButton(flag: true)
+        CommandCenter.shared.elapsedTimeForLoudSubliminal = 0
+        CommandCenter.shared.elapsedTimeForSilentSubliminal = 0
         
         switch PlayerStateMachine.shared.pauseState {
         
@@ -619,7 +646,6 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         stopButtonAnimations()
 
         introductionSwitch.layoutSubviews()
-        TimerManager.shared.reset()
         
         CommandCenter.shared.enableForwardButton(flag: false)
         CommandCenter.shared.updateLockScreenInfo()
@@ -631,6 +657,12 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     }
     
     func stepForward() {
+        
+        if PlayerStateMachine.shared.playerState == .subliminal {
+            guard let soundfile = getCurrentSubliminal(), let duration = soundfile.duration else { return }
+            CommandCenter.shared.elapsedTimeForLoudSubliminal = duration
+        }
+        
         audioHelper.skip()
     }
     

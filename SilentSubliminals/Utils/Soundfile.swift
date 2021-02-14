@@ -31,10 +31,13 @@ class Soundfile: NSObject {
     
     var exists: Bool = false
     
+    var elapsedTime: TimeInterval = 0
+    
     
     required init(item: LibraryItem) throws {
         
         self.item = item
+        self.elapsedTime = 0
 
         self.title = item.title
         self.icon = item.icon
