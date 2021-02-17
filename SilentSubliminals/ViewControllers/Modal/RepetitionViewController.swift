@@ -17,7 +17,7 @@ class RepetitionViewController: UIViewController, UIPickerViewDataSource, UIPick
     
     var currentPlaylist: Playlist?
     var pickerData: [Int]!
-    var numberOfRepetitions: Int = 1
+    //var numberOfRepetitions: Int = 1
     var totalTime: TimeInterval = 0
     
     override func viewDidLoad() {
@@ -52,8 +52,15 @@ class RepetitionViewController: UIViewController, UIPickerViewDataSource, UIPick
         pickerSelectionIndicatorTopLine.autoSetDimension(.height, toSize: 2)
         pickerSelectionIndicatorBottomLine.autoSetDimension(.height, toSize: 2)
         
-        pickerData = Array(stride(from: 1, to: 21, by: 1))
+        pickerData = Array(stride(from: 1, to: 41, by: 1))
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
+        let numberOfRepetitions = UserDefaults.standard.integer(forKey: userDefaults_subliminalNumRepetitions)
+        
+        numberPicker.selectRow(numberOfRepetitions - 1, inComponent: 0, animated: true)
         calculateTotalTime(numberOfRepetitions: numberOfRepetitions)
     }
     
@@ -76,9 +83,10 @@ class RepetitionViewController: UIViewController, UIPickerViewDataSource, UIPick
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
-        numberOfRepetitions = row + 1
+        let numberOfRepetitions = row + 1
         
         print("number of repetitions: \(numberOfRepetitions)")
+        UserDefaults.standard.setValue(numberOfRepetitions, forKey: userDefaults_subliminalNumRepetitions)
         calculateTotalTime(numberOfRepetitions: numberOfRepetitions)
     }
     
@@ -97,7 +105,6 @@ class RepetitionViewController: UIViewController, UIPickerViewDataSource, UIPick
         }
         
         durationLabel.text = totalTime.stringFromTimeInterval(showSeconds: true)
-        UserDefaults.standard.setValue(numberOfRepetitions, forKey: userDefaults_subliminalNumRepetitions)
         UserDefaults.standard.setValue(totalTime, forKey: userDefaults_subliminalPlaylistTotalTime)
     }
 }

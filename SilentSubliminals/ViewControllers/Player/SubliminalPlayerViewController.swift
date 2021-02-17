@@ -615,7 +615,6 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         timerButton.setEnabled(flag: false)
         
         CommandCenter.shared.enableForwardButton(flag: true)
-        CommandCenter.shared.elapsedTimeForLoudSubliminal = 0
         CommandCenter.shared.elapsedTimeForSilentSubliminal = 0
         
         switch PlayerStateMachine.shared.pauseState {

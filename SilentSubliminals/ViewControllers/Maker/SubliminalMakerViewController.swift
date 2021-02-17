@@ -83,6 +83,9 @@ class SubliminalMakerViewController: UIViewController, BackButtonDelegate, Maker
             let filenameLoud = String(format: audioTemplate, filename)
             let sandboxFileLoud = getFileFromSandbox(filename: filenameLoud)
             playButton.isHidden = !sandboxFileLoud.checkFileExist()
+        } else {
+            playButton.isHidden = true
+            performSegue(withIdentifier: "addItemSegue", sender: self)
         }
     }
     

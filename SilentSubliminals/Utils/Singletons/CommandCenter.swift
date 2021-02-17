@@ -28,13 +28,7 @@ class CommandCenter {
     var elapsedTime: TimeInterval = 0
     var elapsedTimeForPlaylist: TimeInterval = 0
     
-    var elapsedTimeForLoudSubliminal: TimeInterval = 0 {
-        didSet {
-            if elapsedTimeForLoudSubliminal == 0 {
-                print("reset")
-            }
-        }
-    }
+    var elapsedTimeForLoudSubliminal: TimeInterval = 0
     var elapsedTimeForSilentSubliminal: TimeInterval = 0
     var totalDuration: TimeInterval = 0
     

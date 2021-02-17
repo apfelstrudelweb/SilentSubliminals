@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import MediaPlayer
 
 protocol PlayerStateMachineDelegate : AnyObject {
     
@@ -105,6 +106,10 @@ class PlayerStateMachine {
             case .consolidation:
                 return .leadOut
             case .leadOut:
+                
+                UIApplication.shared.endReceivingRemoteControlEvents()
+                MPNowPlayingInfoCenter.default().nowPlayingInfo = [:]
+                
                 return .ready
             }
         }

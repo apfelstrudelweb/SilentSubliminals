@@ -47,8 +47,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("Failed to set audio session category.")
         }
         
-        UserDefaults.standard.setValue(5*60, forKey: userDefaults_subliminalLoopDuration)
-        UserDefaults.standard.setValue(1, forKey: userDefaults_subliminalNumRepetitions)
+        
+        if (UserDefaults.standard.integer(forKey: userDefaults_subliminalLoopDuration) == 0) {
+            UserDefaults.standard.setValue(5*60, forKey: userDefaults_subliminalLoopDuration)
+        }
+        
+        if (UserDefaults.standard.integer(forKey: userDefaults_subliminalNumRepetitions) == 0) {
+            UserDefaults.standard.setValue(1, forKey: userDefaults_subliminalNumRepetitions)
+        }
+        
         
         db.managedObjectContext.automaticallyMergesChangesFromParent = true
         
