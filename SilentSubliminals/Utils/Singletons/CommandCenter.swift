@@ -143,6 +143,27 @@ class CommandCenter {
         MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }
     
+    func updateTitleAndIcon() {
+        
+        let soundfile = getCurrentSubliminal()
+        
+        if let title = soundfile?.title {
+            nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = title
+        }
+        if let imageData = soundfile?.icon, let image = UIImage(data: imageData) {
+            let mediaArtwork = MPMediaItemArtwork(boundsSize: image.size) { (size: CGSize) -> UIImage in
+                return image
+            }
+            nowPlayingInfo[MPMediaItemPropertyArtwork] = mediaArtwork
+        }
+
+        let bundleInfoDict: NSDictionary = Bundle.main.infoDictionary! as NSDictionary
+        let appName = bundleInfoDict["CFBundleName"] as! String
+        nowPlayingInfo[MPMediaItemPropertyTitle] = appName
+        
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+    }
+    
     func updateTime(elapsedTime: TimeInterval, totalDuration: TimeInterval) {
         
         self.elapsedTime = elapsedTime

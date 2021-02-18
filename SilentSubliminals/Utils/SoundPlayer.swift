@@ -48,6 +48,8 @@ open class SoundPlayer: NSObject {
     
     func play(filename: String, isSilent: Bool, completionHandler: @escaping(Bool) -> Void) {
         
+        CommandCenter.shared.updateTitleAndIcon()
+
         audioQueue.async { [self] in
             do {
                 
@@ -126,6 +128,8 @@ open class SoundPlayer: NSObject {
 
     func playLoop(filenames: [String], isInPlaylist: Bool, completionHandler: @escaping(Bool) -> Void) {
         
+        CommandCenter.shared.updateTitleAndIcon()
+        
         audioQueue.async { [self] in
             do {
                 
@@ -179,21 +183,12 @@ open class SoundPlayer: NSObject {
                         delegate?.processAudioData(buffer: buffer)
                     }
                     
-                    CommandCenter.shared.updateTime(elapsedTime: audioPlayerNode.currentTime, totalDuration: availableTimeForLoop)
-                    
                     let numberOfRepetitions = UserDefaults.standard.double(forKey: userDefaults_subliminalNumRepetitions)
- 
-                    if isInPlaylist && audioPlayerNode.currentTime >= singleAffirmationDuration * numberOfRepetitions {
-                        self.engine.stop()
-                        delay(0.1) {
-                            if self.engine.isRunning {
-                                print("engine was running, really stopping")
-                                self.engine.stop()
-                            }
-                        }
-                    }
- 
-                    if !isInPlaylist && audioPlayerNode.currentTime  > availableTimeForLoop {
+                    let availableTime = isInPlaylist ? singleAffirmationDuration * numberOfRepetitions : availableTimeForLoop
+                    
+                    CommandCenter.shared.updateTime(elapsedTime: audioPlayerNode.currentTime, totalDuration: availableTime)
+
+                    if audioPlayerNode.currentTime >= availableTime {
                         self.engine.stop()
                         delay(0.1) {
                             if self.engine.isRunning {

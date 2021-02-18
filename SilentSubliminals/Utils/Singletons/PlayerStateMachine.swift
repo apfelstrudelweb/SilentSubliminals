@@ -110,6 +110,8 @@ class PlayerStateMachine {
                 UIApplication.shared.endReceivingRemoteControlEvents()
                 MPNowPlayingInfoCenter.default().nowPlayingInfo = [:]
                 
+                //CommandCenter.shared.updateTitleAndIcon()
+                
                 return .ready
             }
         }
