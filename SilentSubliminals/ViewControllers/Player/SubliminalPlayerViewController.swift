@@ -56,7 +56,6 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         }
     }
     
-
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -157,6 +156,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        getBackgroundImage()
+        
         let subliminal = getCurrentSubliminal()
         affirmationTitleLabel.text = subliminal?.title
         iconButton.setImage(UIImage(data: subliminal?.icon ?? Data()), for: .normal)
@@ -175,6 +176,17 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         //audioHelper.reset()
         stopPlaying()
         MPNowPlayingInfoCenter.default().nowPlayingInfo = [:]
+    }
+    
+    func getBackgroundImage() {
+        
+        if let url = UserDefaults.standard.url(forKey: userDefaults_playerBackgroundImage) {
+            
+            let image = UIImage(contentsOfFile: url.path)
+            backgroundImageView.image = image
+        } else {
+            backgroundImageView.image = UIImage(named: "subliminalPlayerBackground")
+        }
     }
     
     func setTabBar(hidden:Bool) {
@@ -407,8 +419,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
             performSegue(withIdentifier: "timerSegue", sender: self)
         }
     }
-    
 
+    
     func updateIntroButtons() {
         
         DispatchQueue.main.async {

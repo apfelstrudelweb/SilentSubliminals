@@ -433,7 +433,7 @@ class AudioHelper: SoundPlayerDelegate, AudioHelperDelegate {
         // The render format is also the output format
         let output = try! AVAudioFile(forWriting: sandboxFileSilent, settings: settings, commonFormat: renderFormat.commonFormat, interleaved: renderFormat.isInterleaved)
         
-        let frequencyModulation = UserDefaults.standard.bool(forKey: userDefaults_frequencyModulation)
+        let frequencyModulation = false //UserDefaults.standard.bool(forKey: userDefaults_frequencyModulation)
         
         var index: Int = 0;
         // Process the file

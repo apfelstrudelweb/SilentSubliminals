@@ -176,6 +176,12 @@ class MakerAddNewViewController: UIViewController, UITableViewDataSource, AddAff
             addAffirmationViewController = vc
             addAffirmationViewController?.delegate = self
         }
+        
+        if let vc = segue.destination as? ImageCropperViewController {
+            vc.delegate = self
+            vc.isBackgroundImageForPlayer = false
+            vc.restoredImage = coverImageButton.image(for: .normal)
+        }
     }
     
     // MARK: CoreData
@@ -436,6 +442,11 @@ extension MakerAddNewViewController: UIDocumentPickerDelegate {
 
 extension MakerAddNewViewController: ImagePickerDelegate {
     
+    func didSelectUnsplash() {
+        self.performSegue(withIdentifier: "cropperSegue", sender: self)
+    }
+    
+
     func didSelect(image: UIImage?) {
         guard let img = image else {
             return
@@ -443,6 +454,18 @@ extension MakerAddNewViewController: ImagePickerDelegate {
         coverImageButton.setImage(img, for: .normal)
         coverImageButton.isOverriden = true
     }
+}
+
+extension MakerAddNewViewController: ImageCropperDelegate {
+
+    func didSelectCroppedImage(image: UIImage?) {
+        guard let img = image else {
+            return
+        }
+        coverImageButton.setImage(img, for: .normal)
+        coverImageButton.isOverriden = true
+    }
+
 }
 
 extension MakerAddNewViewController: EasyTipViewDelegate {
@@ -486,6 +509,48 @@ extension UIViewController {
         
         let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel, handler: { (action:UIAlertAction) in
             self.navigationController?.popViewController(animated: true)
+        })
+        alert.addAction(cancelAction)
+        
+        DispatchQueue.main.async {
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func showSplashDialog(title:String? = nil,
+                         subtitle:String? = nil,
+                         actionTitle:String? = "OK",
+                         cancelTitle:String? = "Cancel",
+                         inputText: String? = nil,
+                         inputPlaceholder:String? = nil,
+                         inputKeyboardType:UIKeyboardType = UIKeyboardType.default,
+                         cancelHandler: ((UIAlertAction) -> Swift.Void)? = nil,
+                         completionHandler: @escaping (String) -> Void,
+                         actionHandler: ((_ text: String?) -> Void)? = nil) {
+        
+        let alert = UIAlertController(title: title, message: subtitle, preferredStyle: .alert)
+        alert.addTextField { (textField:UITextField) in
+            textField.text = inputText
+            textField.placeholder = inputPlaceholder
+            textField.keyboardType = inputKeyboardType
+            textField.addTarget(alert, action: #selector(alert.textDidChangeInNameAlert), for: .editingChanged)
+        }
+        
+        let nameAction = UIAlertAction(title: actionTitle, style: .default, handler: { (action:UIAlertAction) in
+            guard let textField =  alert.textFields?.first else {
+                actionHandler?(nil)
+                return
+            }
+            actionHandler?(textField.text)
+            if let text = textField.text {
+                completionHandler(text)
+            }
+        })
+        alert.addAction(nameAction)
+        alert.textDidChangeInNameAlert()
+        
+        let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel, handler: { (action:UIAlertAction) in
+            //self.dismiss(animated: true, completion: nil)
         })
         alert.addAction(cancelAction)
         

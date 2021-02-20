@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0588279E3E4F365A8EA616F1 /* Pods_FREE_UR_SPIRIT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AF5B18BFC23E77825F83913 /* Pods_FREE_UR_SPIRIT.framework */; };
 		6517BA3925D1C119004546F0 /* RepetitionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6517BA3825D1C119004546F0 /* RepetitionViewController.swift */; };
 		6517BA3A25D1C119004546F0 /* RepetitionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6517BA3825D1C119004546F0 /* RepetitionViewController.swift */; };
 		652D5C5A2546B6170083165B /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 652D5C592546B6170083165B /* Accelerate.framework */; };
@@ -109,7 +110,6 @@
 		6569580625C6D4DF00E4F7CC /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 652D5C592546B6170083165B /* Accelerate.framework */; };
 		6569580725C6D4DF00E4F7CC /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 656A214025B612D90084B84B /* CloudKit.framework */; };
 		6569580825C6D4DF00E4F7CC /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F0727B25445673004C8BA3 /* AVFoundation.framework */; };
-		6569580925C6D4DF00E4F7CC /* Pods_FREE_UR_SPIRIT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB82CA3693914B0F783D9BCE /* Pods_FREE_UR_SPIRIT.framework */; };
 		6569580B25C6D4DF00E4F7CC /* stopRecordingButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 65F072802544615D004C8BA3 /* stopRecordingButton.png */; };
 		6569580C25C6D4DF00E4F7CC /* meditation_04.png in Resources */ = {isa = PBXBuildFile; fileRef = 65A052EF25A0899500F3C6BD /* meditation_04.png */; };
 		6569580D25C6D4DF00E4F7CC /* consolidationSilent.caf in Resources */ = {isa = PBXBuildFile; fileRef = 657A0F9F25A5C6BB00A4CCF2 /* consolidationSilent.caf */; };
@@ -164,6 +164,8 @@
 		656D431E2594CF450067A4D8 /* AudioExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D431D2594CF450067A4D8 /* AudioExtensions.swift */; };
 		656D43212594E0900067A4D8 /* Switch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D43202594E0900067A4D8 /* Switch.swift */; };
 		656D43242594E3790067A4D8 /* SpectrumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D43232594E3790067A4D8 /* SpectrumViewController.swift */; };
+		656E379425E17EC800AD0707 /* ImageCropperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656E379325E17EC800AD0707 /* ImageCropperViewController.swift */; };
+		656E379525E17EC800AD0707 /* ImageCropperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656E379325E17EC800AD0707 /* ImageCropperViewController.swift */; };
 		65700CCE25BF53D4000DA5C7 /* PlaylistAddNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65700CCD25BF53D4000DA5C7 /* PlaylistAddNewViewController.swift */; };
 		657A0F8C25A347C400A4CCF2 /* LibraryItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657A0F8625A347C400A4CCF2 /* LibraryItem+CoreDataClass.swift */; };
 		657A0F8D25A347C400A4CCF2 /* LibraryItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657A0F8725A347C400A4CCF2 /* LibraryItem+CoreDataProperties.swift */; };
@@ -238,11 +240,11 @@
 		65F0727C25445673004C8BA3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65F0727B25445673004C8BA3 /* AVFoundation.framework */; };
 		65F072812544615D004C8BA3 /* startRecordingButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 65F0727E2544615D004C8BA3 /* startRecordingButton.png */; };
 		65F072832544615D004C8BA3 /* stopRecordingButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 65F072802544615D004C8BA3 /* stopRecordingButton.png */; };
-		AD83545AEC9D9F6A21E562C9 /* Pods_FREE_UR_SPIRIT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB82CA3693914B0F783D9BCE /* Pods_FREE_UR_SPIRIT.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		207B55E454D0CD6B1EE09CE1 /* Pods-FREE UR SPIRIT.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FREE UR SPIRIT.debug.xcconfig"; path = "Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT.debug.xcconfig"; sourceTree = "<group>"; };
+		1F9BD6C9C14D17A93CD200DC /* Pods-FREE UR SPIRIT.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FREE UR SPIRIT.release.xcconfig"; path = "Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT.release.xcconfig"; sourceTree = "<group>"; };
+		2AF5B18BFC23E77825F83913 /* Pods_FREE_UR_SPIRIT.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FREE_UR_SPIRIT.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6517BA3825D1C119004546F0 /* RepetitionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepetitionViewController.swift; sourceTree = "<group>"; };
 		652D5C592546B6170083165B /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		653353D525A1D3180067A4A6 /* AddAffirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAffirmationViewController.swift; sourceTree = "<group>"; };
@@ -296,6 +298,7 @@
 		656D431D2594CF450067A4D8 /* AudioExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioExtensions.swift; sourceTree = "<group>"; };
 		656D43202594E0900067A4D8 /* Switch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Switch.swift; sourceTree = "<group>"; };
 		656D43232594E3790067A4D8 /* SpectrumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumViewController.swift; sourceTree = "<group>"; };
+		656E379325E17EC800AD0707 /* ImageCropperViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropperViewController.swift; sourceTree = "<group>"; };
 		65700CCD25BF53D4000DA5C7 /* PlaylistAddNewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistAddNewViewController.swift; sourceTree = "<group>"; };
 		657A0F8625A347C400A4CCF2 /* LibraryItem+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryItem+CoreDataClass.swift"; sourceTree = "<group>"; };
 		657A0F8725A347C400A4CCF2 /* LibraryItem+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibraryItem+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -364,8 +367,7 @@
 		65F0727E2544615D004C8BA3 /* startRecordingButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = startRecordingButton.png; sourceTree = "<group>"; };
 		65F0727F2544615D004C8BA3 /* stopButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stopButton.png; sourceTree = "<group>"; };
 		65F072802544615D004C8BA3 /* stopRecordingButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stopRecordingButton.png; sourceTree = "<group>"; };
-		AB82CA3693914B0F783D9BCE /* Pods_FREE_UR_SPIRIT.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FREE_UR_SPIRIT.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E08A461BB8BA60E4DE6AA0FC /* Pods-FREE UR SPIRIT.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FREE UR SPIRIT.release.xcconfig"; path = "Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT.release.xcconfig"; sourceTree = "<group>"; };
+		8E9FD1A8F97005B537567904 /* Pods-FREE UR SPIRIT.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FREE UR SPIRIT.debug.xcconfig"; path = "Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -376,7 +378,7 @@
 				652D5C5A2546B6170083165B /* Accelerate.framework in Frameworks */,
 				656A214125B612D90084B84B /* CloudKit.framework in Frameworks */,
 				65F0727C25445673004C8BA3 /* AVFoundation.framework in Frameworks */,
-				AD83545AEC9D9F6A21E562C9 /* Pods_FREE_UR_SPIRIT.framework in Frameworks */,
+				0588279E3E4F365A8EA616F1 /* Pods_FREE_UR_SPIRIT.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,7 +389,6 @@
 				6569580625C6D4DF00E4F7CC /* Accelerate.framework in Frameworks */,
 				6569580725C6D4DF00E4F7CC /* CloudKit.framework in Frameworks */,
 				6569580825C6D4DF00E4F7CC /* AVFoundation.framework in Frameworks */,
-				6569580925C6D4DF00E4F7CC /* Pods_FREE_UR_SPIRIT.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -397,8 +398,8 @@
 		2AA53B5A417622581E635D17 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				207B55E454D0CD6B1EE09CE1 /* Pods-FREE UR SPIRIT.debug.xcconfig */,
-				E08A461BB8BA60E4DE6AA0FC /* Pods-FREE UR SPIRIT.release.xcconfig */,
+				8E9FD1A8F97005B537567904 /* Pods-FREE UR SPIRIT.debug.xcconfig */,
+				1F9BD6C9C14D17A93CD200DC /* Pods-FREE UR SPIRIT.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -409,7 +410,7 @@
 				656A214025B612D90084B84B /* CloudKit.framework */,
 				652D5C592546B6170083165B /* Accelerate.framework */,
 				65F0727B25445673004C8BA3 /* AVFoundation.framework */,
-				AB82CA3693914B0F783D9BCE /* Pods_FREE_UR_SPIRIT.framework */,
+				2AF5B18BFC23E77825F83913 /* Pods_FREE_UR_SPIRIT.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -776,6 +777,7 @@
 				653BA544258E69FC004A0BA7 /* SetEndtimeViewController.swift */,
 				65A052B7259F2DDF00F3C6BD /* DisclaimerViewController.swift */,
 				65C8EA6625AA53BF0012B21A /* ShowCountdownViewController.swift */,
+				656E379325E17EC800AD0707 /* ImageCropperViewController.swift */,
 			);
 			path = Modal;
 			sourceTree = "<group>";
@@ -787,11 +789,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6558D31924684935004E8660 /* Build configuration list for PBXNativeTarget "FREE UR SPIRIT" */;
 			buildPhases = (
-				F44A103133876AD223D952DA /* [CP] Check Pods Manifest.lock */,
+				9EADF9D741759C20605E9E03 /* [CP] Check Pods Manifest.lock */,
 				6558D30124684934004E8660 /* Sources */,
 				6558D30224684934004E8660 /* Frameworks */,
 				6558D30324684934004E8660 /* Resources */,
-				FBB96A3808E8507975A41FBF /* [CP] Embed Pods Frameworks */,
+				9DAEF50707E25636DBAD31EF /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -806,11 +808,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6569583425C6D4DF00E4F7CC /* Build configuration list for PBXNativeTarget "FREE UR SPIRIT TEST" */;
 			buildPhases = (
-				656957BE25C6D4DF00E4F7CC /* [CP] Check Pods Manifest.lock */,
 				656957BF25C6D4DF00E4F7CC /* Sources */,
 				6569580525C6D4DF00E4F7CC /* Frameworks */,
 				6569580A25C6D4DF00E4F7CC /* Resources */,
-				6569583325C6D4DF00E4F7CC /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -954,7 +954,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		656957BE25C6D4DF00E4F7CC /* [CP] Check Pods Manifest.lock */ = {
+		9DAEF50707E25636DBAD31EF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9EADF9D741759C20605E9E03 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -974,62 +991,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6569583325C6D4DF00E4F7CC /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F44A103133876AD223D952DA /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-FREE UR SPIRIT-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FBB96A3808E8507975A41FBF /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FREE UR SPIRIT/Pods-FREE UR SPIRIT-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1044,6 +1005,7 @@
 				657AA0C6258F544200320465 /* Misc.swift in Sources */,
 				657A460025BCB2E9003BF0D4 /* TabbarController.swift in Sources */,
 				65651D78259DD763006BA4DD /* LoudspeakerSymbolView.swift in Sources */,
+				656E379425E17EC800AD0707 /* ImageCropperViewController.swift in Sources */,
 				65A0531425A0E50900F3C6BD /* ImagePicker.swift in Sources */,
 				657A0F9025A347C400A4CCF2 /* Subliminal+CoreDataClass.swift in Sources */,
 				65A0531725A0ED9800F3C6BD /* AffirmationTableViewCell.swift in Sources */,
@@ -1123,6 +1085,7 @@
 				656957C225C6D4DF00E4F7CC /* Misc.swift in Sources */,
 				656957C325C6D4DF00E4F7CC /* TabbarController.swift in Sources */,
 				656957C425C6D4DF00E4F7CC /* LoudspeakerSymbolView.swift in Sources */,
+				656E379525E17EC800AD0707 /* ImageCropperViewController.swift in Sources */,
 				656957C525C6D4DF00E4F7CC /* ImagePicker.swift in Sources */,
 				656957C625C6D4DF00E4F7CC /* Subliminal+CoreDataClass.swift in Sources */,
 				656957C725C6D4DF00E4F7CC /* AffirmationTableViewCell.swift in Sources */,
@@ -1333,7 +1296,7 @@
 		};
 		6558D31A24684935004E8660 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 207B55E454D0CD6B1EE09CE1 /* Pods-FREE UR SPIRIT.debug.xcconfig */;
+			baseConfigurationReference = 8E9FD1A8F97005B537567904 /* Pods-FREE UR SPIRIT.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1359,7 +1322,7 @@
 		};
 		6558D31B24684935004E8660 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E08A461BB8BA60E4DE6AA0FC /* Pods-FREE UR SPIRIT.release.xcconfig */;
+			baseConfigurationReference = 1F9BD6C9C14D17A93CD200DC /* Pods-FREE UR SPIRIT.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1384,7 +1347,6 @@
 		};
 		6569583525C6D4DF00E4F7CC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 207B55E454D0CD6B1EE09CE1 /* Pods-FREE UR SPIRIT.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -1410,7 +1372,6 @@
 		};
 		6569583625C6D4DF00E4F7CC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E08A461BB8BA60E4DE6AA0FC /* Pods-FREE UR SPIRIT.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

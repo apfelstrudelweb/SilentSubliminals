@@ -324,6 +324,10 @@ extension PlaylistAddNewViewController: UITableViewDragDelegate, UITableViewDrop
 
 extension PlaylistAddNewViewController: ImagePickerDelegate {
     
+    func didSelectUnsplash() {
+        // TODO
+    }
+    
     func didSelect(image: UIImage?) {
         guard let img = image else {
             return

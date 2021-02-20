@@ -43,6 +43,8 @@ let lightColor: UIColor = UIColor(red: 239/255, green: 239/255, blue: 239/255, a
 let lightGrayColor: UIColor = UIColor(red: 178/255, green: 178/255, blue: 178/255, alpha: 1.0)
 let darkGrayColor: UIColor = UIColor(red: 119/255, green: 119/255, blue: 119/255, alpha: 1.0)
 
+let filename_playerBackgroundImage = "playerBackgroundImage.png"
+
 //// for test purposes
 //let lightColor: UIColor = .red
 //let lightGrayColor: UIColor = .blue
@@ -85,7 +87,7 @@ let userDefaults_subliminalLoopDuration = "subliminalLoopDuration"
 let userDefaults_subliminalNumRepetitions = "subliminalNumRepetitions"
 let userDefaults_subliminalPlaylistTotalTime = "subliminalPlaylistTotalTime"
 
-let userDefaults_frequencyModulation = "frequencyModulation"
+let userDefaults_playerBackgroundImage = "playerBackgroundImage"
 
 
 // Notification

@@ -9,8 +9,10 @@
 import Foundation
 import UIKit
 
+
 public protocol ImagePickerDelegate: class {
     func didSelect(image: UIImage?)
+    func didSelectUnsplash()
 }
 
 open class ImagePicker: NSObject {
@@ -57,6 +59,10 @@ open class ImagePicker: NSObject {
             alertController.addAction(action)
         }
 
+        alertController.addAction(UIAlertAction(title: "Unsplash", style: .default, handler: { _ in
+            self.delegate?.didSelectUnsplash()
+        }))
+        
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 
         if UIDevice.current.userInterfaceIdiom == .pad {
@@ -89,6 +95,7 @@ extension ImagePicker: UIImagePickerControllerDelegate {
         self.pickerController(picker, didSelect: image)
     }
 }
+
 
 extension ImagePicker: UINavigationControllerDelegate {
 
