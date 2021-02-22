@@ -21,6 +21,7 @@ class ImageCropperViewController: UIViewController, UIScrollViewDelegate {
     var isBackgroundImageForPlayer: Bool = false
     
     @IBOutlet weak var aspectRatio: NSLayoutConstraint!
+    @IBOutlet weak var opacitySlider: UISlider!
     
     
     private var imageDataTask: URLSessionDataTask?
@@ -125,9 +126,12 @@ class ImageCropperViewController: UIViewController, UIScrollViewDelegate {
         return imageView
     }
     
-
+    @IBAction func opacitySliderTouched(_ sender: Any) {
+        let alpha: CGFloat = CGFloat(opacitySlider.value)
+        imageView.image = imageView.image?.withAlphaComponent(alpha)
+    }
     
-    @IBAction func crop(_ sender: UIButton) {
+    @IBAction func cropButtonTouched(_ sender: Any) {
         let croppedCGImage = imageView.image?.cgImage?.cropping(to: cropArea)
         let croppedImage = UIImage(cgImage: croppedCGImage!)
         imageView.image = croppedImage
@@ -137,6 +141,9 @@ class ImageCropperViewController: UIViewController, UIScrollViewDelegate {
         self.dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func cancelButtonTouched(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
 }
 
 // MARK: - UnsplashPhotoPickerDelegate
@@ -217,4 +224,15 @@ extension UIView {
 
         return NSLayoutConstraint(item: self, attribute: .width, relatedBy: .equal, toItem: self, attribute: .height, multiplier: ratio, constant: 0)
     }
+}
+
+
+extension UIImage {
+  func withAlphaComponent(_ alpha: CGFloat) -> UIImage? {
+    UIGraphicsBeginImageContextWithOptions(size, false, scale)
+    defer { UIGraphicsEndImageContext() }
+
+    draw(at: .zero, blendMode: .normal, alpha: alpha)
+    return UIGraphicsGetImageFromCurrentImageContext()
+  }
 }

@@ -8,23 +8,62 @@
 
 import UIKit
 
-class SettingsViewController: UIViewController {
+class SettingsViewController: UIViewController, ImagePickerDelegate {
+    
+    
+    func didSelectUnsplash() {
+        self.performSegue(withIdentifier: "cropperSegue", sender: self)
+    }
+    
+
+    func didSelect(image: UIImage?) {
+        guard let img = image else {
+            return
+        }
+        
+        //playerBackgroundImageButton.aspectRatio(1.0 / 1.0).isActive = true
+        playerBackgroundImageButton.setImage(img, for: .normal)
+        
+        if let data = img.pngData() {
+            // Create URL
+            let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            let url = documents.appendingPathComponent(filename_playerBackgroundImage)
+
+            do {
+                // Write to Disk
+                try data.write(to: url)
+
+                // Store URL in User Defaults
+                UserDefaults.standard.set(url, forKey: userDefaults_playerBackgroundImage)
+
+            } catch {
+                print("Unable to Write Data to Disk (\(error))")
+            }
+        }
+    }
+    
 
     @IBOutlet weak var playerBackgroundImageButton: ShadowButton!
     @IBOutlet weak var resetButton: UIButton!
+    
+    var imagePicker: ImagePicker!
     
     private var audioHelper = AudioHelper()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.imagePicker = ImagePicker(presentationController: self, delegate: self)
 
         getBackgroundImage()
     }
     
 
-    @IBAction func playerBackgroundImageButtonTouched(_ sender: Any) {
+    @IBAction func playerBackgroundImageButtonTouched(_ sender: UIButton) {
         
-        self.performSegue(withIdentifier: "cropperSegue", sender: self)
+        self.imagePicker.present(from: sender)
+        
+        //self.performSegue(withIdentifier: "cropperSegue", sender: self)
     }
     
     @IBAction func resetButtonTouched(_ sender: Any) {

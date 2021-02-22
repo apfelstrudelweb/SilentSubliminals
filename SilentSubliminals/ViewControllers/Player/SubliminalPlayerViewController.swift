@@ -116,7 +116,7 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         return true
     }
     
-    let TEST_MODE = true
+    let TEST_MODE = false
     
     
     override func viewDidLoad() {
@@ -126,6 +126,10 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         
         overlayView.layer.contents = #imageLiteral(resourceName: "subliminalPlayerBackground.png").cgImage
         overlayButton.isEnabled = false
+        
+        playButton.imageView?.tintColor = .white
+        backButton.imageView?.tintColor = UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1.0)
+        forwardButton.imageView?.tintColor = UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1.0)
         
         let commandCenter = CommandCenter.shared
         commandCenter.delegate = self
@@ -183,7 +187,8 @@ class SubliminalPlayerViewController: UIViewController, UIScrollViewDelegate, Pl
         if let url = UserDefaults.standard.url(forKey: userDefaults_playerBackgroundImage) {
             
             let image = UIImage(contentsOfFile: url.path)
-            backgroundImageView.image = image
+            backgroundImageView.image = image?.withAlphaComponent(0.8)
+            overlayView.layer.contents = backgroundImageView.image?.cgImage
         } else {
             backgroundImageView.image = UIImage(named: "subliminalPlayerBackground")
         }
