@@ -62,7 +62,9 @@ class SetEndtimeViewController: UIViewController {
             self.present(alert, animated: true)
         }
         
-        UserDefaults.standard.setValue(Int(duration), forKey: userDefaults_subliminalLoopDuration)
+        let availableTime = timerPicker.date.timeIntervalSinceNow - Date().timeIntervalSinceNow
+        
+        UserDefaults.standard.setValue(Int(availableTime), forKey: userDefaults_subliminalLoopDuration)
     }
     
     deinit {
